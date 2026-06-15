@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proliga – Encontra o Profissional Certo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+
+    /* NAV */
+    nav {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .logo { font-size: 22px; font-weight: 800; color: #1d4ed8; text-decoration: none; }
+    .logo span { color: #f59e0b; }
+    .nav-actions { display: flex; gap: 12px; align-items: center; }
+    .btn { padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: all .2s; }
+    .btn-ghost { background: transparent; color: #1d4ed8; border: 1.5px solid #1d4ed8; }
+    .btn-ghost:hover { background: #eff6ff; }
+    .btn-primary { background: #1d4ed8; color: #fff; }
+    .btn-primary:hover { background: #1e40af; }
+    #user-menu { display: none; align-items: center; gap: 12px; }
+    #user-name { font-weight: 600; font-size: 14px; color: #334155; }
+    .btn-sm { padding: 6px 14px; font-size: 13px; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #1e3a8a 100%);
+      padding: 80px 24px;
+      text-align: center;
+      color: #fff;
+    }
+    .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; margin-bottom: 16px; line-height: 1.2; }
+    .hero p { font-size: 18px; opacity: .85; margin-bottom: 36px; }
+    .search-bar {
+      display: flex;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.2);
+    }
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 16px 20px;
+      font-size: 16px;
+      font-family: inherit;
+      color: #1e293b;
+    }
+    .search-bar button {
+      background: #f59e0b;
+      border: none;
+      padding: 16px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .search-bar button:hover { background: #d97706; }
+
+    /* CATEGORIES */
+    .section { padding: 60px 24px; max-width: 1100px; margin: 0 auto; }
+    .section-title { font-size: 24px; font-weight: 700; margin-bottom: 28px; color: #1e293b; }
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+    .cat-card {
+      background: #fff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      color: #334155;
+    }
+    .cat-card:hover { border-color: #1d4ed8; box-shadow: 0 4px 16px rgba(29,78,216,.12); transform: translateY(-2px); }
+    .cat-icon { font-size: 36px; margin-bottom: 10px; }
+    .cat-name { font-size: 14px; font-weight: 600; }
+
+    /* PROFESSIONALS GRID */
+    .pros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .pro-card {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      transition: all .2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .pro-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.1); transform: translateY(-3px); }
+    .pro-card-header {
+      background: linear-gradient(135deg, #dbeafe, #eff6ff);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .pro-avatar {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: #1d4ed8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700; color: #fff;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .pro-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .pro-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .pro-category {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 99px;
+    }
+    .pro-card-body { padding: 16px 24px; }
+    .pro-location { font-size: 13px; color: #64748b; margin-bottom: 10px; display: flex; align-items: center; gap: 4px; }
+    .pro-bio { font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 12px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .pro-rating { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+    .stars { color: #f59e0b; }
+    .rating-count { color: #94a3b8; font-size: 12px; }
+
+    /* FILTERS */
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 99px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: inherit;
+      color: #475569;
+    }
+    .filter-btn:hover, .filter-btn.active { border-color: #1d4ed8; background: #1d4ed8; color: #fff; }
+
+    /* EMPTY STATE */
+    .empty { text-align: center; padding: 60px 20px; color: #94a3b8; }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty p { font-size: 16px; }
+
+    /* FOOTER */
+    footer {
+      background: #1e293b;
+      color: #94a3b8;
+      text-align: center;
+      padding: 32px 24px;
+      margin-top: 60px;
+      font-size: 14px;
+    }
+    footer strong { color: #f59e0b; }
+
+    /* LOADING */
+    .loading { text-align: center; padding: 40px; color: #94a3b8; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid #e2e8f0;
+      border-top-color: #1d4ed8;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .nav-actions .btn-ghost { display: none; }
+      .hero { padding: 48px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+  <div class="nav-actions">
+    <div id="guest-menu">
+      <a href="auth.html" class="btn btn-ghost">Entrar</a>
+      <a href="auth.html?tab=register" class="btn btn-primary">Registar</a>
+    </div>
+    <div id="user-menu">
+      <span id="user-name"></span>
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <button class="btn btn-ghost btn-sm" onclick="signOut()">Sair</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Encontra o Profissional<br>que Precisas</h1>
+  <p>Canalizadores, eletricistas, pintores e muito mais — perto de ti.</p>
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Ex: eletricista, canalizador, pintor..." />
+    <button onclick="doSearch()">Pesquisar</button>
+  </div>
+</section>
+
+<div class="section">
+  <h2 class="section-title">Categorias</h2>
+  <div class="categories">
+    <a class="cat-card" onclick="filterCategory('Eletricista')">
+      <div class="cat-icon">⚡</div>
+      <div class="cat-name">Eletricista</div>
+    </a>
+    <a class="cat-card" onclick="filterCategory('Canalizador')">
+      <div class="cat-icon">🔧</div>
+      <div class="cat-name">Canalizador</div>
+    </a>
+    <a class="cat-card" onclick="filterCategory('Pintor')">
+      <div class="cat-icon">🎨</div>
+      <div class="cat-name">Pintor</div>
+    </a>
+    <a class="cat-card" onclick="filterCategory('Carpinteiro')">
+      <div class="cat-icon">🪵</div>
+      <div class="cat-name">Carpinteiro</div>
+    </a>
+    <a class="cat-card" onclick="filterCategory('Serralheiro')">
+      <div class="cat-icon">🔩</div>
+      <div class="cat-name">Serralheiro</div>
+    </a>
+    <a class="cat-card" onclick="filterCategory('Jardineiro')">
+      <div class="cat-icon">🌿</div>
+      <div class="cat-name">Jardineiro</div>
+    </a>
+    <a class="cat-card" onclick="filterCategory('Limpeza')">
+      <div class="cat-icon">🧹</div>
+      <div class="cat-name">Limpeza</div>
+    </a>
+    <a class="cat-card" onclick="filterCategory('')">
+      <div class="cat-icon">🔍</div>
+      <div class="cat-name">Ver Todos</div>
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <h2 class="section-title" id="pros-title">Profissionais em Destaque</h2>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" onclick="filterCategory('')">Todos</button>
+    <button class="filter-btn" onclick="filterCategory('Eletricista')">Eletricistas</button>
+    <button class="filter-btn" onclick="filterCategory('Canalizador')">Canalizadores</button>
+    <button class="filter-btn" onclick="filterCategory('Pintor')">Pintores</button>
+    <button class="filter-btn" onclick="filterCategory('Carpinteiro')">Carpinteiros</button>
+    <button class="filter-btn" onclick="filterCategory('Jardineiro')">Jardineiros</button>
+    <button class="filter-btn" onclick="filterCategory('Limpeza')">Limpeza</button>
+  </div>
+  <div id="pros-grid" class="pros-grid">
+    <div class="loading"><div class="spinner"></div><p>A carregar profissionais...</p></div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <strong>Proliga</strong> — A plataforma de profissionais de confiança</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
+  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  let currentCategory = ''
+  let currentSearch = ''
+
+  async function init() {
+    const { data: { session } } = await db.auth.getSession()
+    if (session) {
+      document.getElementById('guest-menu').style.display = 'none'
+      document.getElementById('user-menu').style.display = 'flex'
+      const { data: profile } = await db.from('profiles').select('name').eq('id', session.user.id).single()
+      if (profile) document.getElementById('user-name').textContent = profile.name.split(' ')[0]
+    }
+    loadProfessionals()
+  }
+
+  async function loadProfessionals() {
+    const grid = document.getElementById('pros-grid')
+    grid.innerHTML = '<div class="loading"><div class="spinner"></div><p>A carregar...</p></div>'
+
+    let query = db.from('profiles').select(`*, reviews(rating)`)
+    if (currentCategory) query = query.eq('category', currentCategory)
+    if (currentSearch) query = query.ilike('name', `%${currentSearch}%`)
+    query = query.order('created_at', { ascending: false }).limit(24)
+
+    const { data, error } = await query
+
+    if (error || !data || data.length === 0) {
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><p>Nenhum profissional encontrado.</p></div>`
+      return
+    }
+
+    grid.innerHTML = data.map(pro => {
+      const reviews = pro.reviews || []
+      const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : null
+      const stars = avgRating ? '★'.repeat(Math.round(avgRating)) + '☆'.repeat(5 - Math.round(avgRating)) : '☆☆☆☆☆'
+      const initials = pro.name.split(' ').map(n => n[0]).slice(0, 2).join('')
+      const avatarContent = pro.photo_url
+        ? `<img src="${pro.photo_url}" alt="${pro.name}" />`
+        : initials
+
+      return `
+        <a href="profile.html?id=${pro.id}" class="pro-card">
+          <div class="pro-card-header">
+            <div class="pro-avatar">${avatarContent}</div>
+            <div class="pro-info">
+              <h3>${pro.name}</h3>
+              <span class="pro-category">${pro.category}</span>
+            </div>
+          </div>
+          <div class="pro-card-body">
+            <div class="pro-location">📍 ${pro.location}</div>
+            ${pro.bio ? `<div class="pro-bio">${pro.bio}</div>` : ''}
+            <div class="pro-rating">
+              <span class="stars">${stars}</span>
+              <span>${avgRating || 'Sem avaliações'}</span>
+              ${reviews.length ? `<span class="rating-count">(${reviews.length})</span>` : ''}
+            </div>
+          </div>
+        </a>`
+    }).join('')
+  }
+
+  function filterCategory(cat) {
+    currentCategory = cat
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+    document.getElementById('pros-title').textContent = cat ? `${cat}s` : 'Todos os Profissionais'
+    loadProfessionals()
+  }
+
+  function doSearch() {
+    currentSearch = document.getElementById('search-input').value.trim()
+    currentCategory = ''
+    loadProfessionals()
+  }
+
+  document.getElementById('search-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch()
+  })
+
+  async function signOut() {
+    await db.auth.signOut()
+    location.reload()
+  }
+
+  init()
+</script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proliga – Perfil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+    nav {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .logo { font-size: 22px; font-weight: 800; color: #1d4ed8; text-decoration: none; }
+    .logo span { color: #f59e0b; }
+    .back-btn {
+      padding: 8px 16px; border-radius: 8px; border: 1.5px solid #e2e8f0;
+      background: #fff; color: #475569; font-size: 14px; font-weight: 500;
+      cursor: pointer; text-decoration: none; font-family: inherit;
+    }
+    .back-btn:hover { border-color: #1d4ed8; color: #1d4ed8; }
+
+    .profile-hero {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      padding: 48px 24px 80px;
+      color: #fff;
+    }
+    .profile-hero-inner { max-width: 800px; margin: 0 auto; display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+    .avatar-large {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: #fff; border: 4px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-weight: 800; color: #1d4ed8;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .avatar-large img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-info h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+    .badge {
+      display: inline-block; padding: 4px 14px; border-radius: 99px;
+      font-size: 13px; font-weight: 600; margin-right: 8px; margin-bottom: 8px;
+    }
+    .badge-cat { background: rgba(255,255,255,.2); color: #fff; }
+    .badge-loc { background: rgba(255,255,255,.15); color: rgba(255,255,255,.9); }
+    .hero-rating { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 15px; }
+    .stars { color: #f59e0b; font-size: 18px; }
+
+    .content { max-width: 800px; margin: -40px auto 60px; padding: 0 16px; }
+
+    .card {
+      background: #fff; border-radius: 14px;
+      border: 1px solid #e2e8f0; padding: 28px;
+      margin-bottom: 20px;
+    }
+    .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: #1e293b; }
+
+    /* Contact card */
+    .contact-card {
+      background: #fff; border-radius: 14px;
+      border: 1px solid #e2e8f0; padding: 28px;
+      margin-bottom: 20px;
+    }
+    .contact-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+    input, textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid #e2e8f0; border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: #1e293b; outline: none;
+    }
+    input:focus, textarea:focus { border-color: #1d4ed8; }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn-submit {
+      width: 100%; padding: 12px;
+      background: #1d4ed8; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+    }
+    .btn-submit:hover { background: #1e40af; }
+    .btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
+
+    /* Services */
+    .service-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 16px 0; border-bottom: 1px solid #f1f5f9;
+    }
+    .service-item:last-child { border-bottom: none; }
+    .service-title { font-weight: 600; margin-bottom: 4px; }
+    .service-desc { font-size: 13px; color: #64748b; }
+    .service-price { font-weight: 700; color: #1d4ed8; white-space: nowrap; margin-left: 16px; }
+
+    /* Reviews */
+    .review-item { padding: 16px 0; border-bottom: 1px solid #f1f5f9; }
+    .review-item:last-child { border-bottom: none; }
+    .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .reviewer-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #dbeafe; color: #1d4ed8;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+    .reviewer-name { font-weight: 600; font-size: 14px; }
+    .review-stars { color: #f59e0b; font-size: 14px; }
+    .review-date { color: #94a3b8; font-size: 12px; margin-left: auto; }
+    .review-text { font-size: 14px; color: #475569; line-height: 1.6; }
+
+    /* Leave review */
+    .star-select { display: flex; gap: 6px; margin-bottom: 14px; }
+    .star-btn {
+      font-size: 28px; cursor: pointer; color: #e2e8f0;
+      border: none; background: none; padding: 0; transition: color .1s;
+    }
+    .star-btn.selected, .star-btn:hover { color: #f59e0b; }
+
+    .msg { padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 14px; display: none; }
+    .msg.error { background: #fef2f2; color: #b91c1c; }
+    .msg.success { background: #f0fdf4; color: #166534; }
+
+    .contact-info { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 8px;
+      background: #f1f5f9; color: #334155;
+      text-decoration: none; font-size: 14px; font-weight: 500;
+    }
+    .contact-link:hover { background: #dbeafe; color: #1d4ed8; }
+
+    .loading { text-align: center; padding: 40px; color: #94a3b8; }
+    .spinner { width: 32px; height: 32px; border: 3px solid #e2e8f0; border-top-color: #1d4ed8; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+  <a href="index.html" class="back-btn">← Voltar</a>
+</nav>
+
+<div id="loading-page" class="loading" style="margin-top:80px">
+  <div class="spinner"></div><p>A carregar perfil...</p>
+</div>
+
+<div id="page-content" style="display:none">
+  <div class="profile-hero">
+    <div class="profile-hero-inner">
+      <div class="avatar-large" id="hero-avatar"></div>
+      <div class="hero-info">
+        <h1 id="hero-name"></h1>
+        <span class="badge badge-cat" id="hero-category"></span>
+        <span class="badge badge-loc" id="hero-location"></span>
+        <div class="hero-rating">
+          <span class="stars" id="hero-stars"></span>
+          <span id="hero-rating-text"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Bio -->
+    <div class="card" id="bio-card" style="display:none">
+      <h2>Sobre</h2>
+      <p id="bio-text" style="color:#475569; line-height:1.7"></p>
+      <div class="contact-info" id="contact-links"></div>
+    </div>
+
+    <!-- Services -->
+    <div class="card" id="services-card" style="display:none">
+      <h2>Serviços</h2>
+      <div id="services-list"></div>
+    </div>
+
+    <!-- Contact form -->
+    <div class="contact-card">
+      <h2>📩 Enviar mensagem</h2>
+      <div class="msg error" id="msg-error"></div>
+      <div class="msg success" id="msg-success"></div>
+      <div class="form-group">
+        <label>O teu nome</label>
+        <input type="text" id="contact-name" placeholder="João Silva" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="contact-email" placeholder="joao@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Telefone <span style="color:#94a3b8">(opcional)</span></label>
+        <input type="tel" id="contact-phone" placeholder="912 345 678" />
+      </div>
+      <div class="form-group">
+        <label>Assunto</label>
+        <input type="text" id="contact-subject" placeholder="Ex: Precisava de um orçamento para..." />
+      </div>
+      <div class="form-group">
+        <label>Mensagem</label>
+        <textarea id="contact-message" placeholder="Descreve o que precisas..."></textarea>
+      </div>
+      <button class="btn-submit" id="contact-btn" onclick="sendMessage()">Enviar mensagem</button>
+    </div>
+
+    <!-- Reviews -->
+    <div class="card">
+      <h2>Avaliações <span id="review-count" style="color:#94a3b8; font-size:14px; font-weight:400"></span></h2>
+      <div id="reviews-list"></div>
+
+      <!-- Leave a review -->
+      <div style="margin-top:28px; padding-top:24px; border-top:2px solid #f1f5f9">
+        <h3 style="font-size:15px; font-weight:700; margin-bottom:14px">Deixar avaliação</h3>
+        <div class="msg error" id="rev-error"></div>
+        <div class="msg success" id="rev-success"></div>
+        <div class="star-select" id="star-select">
+          <button class="star-btn" onclick="setRating(1)">★</button>
+          <button class="star-btn" onclick="setRating(2)">★</button>
+          <button class="star-btn" onclick="setRating(3)">★</button>
+          <button class="star-btn" onclick="setRating(4)">★</button>
+          <button class="star-btn" onclick="setRating(5)">★</button>
+        </div>
+        <div class="form-group">
+          <label>O teu nome</label>
+          <input type="text" id="rev-name" placeholder="João Silva" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="rev-email" placeholder="joao@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Comentário</label>
+          <textarea id="rev-comment" placeholder="Partilha a tua experiência..."></textarea>
+        </div>
+        <button class="btn-submit" id="rev-btn" onclick="submitReview()" style="margin-top:0">Publicar avaliação</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
+  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  const proId = new URLSearchParams(location.search).get('id')
+  let selectedRating = 0
+
+  function setRating(r) {
+    selectedRating = r
+    document.querySelectorAll('.star-btn').forEach((b, i) => {
+      b.classList.toggle('selected', i < r)
+    })
+  }
+
+  async function init() {
+    if (!proId) { location.href = 'index.html'; return; }
+
+    const [{ data: pro }, { data: services }, { data: reviews }] = await Promise.all([
+      db.from('profiles').select('*').eq('id', proId).single(),
+      db.from('services').select('*').eq('professional_id', proId).order('created_at'),
+      db.from('reviews').select('*').eq('professional_id', proId).order('created_at', { ascending: false })
+    ])
+
+    if (!pro) { location.href = 'index.html'; return; }
+
+    document.title = `Proliga – ${pro.name}`
+
+    // Hero
+    const initials = pro.name.split(' ').map(n => n[0]).slice(0, 2).join('')
+    document.getElementById('hero-avatar').innerHTML = pro.photo_url
+      ? `<img src="${pro.photo_url}" alt="${pro.name}" />`
+      : initials
+    document.getElementById('hero-name').textContent = pro.name
+    document.getElementById('hero-category').textContent = pro.category
+    document.getElementById('hero-location').textContent = '📍 ' + pro.location
+
+    const avgRating = reviews?.length
+      ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
+      : null
+    const starCount = avgRating ? Math.round(avgRating) : 0
+    document.getElementById('hero-stars').textContent = '★'.repeat(starCount) + '☆'.repeat(5 - starCount)
+    document.getElementById('hero-rating-text').textContent = avgRating
+      ? `${avgRating} (${reviews.length} avaliação${reviews.length !== 1 ? 'ões' : ''})`
+      : 'Sem avaliações ainda'
+
+    // Bio
+    if (pro.bio || pro.phone || pro.website) {
+      document.getElementById('bio-card').style.display = 'block'
+      if (pro.bio) document.getElementById('bio-text').textContent = pro.bio
+      const links = []
+      if (pro.phone) links.push(`<a class="contact-link" href="tel:${pro.phone}">📞 ${pro.phone}</a>`)
+      if (pro.website) links.push(`<a class="contact-link" href="${pro.website}" target="_blank">🌐 Website</a>`)
+      document.getElementById('contact-links').innerHTML = links.join('')
+    }
+
+    // Services
+    if (services?.length) {
+      document.getElementById('services-card').style.display = 'block'
+      document.getElementById('services-list').innerHTML = services.map(s => `
+        <div class="service-item">
+          <div>
+            <div class="service-title">${s.title}</div>
+            ${s.description ? `<div class="service-desc">${s.description}</div>` : ''}
+          </div>
+          ${s.price_from ? `<div class="service-price">€${s.price_from}${s.price_to ? '–€' + s.price_to : ''}/${s.price_unit}</div>` : ''}
+        </div>`).join('')
+    }
+
+    // Reviews
+    document.getElementById('review-count').textContent = reviews?.length ? `(${reviews.length})` : ''
+    if (reviews?.length) {
+      document.getElementById('reviews-list').innerHTML = reviews.map(r => {
+        const d = new Date(r.created_at).toLocaleDateString('pt-PT')
+        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating)
+        const initials = r.reviewer_name.split(' ').map(n => n[0]).slice(0, 2).join('')
+        return `
+          <div class="review-item">
+            <div class="review-header">
+              <div class="reviewer-avatar">${initials}</div>
+              <div>
+                <div class="reviewer-name">${r.reviewer_name}</div>
+                <div class="review-stars">${stars}</div>
+              </div>
+              <div class="review-date">${d}</div>
+            </div>
+            ${r.comment ? `<div class="review-text">${r.comment}</div>` : ''}
+          </div>`
+      }).join('')
+    } else {
+      document.getElementById('reviews-list').innerHTML = '<p style="color:#94a3b8;padding:12px 0">Ainda sem avaliações. Sê o primeiro!</p>'
+    }
+
+    document.getElementById('loading-page').style.display = 'none'
+    document.getElementById('page-content').style.display = 'block'
+  }
+
+  async function sendMessage() {
+    const name = document.getElementById('contact-name').value.trim()
+    const email = document.getElementById('contact-email').value.trim()
+    const phone = document.getElementById('contact-phone').value.trim()
+    const subject = document.getElementById('contact-subject').value.trim()
+    const content = document.getElementById('contact-message').value.trim()
+    const btn = document.getElementById('contact-btn')
+
+    if (!name || !email || !subject || !content)
+      return showMsg('msg-error', 'Preenche todos os campos obrigatórios.')
+
+    btn.disabled = true; btn.textContent = 'A enviar...'
+    const { error } = await db.from('messages').insert({ professional_id: proId, sender_name: name, sender_email: email, sender_phone: phone, subject, content })
+    if (error) {
+      showMsg('msg-error', 'Erro ao enviar. Tenta novamente.')
+      btn.disabled = false; btn.textContent = 'Enviar mensagem'
+    } else {
+      showMsg('msg-success', 'Mensagem enviada com sucesso!', true)
+      btn.textContent = 'Enviado ✓'
+      document.getElementById('contact-name').value = ''
+      document.getElementById('contact-email').value = ''
+      document.getElementById('contact-phone').value = ''
+      document.getElementById('contact-subject').value = ''
+      document.getElementById('contact-message').value = ''
+    }
+  }
+
+  async function submitReview() {
+    const name = document.getElementById('rev-name').value.trim()
+    const email = document.getElementById('rev-email').value.trim()
+    const comment = document.getElementById('rev-comment').value.trim()
+    const btn = document.getElementById('rev-btn')
+
+    if (!name || !email || !selectedRating)
+      return showMsg('rev-error', 'Indica o teu nome, email e uma classificação.')
+
+    btn.disabled = true; btn.textContent = 'A publicar...'
+    const { error } = await db.from('reviews').insert({ professional_id: proId, reviewer_name: name, reviewer_email: email, rating: selectedRating, comment })
+    if (error) {
+      showMsg('rev-error', 'Erro ao publicar. Tenta novamente.')
+      btn.disabled = false; btn.textContent = 'Publicar avaliação'
+    } else {
+      showMsg('rev-success', 'Avaliação publicada! Obrigado.', true)
+      btn.textContent = 'Publicado ✓'
+      setTimeout(() => location.reload(), 1500)
+    }
+  }
+
+  function showMsg(id, text, success = false) {
+    const el = document.getElementById(id)
+    el.textContent = text
+    el.className = `msg ${success ? 'success' : 'error'}`
+    el.style.display = text ? 'block' : 'none'
+  }
+
+  init()
+</script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proliga – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+    nav {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .logo { font-size: 22px; font-weight: 800; color: #1d4ed8; text-decoration: none; }
+    .logo span { color: #f59e0b; }
+    .nav-right { display: flex; gap: 10px; align-items: center; }
+    .btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: all .2s; font-family: inherit; }
+    .btn-ghost { background: transparent; color: #475569; border: 1.5px solid #e2e8f0; }
+    .btn-ghost:hover { border-color: #1d4ed8; color: #1d4ed8; }
+    .btn-primary { background: #1d4ed8; color: #fff; }
+    .btn-primary:hover { background: #1e40af; }
+    .btn-danger { background: #fef2f2; color: #b91c1c; border: 1.5px solid #fecaca; }
+    .btn-danger:hover { background: #fee2e2; }
+
+    .layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
+    aside {
+      background: #fff; border-right: 1px solid #e2e8f0;
+      padding: 24px 12px;
+    }
+    .side-btn {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 12px 14px;
+      border: none; background: none;
+      border-radius: 10px; font-size: 14px; font-weight: 500;
+      color: #475569; cursor: pointer; font-family: inherit;
+      transition: all .15s; text-align: left; margin-bottom: 2px;
+    }
+    .side-btn:hover { background: #f1f5f9; color: #1e293b; }
+    .side-btn.active { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
+    .side-icon { font-size: 18px; width: 24px; text-align: center; }
+    .badge-count {
+      margin-left: auto; background: #1d4ed8; color: #fff;
+      font-size: 11px; font-weight: 700; padding: 2px 8px;
+      border-radius: 99px; min-width: 20px; text-align: center;
+    }
+
+    main { padding: 32px 24px; overflow-y: auto; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .section-title { font-size: 22px; font-weight: 700; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 20px; text-align: center;
+    }
+    .stat-icon { font-size: 28px; margin-bottom: 8px; }
+    .stat-value { font-size: 28px; font-weight: 800; color: #1d4ed8; }
+    .stat-label { font-size: 13px; color: #64748b; margin-top: 4px; }
+
+    /* Profile form */
+    .card { background: #fff; border-radius: 14px; border: 1px solid #e2e8f0; padding: 28px; margin-bottom: 20px; }
+    .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 0; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid #e2e8f0; border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: #1e293b; outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #1d4ed8; }
+    textarea { resize: vertical; min-height: 80px; }
+    .full { grid-column: 1 / -1; }
+
+    /* Services */
+    .service-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 0; border-bottom: 1px solid #f1f5f9;
+    }
+    .service-row:last-child { border-bottom: none; }
+    .service-info { flex: 1; }
+    .service-title { font-weight: 600; font-size: 14px; }
+    .service-meta { font-size: 12px; color: #64748b; margin-top: 2px; }
+    .service-price { font-weight: 700; color: #1d4ed8; font-size: 14px; white-space: nowrap; }
+
+    /* Messages */
+    .msg-row {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer;
+    }
+    .msg-row:last-child { border-bottom: none; }
+    .msg-row:hover { background: #f8fafc; margin: 0 -28px; padding: 16px 28px; border-radius: 8px; }
+    .msg-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #dbeafe; color: #1d4ed8;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; flex-shrink: 0;
+    }
+    .msg-body { flex: 1; min-width: 0; }
+    .msg-from { font-weight: 600; font-size: 14px; }
+    .msg-subject { font-size: 13px; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-date { font-size: 12px; color: #94a3b8; white-space: nowrap; }
+    .msg-unread .msg-from { color: #1d4ed8; }
+    .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: #1d4ed8; flex-shrink: 0; margin-top: 6px; }
+
+    /* Message modal */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 16px;
+    }
+    .modal {
+      background: #fff; border-radius: 16px; padding: 32px;
+      max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto;
+    }
+    .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+    .modal-meta { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .modal-meta-row { font-size: 14px; }
+    .modal-meta-row span { font-weight: 600; }
+    .modal-content { background: #f8fafc; border-radius: 10px; padding: 16px; font-size: 14px; line-height: 1.7; color: #334155; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+
+    /* Add service modal */
+    .modal-form .form-group { margin-bottom: 14px; }
+
+    .msg-feedback { padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 14px; display: none; }
+    .msg-feedback.error { background: #fef2f2; color: #b91c1c; }
+    .msg-feedback.success { background: #f0fdf4; color: #166534; }
+
+    .empty { text-align: center; padding: 48px; color: #94a3b8; }
+    .empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+    .loading { text-align: center; padding: 40px; color: #94a3b8; }
+    .spinner { width: 28px; height: 28px; border: 3px solid #e2e8f0; border-top-color: #1d4ed8; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; border-right: none; border-bottom: 1px solid #e2e8f0; }
+      .side-btn { width: auto; padding: 8px 12px; }
+      .side-icon { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+  <div class="nav-right">
+    <a href="#" id="view-profile-btn" class="btn btn-ghost" target="_blank">Ver perfil público</a>
+    <button class="btn btn-ghost" onclick="signOut()">Sair</button>
+  </div>
+</nav>
+
+<div id="auth-loading" class="loading" style="margin-top:80px">
+  <div class="spinner"></div><p>A verificar sessão...</p>
+</div>
+
+<div id="app" style="display:none">
+  <div class="layout">
+    <aside>
+      <button class="side-btn active" onclick="showTab('overview')" id="tab-overview">
+        <span class="side-icon">📊</span> Visão geral
+      </button>
+      <button class="side-btn" onclick="showTab('profile')" id="tab-profile">
+        <span class="side-icon">👤</span> Perfil
+      </button>
+      <button class="side-btn" onclick="showTab('services')" id="tab-services">
+        <span class="side-icon">🛠️</span> Serviços
+      </button>
+      <button class="side-btn" onclick="showTab('messages')" id="tab-messages">
+        <span class="side-icon">📩</span> Mensagens
+        <span class="badge-count" id="unread-badge" style="display:none">0</span>
+      </button>
+    </aside>
+
+    <main id="main-content">
+      <!-- Loaded dynamically -->
+    </main>
+  </div>
+</div>
+
+<!-- Message Modal -->
+<div class="modal-overlay" id="msg-modal" style="display:none" onclick="closeMsgModal(event)">
+  <div class="modal">
+    <h3 id="modal-subject"></h3>
+    <div class="modal-meta">
+      <div class="modal-meta-row">De: <span id="modal-from"></span></div>
+      <div class="modal-meta-row">Email: <span id="modal-email"></span></div>
+      <div class="modal-meta-row" id="modal-phone-row" style="display:none">Telefone: <span id="modal-phone"></span></div>
+    </div>
+    <div class="modal-content" id="modal-content"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('msg-modal').style.display='none'">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
+  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  let userId, userProfile, allMessages = []
+  let currentTab = 'overview'
+
+  async function init() {
+    const { data: { session } } = await db.auth.getSession()
+    if (!session) { location.href = 'auth.html'; return; }
+    userId = session.user.id
+
+    const { data: profile } = await db.from('profiles').select('*').eq('id', userId).single()
+    if (!profile) { location.href = 'auth.html'; return; }
+    userProfile = profile
+
+    document.getElementById('view-profile-btn').href = `profile.html?id=${userId}`
+    document.getElementById('auth-loading').style.display = 'none'
+    document.getElementById('app').style.display = 'block'
+
+    // Load unread count
+    const { data: msgs } = await db.from('messages').select('id, read').eq('professional_id', userId)
+    allMessages = msgs || []
+    updateUnreadBadge()
+
+    showTab('overview')
+  }
+
+  function updateUnreadBadge() {
+    const unread = allMessages.filter(m => !m.read).length
+    const badge = document.getElementById('unread-badge')
+    badge.textContent = unread
+    badge.style.display = unread > 0 ? 'inline-block' : 'none'
+  }
+
+  function showTab(tab) {
+    currentTab = tab
+    document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'))
+    document.getElementById(`tab-${tab}`).classList.add('active')
+    if (tab === 'overview') renderOverview()
+    else if (tab === 'profile') renderProfile()
+    else if (tab === 'services') renderServices()
+    else if (tab === 'messages') renderMessages()
+  }
+
+  async function renderOverview() {
+    const [{ data: services }, { data: reviews }, { data: messages }] = await Promise.all([
+      db.from('services').select('id').eq('professional_id', userId),
+      db.from('reviews').select('rating').eq('professional_id', userId),
+      db.from('messages').select('id, read').eq('professional_id', userId)
+    ])
+    const avgRating = reviews?.length
+      ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '–'
+    const unread = messages?.filter(m => !m.read).length || 0
+
+    document.getElementById('main-content').innerHTML = `
+      <div class="section-header">
+        <h1 class="section-title">Olá, ${userProfile.name.split(' ')[0]}! 👋</h1>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">🛠️</div><div class="stat-value">${services?.length || 0}</div><div class="stat-label">Serviços publicados</div></div>
+        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value">${avgRating}</div><div class="stat-label">Avaliação média</div></div>
+        <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value">${reviews?.length || 0}</div><div class="stat-label">Avaliações recebidas</div></div>
+        <div class="stat-card"><div class="stat-icon">📩</div><div class="stat-value">${unread}</div><div class="stat-label">Mensagens não lidas</div></div>
+      </div>
+      <div class="card">
+        <h2>Começa por aqui</h2>
+        <p style="color:#64748b; margin-bottom:16px; font-size:14px">Completa o teu perfil e adiciona serviços para apareceres nas pesquisas.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="showTab('profile')">✏️ Editar perfil</button>
+          <button class="btn btn-ghost" onclick="showTab('services')">➕ Adicionar serviço</button>
+          <a href="profile.html?id=${userId}" class="btn btn-ghost" target="_blank">👁 Ver perfil público</a>
+        </div>
+      </div>`
+  }
+
+  function renderProfile() {
+    const p = userProfile
+    document.getElementById('main-content').innerHTML = `
+      <div class="section-header">
+        <h1 class="section-title">O meu perfil</h1>
+      </div>
+      <div class="card">
+        <h2>Informações pessoais</h2>
+        <div class="msg-feedback" id="prof-msg"></div>
+        <div class="form-grid">
+          <div class="form-group"><label>Nome completo</label><input id="p-name" value="${p.name}" /></div>
+          <div class="form-group"><label>Categoria</label>
+            <select id="p-category">
+              ${['Eletricista','Canalizador','Pintor','Carpinteiro','Serralheiro','Jardineiro','Limpeza','Outro'].map(c => `<option ${p.category===c?'selected':''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div class="form-group"><label>Localização</label><input id="p-location" value="${p.location}" /></div>
+          <div class="form-group"><label>Telefone</label><input id="p-phone" value="${p.phone||''}" placeholder="912 345 678" /></div>
+          <div class="form-group"><label>Website</label><input id="p-website" value="${p.website||''}" placeholder="https://..." /></div>
+          <div class="form-group full"><label>Sobre ti</label><textarea id="p-bio" rows="4">${p.bio||''}</textarea></div>
+        </div>
+        <div style="margin-top:20px">
+          <button class="btn btn-primary" onclick="saveProfile()">Guardar alterações</button>
+        </div>
+      </div>`
+  }
+
+  async function saveProfile() {
+    const updates = {
+      name: document.getElementById('p-name').value.trim(),
+      category: document.getElementById('p-category').value,
+      location: document.getElementById('p-location').value.trim(),
+      phone: document.getElementById('p-phone').value.trim(),
+      website: document.getElementById('p-website').value.trim(),
+      bio: document.getElementById('p-bio').value.trim()
+    }
+    const { error } = await db.from('profiles').update(updates).eq('id', userId)
+    const el = document.getElementById('prof-msg')
+    if (error) {
+      el.textContent = 'Erro ao guardar. Tenta novamente.'
+      el.className = 'msg-feedback error'; el.style.display = 'block'
+    } else {
+      userProfile = { ...userProfile, ...updates }
+      el.textContent = 'Perfil atualizado com sucesso!'
+      el.className = 'msg-feedback success'; el.style.display = 'block'
+      setTimeout(() => el.style.display = 'none', 3000)
+    }
+  }
+
+  async function renderServices() {
+    const { data: services } = await db.from('services').select('*').eq('professional_id', userId).order('created_at')
+    document.getElementById('main-content').innerHTML = `
+      <div class="section-header">
+        <h1 class="section-title">Os meus serviços</h1>
+        <button class="btn btn-primary" onclick="showAddService()">+ Adicionar</button>
+      </div>
+      <div class="card" id="services-container">
+        ${services?.length ? services.map(s => `
+          <div class="service-row" id="svc-${s.id}">
+            <div class="service-info">
+              <div class="service-title">${s.title}</div>
+              <div class="service-meta">${s.description || ''}</div>
+            </div>
+            ${s.price_from ? `<div class="service-price">€${s.price_from}${s.price_to?'–€'+s.price_to:''}/${s.price_unit}</div>` : ''}
+            <button class="btn btn-danger" onclick="deleteService('${s.id}')">Apagar</button>
+          </div>`).join('') : '<div class="empty"><div class="empty-icon">🛠️</div><p>Nenhum serviço ainda. Adiciona o primeiro!</p></div>'}
+      </div>
+      <div id="add-svc-form" class="card" style="display:none">
+        <h2>Novo serviço</h2>
+        <div class="msg-feedback" id="svc-msg"></div>
+        <div class="modal-form">
+          <div class="form-group"><label>Título do serviço</label><input id="svc-title" placeholder="Ex: Instalação elétrica" /></div>
+          <div class="form-group"><label>Descrição</label><textarea id="svc-desc" placeholder="Descreve o serviço..."></textarea></div>
+          <div class="form-grid">
+            <div class="form-group"><label>Preço a partir de (€)</label><input type="number" id="svc-price-from" placeholder="50" /></div>
+            <div class="form-group"><label>Preço até (€)</label><input type="number" id="svc-price-to" placeholder="200" /></div>
+            <div class="form-group"><label>Unidade</label>
+              <select id="svc-unit"><option>hora</option><option>dia</option><option>projeto</option></select>
+            </div>
+          </div>
+          <div style="margin-top:4px; display:flex; gap:10px">
+            <button class="btn btn-primary" onclick="addService()">Guardar serviço</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('add-svc-form').style.display='none'">Cancelar</button>
+          </div>
+        </div>
+      </div>`
+  }
+
+  function showAddService() {
+    const form = document.getElementById('add-svc-form')
+    if (form) form.style.display = 'block'
+  }
+
+  async function addService() {
+    const title = document.getElementById('svc-title').value.trim()
+    if (!title) return
+    const { data, error } = await db.from('services').insert({
+      professional_id: userId,
+      title,
+      description: document.getElementById('svc-desc').value.trim(),
+      price_from: parseFloat(document.getElementById('svc-price-from').value) || null,
+      price_to: parseFloat(document.getElementById('svc-price-to').value) || null,
+      price_unit: document.getElementById('svc-unit').value
+    }).select().single()
+    if (!error) renderServices()
+  }
+
+  async function deleteService(id) {
+    if (!confirm('Apagar este serviço?')) return
+    await db.from('services').delete().eq('id', id)
+    renderServices()
+  }
+
+  async function renderMessages() {
+    const { data: messages } = await db.from('messages').select('*').eq('professional_id', userId).order('created_at', { ascending: false })
+    allMessages = messages || []
+    updateUnreadBadge()
+    const unread = allMessages.filter(m => !m.read).length
+
+    document.getElementById('main-content').innerHTML = `
+      <div class="section-header">
+        <h1 class="section-title">Mensagens ${unread > 0 ? `<span style="font-size:16px; color:#1d4ed8">(${unread} não lida${unread !== 1 ? 's' : ''})</span>` : ''}</h1>
+      </div>
+      <div class="card">
+        ${messages?.length ? messages.map(m => {
+          const initials = m.sender_name.split(' ').map(n => n[0]).slice(0, 2).join('')
+          const d = new Date(m.created_at).toLocaleDateString('pt-PT')
+          return `
+            <div class="msg-row ${!m.read ? 'msg-unread' : ''}" onclick="openMessage('${m.id}')">
+              ${!m.read ? '<div class="unread-dot"></div>' : '<div style="width:8px"></div>'}
+              <div class="msg-avatar">${initials}</div>
+              <div class="msg-body">
+                <div class="msg-from">${m.sender_name}</div>
+                <div class="msg-subject">${m.subject}</div>
+              </div>
+              <div class="msg-date">${d}</div>
+            </div>`
+        }).join('') : '<div class="empty"><div class="empty-icon">📩</div><p>Nenhuma mensagem ainda.</p></div>'}
+      </div>`
+  }
+
+  async function openMessage(id) {
+    const msg = allMessages.find(m => m.id === id)
+    if (!msg) return
+    document.getElementById('modal-subject').textContent = msg.subject
+    document.getElementById('modal-from').textContent = msg.sender_name
+    document.getElementById('modal-email').textContent = msg.sender_email
+    if (msg.sender_phone) {
+      document.getElementById('modal-phone').textContent = msg.sender_phone
+      document.getElementById('modal-phone-row').style.display = 'block'
+    } else {
+      document.getElementById('modal-phone-row').style.display = 'none'
+    }
+    document.getElementById('modal-content').textContent = msg.content
+    document.getElementById('msg-modal').style.display = 'flex'
+    // Mark as read
+    if (!msg.read) {
+      await db.from('messages').update({ read: true }).eq('id', id)
+      msg.read = true
+      updateUnreadBadge()
+    }
+  }
+
+  function closeMsgModal(e) {
+    if (e.target.id === 'msg-modal') document.getElementById('msg-modal').style.display = 'none'
+  }
+
+  async function signOut() {
+    await db.auth.signOut()
+    location.href = 'index.html'
+  }
+
+  init()
+</script>
+</body>
+</html>

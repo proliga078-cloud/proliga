@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proliga – Entrar / Registar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+    nav {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center;
+    }
+    .logo { font-size: 22px; font-weight: 800; color: #1d4ed8; text-decoration: none; }
+    .logo span { color: #f59e0b; }
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      width: 100%; max-width: 460px;
+      overflow: hidden;
+    }
+    .tabs { display: flex; border-bottom: 2px solid #e2e8f0; }
+    .tab {
+      flex: 1; padding: 18px; text-align: center;
+      font-weight: 600; font-size: 15px;
+      cursor: pointer; color: #94a3b8;
+      border: none; background: none;
+      font-family: inherit; transition: all .2s;
+    }
+    .tab.active { color: #1d4ed8; border-bottom: 2px solid #1d4ed8; margin-bottom: -2px; }
+    .form-body { padding: 32px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px; font-family: inherit;
+      color: #1e293b; outline: none;
+      transition: border-color .2s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: #1d4ed8; }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: #1d4ed8; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: background .2s; margin-top: 8px;
+    }
+    .btn-submit:hover { background: #1e40af; }
+    .btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
+    .msg { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
+    .msg.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .divider { text-align: center; color: #94a3b8; font-size: 13px; margin: 20px 0; position: relative; }
+    .divider::before, .divider::after {
+      content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: #e2e8f0;
+    }
+    .divider::before { left: 0; } .divider::after { right: 0; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .hint { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+</nav>
+<main>
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('login')" id="tab-login">Entrar</button>
+      <button class="tab" onclick="showTab('register')" id="tab-register">Registar</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="form-login" class="form-body">
+      <div class="msg error" id="login-error"></div>
+      <div class="msg success" id="login-success"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="o-teu@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" />
+      </div>
+      <button class="btn-submit" id="login-btn" onclick="doLogin()">Entrar na conta</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="form-register" class="form-body" style="display:none">
+      <div class="msg error" id="reg-error"></div>
+      <div class="msg success" id="reg-success"></div>
+      <div class="row">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="reg-name" placeholder="João Silva" />
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <select id="reg-category">
+            <option value="">Selecionar...</option>
+            <option>Eletricista</option>
+            <option>Canalizador</option>
+            <option>Pintor</option>
+            <option>Carpinteiro</option>
+            <option>Serralheiro</option>
+            <option>Jardineiro</option>
+            <option>Limpeza</option>
+            <option>Outro</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="o-teu@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" />
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label>Localização</label>
+          <input type="text" id="reg-location" placeholder="Lisboa" />
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="tel" id="reg-phone" placeholder="912 345 678" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Sobre ti <span style="color:#94a3b8">(opcional)</span></label>
+        <textarea id="reg-bio" placeholder="Descreve a tua experiência e especialidades..."></textarea>
+      </div>
+      <button class="btn-submit" id="reg-btn" onclick="doRegister()">Criar conta profissional</button>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
+  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  // Check if coming from ?tab=register
+  const params = new URLSearchParams(location.search)
+  if (params.get('tab') === 'register') showTab('register')
+
+  function showTab(tab) {
+    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none'
+    document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none'
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login')
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register')
+  }
+
+  function showMsg(id, text, type = 'error') {
+    const el = document.getElementById(id)
+    el.textContent = text
+    el.className = `msg ${type}`
+    el.style.display = 'block'
+  }
+
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim()
+    const password = document.getElementById('login-password').value
+    const btn = document.getElementById('login-btn')
+    if (!email || !password) return showMsg('login-error', 'Preenche todos os campos.')
+    btn.disabled = true; btn.textContent = 'A entrar...'
+    const { error } = await db.auth.signInWithPassword({ email, password })
+    if (error) {
+      showMsg('login-error', 'Email ou password incorretos.')
+      btn.disabled = false; btn.textContent = 'Entrar na conta'
+    } else {
+      showMsg('login-error', '', 'error')
+      showMsg('login-success', 'Bem-vindo! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'dashboard.html', 1000)
+    }
+  }
+
+  async function doRegister() {
+    const name = document.getElementById('reg-name').value.trim()
+    const category = document.getElementById('reg-category').value
+    const email = document.getElementById('reg-email').value.trim()
+    const password = document.getElementById('reg-password').value
+    const location = document.getElementById('reg-location').value.trim()
+    const phone = document.getElementById('reg-phone').value.trim()
+    const bio = document.getElementById('reg-bio').value.trim()
+    const btn = document.getElementById('reg-btn')
+
+    if (!name || !category || !email || !password || !location)
+      return showMsg('reg-error', 'Preenche todos os campos obrigatórios.')
+    if (password.length < 6)
+      return showMsg('reg-error', 'A password deve ter pelo menos 6 caracteres.')
+
+    btn.disabled = true; btn.textContent = 'A criar conta...'
+    const { data, error } = await db.auth.signUp({ email, password })
+    if (error) {
+      showMsg('reg-error', error.message)
+      btn.disabled = false; btn.textContent = 'Criar conta profissional'
+      return
+    }
+
+    // Create profile
+    const { error: profileError } = await db.from('profiles').insert({
+      id: data.user.id, name, category, location, phone, bio
+    })
+
+    if (profileError) {
+      showMsg('reg-error', 'Conta criada mas erro no perfil. Tenta fazer login.')
+    } else {
+      showMsg('reg-error', '', 'error')
+      showMsg('reg-success', 'Conta criada com sucesso! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'dashboard.html', 1200)
+    }
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (document.getElementById('form-login').style.display !== 'none') doLogin()
+      else doRegister()
+    }
+  })
+</script>
+</body>
+</html>
