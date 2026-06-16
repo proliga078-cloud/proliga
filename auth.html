@@ -145,27 +145,30 @@
     btn.disabled = true
     btn.textContent = 'A entrar...'
 
-    const { data, error } = await db.auth.signInWithPassword({ email, password })
+    try {
+      const { data, error } = await db.auth.signInWithPassword({ email, password })
 
-    if (error) {
-      let msg = 'Email ou password incorretos.'
-      if (error.message.includes('Email not confirmed')) msg = 'Confirma o teu email antes de entrar.'
-      if (error.message.includes('Invalid login')) msg = 'Email ou password incorretos.'
-      showMsg('login-msg', msg, 'error')
+      if (error) {
+        showMsg('login-msg', 'Email ou password incorretos.', 'error')
+        btn.disabled = false
+        btn.textContent = 'Entrar na conta'
+        return
+      }
+
+      // Check if admin
+      if (data.user.email === 'davidscampos10@gmail.com') {
+        showMsg('login-msg', 'Bem-vindo, admin! A redirecionar...', 'success')
+        setTimeout(() => location.href = 'admin.html', 800)
+        return
+      }
+
+      showMsg('login-msg', 'Bem-vindo! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'dashboard.html', 800)
+    } catch (e) {
+      showMsg('login-msg', 'Erro de ligação. Tenta novamente.', 'error')
       btn.disabled = false
       btn.textContent = 'Entrar na conta'
-      return
     }
-
-    // Check if admin
-    if (data.user.email === 'davidscampos10@gmail.com') {
-      showMsg('login-msg', 'Bem-vindo, admin! A redirecionar...', 'success')
-      setTimeout(() => location.href = 'admin.html', 800)
-      return
-    }
-
-    showMsg('login-msg', 'Bem-vindo! A redirecionar...', 'success')
-    setTimeout(() => location.href = 'dashboard.html', 800)
   }
 
   async function doRegister() {
@@ -183,50 +186,63 @@
     btn.disabled = true
     btn.textContent = 'A criar conta...'
 
-    // Step 1: Create auth user
-    const { data: signUpData, error: signUpError } = await db.auth.signUp({ email, password })
+    try {
+      // Step 1: Create auth user
+      const { data: signUpData, error: signUpError } = await db.auth.signUp({ email, password })
 
-    if (signUpError) {
-      let msg = signUpError.message
-      if (msg.includes('already registered') || msg.includes('User already registered')) {
-        msg = 'Este email já está registado. Tenta fazer login.'
+      if (signUpError) {
+        const errMsg = (signUpError.message || '').toLowerCase()
+        let msg = 'Erro ao criar conta. Tenta novamente.'
+        if (errMsg.includes('already') || errMsg.includes('registered') || errMsg.includes('exists')) {
+          msg = 'Este email já está registado. Tenta fazer login.'
+        } else if (errMsg.includes('invalid') || errMsg.includes('email')) {
+          msg = 'Email inválido. Verifica o endereço introduzido.'
+        } else if (errMsg.includes('password') || errMsg.includes('weak')) {
+          msg = 'Password demasiado fraca. Usa pelo menos 6 caracteres.'
+        }
+        showMsg('reg-msg', msg, 'error')
+        btn.disabled = false
+        btn.textContent = 'Criar conta'
+        return
       }
-      showMsg('reg-msg', msg, 'error')
+
+      const userId = signUpData.user?.id
+      if (!userId) {
+        // Supabase sometimes returns no error but also no user if email is already taken
+        showMsg('reg-msg', 'Este email já está registado. Tenta fazer login.', 'error')
+        btn.disabled = false
+        btn.textContent = 'Criar conta'
+        return
+      }
+
+      // Step 2: If we have a session, insert profile immediately
+      if (signUpData.session) {
+        await insertProfile(userId, name, email)
+        showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
+        setTimeout(() => location.href = 'dashboard.html', 800)
+        return
+      }
+
+      // Step 3: No session yet — try signing in immediately (email auto-confirmed via trigger)
+      const { data: signInData, error: signInError } = await db.auth.signInWithPassword({ email, password })
+
+      if (!signInError && signInData?.session) {
+        await insertProfile(userId, name, email)
+        showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
+        setTimeout(() => location.href = 'dashboard.html', 800)
+        return
+      }
+
+      // Step 4: Fallback — created but needs email confirmation
+      showMsg('reg-msg', 'Conta criada! Verifica o teu email para confirmar e depois faz login.', 'success')
       btn.disabled = false
       btn.textContent = 'Criar conta'
-      return
-    }
 
-    const userId = signUpData.user?.id
-    if (!userId) {
-      showMsg('reg-msg', 'Erro ao criar conta. Tenta novamente.', 'error')
+    } catch (e) {
+      showMsg('reg-msg', 'Erro de ligação. Tenta novamente.', 'error')
       btn.disabled = false
       btn.textContent = 'Criar conta'
-      return
     }
-
-    // Step 2: If we have a session, insert profile immediately
-    if (signUpData.session) {
-      await insertProfile(userId, name, email)
-      showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
-      setTimeout(() => location.href = 'dashboard.html', 800)
-      return
-    }
-
-    // Step 3: No session yet — try signing in immediately (email auto-confirmed via trigger)
-    const { data: signInData, error: signInError } = await db.auth.signInWithPassword({ email, password })
-
-    if (!signInError && signInData.session) {
-      await insertProfile(userId, name, email)
-      showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
-      setTimeout(() => location.href = 'dashboard.html', 800)
-      return
-    }
-
-    // Step 4: If still no session (email confirmation required), show friendly message
-    showMsg('reg-msg', 'Conta criada! Verifica o teu email para confirmar e depois faz login.', 'success')
-    btn.disabled = false
-    btn.textContent = 'Criar conta'
   }
 
   async function insertProfile(userId, name, email) {
