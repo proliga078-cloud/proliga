@@ -248,6 +248,7 @@
   async function insertProfile(userId, name, email) {
     // Try to insert profile — if it fails we'll let dashboard.html handle it on next login
     await db.from('profiles').upsert({
+      id: userId,
       user_id: userId,
       name: name,
       email: email,
