@@ -218,6 +218,250 @@
         return
       }
 
+      // Step 2: Confirmar email automaticamente via Admin API
+    await fetch('https://cdwinidhtfxfxowflize.supabase.co/auth/v1/admin/users/' + userId, {
+      method: 'PUT',
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkd2luaWRodGZ4Znhvd2ZsaXplIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTU1MzgzNSwiZXhwIjoyMDk3MTI5ODM1fQ.HsFviquXycG0WGtT8yPv18sH-6GRQdXJQ7gICDGYMFY',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkd2luaWRodGZ4Znhvd2ZsaXplIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTU1MzgzNSwiZXhwIjoyMDk3MTI5ODM1fQ.HsFviquXycG0WGtT8yPv18sH-6GRQdXJQ7gICDGYMFY',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email_confirm: true })
+    })
+
+    // Step 3: Login imediato após confirmação
+    const { data: signInData, error: signInError } = await db.auth.signInWithPassword({ email, password })
+    if (!signInError && signInData?.session) {
+      await insertProfile(signInData.user.id, name, email)
+      showMsg('reg-msg', 'Conta criada com sucesso! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'dashboard.html', 800)
+      return
+    }
+
+    // Step 4: Fallback
+    showMsg('reg-msg', 'Conta criada! Verifica o email ' + email + ' e clica no link. Depois faz login.', 'success')
+    btn.disabled = false
+    btn.textContent = 'Criar conta'
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proliga – Entrar / Registar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+    nav {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 0 24px; height: 64px;
+      display: flex; align-items: center;
+    }
+    .logo { font-size: 22px; font-weight: 800; color: #1d4ed8; text-decoration: none; }
+    .logo span { color: #f59e0b; }
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      width: 100%; max-width: 460px;
+      overflow: hidden;
+    }
+    .tabs { display: flex; border-bottom: 2px solid #e2e8f0; }
+    .tab {
+      flex: 1; padding: 18px; text-align: center;
+      font-weight: 600; font-size: 15px;
+      cursor: pointer; color: #94a3b8;
+      border: none; background: none;
+      font-family: inherit; transition: all .2s;
+    }
+    .tab.active { color: #1d4ed8; border-bottom: 2px solid #1d4ed8; margin-bottom: -2px; }
+    .form-body { padding: 32px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+    input, select {
+      width: 100%; padding: 12px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px; font-family: inherit;
+      color: #1e293b; outline: none;
+      transition: border-color .2s;
+    }
+    input:focus, select:focus { border-color: #1d4ed8; }
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: #1d4ed8; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: background .2s; margin-top: 8px;
+    }
+    .btn-submit:hover { background: #1e40af; }
+    .btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
+    .msg { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
+    .msg.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; display: block; }
+    .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; display: block; }
+    .msg.hidden { display: none; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+</nav>
+<main>
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('login')" id="tab-login">Entrar</button>
+      <button class="tab" onclick="showTab('register')" id="tab-register">Registar</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="form-login" class="form-body">
+      <div class="msg hidden" id="login-msg"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="o-teu@email.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button class="btn-submit" id="login-btn" onclick="doLogin()">Entrar na conta</button>
+<div style="text-align:center;margin-top:14px">
+<a href="#" onclick="doResetPassword(event)" style="font-size:13px;color:#1d4ed8;text-decoration:none">Esqueci a palavra-passe</a>
+</div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="form-register" class="form-body" style="display:none">
+      <div class="msg hidden" id="reg-msg"></div>
+      <div class="form-group">
+        <label>Nome completo</label>
+        <input type="text" id="reg-name" placeholder="João Silva" autocomplete="name" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="o-teu@email.com" autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+      </div>
+      <button class="btn-submit" id="reg-btn" onclick="doRegister()">Criar conta</button>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
+  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  // If already logged in, redirect to dashboard
+  db.auth.getSession().then(({ data }) => {
+    if (data.session) location.href = 'dashboard.html'
+  })
+
+  // Check if coming from ?tab=register
+  const params = new URLSearchParams(location.search)
+  if (params.get('tab') === 'register') showTab('register')
+
+  function showTab(tab) {
+    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none'
+    document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none'
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login')
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register')
+  }
+
+  function showMsg(id, text, type) {
+    const el = document.getElementById(id)
+    el.textContent = text
+    el.className = 'msg ' + (text ? type : 'hidden')
+  }
+
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim()
+    const password = document.getElementById('login-password').value
+    const btn = document.getElementById('login-btn')
+
+    showMsg('login-msg', '', 'hidden')
+    if (!email || !password) return showMsg('login-msg', 'Preenche o email e a password.', 'error')
+
+    btn.disabled = true
+    btn.textContent = 'A entrar...'
+
+    try {
+      const { data, error } = await db.auth.signInWithPassword({ email, password })
+
+      if (error) {
+        showMsg('login-msg', 'Email ou password incorretos.', 'error')
+        btn.disabled = false
+        btn.textContent = 'Entrar na conta'
+        return
+      }
+
+      // Check if admin
+      if (data.user.email === 'davidscampos14@gmail.com') {
+        showMsg('login-msg', 'Bem-vindo, admin! A redirecionar...', 'success')
+        setTimeout(() => location.href = 'admin.html', 800)
+        return
+      }
+
+      showMsg('login-msg', 'Bem-vindo! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'dashboard.html', 800)
+    } catch (e) {
+      showMsg('login-msg', 'Erro de ligação. Tenta novamente.', 'error')
+      btn.disabled = false
+      btn.textContent = 'Entrar na conta'
+    }
+  }
+
+  async function doRegister() {
+    const name = document.getElementById('reg-name').value.trim()
+    const email = document.getElementById('reg-email').value.trim()
+    const password = document.getElementById('reg-password').value
+    const btn = document.getElementById('reg-btn')
+
+    showMsg('reg-msg', '', 'hidden')
+
+    if (!name || !email || !password) return showMsg('reg-msg', 'Preenche todos os campos.', 'error')
+    if (password.length < 6) return showMsg('reg-msg', 'A password deve ter pelo menos 6 caracteres.', 'error')
+    if (!email.includes('@')) return showMsg('reg-msg', 'Introduz um email válido.', 'error')
+
+    btn.disabled = true
+    btn.textContent = 'A criar conta...'
+
+    try {
+      // Step 1: Create auth user
+      const { data: signUpData, error: signUpError } = await db.auth.signUp({ email, password })
+
+      if (signUpError) {
+        const errMsg = (signUpError.message || '').toLowerCase()
+        let msg = 'Erro ao criar conta. Tenta novamente.'
+        if (errMsg.includes('already') || errMsg.includes('registered') || errMsg.includes('exists')) {
+          msg = 'Este email já está registado. Tenta fazer login.'
+        } else if (errMsg.includes('invalid') || errMsg.includes('email')) {
+          msg = 'Email inválido. Verifica o endereço introduzido.'
+        } else if (errMsg.includes('password') || errMsg.includes('weak')) {
+          msg = 'Password demasiado fraca. Usa pelo menos 6 caracteres.'
+        }
+        showMsg('reg-msg', msg, 'error')
+        btn.disabled = false
+        btn.textContent = 'Criar conta'
+        return
+      }
+
+      const userId = signUpData.user?.id
+      if (!userId) {
+        // Supabase sometimes returns no error but also no user if email is already taken
+        showMsg('reg-msg', 'Este email já está registado. Tenta fazer login.', 'error')
+        btn.disabled = false
+        btn.textContent = 'Criar conta'
+        return
+      }
+
       // Step 2: If we have a session, insert profile immediately
       if (signUpData.session) {
         await insertProfile(userId, name, email)
