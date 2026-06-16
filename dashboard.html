@@ -1,458 +1,509 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Proliga – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard – Proliga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
-    nav {
-      background: #fff; border-bottom: 1px solid #e2e8f0;
-      padding: 0 24px; height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06);
-    }
-    .logo { font-size: 22px; font-weight: 800; color: #1d4ed8; text-decoration: none; }
-    .logo span { color: #f59e0b; }
-    .nav-right { display: flex; gap: 10px; align-items: center; }
-    .btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: all .2s; font-family: inherit; }
-    .btn-ghost { background: transparent; color: #475569; border: 1.5px solid #e2e8f0; }
-    .btn-ghost:hover { border-color: #1d4ed8; color: #1d4ed8; }
-    .btn-primary { background: #1d4ed8; color: #fff; }
-    .btn-primary:hover { background: #1e40af; }
-    .btn-danger { background: #fef2f2; color: #b91c1c; border: 1.5px solid #fecaca; }
-    .btn-danger:hover { background: #fee2e2; }
-
-    .layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
-    aside {
-      background: #fff; border-right: 1px solid #e2e8f0;
-      padding: 24px 12px;
-    }
-    .side-btn {
-      display: flex; align-items: center; gap: 10px;
-      width: 100%; padding: 12px 14px;
-      border: none; background: none;
-      border-radius: 10px; font-size: 14px; font-weight: 500;
-      color: #475569; cursor: pointer; font-family: inherit;
-      transition: all .15s; text-align: left; margin-bottom: 2px;
-    }
-    .side-btn:hover { background: #f1f5f9; color: #1e293b; }
-    .side-btn.active { background: #eff6ff; color: #1d4ed8; font-weight: 600; }
-    .side-icon { font-size: 18px; width: 24px; text-align: center; }
-    .badge-count {
-      margin-left: auto; background: #1d4ed8; color: #fff;
-      font-size: 11px; font-weight: 700; padding: 2px 8px;
-      border-radius: 99px; min-width: 20px; text-align: center;
-    }
-
-    main { padding: 32px 24px; overflow-y: auto; }
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .section-title { font-size: 22px; font-weight: 700; }
-
-    /* Stats */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .stat-card {
-      background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
-      padding: 20px; text-align: center;
-    }
-    .stat-icon { font-size: 28px; margin-bottom: 8px; }
-    .stat-value { font-size: 28px; font-weight: 800; color: #1d4ed8; }
-    .stat-label { font-size: 13px; color: #64748b; margin-top: 4px; }
-
-    /* Profile form */
-    .card { background: #fff; border-radius: 14px; border: 1px solid #e2e8f0; padding: 28px; margin-bottom: 20px; }
-    .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 20px; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-group { margin-bottom: 0; }
-    label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
-    input, select, textarea {
-      width: 100%; padding: 10px 14px;
-      border: 1.5px solid #e2e8f0; border-radius: 8px;
-      font-size: 14px; font-family: inherit; color: #1e293b; outline: none;
-    }
-    input:focus, select:focus, textarea:focus { border-color: #1d4ed8; }
-    textarea { resize: vertical; min-height: 80px; }
-    .full { grid-column: 1 / -1; }
-
-    /* Services */
-    .service-row {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 0; border-bottom: 1px solid #f1f5f9;
-    }
-    .service-row:last-child { border-bottom: none; }
-    .service-info { flex: 1; }
-    .service-title { font-weight: 600; font-size: 14px; }
-    .service-meta { font-size: 12px; color: #64748b; margin-top: 2px; }
-    .service-price { font-weight: 700; color: #1d4ed8; font-size: 14px; white-space: nowrap; }
-
-    /* Messages */
-    .msg-row {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 16px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer;
-    }
-    .msg-row:last-child { border-bottom: none; }
-    .msg-row:hover { background: #f8fafc; margin: 0 -28px; padding: 16px 28px; border-radius: 8px; }
-    .msg-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: #dbeafe; color: #1d4ed8;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; flex-shrink: 0;
-    }
-    .msg-body { flex: 1; min-width: 0; }
-    .msg-from { font-weight: 600; font-size: 14px; }
-    .msg-subject { font-size: 13px; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .msg-date { font-size: 12px; color: #94a3b8; white-space: nowrap; }
-    .msg-unread .msg-from { color: #1d4ed8; }
-    .unread-dot { width: 8px; height: 8px; border-radius: 50%; background: #1d4ed8; flex-shrink: 0; margin-top: 6px; }
-
-    /* Message modal */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.5);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 200; padding: 16px;
-    }
-    .modal {
-      background: #fff; border-radius: 16px; padding: 32px;
-      max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto;
-    }
-    .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-    .modal-meta { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-    .modal-meta-row { font-size: 14px; }
-    .modal-meta-row span { font-weight: 600; }
-    .modal-content { background: #f8fafc; border-radius: 10px; padding: 16px; font-size: 14px; line-height: 1.7; color: #334155; }
-    .modal-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
-
-    /* Add service modal */
-    .modal-form .form-group { margin-bottom: 14px; }
-
-    .msg-feedback { padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 14px; display: none; }
-    .msg-feedback.error { background: #fef2f2; color: #b91c1c; }
-    .msg-feedback.success { background: #f0fdf4; color: #166534; }
-
-    .empty { text-align: center; padding: 48px; color: #94a3b8; }
-    .empty-icon { font-size: 40px; margin-bottom: 12px; }
-
-    .loading { text-align: center; padding: 40px; color: #94a3b8; }
-    .spinner { width: 28px; height: 28px; border: 3px solid #e2e8f0; border-top-color: #1d4ed8; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 10px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 768px) {
-      .layout { grid-template-columns: 1fr; }
-      aside { display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; border-right: none; border-bottom: 1px solid #e2e8f0; }
-      .side-btn { width: auto; padding: 8px 12px; }
-      .side-icon { display: none; }
-      .form-grid { grid-template-columns: 1fr; }
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--sidebar:240px}
+    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);display:flex;min-height:100vh}
+    a{text-decoration:none;color:inherit}
+    .sidebar{width:var(--sidebar);flex-shrink:0;background:#0f172a;color:#94a3b8;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
+    .sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sidebar-logo a{font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px}
+    .sidebar-logo a span{color:var(--gold)}
+    .sidebar-plan{padding:10px 16px;background:rgba(255,255,255,.06);margin:12px 12px 4px;border-radius:10px}
+    .sidebar-plan .plan-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:3px}
+    .sidebar-plan .plan-name{font-size:14px;font-weight:700;color:#fff}
+    .nav-section{padding:10px 20px 2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#475569;margin-top:4px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;color:#94a3b8;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+    .nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+    .nav-item.active{background:var(--blue);color:#fff}
+    .nav-item .icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+    .sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
+    .sidebar-user{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .sidebar-avatar{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+    .sidebar-avatar img{width:100%;height:100%;object-fit:cover}
+    .sidebar-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .btn-signout{width:100%;padding:9px;background:rgba(255,255,255,.08);border:none;border-radius:8px;color:#94a3b8;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+    .btn-signout:hover{background:rgba(255,255,255,.14);color:#fff}
+    .main{flex:1;margin-left:var(--sidebar);display:flex;flex-direction:column;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .topbar-title{font-size:18px;font-weight:700}
+    .btn{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+    .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
+    .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
+    .btn-danger{background:#fef2f2;color:#b91c1c;border:1.5px solid #fecaca}.btn-danger:hover{background:#b91c1c;color:#fff;border-color:#b91c1c}
+    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
+    .btn-sm{padding:6px 12px;font-size:12px;border-radius:6px}
+    .content{padding:28px 32px;flex:1}
+    .panel{display:none}.panel.active{display:block}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-bottom:28px}
+    .stat-card{background:#fff;border-radius:14px;padding:20px;border:1px solid var(--border)}
+    .stat-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+    .stat-val{font-size:32px;font-weight:800;letter-spacing:-1px}
+    .stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .card{background:#fff;border-radius:14px;padding:24px;border:1px solid var(--border);margin-bottom:20px}
+    .card-title{font-size:15px;font-weight:700;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+    .form-group{margin-bottom:16px}
+    label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
+    input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+    textarea{resize:vertical;min-height:80px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-hint{font-size:11px;color:var(--muted);margin-top:4px}
+    .msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none}
+    .msg.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+    .msg.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+    .avatar-upload{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .avatar-preview{width:72px;height:72px;border-radius:50%;background:var(--blue);color:#fff;font-size:24px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;border:3px solid var(--border);flex-shrink:0}
+    .avatar-preview img{width:100%;height:100%;object-fit:cover}
+    .service-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bg)}
+    .service-row:last-child{border-bottom:none}
+    .service-info{flex:1}
+    .service-name{font-size:14px;font-weight:600}
+    .service-detail{font-size:12px;color:var(--muted);margin-top:2px}
+    .portfolio-grid-dash{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:4px}
+    .portfolio-item-dash{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden}
+    .portfolio-item-dash img{width:100%;height:100%;object-fit:cover}
+    .portfolio-item-dash .del-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+    .portfolio-item-dash:hover .del-overlay{opacity:1}
+    .del-btn{background:#ef4444;color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+    .portfolio-caption{font-size:11px;color:rgba(255,255,255,.8);position:absolute;bottom:6px;left:6px;right:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .msg-row{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--bg);cursor:pointer;transition:background .15s;border-radius:6px}
+    .msg-row:last-child{border-bottom:none}
+    .msg-row:hover{background:#f8fafc;padding:14px 10px;margin:0 -10px}
+    .msg-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;visibility:hidden}
+    .msg-row.unread .msg-dot{visibility:visible}
+    .msg-row.unread .msg-subject{font-weight:700}
+    .msg-body{flex:1;min-width:0}
+    .msg-sender{font-size:13px;color:var(--muted)}
+    .msg-subject{font-size:14px;font-weight:500;margin:2px 0}
+    .msg-preview{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .msg-time{font-size:11px;color:var(--muted);flex-shrink:0;margin-top:2px;white-space:nowrap}
+    .badge{display:inline-block;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;vertical-align:middle;margin-left:4px}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+    .modal-overlay.open{display:flex}
+    .modal{background:#fff;border-radius:16px;padding:28px;max-width:520px;width:90%;max-height:90vh;overflow-y:auto}
+    .modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+    .loading{text-align:center;padding:40px;color:var(--muted)}
+    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .empty{text-align:center;padding:36px;color:var(--muted);font-size:14px}
+    .empty-icon{font-size:36px;margin-bottom:10px}
+    @media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="logo">Pro<span>liga</span></a>
-  <div class="nav-right">
-    <a href="#" id="view-profile-btn" class="btn btn-ghost" target="_blank">Ver perfil público</a>
-    <button class="btn btn-ghost" onclick="signOut()">Sair</button>
+<aside class="sidebar">
+  <div class="sidebar-logo"><a href="index.html">Pro<span>liga</span></a></div>
+  <div class="sidebar-plan">
+    <div class="plan-label">O teu plano</div>
+    <div class="plan-name" id="sidebar-plan-name">A carregar...</div>
   </div>
-</nav>
-
-<div id="auth-loading" class="loading" style="margin-top:80px">
-  <div class="spinner"></div><p>A verificar sessão...</p>
-</div>
-
-<div id="app" style="display:none">
-  <div class="layout">
-    <aside>
-      <button class="side-btn active" onclick="showTab('overview')" id="tab-overview">
-        <span class="side-icon">📊</span> Visão geral
-      </button>
-      <button class="side-btn" onclick="showTab('profile')" id="tab-profile">
-        <span class="side-icon">👤</span> Perfil
-      </button>
-      <button class="side-btn" onclick="showTab('services')" id="tab-services">
-        <span class="side-icon">🛠️</span> Serviços
-      </button>
-      <button class="side-btn" onclick="showTab('messages')" id="tab-messages">
-        <span class="side-icon">📩</span> Mensagens
-        <span class="badge-count" id="unread-badge" style="display:none">0</span>
-      </button>
-    </aside>
-
-    <main id="main-content">
-      <!-- Loaded dynamically -->
-    </main>
-  </div>
-</div>
-
-<!-- Message Modal -->
-<div class="modal-overlay" id="msg-modal" style="display:none" onclick="closeMsgModal(event)">
-  <div class="modal">
-    <h3 id="modal-subject"></h3>
-    <div class="modal-meta">
-      <div class="modal-meta-row">De: <span id="modal-from"></span></div>
-      <div class="modal-meta-row">Email: <span id="modal-email"></span></div>
-      <div class="modal-meta-row" id="modal-phone-row" style="display:none">Telefone: <span id="modal-phone"></span></div>
+  <div class="nav-section">Principal</div>
+  <button class="nav-item active" data-panel="overview" onclick="showPanel('overview')"><span class="icon">📊</span> Visão geral</button>
+  <button class="nav-item" data-panel="messages" onclick="showPanel('messages')"><span class="icon">📩</span> Mensagens<span id="unread-badge" class="badge" style="display:none"></span></button>
+  <div class="nav-section">Perfil</div>
+  <button class="nav-item" data-panel="profile" onclick="showPanel('profile')"><span class="icon">👤</span> Editar perfil</button>
+  <button class="nav-item" data-panel="services" onclick="showPanel('services')"><span class="icon">🛠️</span> Serviços</button>
+  <button class="nav-item" data-panel="portfolio" onclick="showPanel('portfolio')"><span class="icon">📸</span> Portfólio</button>
+  <div class="nav-section">Conta</div>
+  <button class="nav-item" data-panel="plan" onclick="showPanel('plan')"><span class="icon">⭐</span> Plano & upgrade</button>
+  <a class="nav-item" id="view-profile-link" href="#" target="_blank"><span class="icon">🔗</span> Ver meu perfil</a>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-avatar"></div>
+      <div class="sidebar-name" id="sidebar-name"></div>
     </div>
-    <div class="modal-content" id="modal-content"></div>
+    <button class="btn-signout" onclick="signOut()">Sair da conta</button>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Visão geral</div>
+    <a href="index.html" class="btn btn-outline btn-sm">← Início</a>
+  </div>
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <div class="panel active" id="panel-overview">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Mensagens</div><div class="stat-val" id="stat-msgs">–</div><div class="stat-sub">no total</div></div>
+        <div class="stat-card"><div class="stat-label">Não lidas</div><div class="stat-val" id="stat-unread">–</div><div class="stat-sub">mensagens</div></div>
+        <div class="stat-card"><div class="stat-label">Serviços</div><div class="stat-val" id="stat-srvs">–</div><div class="stat-sub">listados</div></div>
+        <div class="stat-card"><div class="stat-label">Avaliação</div><div class="stat-val" id="stat-rating">–</div><div class="stat-sub" id="stat-rating-sub"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Acesso rápido</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <button class="btn btn-solid" onclick="showPanel('profile')">✏️ Editar perfil</button>
+          <button class="btn btn-outline" onclick="showPanel('services')">🛠️ Gerir serviços</button>
+          <button class="btn btn-outline" onclick="showPanel('messages')">📩 Ver mensagens</button>
+          <button class="btn btn-outline" onclick="showPanel('portfolio')">📸 Portfólio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="panel" id="panel-profile">
+      <div class="msg error" id="profile-error"></div>
+      <div class="msg success" id="profile-success"></div>
+      <div class="card">
+        <div class="card-title">Foto de perfil</div>
+        <div class="avatar-upload">
+          <div class="avatar-preview" id="avatar-preview"></div>
+          <div>
+            <label for="avatar-file" class="btn btn-outline btn-sm" style="cursor:pointer;margin-bottom:6px;display:inline-flex">📁 Escolher foto</label>
+            <input type="file" id="avatar-file" accept="image/*" style="display:none"/>
+            <div class="form-hint">JPG, PNG até 2MB</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Foto de capa <span style="color:var(--muted)">(plano Pro/Premium)</span></label>
+          <label for="cover-file" class="btn btn-outline btn-sm" style="cursor:pointer;display:inline-flex">📁 Escolher capa</label>
+          <input type="file" id="cover-file" accept="image/*" style="display:none"/>
+          <div id="cover-preview" style="display:none;margin-top:8px;height:70px;border-radius:8px;background-size:cover;background-position:center;border:2px solid var(--border)"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Informações profissionais</div>
+        <div class="row">
+          <div class="form-group"><label>Nome completo *</label><input type="text" id="p-name"/></div>
+          <div class="form-group"><label>Categoria *</label>
+            <select id="p-category"><option value="">Selecionar...</option><option>Eletricista</option><option>Canalizador</option><option>Pintor</option><option>Carpinteiro</option><option>Serralheiro</option><option>Jardineiro</option><option>Limpeza</option><option>Outro</option></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group"><label>Localização *</label><input type="text" id="p-location"/></div>
+          <div class="form-group"><label>Telefone</label><input type="tel" id="p-phone"/></div>
+        </div>
+        <div class="form-group"><label>Website</label><input type="url" id="p-website" placeholder="https://..."/></div>
+        <div class="form-group"><label>Sobre mim</label><textarea id="p-bio" rows="4" placeholder="Descreve a tua experiência e especialidades..."></textarea></div>
+        <button class="btn btn-solid" id="save-profile-btn" onclick="saveProfile()">💾 Guardar alterações</button>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="panel" id="panel-services">
+      <div class="card" id="add-service-card">
+        <div class="card-title">Adicionar serviço</div>
+        <div class="msg error" id="srv-error"></div>
+        <div class="msg success" id="srv-success"></div>
+        <div class="form-group"><label>Título *</label><input type="text" id="srv-title" placeholder="Ex: Instalação elétrica doméstica"/></div>
+        <div class="form-group"><label>Descrição</label><textarea id="srv-desc" placeholder="O que inclui este serviço..."></textarea></div>
+        <div class="row">
+          <div class="form-group"><label>Preço base (€)</label><input type="number" id="srv-pfrom" placeholder="50"/></div>
+          <div class="form-group"><label>Preço máximo (€)</label><input type="number" id="srv-pto" placeholder="150"/></div>
+        </div>
+        <div class="form-group"><label>Unidade</label><select id="srv-unit"><option value="hora">Por hora</option><option value="dia">Por dia</option><option value="projeto">Por projeto</option></select></div>
+        <button class="btn btn-solid" onclick="addService()">+ Adicionar serviço</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Os meus serviços <span id="srv-count" class="badge">0</span></div>
+        <div id="services-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="panel" id="panel-portfolio">
+      <div id="portfolio-locked" style="display:none" class="card">
+        <div style="text-align:center;padding:24px">
+          <div style="font-size:48px;margin-bottom:12px">📸</div>
+          <h3 style="margin-bottom:8px">Portfólio disponível no plano Pro</h3>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:16px">Mostra fotos dos teus trabalhos e conquista mais clientes.</p>
+          <button class="btn btn-solid" onclick="showPanel('plan')">Ver planos e preços →</button>
+        </div>
+      </div>
+      <div id="portfolio-content" style="display:none">
+        <div class="card">
+          <div class="card-title">Adicionar foto</div>
+          <div class="msg error" id="port-error"></div>
+          <div class="msg success" id="port-success"></div>
+          <div class="form-group"><label>Foto *</label><input type="file" id="port-file" accept="image/*"/><div class="form-hint">JPG, PNG, WebP até 5MB</div></div>
+          <div id="port-preview" style="display:none;height:110px;border-radius:8px;background-size:cover;background-position:center;border:2px solid var(--border);margin-bottom:12px"></div>
+          <div class="form-group"><label>Legenda (opcional)</label><input type="text" id="port-caption" placeholder="Ex: Remodelação completa de casa de banho"/></div>
+          <button class="btn btn-solid" id="port-btn" onclick="uploadPortfolio()">📤 Fazer upload</button>
+        </div>
+        <div class="card">
+          <div class="card-title">As minhas fotos <span id="port-count" class="badge">0</span></div>
+          <div class="portfolio-grid-dash" id="portfolio-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="panel" id="panel-messages">
+      <div class="card">
+        <div class="card-title">Caixa de entrada</div>
+        <div id="messages-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
+    <!-- PLAN -->
+    <div class="panel" id="panel-plan">
+      <div class="card" id="current-plan-card">
+        <div class="card-title">Plano atual</div>
+        <div id="current-plan-info"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Fazer upgrade</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+          <div style="border:2px solid var(--border);border-radius:12px;padding:20px">
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Pro</div>
+            <div style="font-size:32px;font-weight:800;margin-bottom:8px">€9<span style="font-size:14px;font-weight:400;color:var(--muted)">/mês</span></div>
+            <ul style="list-style:none;font-size:13px;margin-bottom:16px;color:#475569;line-height:2">
+              <li>✓ Até 10 serviços</li><li>✓ 10 fotos de portfólio</li><li>✓ Badge verificado</li><li>✓ Foto de capa</li>
+            </ul>
+            <button class="btn btn-solid" style="width:100%" onclick="requestUpgrade('pro')">Obter Pro →</button>
+          </div>
+          <div style="border:2px solid var(--gold);border-radius:12px;padding:20px;position:relative">
+            <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:2px 12px;border-radius:99px;white-space:nowrap">👑 Melhor escolha</div>
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Premium</div>
+            <div style="font-size:32px;font-weight:800;margin-bottom:8px">€19<span style="font-size:14px;font-weight:400;color:var(--muted)">/mês</span></div>
+            <ul style="list-style:none;font-size:13px;margin-bottom:16px;color:#475569;line-height:2">
+              <li>✓ Serviços ilimitados</li><li>✓ Fotos ilimitadas</li><li>✓ Destaque nas pesquisas</li><li>✓ Suporte prioritário</li>
+            </ul>
+            <button class="btn btn-gold" style="width:100%" onclick="requestUpgrade('premium')">Obter Premium →</button>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:16px">Após clicar, abre-se o teu email para nos contactares. Ativamos o plano em até 24h.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MESSAGE MODAL -->
+<div class="modal-overlay" id="msg-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-subject">Mensagem</div>
+    <div id="modal-meta" style="font-size:13px;color:var(--muted);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)"></div>
+    <div id="modal-content" style="font-size:15px;line-height:1.8;white-space:pre-wrap"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="document.getElementById('msg-modal').style.display='none'">Fechar</button>
+      <button class="btn btn-outline" onclick="closeModal()">Fechar</button>
+      <a id="modal-reply" href="#" class="btn btn-solid">📧 Responder</a>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
-  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
+const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+let me=null,myPlan='free',newAvatarFile=null,newCoverFile=null,newPortFile=null
 
-  let userId, userProfile, allMessages = []
-  let currentTab = 'overview'
+const panelTitles={overview:'Visão geral',profile:'Editar perfil',services:'Serviços',portfolio:'Portfólio',messages:'Mensagens',plan:'Plano & Upgrade'}
 
-  async function init() {
-    const { data: { session } } = await db.auth.getSession()
-    if (!session) { location.href = 'auth.html'; return; }
-    userId = session.user.id
-
-    const { data: profile } = await db.from('profiles').select('*').eq('id', userId).single()
-    if (!profile) { location.href = 'auth.html'; return; }
-    userProfile = profile
-
-    document.getElementById('view-profile-btn').href = `profile.html?id=${userId}`
-    document.getElementById('auth-loading').style.display = 'none'
-    document.getElementById('app').style.display = 'block'
-
-    // Load unread count
-    const { data: msgs } = await db.from('messages').select('id, read').eq('professional_id', userId)
-    allMessages = msgs || []
-    updateUnreadBadge()
-
-    showTab('overview')
+async function init(){
+  const{data:{session}}=await db.auth.getSession()
+  if(!session){location.href='auth.html';return}
+  const{data:pro}=await db.from('profiles').select('*').eq('id',session.user.id).single()
+  if(!pro){location.href='auth.html';return}
+  me=pro;myPlan=pro.plan||'free'
+  const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
+  document.getElementById('sidebar-name').textContent=pro.name
+  const sa=document.getElementById('sidebar-avatar')
+  sa.innerHTML=pro.photo_url?`<img src="${pro.photo_url}" alt=""/>`:`${initials}`
+  const planLabels={free:'Plano Grátis',pro:'✓ Plano Pro',premium:'👑 Plano Premium'}
+  document.getElementById('sidebar-plan-name').textContent=planLabels[myPlan]||'Plano Grátis'
+  document.getElementById('view-profile-link').href=`profile.html?id=${pro.id}`
+  // Fill profile form
+  document.getElementById('p-name').value=pro.name||''
+  document.getElementById('p-category').value=pro.category||''
+  document.getElementById('p-location').value=pro.location||''
+  document.getElementById('p-phone').value=pro.phone||''
+  document.getElementById('p-website').value=pro.website||''
+  document.getElementById('p-bio').value=pro.bio||''
+  const ap=document.getElementById('avatar-preview')
+  ap.innerHTML=pro.photo_url?`<img src="${pro.photo_url}" alt=""/>`:`${initials}`
+  if(pro.cover_url){document.getElementById('cover-preview').style.backgroundImage=`url('${pro.cover_url}')`;document.getElementById('cover-preview').style.display='block'}
+  // Portfolio panel
+  if(myPlan==='free'){document.getElementById('portfolio-locked').style.display='block'}
+  else{document.getElementById('portfolio-content').style.display='block';loadPortfolio()}
+  // File listeners
+  document.getElementById('avatar-file').onchange=e=>{
+    newAvatarFile=e.target.files[0]
+    if(newAvatarFile){const r=new FileReader();r.onload=ev=>{document.getElementById('avatar-preview').innerHTML=`<img src="${ev.target.result}" alt=""/>` };r.readAsDataURL(newAvatarFile)}
   }
-
-  function updateUnreadBadge() {
-    const unread = allMessages.filter(m => !m.read).length
-    const badge = document.getElementById('unread-badge')
-    badge.textContent = unread
-    badge.style.display = unread > 0 ? 'inline-block' : 'none'
+  document.getElementById('cover-file').onchange=e=>{
+    if(myPlan==='free'){alert('Foto de capa disponível a partir do plano Pro.');e.target.value='';return}
+    newCoverFile=e.target.files[0]
+    if(newCoverFile){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('cover-preview');el.style.backgroundImage=`url('${ev.target.result}')`;el.style.display='block'};r.readAsDataURL(newCoverFile)}
   }
-
-  function showTab(tab) {
-    currentTab = tab
-    document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'))
-    document.getElementById(`tab-${tab}`).classList.add('active')
-    if (tab === 'overview') renderOverview()
-    else if (tab === 'profile') renderProfile()
-    else if (tab === 'services') renderServices()
-    else if (tab === 'messages') renderMessages()
+  document.getElementById('port-file').onchange=e=>{
+    newPortFile=e.target.files[0]
+    if(newPortFile){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('port-preview');el.style.backgroundImage=`url('${ev.target.result}')`;el.style.display='block'};r.readAsDataURL(newPortFile)}
   }
+  loadStats();loadServices();loadMessages();loadPlanInfo()
+}
 
-  async function renderOverview() {
-    const [{ data: services }, { data: reviews }, { data: messages }] = await Promise.all([
-      db.from('services').select('id').eq('professional_id', userId),
-      db.from('reviews').select('rating').eq('professional_id', userId),
-      db.from('messages').select('id, read').eq('professional_id', userId)
-    ])
-    const avgRating = reviews?.length
-      ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : '–'
-    const unread = messages?.filter(m => !m.read).length || 0
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.nav-item[data-panel]').forEach(b=>b.classList.toggle('active',b.dataset.panel===id))
+  document.getElementById(`panel-${id}`).classList.add('active')
+  document.getElementById('topbar-title').textContent=panelTitles[id]||id
+}
 
-    document.getElementById('main-content').innerHTML = `
-      <div class="section-header">
-        <h1 class="section-title">Olá, ${userProfile.name.split(' ')[0]}! 👋</h1>
+async function loadStats(){
+  const[{count:msgs},{count:unread},{count:srvs},{data:revs}]=await Promise.all([
+    db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',me.id),
+    db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',me.id).eq('read',false),
+    db.from('services').select('*',{count:'exact',head:true}).eq('professional_id',me.id),
+    db.from('reviews').select('rating').eq('professional_id',me.id)
+  ])
+  document.getElementById('stat-msgs').textContent=msgs||0
+  document.getElementById('stat-unread').textContent=unread||0
+  document.getElementById('stat-srvs').textContent=srvs||0
+  if(revs&&revs.length){
+    const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
+    document.getElementById('stat-rating').textContent=avg
+    document.getElementById('stat-rating-sub').textContent=`${revs.length} avaliações`
+  }else{
+    document.getElementById('stat-rating').textContent='–'
+    document.getElementById('stat-rating-sub').textContent='sem avaliações'
+  }
+  if(unread>0){const b=document.getElementById('unread-badge');b.textContent=unread;b.style.display='inline'}
+}
+
+async function loadServices(){
+  const{data}=await db.from('services').select('*').eq('professional_id',me.id).order('created_at')
+  document.getElementById('srv-count').textContent=(data||[]).length
+  if(!data||!data.length){document.getElementById('services-list').innerHTML='<div class="empty"><div class="empty-icon">🛠️</div>Nenhum serviço ainda.</div>';return}
+  document.getElementById('services-list').innerHTML=data.map(s=>{
+    const price=s.price_from?`€${s.price_from}${s.price_to?`–€${s.price_to}`:''} / ${s.price_unit}`:''
+    return`<div class="service-row"><div class="service-info"><div class="service-name">${s.title}</div><div class="service-detail">${s.description?(s.description.substring(0,70)+(s.description.length>70?'...':'')):''} ${price?`· <strong>${price}</strong>`:''}</div></div><button class="btn btn-danger btn-sm" onclick="delService('${s.id}')">✕</button></div>`
+  }).join('')
+  const limit=myPlan==='premium'?9999:myPlan==='pro'?10:2
+  if(data.length>=limit){
+    const el=document.getElementById('srv-error')
+    el.textContent=`Atingiste o limite de ${limit} serviços. Faz upgrade para adicionar mais.`;el.style.display='block'
+    document.getElementById('add-service-card').style.opacity='.5';document.getElementById('add-service-card').style.pointerEvents='none'
+  }
+}
+
+async function addService(){
+  const title=document.getElementById('srv-title').value.trim()
+  if(!title)return showFMsg('srv-error','Título obrigatório.')
+  const{error}=await db.from('services').insert({professional_id:me.id,title,description:document.getElementById('srv-desc').value.trim(),price_from:document.getElementById('srv-pfrom').value||null,price_to:document.getElementById('srv-pto').value||null,price_unit:document.getElementById('srv-unit').value})
+  if(error)return showFMsg('srv-error','Erro: '+error.message)
+  document.getElementById('srv-title').value='';document.getElementById('srv-desc').value='';document.getElementById('srv-pfrom').value='';document.getElementById('srv-pto').value=''
+  showFMsg('srv-success','Serviço adicionado!','success');loadServices()
+}
+
+async function delService(id){if(!confirm('Remover este serviço?'))return;await db.from('services').delete().eq('id',id);loadServices()}
+
+async function loadPortfolio(){
+  const{data}=await db.from('portfolio_items').select('*').eq('professional_id',me.id).order('created_at',{ascending:false})
+  document.getElementById('port-count').textContent=(data||[]).length
+  if(!data||!data.length){document.getElementById('portfolio-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📷</div>Nenhuma foto ainda.</div>';return}
+  document.getElementById('portfolio-grid').innerHTML=data.map(item=>`<div class="portfolio-item-dash"><img src="${item.photo_url}" loading="lazy"/>${item.caption?`<div class="portfolio-caption">${item.caption}</div>`:''}<div class="del-overlay"><button class="del-btn" onclick="delPortfolio('${item.id}','${item.photo_url}')">✕</button></div></div>`).join('')
+  if(myPlan==='pro'&&data.length>=10){showFMsg('port-error','Limite de 10 fotos no plano Pro. Faz upgrade para ilimitadas.')}
+}
+
+async function uploadPortfolio(){
+  if(!newPortFile)return showFMsg('port-error','Seleciona uma foto.')
+  const btn=document.getElementById('port-btn');btn.disabled=true;btn.textContent='A fazer upload...'
+  const ext=newPortFile.name.split('.').pop()
+  const path=`${me.id}/${Date.now()}.${ext}`
+  const{error:upErr}=await db.storage.from('portfolio').upload(path,newPortFile)
+  if(upErr){showFMsg('port-error','Erro no upload: '+upErr.message);btn.disabled=false;btn.textContent='📤 Fazer upload';return}
+  const{data:{publicUrl}}=db.storage.from('portfolio').getPublicUrl(path)
+  const{error}=await db.from('portfolio_items').insert({professional_id:me.id,photo_url:publicUrl,caption:document.getElementById('port-caption').value.trim()})
+  if(error){showFMsg('port-error','Erro ao guardar.');btn.disabled=false;btn.textContent='📤 Fazer upload';return}
+  showFMsg('port-success','Foto adicionada!','success')
+  document.getElementById('port-caption').value='';document.getElementById('port-file').value='';document.getElementById('port-preview').style.display='none';newPortFile=null
+  btn.disabled=false;btn.textContent='📤 Fazer upload';loadPortfolio()
+}
+
+async function delPortfolio(id,url){
+  if(!confirm('Remover esta foto?'))return
+  const path=url.split('/portfolio/')[1]
+  if(path)await db.storage.from('portfolio').remove([path])
+  await db.from('portfolio_items').delete().eq('id',id);loadPortfolio()
+}
+
+async function loadMessages(){
+  const{data}=await db.from('messages').select('*').eq('professional_id',me.id).order('created_at',{ascending:false})
+  if(!data||!data.length){document.getElementById('messages-list').innerHTML='<div class="empty"><div class="empty-icon">📭</div>Nenhuma mensagem ainda.</div>';return}
+  document.getElementById('messages-list').innerHTML=data.map(m=>{
+    const date=new Date(m.created_at).toLocaleDateString('pt-PT',{day:'2-digit',month:'short'})
+    return`<div class="msg-row ${m.read?'':'unread'}" onclick="openMsg('${m.id}')">
+      <div class="msg-dot"></div>
+      <div class="msg-body">
+        <div class="msg-sender">${m.sender_name}${m.sender_phone?` · ${m.sender_phone}`:''}</div>
+        <div class="msg-subject">${m.subject}</div>
+        <div class="msg-preview">${m.content.substring(0,80)}${m.content.length>80?'...':''}</div>
       </div>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon">🛠️</div><div class="stat-value">${services?.length || 0}</div><div class="stat-label">Serviços publicados</div></div>
-        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value">${avgRating}</div><div class="stat-label">Avaliação média</div></div>
-        <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value">${reviews?.length || 0}</div><div class="stat-label">Avaliações recebidas</div></div>
-        <div class="stat-card"><div class="stat-icon">📩</div><div class="stat-value">${unread}</div><div class="stat-label">Mensagens não lidas</div></div>
-      </div>
-      <div class="card">
-        <h2>Começa por aqui</h2>
-        <p style="color:#64748b; margin-bottom:16px; font-size:14px">Completa o teu perfil e adiciona serviços para apareceres nas pesquisas.</p>
-        <div style="display:flex; gap:10px; flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="showTab('profile')">✏️ Editar perfil</button>
-          <button class="btn btn-ghost" onclick="showTab('services')">➕ Adicionar serviço</button>
-          <a href="profile.html?id=${userId}" class="btn btn-ghost" target="_blank">👁 Ver perfil público</a>
-        </div>
-      </div>`
+      <div class="msg-time">${date}</div>
+    </div>`
+  }).join('')
+}
+
+async function openMsg(id){
+  const{data:m}=await db.from('messages').select('*').eq('id',id).single()
+  if(!m)return
+  document.getElementById('modal-subject').textContent=m.subject
+  document.getElementById('modal-meta').innerHTML=`<strong>${m.sender_name}</strong> &lt;${m.sender_email}&gt;${m.sender_phone?` · ${m.sender_phone}`:''}<br>${new Date(m.created_at).toLocaleString('pt-PT')}`
+  document.getElementById('modal-content').textContent=m.content
+  document.getElementById('modal-reply').href=`mailto:${m.sender_email}?subject=Re%3A%20${encodeURIComponent(m.subject)}`
+  document.getElementById('msg-modal').classList.add('open')
+  if(!m.read){await db.from('messages').update({read:true}).eq('id',id);loadMessages();loadStats()}
+}
+function closeModal(){document.getElementById('msg-modal').classList.remove('open')}
+document.getElementById('msg-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()})
+
+async function saveProfile(){
+  const name=document.getElementById('p-name').value.trim()
+  const category=document.getElementById('p-category').value
+  const location=document.getElementById('p-location').value.trim()
+  if(!name||!category||!location)return showFMsg('profile-error','Preenche os campos obrigatórios.')
+  const btn=document.getElementById('save-profile-btn');btn.disabled=true;btn.textContent='A guardar...'
+  let photo_url=me.photo_url,cover_url=me.cover_url
+  if(newAvatarFile){
+    const ext=newAvatarFile.name.split('.').pop(),path=`${me.id}/avatar.${ext}`
+    await db.storage.from('avatars').upload(path,newAvatarFile,{upsert:true})
+    const{data:{publicUrl}}=db.storage.from('avatars').getPublicUrl(path);photo_url=publicUrl
   }
-
-  function renderProfile() {
-    const p = userProfile
-    document.getElementById('main-content').innerHTML = `
-      <div class="section-header">
-        <h1 class="section-title">O meu perfil</h1>
-      </div>
-      <div class="card">
-        <h2>Informações pessoais</h2>
-        <div class="msg-feedback" id="prof-msg"></div>
-        <div class="form-grid">
-          <div class="form-group"><label>Nome completo</label><input id="p-name" value="${p.name}" /></div>
-          <div class="form-group"><label>Categoria</label>
-            <select id="p-category">
-              ${['Eletricista','Canalizador','Pintor','Carpinteiro','Serralheiro','Jardineiro','Limpeza','Outro'].map(c => `<option ${p.category===c?'selected':''}>${c}</option>`).join('')}
-            </select>
-          </div>
-          <div class="form-group"><label>Localização</label><input id="p-location" value="${p.location}" /></div>
-          <div class="form-group"><label>Telefone</label><input id="p-phone" value="${p.phone||''}" placeholder="912 345 678" /></div>
-          <div class="form-group"><label>Website</label><input id="p-website" value="${p.website||''}" placeholder="https://..." /></div>
-          <div class="form-group full"><label>Sobre ti</label><textarea id="p-bio" rows="4">${p.bio||''}</textarea></div>
-        </div>
-        <div style="margin-top:20px">
-          <button class="btn btn-primary" onclick="saveProfile()">Guardar alterações</button>
-        </div>
-      </div>`
+  if(newCoverFile&&myPlan!=='free'){
+    const ext=newCoverFile.name.split('.').pop(),path=`${me.id}/cover.${ext}`
+    await db.storage.from('avatars').upload(path,newCoverFile,{upsert:true})
+    const{data:{publicUrl}}=db.storage.from('avatars').getPublicUrl(path);cover_url=publicUrl
   }
+  const updates={name,category,location,phone:document.getElementById('p-phone').value.trim(),website:document.getElementById('p-website').value.trim(),bio:document.getElementById('p-bio').value.trim(),photo_url,cover_url}
+  const{error}=await db.from('profiles').update(updates).eq('id',me.id)
+  if(error){showFMsg('profile-error','Erro: '+error.message);btn.disabled=false;btn.textContent='💾 Guardar alterações';return}
+  me={...me,...updates}
+  const initials=name.split(' ').map(n=>n[0]).slice(0,2).join('')
+  document.getElementById('sidebar-name').textContent=name
+  const sa=document.getElementById('sidebar-avatar');sa.innerHTML=photo_url?`<img src="${photo_url}" alt=""/>`:`${initials}`
+  showFMsg('profile-success','Perfil guardado!','success');btn.disabled=false;btn.textContent='💾 Guardar alterações'
+}
 
-  async function saveProfile() {
-    const updates = {
-      name: document.getElementById('p-name').value.trim(),
-      category: document.getElementById('p-category').value,
-      location: document.getElementById('p-location').value.trim(),
-      phone: document.getElementById('p-phone').value.trim(),
-      website: document.getElementById('p-website').value.trim(),
-      bio: document.getElementById('p-bio').value.trim()
-    }
-    const { error } = await db.from('profiles').update(updates).eq('id', userId)
-    const el = document.getElementById('prof-msg')
-    if (error) {
-      el.textContent = 'Erro ao guardar. Tenta novamente.'
-      el.className = 'msg-feedback error'; el.style.display = 'block'
-    } else {
-      userProfile = { ...userProfile, ...updates }
-      el.textContent = 'Perfil atualizado com sucesso!'
-      el.className = 'msg-feedback success'; el.style.display = 'block'
-      setTimeout(() => el.style.display = 'none', 3000)
-    }
-  }
+function loadPlanInfo(){
+  const cfg={free:{icon:'🆓',label:'Grátis',color:'#64748b',desc:'Perfil básico, 2 serviços, mensagens.'},pro:{icon:'🚀',label:'Pro',color:'#7c3aed',desc:'10 serviços, 10 fotos portfólio, badge verificado, foto de capa.'},premium:{icon:'👑',label:'Premium',color:'var(--gold)',desc:'Tudo ilimitado + destaque nas pesquisas + suporte prioritário.'}}
+  const c=cfg[myPlan]||cfg.free
+  document.getElementById('current-plan-info').innerHTML=`<div style="display:flex;align-items:center;gap:16px;padding:16px;background:${c.color}11;border-radius:12px;border:1px solid ${c.color}33"><span style="font-size:48px">${c.icon}</span><div><div style="font-size:22px;font-weight:800;color:${c.color}">${c.label}</div><div style="font-size:14px;color:var(--muted);margin-top:4px">${c.desc}</div></div></div>`
+}
 
-  async function renderServices() {
-    const { data: services } = await db.from('services').select('*').eq('professional_id', userId).order('created_at')
-    document.getElementById('main-content').innerHTML = `
-      <div class="section-header">
-        <h1 class="section-title">Os meus serviços</h1>
-        <button class="btn btn-primary" onclick="showAddService()">+ Adicionar</button>
-      </div>
-      <div class="card" id="services-container">
-        ${services?.length ? services.map(s => `
-          <div class="service-row" id="svc-${s.id}">
-            <div class="service-info">
-              <div class="service-title">${s.title}</div>
-              <div class="service-meta">${s.description || ''}</div>
-            </div>
-            ${s.price_from ? `<div class="service-price">€${s.price_from}${s.price_to?'–€'+s.price_to:''}/${s.price_unit}</div>` : ''}
-            <button class="btn btn-danger" onclick="deleteService('${s.id}')">Apagar</button>
-          </div>`).join('') : '<div class="empty"><div class="empty-icon">🛠️</div><p>Nenhum serviço ainda. Adiciona o primeiro!</p></div>'}
-      </div>
-      <div id="add-svc-form" class="card" style="display:none">
-        <h2>Novo serviço</h2>
-        <div class="msg-feedback" id="svc-msg"></div>
-        <div class="modal-form">
-          <div class="form-group"><label>Título do serviço</label><input id="svc-title" placeholder="Ex: Instalação elétrica" /></div>
-          <div class="form-group"><label>Descrição</label><textarea id="svc-desc" placeholder="Descreve o serviço..."></textarea></div>
-          <div class="form-grid">
-            <div class="form-group"><label>Preço a partir de (€)</label><input type="number" id="svc-price-from" placeholder="50" /></div>
-            <div class="form-group"><label>Preço até (€)</label><input type="number" id="svc-price-to" placeholder="200" /></div>
-            <div class="form-group"><label>Unidade</label>
-              <select id="svc-unit"><option>hora</option><option>dia</option><option>projeto</option></select>
-            </div>
-          </div>
-          <div style="margin-top:4px; display:flex; gap:10px">
-            <button class="btn btn-primary" onclick="addService()">Guardar serviço</button>
-            <button class="btn btn-ghost" onclick="document.getElementById('add-svc-form').style.display='none'">Cancelar</button>
-          </div>
-        </div>
-      </div>`
-  }
+function requestUpgrade(plan){
+  const prices={pro:'€9/mês',premium:'€19/mês'}
+  window.open(`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20${plan}&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20${plan.charAt(0).toUpperCase()+plan.slice(1)}%20(${prices[plan]}).%0A%0ANome:%20${encodeURIComponent(me.name)}`)
+}
 
-  function showAddService() {
-    const form = document.getElementById('add-svc-form')
-    if (form) form.style.display = 'block'
-  }
+function showFMsg(id,txt,type='error'){
+  const el=document.getElementById(id);el.textContent=txt;el.className=`msg ${type}`;el.style.display='block'
+  if(type==='success')setTimeout(()=>{el.style.display='none'},4000)
+}
 
-  async function addService() {
-    const title = document.getElementById('svc-title').value.trim()
-    if (!title) return
-    const { data, error } = await db.from('services').insert({
-      professional_id: userId,
-      title,
-      description: document.getElementById('svc-desc').value.trim(),
-      price_from: parseFloat(document.getElementById('svc-price-from').value) || null,
-      price_to: parseFloat(document.getElementById('svc-price-to').value) || null,
-      price_unit: document.getElementById('svc-unit').value
-    }).select().single()
-    if (!error) renderServices()
-  }
-
-  async function deleteService(id) {
-    if (!confirm('Apagar este serviço?')) return
-    await db.from('services').delete().eq('id', id)
-    renderServices()
-  }
-
-  async function renderMessages() {
-    const { data: messages } = await db.from('messages').select('*').eq('professional_id', userId).order('created_at', { ascending: false })
-    allMessages = messages || []
-    updateUnreadBadge()
-    const unread = allMessages.filter(m => !m.read).length
-
-    document.getElementById('main-content').innerHTML = `
-      <div class="section-header">
-        <h1 class="section-title">Mensagens ${unread > 0 ? `<span style="font-size:16px; color:#1d4ed8">(${unread} não lida${unread !== 1 ? 's' : ''})</span>` : ''}</h1>
-      </div>
-      <div class="card">
-        ${messages?.length ? messages.map(m => {
-          const initials = m.sender_name.split(' ').map(n => n[0]).slice(0, 2).join('')
-          const d = new Date(m.created_at).toLocaleDateString('pt-PT')
-          return `
-            <div class="msg-row ${!m.read ? 'msg-unread' : ''}" onclick="openMessage('${m.id}')">
-              ${!m.read ? '<div class="unread-dot"></div>' : '<div style="width:8px"></div>'}
-              <div class="msg-avatar">${initials}</div>
-              <div class="msg-body">
-                <div class="msg-from">${m.sender_name}</div>
-                <div class="msg-subject">${m.subject}</div>
-              </div>
-              <div class="msg-date">${d}</div>
-            </div>`
-        }).join('') : '<div class="empty"><div class="empty-icon">📩</div><p>Nenhuma mensagem ainda.</p></div>'}
-      </div>`
-  }
-
-  async function openMessage(id) {
-    const msg = allMessages.find(m => m.id === id)
-    if (!msg) return
-    document.getElementById('modal-subject').textContent = msg.subject
-    document.getElementById('modal-from').textContent = msg.sender_name
-    document.getElementById('modal-email').textContent = msg.sender_email
-    if (msg.sender_phone) {
-      document.getElementById('modal-phone').textContent = msg.sender_phone
-      document.getElementById('modal-phone-row').style.display = 'block'
-    } else {
-      document.getElementById('modal-phone-row').style.display = 'none'
-    }
-    document.getElementById('modal-content').textContent = msg.content
-    document.getElementById('msg-modal').style.display = 'flex'
-    // Mark as read
-    if (!msg.read) {
-      await db.from('messages').update({ read: true }).eq('id', id)
-      msg.read = true
-      updateUnreadBadge()
-    }
-  }
-
-  function closeMsgModal(e) {
-    if (e.target.id === 'msg-modal') document.getElementById('msg-modal').style.display = 'none'
-  }
-
-  async function signOut() {
-    await db.auth.signOut()
-    location.href = 'index.html'
-  }
-
-  init()
+async function signOut(){await db.auth.signOut();location.href='index.html'}
+init()
 </script>
 </body>
 </html>

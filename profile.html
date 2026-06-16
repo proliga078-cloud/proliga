@@ -1,399 +1,338 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Proliga – Perfil</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Perfil – Proliga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
-    nav {
-      background: #fff; border-bottom: 1px solid #e2e8f0;
-      padding: 0 24px; height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06);
-    }
-    .logo { font-size: 22px; font-weight: 800; color: #1d4ed8; text-decoration: none; }
-    .logo span { color: #f59e0b; }
-    .back-btn {
-      padding: 8px 16px; border-radius: 8px; border: 1.5px solid #e2e8f0;
-      background: #fff; color: #475569; font-size: 14px; font-weight: 500;
-      cursor: pointer; text-decoration: none; font-family: inherit;
-    }
-    .back-btn:hover { border-color: #1d4ed8; color: #1d4ed8; }
-
-    .profile-hero {
-      background: linear-gradient(135deg, #1d4ed8, #1e40af);
-      padding: 48px 24px 80px;
-      color: #fff;
-    }
-    .profile-hero-inner { max-width: 800px; margin: 0 auto; display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
-    .avatar-large {
-      width: 100px; height: 100px; border-radius: 50%;
-      background: #fff; border: 4px solid rgba(255,255,255,.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 36px; font-weight: 800; color: #1d4ed8;
-      overflow: hidden; flex-shrink: 0;
-    }
-    .avatar-large img { width: 100%; height: 100%; object-fit: cover; }
-    .hero-info h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-    .badge {
-      display: inline-block; padding: 4px 14px; border-radius: 99px;
-      font-size: 13px; font-weight: 600; margin-right: 8px; margin-bottom: 8px;
-    }
-    .badge-cat { background: rgba(255,255,255,.2); color: #fff; }
-    .badge-loc { background: rgba(255,255,255,.15); color: rgba(255,255,255,.9); }
-    .hero-rating { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 15px; }
-    .stars { color: #f59e0b; font-size: 18px; }
-
-    .content { max-width: 800px; margin: -40px auto 60px; padding: 0 16px; }
-
-    .card {
-      background: #fff; border-radius: 14px;
-      border: 1px solid #e2e8f0; padding: 28px;
-      margin-bottom: 20px;
-    }
-    .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 18px; color: #1e293b; }
-
-    /* Contact card */
-    .contact-card {
-      background: #fff; border-radius: 14px;
-      border: 1px solid #e2e8f0; padding: 28px;
-      margin-bottom: 20px;
-    }
-    .contact-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-    .form-group { margin-bottom: 16px; }
-    label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
-    input, textarea {
-      width: 100%; padding: 10px 14px;
-      border: 1.5px solid #e2e8f0; border-radius: 8px;
-      font-size: 14px; font-family: inherit; color: #1e293b; outline: none;
-    }
-    input:focus, textarea:focus { border-color: #1d4ed8; }
-    textarea { resize: vertical; min-height: 80px; }
-    .btn-submit {
-      width: 100%; padding: 12px;
-      background: #1d4ed8; color: #fff;
-      border: none; border-radius: 8px;
-      font-size: 15px; font-weight: 700;
-      cursor: pointer; font-family: inherit;
-    }
-    .btn-submit:hover { background: #1e40af; }
-    .btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
-
-    /* Services */
-    .service-item {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 16px 0; border-bottom: 1px solid #f1f5f9;
-    }
-    .service-item:last-child { border-bottom: none; }
-    .service-title { font-weight: 600; margin-bottom: 4px; }
-    .service-desc { font-size: 13px; color: #64748b; }
-    .service-price { font-weight: 700; color: #1d4ed8; white-space: nowrap; margin-left: 16px; }
-
-    /* Reviews */
-    .review-item { padding: 16px 0; border-bottom: 1px solid #f1f5f9; }
-    .review-item:last-child { border-bottom: none; }
-    .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .reviewer-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: #dbeafe; color: #1d4ed8;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 14px; flex-shrink: 0;
-    }
-    .reviewer-name { font-weight: 600; font-size: 14px; }
-    .review-stars { color: #f59e0b; font-size: 14px; }
-    .review-date { color: #94a3b8; font-size: 12px; margin-left: auto; }
-    .review-text { font-size: 14px; color: #475569; line-height: 1.6; }
-
-    /* Leave review */
-    .star-select { display: flex; gap: 6px; margin-bottom: 14px; }
-    .star-btn {
-      font-size: 28px; cursor: pointer; color: #e2e8f0;
-      border: none; background: none; padding: 0; transition: color .1s;
-    }
-    .star-btn.selected, .star-btn:hover { color: #f59e0b; }
-
-    .msg { padding: 10px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 14px; display: none; }
-    .msg.error { background: #fef2f2; color: #b91c1c; }
-    .msg.success { background: #f0fdf4; color: #166534; }
-
-    .contact-info { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
-    .contact-link {
-      display: flex; align-items: center; gap: 6px;
-      padding: 8px 14px; border-radius: 8px;
-      background: #f1f5f9; color: #334155;
-      text-decoration: none; font-size: 14px; font-weight: 500;
-    }
-    .contact-link:hover { background: #dbeafe; color: #1d4ed8; }
-
-    .loading { text-align: center; padding: 40px; color: #94a3b8; }
-    .spinner { width: 32px; height: 32px; border: 3px solid #e2e8f0; border-top-color: #1d4ed8; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 12px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc}
+    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
+    a{text-decoration:none;color:inherit}
+    nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .logo{font-size:24px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
+    .btn{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-block}
+    .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
+    .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
+    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
+    .profile-cover{height:220px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));background-size:cover;background-position:center;position:relative}
+    .cover-overlay{position:absolute;inset:0;background:rgba(0,0,0,.2)}
+    .profile-main{max-width:1000px;margin:0 auto;padding:0 24px}
+    .profile-header{background:#fff;border-radius:20px;margin-top:-60px;position:relative;z-index:2;padding:28px 32px 24px;box-shadow:0 4px 20px rgba(0,0,0,.08);display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+    .avatar-wrap{flex-shrink:0;position:relative}
+    .avatar{width:110px;height:110px;border-radius:50%;border:4px solid #fff;background:var(--blue);color:#fff;font-size:36px;font-weight:800;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .plan-badge-profile{position:absolute;bottom:4px;right:-4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+    .badge-pro{background:#7c3aed;color:#fff}
+    .badge-premium{background:var(--gold);color:#fff}
+    .profile-info{flex:1;min-width:200px}
+    .profile-name{font-size:26px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px}
+    .profile-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .cat-badge{background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:700;padding:3px 12px;border-radius:99px}
+    .verified-badge{background:#dcfce7;color:#16a34a;font-size:12px;font-weight:700;padding:3px 12px;border-radius:99px}
+    .loc{font-size:14px;color:var(--muted)}
+    .rating-line{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+    .stars{color:var(--gold);font-size:18px}
+    .rating-score{font-size:18px;font-weight:700}
+    .rating-count{font-size:14px;color:var(--muted)}
+    .profile-bio{font-size:15px;color:#475569;line-height:1.7}
+    .profile-actions{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+    .content-wrap{max-width:1000px;margin:24px auto;padding:0 24px;display:grid;grid-template-columns:1fr 320px;gap:24px}
+    @media(max-width:768px){.content-wrap{grid-template-columns:1fr}.profile-header{margin-top:-40px}}
+    .section-card{background:#fff;border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .section-title{font-size:16px;font-weight:700;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--bg)}
+    .portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+    .portfolio-img{aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;position:relative}
+    .portfolio-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+    .portfolio-img:hover img{transform:scale(1.06)}
+    .portfolio-img .caption-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);color:#fff;font-size:12px;padding:8px;display:none;align-items:flex-end}
+    .portfolio-img:hover .caption-overlay{display:flex}
+    .service-item{padding:14px 0;border-bottom:1px solid var(--bg)}
+    .service-item:last-child{border-bottom:none}
+    .service-title{font-size:15px;font-weight:600;margin-bottom:4px}
+    .service-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:6px}
+    .service-price{font-size:14px;font-weight:700;color:var(--blue)}
+    .review-item{padding:16px 0;border-bottom:1px solid var(--bg)}
+    .review-item:last-child{border-bottom:none}
+    .review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+    .review-name{font-size:14px;font-weight:700}
+    .review-stars{color:var(--gold);font-size:14px}
+    .review-date{font-size:12px;color:var(--muted)}
+    .review-text{font-size:14px;color:#475569;line-height:1.6}
+    .form-group{margin-bottom:16px}
+    label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
+    input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+    textarea{resize:vertical;min-height:80px}
+    .star-select{display:flex;gap:6px;margin-bottom:4px}
+    .star-btn{font-size:24px;cursor:pointer;color:#e2e8f0;transition:color .15s;background:none;border:none}
+    .star-btn.on{color:var(--gold)}
+    .btn-submit{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:4px}
+    .btn-submit:hover{background:var(--blue-dark)}
+    .btn-submit:disabled{background:#93c5fd;cursor:not-allowed}
+    .msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;display:none}
+    .msg.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+    .msg.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+    .contact-section{padding:24px;background:var(--blue-dark);border-radius:16px;color:#fff;margin-bottom:20px}
+    .contact-section h3{font-size:16px;font-weight:700;margin-bottom:16px}
+    .contact-section input,.contact-section textarea{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}
+    .contact-section input::placeholder,.contact-section textarea::placeholder{color:rgba(255,255,255,.5)}
+    .contact-section label{color:rgba(255,255,255,.8)}
+    .contact-section input:focus,.contact-section textarea:focus{border-color:rgba(255,255,255,.6)}
+    .sidebar-card{background:#fff;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .sidebar-title{font-size:12px;font-weight:700;margin-bottom:14px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+    .info-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;border-bottom:1px solid var(--bg)}
+    .info-item:last-child{border-bottom:none}
+    .info-icon{font-size:18px;width:26px;text-align:center}
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:999;align-items:center;justify-content:center}
+    #lightbox.open{display:flex}
+    #lightbox img{max-width:90vw;max-height:85vh;border-radius:12px;object-fit:contain}
+    #lightbox-caption{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px;background:rgba(0,0,0,.6);padding:8px 20px;border-radius:99px}
+    #lightbox-close{position:fixed;top:20px;right:24px;font-size:32px;color:#fff;cursor:pointer;background:none;border:none;line-height:1}
+    .loading{text-align:center;padding:48px;color:var(--muted)}
+    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+    @keyframes spin{to{transform:rotate(360deg)}}
   </style>
 </head>
 <body>
-
 <nav>
   <a href="index.html" class="logo">Pro<span>liga</span></a>
-  <a href="index.html" class="back-btn">← Voltar</a>
+  <div style="display:flex;gap:10px">
+    <a href="auth.html" class="btn btn-outline" id="nav-login">Entrar</a>
+    <a href="dashboard.html" class="btn btn-solid" id="nav-dash" style="display:none">Dashboard</a>
+  </div>
 </nav>
 
-<div id="loading-page" class="loading" style="margin-top:80px">
-  <div class="spinner"></div><p>A carregar perfil...</p>
+<div id="cover" class="profile-cover"><div class="cover-overlay"></div></div>
+
+<div class="profile-main">
+  <div id="profile-header" class="profile-header">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
 </div>
 
-<div id="page-content" style="display:none">
-  <div class="profile-hero">
-    <div class="profile-hero-inner">
-      <div class="avatar-large" id="hero-avatar"></div>
-      <div class="hero-info">
-        <h1 id="hero-name"></h1>
-        <span class="badge badge-cat" id="hero-category"></span>
-        <span class="badge badge-loc" id="hero-location"></span>
-        <div class="hero-rating">
-          <span class="stars" id="hero-stars"></span>
-          <span id="hero-rating-text"></span>
+<div class="content-wrap" id="content-wrap" style="display:none">
+  <div>
+    <div class="section-card" id="portfolio-section" style="display:none">
+      <div class="section-title">📸 Portfólio de Trabalhos</div>
+      <div class="portfolio-grid" id="portfolio-grid"></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title">🛠️ Serviços Oferecidos</div>
+      <div id="services-list"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title" id="reviews-title">⭐ Avaliações</div>
+      <div id="reviews-list"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title">✍️ Deixar avaliação</div>
+      <div class="msg error" id="rev-error"></div>
+      <div class="msg success" id="rev-success"></div>
+      <div class="form-group"><label>O teu nome</label><input type="text" id="rev-name" placeholder="João Silva"/></div>
+      <div class="form-group"><label>Email</label><input type="email" id="rev-email" placeholder="joao@email.com"/></div>
+      <div class="form-group">
+        <label>Classificação</label>
+        <div class="star-select">
+          <button class="star-btn" data-v="1" onclick="setStar(1)">★</button>
+          <button class="star-btn" data-v="2" onclick="setStar(2)">★</button>
+          <button class="star-btn" data-v="3" onclick="setStar(3)">★</button>
+          <button class="star-btn" data-v="4" onclick="setStar(4)">★</button>
+          <button class="star-btn" data-v="5" onclick="setStar(5)">★</button>
         </div>
       </div>
+      <div class="form-group"><label>Comentário (opcional)</label><textarea id="rev-comment" placeholder="Conta a tua experiência..."></textarea></div>
+      <button class="btn-submit" id="rev-btn" onclick="submitReview()">Publicar avaliação</button>
     </div>
   </div>
-
-  <div class="content">
-
-    <!-- Bio -->
-    <div class="card" id="bio-card" style="display:none">
-      <h2>Sobre</h2>
-      <p id="bio-text" style="color:#475569; line-height:1.7"></p>
-      <div class="contact-info" id="contact-links"></div>
-    </div>
-
-    <!-- Services -->
-    <div class="card" id="services-card" style="display:none">
-      <h2>Serviços</h2>
-      <div id="services-list"></div>
-    </div>
-
-    <!-- Contact form -->
-    <div class="contact-card">
-      <h2>📩 Enviar mensagem</h2>
+  <div>
+    <div class="contact-section">
+      <h3>📩 Entrar em contacto</h3>
       <div class="msg error" id="msg-error"></div>
       <div class="msg success" id="msg-success"></div>
-      <div class="form-group">
-        <label>O teu nome</label>
-        <input type="text" id="contact-name" placeholder="João Silva" />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="contact-email" placeholder="joao@email.com" />
-      </div>
-      <div class="form-group">
-        <label>Telefone <span style="color:#94a3b8">(opcional)</span></label>
-        <input type="tel" id="contact-phone" placeholder="912 345 678" />
-      </div>
-      <div class="form-group">
-        <label>Assunto</label>
-        <input type="text" id="contact-subject" placeholder="Ex: Precisava de um orçamento para..." />
-      </div>
-      <div class="form-group">
-        <label>Mensagem</label>
-        <textarea id="contact-message" placeholder="Descreve o que precisas..."></textarea>
-      </div>
-      <button class="btn-submit" id="contact-btn" onclick="sendMessage()">Enviar mensagem</button>
+      <div class="form-group"><label>O teu nome</label><input type="text" id="msg-name" placeholder="O teu nome"/></div>
+      <div class="form-group"><label>Email</label><input type="email" id="msg-email" placeholder="o-teu@email.com"/></div>
+      <div class="form-group"><label>Telefone (opcional)</label><input type="tel" id="msg-phone" placeholder="912 000 000"/></div>
+      <div class="form-group"><label>Assunto</label><input type="text" id="msg-subject" placeholder="Ex: Reparação urgente"/></div>
+      <div class="form-group"><label>Mensagem</label><textarea id="msg-content" placeholder="Descreve o que precisas..."></textarea></div>
+      <button class="btn-submit" id="msg-btn" onclick="sendMessage()" style="background:var(--gold)">Enviar mensagem</button>
     </div>
-
-    <!-- Reviews -->
-    <div class="card">
-      <h2>Avaliações <span id="review-count" style="color:#94a3b8; font-size:14px; font-weight:400"></span></h2>
-      <div id="reviews-list"></div>
-
-      <!-- Leave a review -->
-      <div style="margin-top:28px; padding-top:24px; border-top:2px solid #f1f5f9">
-        <h3 style="font-size:15px; font-weight:700; margin-bottom:14px">Deixar avaliação</h3>
-        <div class="msg error" id="rev-error"></div>
-        <div class="msg success" id="rev-success"></div>
-        <div class="star-select" id="star-select">
-          <button class="star-btn" onclick="setRating(1)">★</button>
-          <button class="star-btn" onclick="setRating(2)">★</button>
-          <button class="star-btn" onclick="setRating(3)">★</button>
-          <button class="star-btn" onclick="setRating(4)">★</button>
-          <button class="star-btn" onclick="setRating(5)">★</button>
-        </div>
-        <div class="form-group">
-          <label>O teu nome</label>
-          <input type="text" id="rev-name" placeholder="João Silva" />
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="rev-email" placeholder="joao@email.com" />
-        </div>
-        <div class="form-group">
-          <label>Comentário</label>
-          <textarea id="rev-comment" placeholder="Partilha a tua experiência..."></textarea>
-        </div>
-        <button class="btn-submit" id="rev-btn" onclick="submitReview()" style="margin-top:0">Publicar avaliação</button>
-      </div>
+    <div class="sidebar-card">
+      <div class="sidebar-title">Informações</div>
+      <div id="info-items"></div>
     </div>
-
+    <div class="sidebar-card" id="plan-sidebar" style="display:none">
+      <div class="sidebar-title">Plano</div>
+      <div id="plan-info"></div>
+    </div>
   </div>
+</div>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt=""/>
+  <div id="lightbox-caption"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
-  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
+const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+const params=new URLSearchParams(location.search)
+const proId=params.get('id')
+let currentRating=0,proData=null
 
-  const proId = new URLSearchParams(location.search).get('id')
-  let selectedRating = 0
+async function init(){
+  if(!proId){location.href='index.html';return}
+  const{data:{session}}=await db.auth.getSession()
+  if(session){document.getElementById('nav-login').style.display='none';document.getElementById('nav-dash').style.display='inline-block'}
+  const{data:pro,error}=await db.from('profiles').select('*').eq('id',proId).single()
+  if(error||!pro){document.getElementById('profile-header').innerHTML='<p style="color:red;padding:20px">Profissional não encontrado.</p>';return}
+  proData=pro
+  renderHeader(pro)
+  loadServices()
+  loadReviews()
+  loadPortfolio()
+  renderSidebar(pro)
+  document.getElementById('content-wrap').style.display='grid'
+}
 
-  function setRating(r) {
-    selectedRating = r
-    document.querySelectorAll('.star-btn').forEach((b, i) => {
-      b.classList.toggle('selected', i < r)
-    })
+function renderHeader(pro){
+  const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
+  const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
+  if(pro.cover_url)document.getElementById('cover').style.backgroundImage=`url('${pro.cover_url}')`
+  const planBadge=pro.plan==='premium'?`<div class="plan-badge-profile badge-premium">👑 Premium</div>`:
+    pro.plan==='pro'?`<div class="plan-badge-profile badge-pro">✓ Pro</div>`:''
+  document.title=`${pro.name} – Proliga`
+  document.getElementById('profile-header').innerHTML=`
+    <div class="avatar-wrap"><div class="avatar">${avatar}</div>${planBadge}</div>
+    <div class="profile-info">
+      <div class="profile-name">${pro.name}</div>
+      <div class="profile-meta">
+        <span class="cat-badge">${pro.category}</span>
+        ${(pro.verified||pro.plan!=='free')?'<span class="verified-badge">✅ Verificado</span>':''}
+        <span class="loc">📍 ${pro.location}</span>
+      </div>
+      <div class="rating-line" id="rating-line"><div class="spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div></div>
+      ${pro.bio?`<div class="profile-bio">${pro.bio}</div>`:''}
+    </div>
+    <div class="profile-actions">
+      ${pro.phone?`<a href="tel:${pro.phone}" class="btn btn-gold">📞 ${pro.phone}</a>`:''}
+      ${pro.website?`<a href="${pro.website}" target="_blank" class="btn btn-outline">🌐 Website</a>`:''}
+    </div>`
+}
+
+async function loadReviews(){
+  const{data}=await db.from('reviews').select('*').eq('professional_id',proId).order('created_at',{ascending:false})
+  const reviews=data||[]
+  if(reviews.length>0){
+    const avg=(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1)
+    const n=Math.round(avg)
+    document.getElementById('rating-line').innerHTML=`<span class="stars">${'★'.repeat(n)+'☆'.repeat(5-n)}</span><span class="rating-score">${avg}</span><span class="rating-count">(${reviews.length} avaliações)</span>`
+  }else{
+    document.getElementById('rating-line').innerHTML=`<span style="font-size:14px;color:var(--muted)">Sem avaliações ainda</span>`
   }
+  document.getElementById('reviews-title').textContent=`⭐ Avaliações (${reviews.length})`
+  if(!reviews.length){document.getElementById('reviews-list').innerHTML=`<p style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Ainda sem avaliações. Sê o primeiro!</p>`;return}
+  document.getElementById('reviews-list').innerHTML=reviews.map(r=>{
+    const stars='★'.repeat(r.rating)+'☆'.repeat(5-r.rating)
+    const date=new Date(r.created_at).toLocaleDateString('pt-PT')
+    return`<div class="review-item">
+      <div class="review-header"><span class="review-name">${r.reviewer_name}</span><div><span class="review-stars">${stars}</span><span class="review-date"> · ${date}</span></div></div>
+      ${r.comment?`<div class="review-text">${r.comment}</div>`:''}
+    </div>`
+  }).join('')
+}
 
-  async function init() {
-    if (!proId) { location.href = 'index.html'; return; }
+async function loadServices(){
+  const{data}=await db.from('services').select('*').eq('professional_id',proId).order('created_at')
+  if(!data||!data.length){document.getElementById('services-list').innerHTML=`<p style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Nenhum serviço listado ainda.</p>`;return}
+  document.getElementById('services-list').innerHTML=data.map(s=>{
+    const price=s.price_from?`<div class="service-price">A partir de €${s.price_from}${s.price_to?` – €${s.price_to}`:''} / ${s.price_unit||'hora'}</div>`:''
+    return`<div class="service-item"><div class="service-title">${s.title}</div>${s.description?`<div class="service-desc">${s.description}</div>`:''}${price}</div>`
+  }).join('')
+}
 
-    const [{ data: pro }, { data: services }, { data: reviews }] = await Promise.all([
-      db.from('profiles').select('*').eq('id', proId).single(),
-      db.from('services').select('*').eq('professional_id', proId).order('created_at'),
-      db.from('reviews').select('*').eq('professional_id', proId).order('created_at', { ascending: false })
-    ])
+async function loadPortfolio(){
+  if(!proData||proData.plan==='free')return
+  const{data}=await db.from('portfolio_items').select('*').eq('professional_id',proId).order('created_at',{ascending:false})
+  if(!data||!data.length)return
+  document.getElementById('portfolio-section').style.display='block'
+  document.getElementById('portfolio-grid').innerHTML=data.map(item=>`
+    <div class="portfolio-img" onclick="openLightbox('${item.photo_url}','${(item.caption||'').replace(/'/g,'&apos;')}')">
+      <img src="${item.photo_url}" alt="${item.caption||'Trabalho'}" loading="lazy"/>
+      <div class="caption-overlay">${item.caption||''}</div>
+    </div>`).join('')
+}
 
-    if (!pro) { location.href = 'index.html'; return; }
-
-    document.title = `Proliga – ${pro.name}`
-
-    // Hero
-    const initials = pro.name.split(' ').map(n => n[0]).slice(0, 2).join('')
-    document.getElementById('hero-avatar').innerHTML = pro.photo_url
-      ? `<img src="${pro.photo_url}" alt="${pro.name}" />`
-      : initials
-    document.getElementById('hero-name').textContent = pro.name
-    document.getElementById('hero-category').textContent = pro.category
-    document.getElementById('hero-location').textContent = '📍 ' + pro.location
-
-    const avgRating = reviews?.length
-      ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
-      : null
-    const starCount = avgRating ? Math.round(avgRating) : 0
-    document.getElementById('hero-stars').textContent = '★'.repeat(starCount) + '☆'.repeat(5 - starCount)
-    document.getElementById('hero-rating-text').textContent = avgRating
-      ? `${avgRating} (${reviews.length} avaliação${reviews.length !== 1 ? 'ões' : ''})`
-      : 'Sem avaliações ainda'
-
-    // Bio
-    if (pro.bio || pro.phone || pro.website) {
-      document.getElementById('bio-card').style.display = 'block'
-      if (pro.bio) document.getElementById('bio-text').textContent = pro.bio
-      const links = []
-      if (pro.phone) links.push(`<a class="contact-link" href="tel:${pro.phone}">📞 ${pro.phone}</a>`)
-      if (pro.website) links.push(`<a class="contact-link" href="${pro.website}" target="_blank">🌐 Website</a>`)
-      document.getElementById('contact-links').innerHTML = links.join('')
-    }
-
-    // Services
-    if (services?.length) {
-      document.getElementById('services-card').style.display = 'block'
-      document.getElementById('services-list').innerHTML = services.map(s => `
-        <div class="service-item">
-          <div>
-            <div class="service-title">${s.title}</div>
-            ${s.description ? `<div class="service-desc">${s.description}</div>` : ''}
-          </div>
-          ${s.price_from ? `<div class="service-price">€${s.price_from}${s.price_to ? '–€' + s.price_to : ''}/${s.price_unit}</div>` : ''}
-        </div>`).join('')
-    }
-
-    // Reviews
-    document.getElementById('review-count').textContent = reviews?.length ? `(${reviews.length})` : ''
-    if (reviews?.length) {
-      document.getElementById('reviews-list').innerHTML = reviews.map(r => {
-        const d = new Date(r.created_at).toLocaleDateString('pt-PT')
-        const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating)
-        const initials = r.reviewer_name.split(' ').map(n => n[0]).slice(0, 2).join('')
-        return `
-          <div class="review-item">
-            <div class="review-header">
-              <div class="reviewer-avatar">${initials}</div>
-              <div>
-                <div class="reviewer-name">${r.reviewer_name}</div>
-                <div class="review-stars">${stars}</div>
-              </div>
-              <div class="review-date">${d}</div>
-            </div>
-            ${r.comment ? `<div class="review-text">${r.comment}</div>` : ''}
-          </div>`
-      }).join('')
-    } else {
-      document.getElementById('reviews-list').innerHTML = '<p style="color:#94a3b8;padding:12px 0">Ainda sem avaliações. Sê o primeiro!</p>'
-    }
-
-    document.getElementById('loading-page').style.display = 'none'
-    document.getElementById('page-content').style.display = 'block'
+function renderSidebar(pro){
+  const items=[]
+  if(pro.location)items.push(`<div class="info-item"><span class="info-icon">📍</span>${pro.location}</div>`)
+  if(pro.phone)items.push(`<div class="info-item"><span class="info-icon">📞</span><a href="tel:${pro.phone}">${pro.phone}</a></div>`)
+  if(pro.website)items.push(`<div class="info-item"><span class="info-icon">🌐</span><a href="${pro.website}" target="_blank">Website</a></div>`)
+  const joined=new Date(pro.created_at).toLocaleDateString('pt-PT',{month:'long',year:'numeric'})
+  items.push(`<div class="info-item"><span class="info-icon">📅</span>Membro desde ${joined}</div>`)
+  document.getElementById('info-items').innerHTML=items.join('')
+  if(pro.plan&&pro.plan!=='free'){
+    document.getElementById('plan-sidebar').style.display='block'
+    const icon=pro.plan==='premium'?'👑':'🚀',label=pro.plan==='premium'?'Premium':'Pro',color=pro.plan==='premium'?'var(--gold)':'#7c3aed'
+    document.getElementById('plan-info').innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:8px;background:${color}22;border-radius:10px"><span style="font-size:24px">${icon}</span><div><div style="font-weight:700;color:${color}">${label}</div><div style="font-size:12px;color:var(--muted)">Profissional verificado</div></div></div>`
   }
+}
 
-  async function sendMessage() {
-    const name = document.getElementById('contact-name').value.trim()
-    const email = document.getElementById('contact-email').value.trim()
-    const phone = document.getElementById('contact-phone').value.trim()
-    const subject = document.getElementById('contact-subject').value.trim()
-    const content = document.getElementById('contact-message').value.trim()
-    const btn = document.getElementById('contact-btn')
+function setStar(v){
+  currentRating=v
+  document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.v)<=v))
+}
 
-    if (!name || !email || !subject || !content)
-      return showMsg('msg-error', 'Preenche todos os campos obrigatórios.')
+async function submitReview(){
+  const name=document.getElementById('rev-name').value.trim()
+  const email=document.getElementById('rev-email').value.trim()
+  const comment=document.getElementById('rev-comment').value.trim()
+  const btn=document.getElementById('rev-btn')
+  if(!name||!email)return showMsg('rev-error','Preenche nome e email.')
+  if(!currentRating)return showMsg('rev-error','Escolhe uma classificação.')
+  btn.disabled=true;btn.textContent='A publicar...'
+  const{error}=await db.from('reviews').insert({professional_id:proId,reviewer_name:name,reviewer_email:email,rating:currentRating,comment})
+  if(error){showMsg('rev-error','Erro ao publicar.');btn.disabled=false;btn.textContent='Publicar avaliação';return}
+  showMsg('rev-success','Avaliação publicada! Obrigado.','success')
+  document.getElementById('rev-name').value='';document.getElementById('rev-email').value='';document.getElementById('rev-comment').value='';setStar(0)
+  btn.disabled=false;btn.textContent='Publicar avaliação'
+  setTimeout(loadReviews,800)
+}
 
-    btn.disabled = true; btn.textContent = 'A enviar...'
-    const { error } = await db.from('messages').insert({ professional_id: proId, sender_name: name, sender_email: email, sender_phone: phone, subject, content })
-    if (error) {
-      showMsg('msg-error', 'Erro ao enviar. Tenta novamente.')
-      btn.disabled = false; btn.textContent = 'Enviar mensagem'
-    } else {
-      showMsg('msg-success', 'Mensagem enviada com sucesso!', true)
-      btn.textContent = 'Enviado ✓'
-      document.getElementById('contact-name').value = ''
-      document.getElementById('contact-email').value = ''
-      document.getElementById('contact-phone').value = ''
-      document.getElementById('contact-subject').value = ''
-      document.getElementById('contact-message').value = ''
-    }
-  }
+async function sendMessage(){
+  const name=document.getElementById('msg-name').value.trim()
+  const email=document.getElementById('msg-email').value.trim()
+  const phone=document.getElementById('msg-phone').value.trim()
+  const subject=document.getElementById('msg-subject').value.trim()
+  const content=document.getElementById('msg-content').value.trim()
+  const btn=document.getElementById('msg-btn')
+  if(!name||!email||!subject||!content)return showMsg('msg-error','Preenche todos os campos obrigatórios.')
+  btn.disabled=true;btn.textContent='A enviar...'
+  const{error}=await db.from('messages').insert({professional_id:proId,sender_name:name,sender_email:email,sender_phone:phone,subject,content})
+  if(error){showMsg('msg-error','Erro ao enviar.');btn.disabled=false;btn.textContent='Enviar mensagem';return}
+  showMsg('msg-success','Mensagem enviada com sucesso!','success')
+  document.getElementById('msg-name').value='';document.getElementById('msg-email').value='';document.getElementById('msg-phone').value='';document.getElementById('msg-subject').value='';document.getElementById('msg-content').value=''
+  btn.disabled=false;btn.textContent='Enviar mensagem'
+}
 
-  async function submitReview() {
-    const name = document.getElementById('rev-name').value.trim()
-    const email = document.getElementById('rev-email').value.trim()
-    const comment = document.getElementById('rev-comment').value.trim()
-    const btn = document.getElementById('rev-btn')
+function showMsg(id,txt,type='error'){
+  const el=document.getElementById(id);el.textContent=txt;el.className=`msg ${type}`;el.style.display='block'
+  if(type==='success')setTimeout(()=>{el.style.display='none'},4000)
+}
 
-    if (!name || !email || !selectedRating)
-      return showMsg('rev-error', 'Indica o teu nome, email e uma classificação.')
-
-    btn.disabled = true; btn.textContent = 'A publicar...'
-    const { error } = await db.from('reviews').insert({ professional_id: proId, reviewer_name: name, reviewer_email: email, rating: selectedRating, comment })
-    if (error) {
-      showMsg('rev-error', 'Erro ao publicar. Tenta novamente.')
-      btn.disabled = false; btn.textContent = 'Publicar avaliação'
-    } else {
-      showMsg('rev-success', 'Avaliação publicada! Obrigado.', true)
-      btn.textContent = 'Publicado ✓'
-      setTimeout(() => location.reload(), 1500)
-    }
-  }
-
-  function showMsg(id, text, success = false) {
-    const el = document.getElementById(id)
-    el.textContent = text
-    el.className = `msg ${success ? 'success' : 'error'}`
-    el.style.display = text ? 'block' : 'none'
-  }
-
-  init()
+function openLightbox(src,caption){
+  document.getElementById('lightbox-img').src=src
+  document.getElementById('lightbox-caption').textContent=caption
+  document.getElementById('lightbox').classList.add('open')
+  document.body.style.overflow='hidden'
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox()})
+init()
 </script>
 </body>
 </html>
