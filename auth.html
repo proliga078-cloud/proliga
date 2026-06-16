@@ -35,7 +35,7 @@
     .form-body { padding: 32px; }
     .form-group { margin-bottom: 20px; }
     label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
-    input, select, textarea {
+    input, select {
       width: 100%; padding: 12px 14px;
       border: 1.5px solid #e2e8f0;
       border-radius: 8px;
@@ -43,8 +43,7 @@
       color: #1e293b; outline: none;
       transition: border-color .2s;
     }
-    input:focus, select:focus, textarea:focus { border-color: #1d4ed8; }
-    textarea { resize: vertical; min-height: 80px; }
+    input:focus, select:focus { border-color: #1d4ed8; }
     .btn-submit {
       width: 100%; padding: 14px;
       background: #1d4ed8; color: #fff;
@@ -56,15 +55,10 @@
     .btn-submit:hover { background: #1e40af; }
     .btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
     .msg { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
-    .msg.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-    .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-    .divider { text-align: center; color: #94a3b8; font-size: 13px; margin: 20px 0; position: relative; }
-    .divider::before, .divider::after {
-      content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: #e2e8f0;
-    }
-    .divider::before { left: 0; } .divider::after { right: 0; }
+    .msg.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; display: block; }
+    .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; display: block; }
+    .msg.hidden { display: none; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .hint { font-size: 12px; color: #94a3b8; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -80,66 +74,34 @@
 
     <!-- LOGIN -->
     <div id="form-login" class="form-body">
-      <div class="msg error" id="login-error"></div>
-      <div class="msg success" id="login-success"></div>
+      <div class="msg hidden" id="login-msg"></div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="login-email" placeholder="o-teu@email.com" />
+        <input type="email" id="login-email" placeholder="o-teu@email.com" autocomplete="email" />
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="login-password" placeholder="••••••••" />
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
       </div>
       <button class="btn-submit" id="login-btn" onclick="doLogin()">Entrar na conta</button>
     </div>
 
     <!-- REGISTER -->
     <div id="form-register" class="form-body" style="display:none">
-      <div class="msg error" id="reg-error"></div>
-      <div class="msg success" id="reg-success"></div>
-      <div class="row">
-        <div class="form-group">
-          <label>Nome completo</label>
-          <input type="text" id="reg-name" placeholder="João Silva" />
-        </div>
-        <div class="form-group">
-          <label>Categoria</label>
-          <select id="reg-category">
-            <option value="">Selecionar...</option>
-            <option>Eletricista</option>
-            <option>Canalizador</option>
-            <option>Pintor</option>
-            <option>Carpinteiro</option>
-            <option>Serralheiro</option>
-            <option>Jardineiro</option>
-            <option>Limpeza</option>
-            <option>Outro</option>
-          </select>
-        </div>
+      <div class="msg hidden" id="reg-msg"></div>
+      <div class="form-group">
+        <label>Nome completo</label>
+        <input type="text" id="reg-name" placeholder="João Silva" autocomplete="name" />
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="reg-email" placeholder="o-teu@email.com" />
+        <input type="email" id="reg-email" placeholder="o-teu@email.com" autocomplete="email" />
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" />
+        <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
       </div>
-      <div class="row">
-        <div class="form-group">
-          <label>Localização</label>
-          <input type="text" id="reg-location" placeholder="Lisboa" />
-        </div>
-        <div class="form-group">
-          <label>Telefone</label>
-          <input type="tel" id="reg-phone" placeholder="912 345 678" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Sobre ti <span style="color:#94a3b8">(opcional)</span></label>
-        <textarea id="reg-bio" placeholder="Descreve a tua experiência e especialidades..."></textarea>
-      </div>
-      <button class="btn-submit" id="reg-btn" onclick="doRegister()">Criar conta profissional</button>
+      <button class="btn-submit" id="reg-btn" onclick="doRegister()">Criar conta</button>
     </div>
   </div>
 </main>
@@ -149,6 +111,11 @@
   const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
   const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  // If already logged in, redirect to dashboard
+  db.auth.getSession().then(({ data }) => {
+    if (data.session) location.href = 'dashboard.html'
+  })
 
   // Check if coming from ?tab=register
   const params = new URLSearchParams(location.search)
@@ -161,73 +128,127 @@
     document.getElementById('tab-register').classList.toggle('active', tab === 'register')
   }
 
-  function showMsg(id, text, type = 'error') {
+  function showMsg(id, text, type) {
     const el = document.getElementById(id)
     el.textContent = text
-    el.className = `msg ${type}`
-    el.style.display = 'block'
+    el.className = 'msg ' + (text ? type : 'hidden')
   }
 
   async function doLogin() {
     const email = document.getElementById('login-email').value.trim()
     const password = document.getElementById('login-password').value
     const btn = document.getElementById('login-btn')
-    if (!email || !password) return showMsg('login-error', 'Preenche todos os campos.')
-    btn.disabled = true; btn.textContent = 'A entrar...'
-    const { error } = await db.auth.signInWithPassword({ email, password })
+
+    showMsg('login-msg', '', 'hidden')
+    if (!email || !password) return showMsg('login-msg', 'Preenche o email e a password.', 'error')
+
+    btn.disabled = true
+    btn.textContent = 'A entrar...'
+
+    const { data, error } = await db.auth.signInWithPassword({ email, password })
+
     if (error) {
-      showMsg('login-error', 'Email ou password incorretos.')
-      btn.disabled = false; btn.textContent = 'Entrar na conta'
-    } else {
-      showMsg('login-error', '', 'error')
-      showMsg('login-success', 'Bem-vindo! A redirecionar...', 'success')
-      setTimeout(() => location.href = 'dashboard.html', 1000)
+      let msg = 'Email ou password incorretos.'
+      if (error.message.includes('Email not confirmed')) msg = 'Confirma o teu email antes de entrar.'
+      if (error.message.includes('Invalid login')) msg = 'Email ou password incorretos.'
+      showMsg('login-msg', msg, 'error')
+      btn.disabled = false
+      btn.textContent = 'Entrar na conta'
+      return
     }
+
+    // Check if admin
+    if (data.user.email === 'davidscampos10@gmail.com') {
+      showMsg('login-msg', 'Bem-vindo, admin! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'admin.html', 800)
+      return
+    }
+
+    showMsg('login-msg', 'Bem-vindo! A redirecionar...', 'success')
+    setTimeout(() => location.href = 'dashboard.html', 800)
   }
 
   async function doRegister() {
     const name = document.getElementById('reg-name').value.trim()
-    const category = document.getElementById('reg-category').value
     const email = document.getElementById('reg-email').value.trim()
     const password = document.getElementById('reg-password').value
-    const location = document.getElementById('reg-location').value.trim()
-    const phone = document.getElementById('reg-phone').value.trim()
-    const bio = document.getElementById('reg-bio').value.trim()
     const btn = document.getElementById('reg-btn')
 
-    if (!name || !category || !email || !password || !location)
-      return showMsg('reg-error', 'Preenche todos os campos obrigatórios.')
-    if (password.length < 6)
-      return showMsg('reg-error', 'A password deve ter pelo menos 6 caracteres.')
+    showMsg('reg-msg', '', 'hidden')
 
-    btn.disabled = true; btn.textContent = 'A criar conta...'
-    const { data, error } = await db.auth.signUp({ email, password })
-    if (error) {
-      showMsg('reg-error', error.message)
-      btn.disabled = false; btn.textContent = 'Criar conta profissional'
+    if (!name || !email || !password) return showMsg('reg-msg', 'Preenche todos os campos.', 'error')
+    if (password.length < 6) return showMsg('reg-msg', 'A password deve ter pelo menos 6 caracteres.', 'error')
+    if (!email.includes('@')) return showMsg('reg-msg', 'Introduz um email válido.', 'error')
+
+    btn.disabled = true
+    btn.textContent = 'A criar conta...'
+
+    // Step 1: Create auth user
+    const { data: signUpData, error: signUpError } = await db.auth.signUp({ email, password })
+
+    if (signUpError) {
+      let msg = signUpError.message
+      if (msg.includes('already registered') || msg.includes('User already registered')) {
+        msg = 'Este email já está registado. Tenta fazer login.'
+      }
+      showMsg('reg-msg', msg, 'error')
+      btn.disabled = false
+      btn.textContent = 'Criar conta'
       return
     }
 
-    // Create profile
-    const { error: profileError } = await db.from('profiles').insert({
-      id: data.user.id, name, category, location, phone, bio
-    })
-
-    if (profileError) {
-      showMsg('reg-error', 'Conta criada mas erro no perfil. Tenta fazer login.')
-    } else {
-      showMsg('reg-error', '', 'error')
-      showMsg('reg-success', 'Conta criada com sucesso! A redirecionar...', 'success')
-      setTimeout(() => location.href = 'dashboard.html', 1200)
+    const userId = signUpData.user?.id
+    if (!userId) {
+      showMsg('reg-msg', 'Erro ao criar conta. Tenta novamente.', 'error')
+      btn.disabled = false
+      btn.textContent = 'Criar conta'
+      return
     }
+
+    // Step 2: If we have a session, insert profile immediately
+    if (signUpData.session) {
+      await insertProfile(userId, name, email)
+      showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'dashboard.html', 800)
+      return
+    }
+
+    // Step 3: No session yet — try signing in immediately (email auto-confirmed via trigger)
+    const { data: signInData, error: signInError } = await db.auth.signInWithPassword({ email, password })
+
+    if (!signInError && signInData.session) {
+      await insertProfile(userId, name, email)
+      showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
+      setTimeout(() => location.href = 'dashboard.html', 800)
+      return
+    }
+
+    // Step 4: If still no session (email confirmation required), show friendly message
+    showMsg('reg-msg', 'Conta criada! Verifica o teu email para confirmar e depois faz login.', 'success')
+    btn.disabled = false
+    btn.textContent = 'Criar conta'
+  }
+
+  async function insertProfile(userId, name, email) {
+    // Try to insert profile — if it fails we'll let dashboard.html handle it on next login
+    await db.from('profiles').upsert({
+      user_id: userId,
+      name: name,
+      email: email,
+      plan: 'free',
+      approved: true,
+      location: '',
+      category: '',
+      phone: '',
+      bio: ''
+    }, { onConflict: 'user_id' })
   }
 
   // Enter key support
   document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      if (document.getElementById('form-login').style.display !== 'none') doLogin()
-      else doRegister()
-    }
+    if (e.key !== 'Enter') return
+    if (document.getElementById('form-login').style.display !== 'none') doLogin()
+    else doRegister()
   })
 </script>
 </body>
