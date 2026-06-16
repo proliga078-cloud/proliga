@@ -140,7 +140,7 @@
     <div class="nav-item" data-page="messages" onclick="showPage('messages')"><span class="icon">💬</span> Mensagens <span id="msg-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
     <div class="nav-item" data-page="reviews" onclick="showPage('reviews')"><span class="icon">⭐</span> Avaliações</div>
     <div class="nav-item" onclick="location.href='pricing.html'"><span class="icon">💎</span> Atualizar Plano</div>
-    <div class="nav-item" onclick="window.open('profile.html?id='+profileId,'_blank')"><span class="icon">👁️</span> Ver Perfil Público</div>
+    <div class="nav-item" onclick="viewPublicProfile()"><span class="icon">👁️</span> Ver Perfil Público</div>
   </nav>
   <div class="sidebar-bottom">
     <button class="btn-signout" onclick="signOut()">Sair da conta</button>
@@ -301,24 +301,40 @@ const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 let user=null,profileData=null,profileId=null
 
 async function init(){
-  const{data:{session}}=await db.auth.getSession()
-  if(!session){location.href='auth.html';return}
-  user=session.user
-  const{data:pro}=await db.from('profiles').select('*').eq('user_id',user.id).single()
-  if(pro){profileData=pro;profileId=pro.id;fillProfileForm(pro)}
-  else await createProfile()
-  updateSidebar()
-  loadStats()
-  loadRecentMsgs()
-  loadRecentReviews()
-  checkUpgrade()
+  try {
+    const{data:{session}}=await db.auth.getSession()
+    if(!session){location.href='auth.html';return}
+    user=session.user
+    const{data:pro}=await db.from('profiles').select('*').eq('user_id',user.id).single()
+    if(pro){profileData=pro;profileId=pro.id;fillProfileForm(pro)}
+    else await createProfile()
+    updateSidebar()
+    if(profileId){
+      loadStats()
+      loadRecentMsgs()
+      loadRecentReviews()
+    }
+    checkUpgrade()
+  } catch(e) {
+    console.error('init error:',e)
+  }
 }
 
 async function createProfile(){
   const name=user.user_metadata?.name||user.email.split('@')[0]
-  const{data}=await db.from('profiles').insert({user_id:user.id,name,email:user.email,plan:'free'}).select().single()
-  profileData=data;profileId=data?.id
-  if(data)fillProfileForm(data)
+  // Use upsert so duplicate user_id never causes a crash
+  const{data,error}=await db.from('profiles').upsert({
+    user_id:user.id,name,email:user.email,
+    plan:'free',approved:true,location:'',category:'',phone:'',bio:''
+  },{onConflict:'user_id'}).select().single()
+  if(error){
+    console.error('createProfile upsert error:',error)
+    // Fallback: try to fetch any existing row for this user
+    const{data:existing}=await db.from('profiles').select('*').eq('user_id',user.id).maybeSingle()
+    if(existing){profileData=existing;profileId=existing.id;fillProfileForm(existing)}
+    return
+  }
+  if(data){profileData=data;profileId=data.id;fillProfileForm(data)}
 }
 
 function updateSidebar(){
@@ -344,10 +360,11 @@ function fillProfileForm(pro){
 }
 
 async function saveProfile(){
+  if(!profileId){showAlert('profile-error','Erro: perfil não carregado. Recarrega a página.','error');return}
   const name=document.getElementById('p-name').value.trim()
   const category=document.getElementById('p-cat').value
   const location=document.getElementById('p-loc').value
-  if(!name||!category||!location){showAlert('profile-error','Preenche nome, categoria e localização.');return}
+  if(!name||!category||!location){showAlert('profile-error','Preenche nome, categoria e localização.','error');return}
   const updates={
     name,category,location,
     phone:document.getElementById('p-phone').value.trim()||null,
@@ -452,8 +469,9 @@ async function loadServices(){
 }
 
 async function addService(){
+  if(!profileId){showAlert('srv-error','Erro: perfil não carregado. Recarrega a página.','error');return}
   const title=document.getElementById('srv-title').value.trim()
-  if(!title){showAlert('srv-error','O nome do serviço é obrigatório.');return}
+  if(!title){showAlert('srv-error','O nome do serviço é obrigatório.','error');return}
   const{error}=await db.from('services').insert({
     professional_id:profileId,title,
     description:document.getElementById('srv-desc').value.trim()||null,
@@ -561,6 +579,11 @@ function showPage(name){
   if(name==='services')loadServices()
   if(name==='messages')loadMessages()
   if(name==='reviews')loadReviews()
+}
+
+function viewPublicProfile(){
+  if(!profileId){alert('Guarda o teu perfil primeiro para ver o perfil público.');return}
+  window.open('profile.html?id='+profileId,'_blank')
 }
 
 function showAlert(id,msg,type='success'){

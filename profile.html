@@ -293,7 +293,7 @@ const proId=params.get('id')
 let currentRating=0,proData=null
 
 async function init(){
-  if(!proId){location.href='index.html';return}
+  if(!proId||proId==='null'||proId==='undefined'){location.href='index.html';return}
   const{data:{session}}=await db.auth.getSession()
   if(session){
     document.getElementById('nav-guest').style.display='none'
