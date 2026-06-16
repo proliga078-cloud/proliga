@@ -204,13 +204,18 @@
 <script>
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
-const ADMIN_EMAIL='davidscampos10@gmail.com'
+const ADMIN_EMAIL='davidscampos14@gmail.com'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 let allPros=[]
 
 async function init(){
-  const{data:{session}}=await db.auth.getSession()
-  if(session&&session.user.email===ADMIN_EMAIL)showAdmin(session.user)
+  try{
+    const{data:{session}}=await db.auth.getSession()
+    if(!session)return
+    const isAdminEmail=session.user.email===ADMIN_EMAIL
+    const{data:prof}=await db.from('profiles').select('is_admin').eq('user_id',session.user.id).single()
+    if(isAdminEmail||prof?.is_admin===true)showAdmin(session.user)
+  }catch(e){console.error('init:',e)}
 }
 
 async function adminLogin(){
@@ -223,7 +228,9 @@ async function adminLogin(){
   btn.disabled=true;btn.textContent='A verificar...'
   const{data,error}=await db.auth.signInWithPassword({email,password:pass})
   if(error){showLoginError('Credenciais inválidas.');btn.disabled=false;btn.textContent='Entrar no painel';return}
-  if(data.user.email!==ADMIN_EMAIL){
+  // verificar is_admin na DB
+    const{data:prof2}=await db.from('profiles').select('is_admin').eq('user_id',data.user.id).single()
+    if(data.user.email!==ADMIN_EMAIL&&prof2?.is_admin!==true){
     await db.auth.signOut()
     showLoginError('Acesso negado. Esta conta não tem permissões de administrador.')
     btn.disabled=false;btn.textContent='Entrar no painel';return
@@ -288,7 +295,8 @@ function renderPros(pros){
       <td><span class="badge badge-${p.plan||'free'}">${p.plan||'free'}</span></td>
       <td><span class="badge ${approved?'badge-approved':'badge-pending'}">${approved?'Ativo':'Pendente'}</span></td>
       <td><div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-view" onclick="window.open('profile.html?id=${p.id}','_blank')">👁 Ver</button>
+        <button class="btn btn-approve" onclick="toggleAdmin('${p.id}',!p.is_admin)" title="${p.is_admin?'Remover admin':'Tornar admin'}">${p.is_admin?'👑':'⬆️'}</button>
+<button class="btn btn-view" onclick="window.open('profile.html?id=${p.id}','_blank')">👁 Ver</button>
         ${approved
           ?`<button class="btn btn-unapprove" onclick="toggleApprove('${p.id}',false)">⏸ Suspender</button>`
           :`<button class="btn btn-approve" onclick="toggleApprove('${p.id}',true)">✅ Aprovar</button>`}
@@ -300,6 +308,11 @@ function renderPros(pros){
 function filterPros(q){
   const lq=q.toLowerCase()
   renderPros(allPros.filter(p=>(p.name||'').toLowerCase().includes(lq)||(p.category||'').toLowerCase().includes(lq)||(p.location||'').toLowerCase().includes(lq)))
+}
+
+async function toggleAdmin(id,isAdmin){
+await db.from('profiles').update({is_admin:isAdmin}).eq('id',id)
+loadProfiles()
 }
 
 async function toggleApprove(id,approved){
