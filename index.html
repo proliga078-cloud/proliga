@@ -61,13 +61,18 @@
     .section-header{text-align:center;margin-bottom:40px}
     .section-header h2{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-0.5px;margin-bottom:10px}
     .section-header p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
-    .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
-    .cat-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
-    .cat-card:hover{border-color:var(--blue);box-shadow:0 4px 20px rgba(29,78,216,.12);transform:translateY(-2px)}
-    .cat-card:hover .cat-icon{background:var(--blue);color:#fff}
-    .cat-icon{width:56px;height:56px;border-radius:14px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;transition:all .2s}
-    .cat-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
-    .cat-sub{font-size:12px;color:var(--muted)}
+    .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    @media(max-width:768px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+    .cat-card{border-radius:18px;padding:28px 20px 22px;text-align:center;cursor:pointer;transition:all .25s;text-decoration:none;display:block;border:2px solid transparent;position:relative;overflow:hidden}
+    .cat-card::before{content:'';position:absolute;inset:0;opacity:.08;background:currentColor;pointer-events:none}
+    .cat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.12);border-color:currentColor}
+    .cat-icon{font-size:36px;margin-bottom:12px;display:block;line-height:1}
+    .cat-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
+    .cat-sub{font-size:12px;color:var(--muted);font-weight:500}
+    .cat-count{font-size:11px;margin-top:6px;font-weight:600;opacity:.7}
+    .cat-more{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px}
+    .btn-cats{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .btn-cats:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
     .how-section{background:var(--bg)}
     .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;max-width:900px;margin:0 auto}
     .step-card{background:var(--white);border-radius:20px;padding:32px 24px;text-align:center;box-shadow:var(--card-shadow)}
@@ -150,7 +155,6 @@
     .t-role{font-size:12px;color:var(--muted)}
     /* Mobile */
     @media(max-width:768px){
-      .cat-grid{grid-template-columns:repeat(3,1fr)}
       .pros-grid{grid-template-columns:1fr 1fr}
       .why-grid{grid-template-columns:1fr}
       section{padding:48px 4%}
@@ -159,7 +163,7 @@
       .footer-grid{grid-template-columns:1fr 1fr}
     }
     @media(max-width:480px){
-      .cat-grid{grid-template-columns:repeat(2,1fr)}
+      .cat-grid{grid-template-columns:repeat(2,1fr);gap:10px}
       .pros-grid{grid-template-columns:1fr}
       .trust-grid{grid-template-columns:repeat(2,1fr)}
       .hero h1{font-size:26px}
@@ -243,22 +247,49 @@
     <p>Encontra o especialista certo para cada trabalho</p>
   </div>
   <div class="cat-grid">
-    <a href="categoria.html?cat=Eletricistas" class="cat-card"><div class="cat-icon">⚡</div><div class="cat-name">Eletricistas</div><div class="cat-sub">Obras &amp; Construção</div></a>
-    <a href="categoria.html?cat=Canalizadores" class="cat-card"><div class="cat-icon">🔧</div><div class="cat-name">Canalizadores</div><div class="cat-sub">Obras &amp; Construção</div></a>
-    <a href="categoria.html?cat=Pintores" class="cat-card"><div class="cat-icon">🎨</div><div class="cat-name">Pintores</div><div class="cat-sub">Obras &amp; Construção</div></a>
-    <a href="categoria.html?cat=Pedreiros" class="cat-card"><div class="cat-icon">🧱</div><div class="cat-name">Pedreiros</div><div class="cat-sub">Obras &amp; Construção</div></a>
-    <a href="categoria.html?cat=Carpinteiros" class="cat-card"><div class="cat-icon">🪚</div><div class="cat-name">Carpinteiros</div><div class="cat-sub">Obras &amp; Construção</div></a>
-    <a href="categoria.html?cat=Serralheiros" class="cat-card"><div class="cat-icon">🔩</div><div class="cat-name">Serralheiros</div><div class="cat-sub">Obras &amp; Construção</div></a>
-    <a href="categoria.html?cat=Jardineiros" class="cat-card"><div class="cat-icon">🌿</div><div class="cat-name">Jardineiros</div><div class="cat-sub">Casa &amp; Jardim</div></a>
-    <a href="categoria.html?cat=Limpeza" class="cat-card"><div class="cat-icon">🧹</div><div class="cat-name">Limpeza</div><div class="cat-sub">Casa &amp; Jardim</div></a>
-    <a href="categoria.html?cat=Mudanças" class="cat-card"><div class="cat-icon">📦</div><div class="cat-name">Mudanças</div><div class="cat-sub">Casa &amp; Jardim</div></a>
-    <a href="categoria.html?cat=Decoradores" class="cat-card"><div class="cat-icon">🛋️</div><div class="cat-name">Decoradores</div><div class="cat-sub">Casa &amp; Jardim</div></a>
-    <a href="categoria.html?cat=Programadores" class="cat-card"><div class="cat-icon">💻</div><div class="cat-name">Programadores</div><div class="cat-sub">Tecnologia</div></a>
-    <a href="categoria.html?cat=Designers" class="cat-card"><div class="cat-icon">🎭</div><div class="cat-name">Designers</div><div class="cat-sub">Tecnologia</div></a>
-    <a href="categoria.html?cat=Reparações" class="cat-card"><div class="cat-icon">🖥️</div><div class="cat-name">Reparações Tech</div><div class="cat-sub">Tecnologia</div></a>
-    <a href="categoria.html?cat=Personal Trainers" class="cat-card"><div class="cat-icon">💪</div><div class="cat-name">Personal Trainers</div><div class="cat-sub">Bem-estar</div></a>
-    <a href="categoria.html?cat=Cabeleireiros" class="cat-card"><div class="cat-icon">✂️</div><div class="cat-name">Cabeleireiros</div><div class="cat-sub">Bem-estar &amp; Beleza</div></a>
-    <a href="categoria.html?cat=Esteticistas" class="cat-card"><div class="cat-icon">💆</div><div class="cat-name">Esteticistas</div><div class="cat-sub">Bem-estar &amp; Beleza</div></a>
+    <a href="categoria.html?cat=Eletricistas" class="cat-card" style="background:#eff6ff;color:#1d4ed8">
+      <span class="cat-icon">⚡</span>
+      <div class="cat-name">Eletricistas</div>
+      <div class="cat-sub">Instalações &amp; reparações</div>
+    </a>
+    <a href="categoria.html?cat=Canalizadores" class="cat-card" style="background:#f0fdf4;color:#16a34a">
+      <span class="cat-icon">🔧</span>
+      <div class="cat-name">Canalizadores</div>
+      <div class="cat-sub">Água &amp; saneamento</div>
+    </a>
+    <a href="categoria.html?cat=Pintores" class="cat-card" style="background:#fef9c3;color:#a16207">
+      <span class="cat-icon">🎨</span>
+      <div class="cat-name">Pintores</div>
+      <div class="cat-sub">Interior &amp; exterior</div>
+    </a>
+    <a href="categoria.html?cat=Jardineiros" class="cat-card" style="background:#f0fdf4;color:#15803d">
+      <span class="cat-icon">🌿</span>
+      <div class="cat-name">Jardineiros</div>
+      <div class="cat-sub">Jardim &amp; espaços verdes</div>
+    </a>
+    <a href="categoria.html?cat=Limpeza" class="cat-card" style="background:#f0f9ff;color:#0369a1">
+      <span class="cat-icon">🧹</span>
+      <div class="cat-name">Limpeza</div>
+      <div class="cat-sub">Casa &amp; escritórios</div>
+    </a>
+    <a href="categoria.html?cat=Programadores" class="cat-card" style="background:#faf5ff;color:#7c3aed">
+      <span class="cat-icon">💻</span>
+      <div class="cat-name">Programadores</div>
+      <div class="cat-sub">Web &amp; apps</div>
+    </a>
+    <a href="categoria.html?cat=Carpinteiros" class="cat-card" style="background:#fff7ed;color:#c2410c">
+      <span class="cat-icon">🪚</span>
+      <div class="cat-name">Carpinteiros</div>
+      <div class="cat-sub">Madeira &amp; mobiliário</div>
+    </a>
+    <a href="categoria.html?cat=Personal Trainers" class="cat-card" style="background:#fff1f2;color:#be123c">
+      <span class="cat-icon">💪</span>
+      <div class="cat-name">Personal Trainers</div>
+      <div class="cat-sub">Fitness &amp; bem-estar</div>
+    </a>
+  </div>
+  <div class="cat-more">
+    <a href="categoria.html" class="btn-cats">Ver todas as categorias →</a>
   </div>
 </section>
 
