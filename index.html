@@ -116,8 +116,8 @@
     .cta-btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
     .btn-lg{padding:16px 36px;font-size:16px;border-radius:12px}
     footer{background:var(--text);color:rgba(255,255,255,.7);padding:48px 5% 28px}
-    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
-    @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr}}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:20px;margin-bottom:40px}
+    @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr 1fr}}
     .footer-brand p{font-size:13px;line-height:1.7;max-width:260px;margin-top:10px}
     .footer-col h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
     .footer-col a{display:block;font-size:13px;margin-bottom:8px;transition:color .2s}
@@ -434,6 +434,53 @@
   </div>
 </section>
 
+<section class="pro-how-section" style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);padding:72px 5%">
+<div class="section-header">
+<h2 style="color:#fff">És Profissional? <span style="color:var(--gold)">Começa Aqui</span></h2>
+<p style="color:rgba(255,255,255,.7)">Em menos de 5 minutos tens o teu perfil online e começas a receber clientes</p>
+</div>
+<div class="steps-grid" style="max-width:1020px;margin:0 auto 48px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
+<div class="step-num" style="background:var(--gold);color:#fff">1</div>
+<h3 style="color:#fff">Cria a tua conta</h3>
+<p style="color:rgba(255,255,255,.65)">Regista-te gratuitamente com o teu email. Sem cartão de crédito, sem compromisso.</p>
+</div>
+<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
+<div class="step-num" style="background:var(--gold);color:#fff">2</div>
+<h3 style="color:#fff">Preenche o teu perfil</h3>
+<p style="color:rgba(255,255,255,.65)">Adiciona a tua bio, especialidades, zona de atuação, preços e portfólio com fotos do teu trabalho.</p>
+</div>
+<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
+<div class="step-num" style="background:var(--gold);color:#fff">3</div>
+<h3 style="color:#fff">Verificação rápida</h3>
+<p style="color:rgba(255,255,255,.65)">A nossa equipa valida o teu perfil em até 24h. O badge ✅ Verificado aumenta a confiança dos clientes.</p>
+</div>
+<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
+<div class="step-num" style="background:var(--gold);color:#fff">4</div>
+<h3 style="color:#fff">Recebe clientes</h3>
+<p style="color:rgba(255,255,255,.65)">Os clientes encontram-te, enviam mensagem direta e tu fazes o orçamento. Sem intermediários, sem comissões.</p>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:1020px;margin:0 auto 40px">
+<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:28px">🆓</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Plano Grátis para sempre</div><div style="color:rgba(255,255,255,.6);font-size:13px">Perfil público, mensagens ilimitadas. Sem expiração.</div></div>
+</div>
+<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:28px">🚫</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Zero comissões</div><div style="color:rgba(255,255,255,.6);font-size:13px">Cobras €500? Recebes €500. Nunca cobramos por trabalho fechado.</div></div>
+</div>
+<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:28px">📍</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Clientes locais</div><div style="color:rgba(255,255,255,.6);font-size:13px">Só clientes do Porto e Maia. Sem deslocações desnecessárias.</div></div>
+</div>
+<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:28px">⭐</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Avaliações que ficam</div><div style="color:rgba(255,255,255,.6);font-size:13px">Cada bom trabalho constrói a tua reputação. O teu histórico é teu.</div></div>
+</div>
+</div>
+<div style="text-align:center;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+<a href="auth.html?tab=register" class="btn btn-gold btn-lg">Criar perfil grátis →</a>
+<a href="pricing.html" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.3)">Ver planos Pro</a>
+</div>
+</section>
+
 <section class="cta-section">
   <h2>És Profissional? <span style="color:var(--blue)">Junta-te à Proliga</span></h2>
   <p>Cria o teu perfil gratuito e começa a receber clientes hoje. Sem comissões, sem surpresas.</p>
@@ -444,39 +491,49 @@
 </section>
 
 <footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="index.html" class="logo" style="color:rgba(255,255,255,.9)">Pro<span>liga</span></a>
-      <p>O marketplace local de serviços profissionais no Porto e na Maia. Conectamos clientes a profissionais de confiança.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Categorias</h4>
-      <a href="categoria.html?cat=Eletricistas">Eletricistas</a>
-      <a href="categoria.html?cat=Canalizadores">Canalizadores</a>
-      <a href="categoria.html?cat=Pintores">Pintores</a>
-      <a href="categoria.html?cat=Jardineiros">Jardineiros</a>
-      <a href="categoria.html">Ver todas →</a>
-    </div>
-    <div class="footer-col">
-      <h4>Localizações</h4>
-      <a href="categoria.html?loc=Porto">Porto</a>
-      <a href="categoria.html?loc=Maia">Maia</a>
-      <a href="categoria.html?loc=Porto&zona=Boavista">Boavista</a>
-      <a href="categoria.html?loc=Porto&zona=Foz do Douro">Foz do Douro</a>
-      <a href="categoria.html?loc=Maia&zona=Castêlo da Maia">Castêlo da Maia</a>
-    </div>
-    <div class="footer-col">
-      <h4>Proliga</h4>
-      <a href="pricing.html">Planos e Preços</a>
-      <a href="auth.html?tab=register">Registar</a>
-      <a href="auth.html?tab=login">Entrar</a>
-      <a href="admin.html">Admin</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Proliga · Porto &amp; Maia</span>
-    <span>Feito com ❤️ para profissionais locais</span>
-  </div>
+<div class="footer-grid">
+<div class="footer-brand">
+<a href="index.html" class="logo" style="color:rgba(255,255,255,.9)">Pro<span>liga</span></a>
+<p>O marketplace local de serviços profissionais no Porto e na Maia. Conectamos clientes a profissionais de confiança.</p>
+<p style="margin-top:12px;font-size:12px">📧 <a href="mailto:geral@proliga.pt" style="color:rgba(255,255,255,.6)">geral@proliga.pt</a></p>
+</div>
+<div class="footer-col">
+<h4>Categorias</h4>
+<a href="categoria.html?cat=Eletricistas">Eletricistas</a>
+<a href="categoria.html?cat=Canalizadores">Canalizadores</a>
+<a href="categoria.html?cat=Pintores">Pintores</a>
+<a href="categoria.html?cat=Jardineiros">Jardineiros</a>
+<a href="categoria.html?cat=Programadores">Programadores</a>
+<a href="categoria.html">Ver todas →</a>
+</div>
+<div class="footer-col">
+<h4>Localizações</h4>
+<a href="categoria.html?loc=Porto">Porto</a>
+<a href="categoria.html?loc=Maia">Maia</a>
+<a href="categoria.html?loc=Porto&zona=Boavista">Boavista</a>
+<a href="categoria.html?loc=Porto&zona=Foz do Douro">Foz do Douro</a>
+<a href="categoria.html?loc=Maia&zona=Cast%C3%AAlo da Maia">Castêlo da Maia</a>
+</div>
+<div class="footer-col">
+<h4>Empresa</h4>
+<a href="sobre.html">Sobre nós</a>
+<a href="como-funciona.html">Como funciona</a>
+<a href="pricing.html">Planos e Preços</a>
+<a href="contacto.html">Contacto</a>
+<a href="auth.html?tab=register">Registar profissional</a>
+</div>
+<div class="footer-col">
+<h4>Legal</h4>
+<a href="termos.html">Termos de Serviço</a>
+<a href="privacidade.html">Política de Privacidade</a>
+<a href="cookies.html">Política de Cookies</a>
+<a href="rgpd.html">RGPD</a>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© 2026 Proliga · Porto &amp; Maia · Todos os direitos reservados</span>
+<span>Feito com ❤️ para profissionais locais</span>
+</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
