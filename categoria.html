@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Profissionais – Proliga</title>
+  <title>Profissionais – Proliga | Porto &amp; Maia</title>
+  <meta name="description" content="Encontra profissionais verificados no Porto e na Maia. Filtra por categoria, zona e avaliação. Contacto direto, sem intermediários."/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Profissionais no Porto e Maia – Proliga"/>
+  <meta property="og:description" content="16 categorias de profissionais verificados. Eletricistas, pintores, jardineiros e muito mais no Porto e na Maia."/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -35,7 +41,21 @@
 
     /* LAYOUT */
     .page-body{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:28px 5%;max-width:1400px;margin:0 auto}
-    @media(max-width:900px){.page-body{grid-template-columns:1fr}.sidebar{display:none}}
+    .mobile-filter-btn{display:none;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text);margin-bottom:16px}
+    @media(max-width:900px){
+      .page-body{grid-template-columns:1fr}
+      .sidebar{display:none;position:fixed;top:0;left:0;width:min(320px,100vw);height:100vh;background:var(--white);z-index:500;overflow-y:auto;padding:20px;box-shadow:4px 0 24px rgba(0,0,0,.15)}
+      .sidebar.open{display:block}
+      .mobile-filter-btn{display:flex}
+      .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:499}
+      .sidebar-overlay.open{display:block}
+    }
+    @media(max-width:600px){
+      .pros-grid{grid-template-columns:1fr!important}
+      .page-header{padding:20px 4% 16px}
+      .page-body{padding:16px 4%}
+      nav{padding:0 4%}
+    }
 
     /* SIDEBAR */
     .sidebar{position:sticky;top:88px;align-self:start}
@@ -151,9 +171,22 @@
   </div>
 </div>
 
+<div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <div class="page-body">
+  <!-- Mobile filter button -->
+  <div style="grid-column:1/-1">
+    <button class="mobile-filter-btn" onclick="openSidebar()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
+      Filtros
+    </button>
+  </div>
   <!-- SIDEBAR FILTERS -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar-el">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;display:none" class="sidebar-close-row">
+      <span style="font-weight:700;font-size:16px">Filtros</span>
+      <button onclick="closeSidebar()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">×</button>
+    </div>
     <div class="filter-card">
       <div class="filter-title">Localização</div>
       <div class="filter-group">
@@ -408,6 +441,17 @@ async function loadPros(){
 
 function goPage(p){filters.page=p;loadPros();window.scrollTo({top:0,behavior:'smooth'})}
 
+function openSidebar(){
+  document.getElementById('sidebar-el').classList.add('open')
+  document.getElementById('sidebar-overlay').classList.add('open')
+  document.body.style.overflow='hidden'
+  document.querySelector('.sidebar-close-row').style.display='flex'
+}
+function closeSidebar(){
+  document.getElementById('sidebar-el').classList.remove('open')
+  document.getElementById('sidebar-overlay').classList.remove('open')
+  document.body.style.overflow=''
+}
 function clearFilters(){
   filters.cat='';filters.loc='';filters.zona='';filters.q='';filters.minRating=0;filters.page=1
   document.querySelectorAll('input[name="loc"]')[0].checked=true

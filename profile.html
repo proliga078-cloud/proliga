@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Perfil – Proliga</title>
+  <title>Perfil Profissional – Proliga</title>
+  <meta name="description" content="Vê o perfil, serviços, portfólio e avaliações deste profissional no Porto ou Maia. Contacta diretamente pela Proliga."/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:type" content="profile"/>
+  <meta property="og:site_name" content="Proliga"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -53,6 +58,13 @@
     /* MAIN CONTENT */
     .content-grid{max-width:1100px;margin:24px auto;padding:0 24px;display:grid;grid-template-columns:1fr 320px;gap:24px}
     @media(max-width:900px){.content-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){
+      .profile-wrap{padding:0 16px}
+      .content-grid{padding:0 16px;margin:16px auto}
+      .tabs{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+      .cover-photo{height:140px}
+      nav{padding:0 4%}
+    }
 
     /* TABS */
     .tabs{display:flex;gap:0;margin-bottom:24px;background:var(--white);border-radius:12px;padding:4px;border:1px solid var(--border)}
