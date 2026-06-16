@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Política de Cookies – Proliga</title>
+<meta name="robots" content="noindex"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff;--green:#16a34a}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--white);line-height:1.7}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:64px;display:flex;align-items:center}
+.logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:#f59e0b}
+.legal-hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:48px 5% 40px;color:#fff}
+.legal-hero h1{font-size:clamp(24px,4vw,40px);font-weight:800;margin-bottom:8px}
+.legal-hero p{font-size:15px;opacity:.8}
+.legal-body{max-width:860px;margin:0 auto;padding:48px 5%}
+.legal-body h2{font-size:20px;font-weight:700;margin:36px 0 12px;padding-top:16px;border-top:1px solid var(--border)}
+.legal-body h2:first-child{border-top:none;margin-top:0}
+.legal-body p{font-size:15px;color:#334155;margin-bottom:14px}
+.legal-body ul{margin:10px 0 16px 20px}
+.legal-body ul li{font-size:15px;color:#334155;margin-bottom:8px}
+.highlight{background:var(--bg);border-left:4px solid var(--blue);padding:16px 20px;border-radius:0 8px 8px 0;margin:20px 0;font-size:14px;color:var(--muted)}
+.cookie-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.cookie-table th{background:var(--bg);padding:10px 14px;text-align:left;font-weight:700;border:1px solid var(--border)}
+.cookie-table td{padding:10px 14px;border:1px solid var(--border);color:#334155;vertical-align:top}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.badge-essential{background:#dcfce7;color:var(--green)}
+.badge-analytics{background:#dbeafe;color:var(--blue)}
+.badge-marketing{background:#fef3c7;color:#92400e}
+.prefs-box{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;padding:28px;margin:28px 0}
+.prefs-box h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.pref-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+.pref-row:last-child{border-bottom:none}
+.pref-label{font-size:14px;font-weight:600}
+.pref-desc{font-size:12px;color:var(--muted);margin-top:3px}
+.toggle{position:relative;width:46px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:#cbd5e1;border-radius:99px;transition:.3s}
+.slider:before{content:'';position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+input:checked+.slider{background:var(--blue)}
+input:checked+.slider:before{transform:translateX(20px)}
+input:disabled+.slider{opacity:.6;cursor:not-allowed}
+.btn-save{margin-top:20px;background:var(--blue);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-save:hover{background:var(--blue-dark)}
+footer{background:var(--text);color:rgba(255,255,255,.6);padding:28px 5%;text-align:center;font-size:13px}
+footer a{color:rgba(255,255,255,.7)}footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+<nav><a href="index.html" class="logo">Pro<span>liga</span></a></nav>
+<div class="legal-hero">
+<h1>Política de Cookies</h1>
+<p>Última atualização: 17 de junho de 2026</p>
+</div>
+<div class="legal-body">
+<div class="highlight">
+Esta política explica o que são cookies, como a Proliga os utiliza e como pode gerir as suas preferências. Em conformidade com a Diretiva ePrivacy (transposta pelo artigo 13.º da Lei n.º 41/2004) e com o RGPD.
+</div>
+
+<h2>1. O que são Cookies?</h2>
+<p>Cookies são pequenos ficheiros de texto armazenados no seu dispositivo (computador, tablet ou telemóvel) quando visita um website. Permitem que o site reconheça o seu dispositivo e memorize determinadas informações sobre a sua visita, como as suas preferências de idioma e outras definições.</p>
+<p>Além de cookies, podemos utilizar tecnologias semelhantes como localStorage, sessionStorage ou pixels de rastreio para os mesmos fins.</p>
+
+<h2>2. Tipos de Cookies que Utilizamos</h2>
+<table class="cookie-table">
+<thead><tr><th>Cookie</th><th>Tipo</th><th>Duração</th><th>Finalidade</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>sb-auth-token</strong></td>
+<td><span class="badge badge-essential">Essencial</span></td>
+<td>Sessão</td>
+<td>Autenticação do utilizador via Supabase. Necessário para manter a sessão ativa.</td>
+</tr>
+<tr>
+<td><strong>proliga_session</strong></td>
+<td><span class="badge badge-essential">Essencial</span></td>
+<td>Sessão</td>
+<td>Gestão da sessão de utilizador e preferências de idioma.</td>
+</tr>
+<tr>
+<td><strong>proliga_cookie_consent</strong></td>
+<td><span class="badge badge-essential">Essencial</span></td>
+<td>12 meses</td>
+<td>Regista as suas preferências de cookies para não repetir o pedido.</td>
+</tr>
+<tr>
+<td><strong>_analytics</strong></td>
+<td><span class="badge badge-analytics">Analíticos</span></td>
+<td>12 meses</td>
+<td>Contagem de visitantes e análise de comportamento anónima para melhorar a plataforma.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>3. Cookies Essenciais</h2>
+<p>Os cookies essenciais são <strong>estritamente necessários</strong> para o funcionamento do website e não podem ser desativados. Incluem cookies de autenticação (para manter a sua sessão iniciada), segurança e funcionamento básico da plataforma. Não requerem consentimento.</p>
+
+<h2>4. Cookies Analíticos</h2>
+<p>Os cookies analíticos ajudam-nos a compreender como os visitantes interagem com o website, recolhendo informações de forma anónima. Utilizamos estes dados para melhorar o desempenho e a usabilidade da plataforma. Estes cookies só são ativados com o seu consentimento.</p>
+
+<h2>5. As suas Preferências</h2>
+<p>Pode gerir as suas preferências de cookies abaixo. As alterações terão efeito imediato.</p>
+
+<div class="prefs-box">
+<h3>🍪 Gerir Preferências de Cookies</h3>
+<div class="pref-row">
+<div>
+<div class="pref-label">Cookies Essenciais</div>
+<div class="pref-desc">Necessários para o funcionamento básico do site. Não podem ser desativados.</div>
+</div>
+<label class="toggle">
+<input type="checkbox" checked disabled/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="pref-row">
+<div>
+<div class="pref-label">Cookies Analíticos</div>
+<div class="pref-desc">Ajudam-nos a perceber como usa o site para o melhorarmos. Dados anónimos.</div>
+</div>
+<label class="toggle">
+<input type="checkbox" id="pref-analytics"/>
+<span class="slider"></span>
+</label>
+</div>
+<button class="btn-save" onclick="savePrefs()">Guardar preferências</button>
+</div>
+
+<h2>6. Como Desativar Cookies no Browser</h2>
+<p>Pode também controlar os cookies diretamente nas definições do seu browser:</p>
+<ul>
+<li><a href="https://support.google.com/chrome/answer/95647" target="_blank">Google Chrome</a></li>
+<li><a href="https://support.mozilla.org/pt-PT/kb/cookies-informacoes-que-os-websites-guardam-no-" target="_blank">Mozilla Firefox</a></li>
+<li><a href="https://support.apple.com/pt-pt/guide/safari/sfri11471/mac" target="_blank">Safari</a></li>
+<li><a href="https://support.microsoft.com/pt-pt/microsoft-edge/eliminar-cookies-no-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank">Microsoft Edge</a></li>
+</ul>
+<p>Atenção: desativar cookies essenciais pode impedir o correto funcionamento da plataforma, incluindo a autenticação.</p>
+
+<h2>7. Alterações a esta Política</h2>
+<p>Podemos atualizar esta Política de Cookies para refletir alterações nas nossas práticas. Quando o fizermos, atualizaremos a data no topo e, se as alterações forem significativas, notificaremos os utilizadores.</p>
+
+<h2>8. Contacto</h2>
+<p>Para questões sobre cookies e privacidade: <a href="mailto:privacidade@proliga.pt">privacidade@proliga.pt</a></p>
+</div>
+<footer>
+<p>© 2026 Proliga · <a href="termos.html">Termos</a> · <a href="privacidade.html">Privacidade</a> · <a href="cookies.html">Cookies</a> · <a href="rgpd.html">RGPD</a> · <a href="index.html">Voltar ao início</a></p>
+</footer>
+<script>
+function savePrefs(){
+const analytics=document.getElementById('pref-analytics').checked;
+localStorage.setItem('proliga_cookie_consent',JSON.stringify({essential:true,analytics,saved:new Date().toISOString()}));
+alert('Preferências guardadas com sucesso!');
+}
+// Carregar preferências guardadas
+const saved=localStorage.getItem('proliga_cookie_consent');
+if(saved){try{const p=JSON.parse(saved);document.getElementById('pref-analytics').checked=p.analytics||false;}catch(e){}}
+</script>
+</body>
+</html>
