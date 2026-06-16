@@ -629,5 +629,44 @@ document.querySelector('.nav-search input').addEventListener('keydown',e=>{
 
 init()
 </script>
+
+<!-- Banner de Cookies -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0f172a;color:#fff;padding:20px 5%;box-shadow:0 -4px 24px rgba(0,0,0,.3)">
+<div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+<div style="flex:1;min-width:280px">
+<div style="font-size:15px;font-weight:700;margin-bottom:6px">🍪 Utilizamos cookies</div>
+<div style="font-size:13px;color:rgba(255,255,255,.75);line-height:1.6">Usamos cookies essenciais para o funcionamento da plataforma e cookies analíticos (com o seu consentimento) para melhorar a experiência. Consulte a nossa <a href="cookies.html" style="color:#93c5fd;text-decoration:underline">Política de Cookies</a> e <a href="privacidade.html" style="color:#93c5fd;text-decoration:underline">Política de Privacidade</a>.</div>
+</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0">
+<button onclick="acceptCookies('essential')" style="padding:10px 20px;background:transparent;color:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.3);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Só essenciais</button>
+<button onclick="acceptCookies('all')" style="padding:10px 20px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Aceitar todos</button>
+<a href="cookies.html" style="padding:10px 20px;background:transparent;color:rgba(255,255,255,.6);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;display:inline-flex;align-items:center">Gerir preferências</a>
+</div>
+</div>
+</div>
+
+<script>
+function acceptCookies(type){
+const consent={essential:true,analytics:type==='all',saved:new Date().toISOString(),version:'1.0'};
+localStorage.setItem('proliga_cookie_consent',JSON.stringify(consent));
+document.getElementById('cookie-banner').style.display='none';
+}
+function checkCookieConsent(){
+try{
+const saved=localStorage.getItem('proliga_cookie_consent');
+if(!saved){document.getElementById('cookie-banner').style.display='block';return;}
+const p=JSON.parse(saved);
+// Mostrar banner se não tiver sido aceite ou se for de há mais de 12 meses
+const savedDate=new Date(p.saved);
+const oneYear=365*24*60*60*1000;
+if(Date.now()-savedDate.getTime()>oneYear){
+localStorage.removeItem('proliga_cookie_consent');
+document.getElementById('cookie-banner').style.display='block';
+}
+}catch(e){document.getElementById('cookie-banner').style.display='block';}
+}
+// Verificar consentimento após carregar a página
+window.addEventListener('load',checkCookieConsent);
+</script>
 </body>
 </html>
