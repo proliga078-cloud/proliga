@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Planos – Proliga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc}
+    body{font-family:'Inter',sans-serif;color:var(--text);background:#fff}
+    a{text-decoration:none;color:inherit}
+    nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .logo{font-size:24px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
+    .nav-links{display:flex;gap:28px;align-items:center}
+    .nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s}.nav-links a:hover{color:var(--blue)}
+    .nav-actions{display:flex;gap:10px}
+    .btn{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-block;text-align:center}
+    .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
+    .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
+    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
+
+    .hero{background:linear-gradient(135deg,#0f172a,var(--blue-dark));padding:72px 5% 80px;color:#fff;text-align:center}
+    .hero h1{font-size:clamp(28px,4vw,52px);font-weight:900;letter-spacing:-1.5px;margin-bottom:16px}
+    .hero h1 span{color:var(--gold)}
+    .hero p{font-size:18px;opacity:.8;max-width:500px;margin:0 auto}
+
+    .pricing-wrap{padding:72px 5%;max-width:1100px;margin:0 auto}
+    .pricing-toggle{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:56px}
+    .toggle-label{font-size:15px;font-weight:600;color:var(--muted)}
+    .toggle-label.active{color:var(--text)}
+    .toggle{width:52px;height:28px;border-radius:99px;background:var(--blue);border:none;cursor:pointer;position:relative;transition:background .2s}
+    .toggle-thumb{width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left .2s}
+    .toggle.yearly .toggle-thumb{left:27px}
+    .badge-save{background:#dcfce7;color:#16a34a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+
+    .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    @media(max-width:860px){.plans-grid{grid-template-columns:1fr}}
+
+    .plan-card{background:#fff;border-radius:20px;border:2px solid var(--border);padding:36px;position:relative;transition:all .2s}
+    .plan-card.popular{border-color:var(--blue);box-shadow:0 8px 40px rgba(29,78,216,.18)}
+    .popular-tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:12px;font-weight:700;padding:4px 16px;border-radius:99px;white-space:nowrap}
+    .plan-icon{font-size:40px;margin-bottom:16px}
+    .plan-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:6px}
+    .plan-price{margin-bottom:6px}
+    .plan-price .amount{font-size:52px;font-weight:900;letter-spacing:-2px}
+    .plan-price .per{font-size:16px;font-weight:400;color:var(--muted)}
+    .plan-price .original{font-size:18px;color:#cbd5e1;text-decoration:line-through;margin-right:6px}
+    .plan-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px;min-height:48px}
+    .plan-cta{display:block;width:100%;padding:14px;border-radius:10px;font-size:15px;font-weight:700;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:all .2s;margin-bottom:28px}
+    .plan-features{list-style:none}
+    .plan-features li{font-size:14px;padding:9px 0;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:10px;color:#334155}
+    .plan-features li:last-child{border-bottom:none}
+    .feat-yes{color:var(--blue);font-weight:700;font-size:13px}
+    .feat-no{color:#cbd5e1;font-weight:700;font-size:13px}
+    .plan-features li.dim{color:#94a3b8}
+
+    .compare-section{padding:72px 5%;background:var(--bg)}
+    .compare-section h2{font-size:clamp(22px,3vw,36px);font-weight:800;text-align:center;margin-bottom:48px;letter-spacing:-0.5px}
+    .compare-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .compare-table th{padding:18px 20px;text-align:center;font-size:14px;font-weight:700;background:var(--bg);color:var(--muted)}
+    .compare-table th:first-child{text-align:left;color:var(--text)}
+    .compare-table th.col-pro{background:var(--blue-light);color:var(--blue)}
+    .compare-table td{padding:14px 20px;text-align:center;font-size:14px;border-top:1px solid var(--border)}
+    .compare-table td:first-child{text-align:left;font-weight:500}
+    .compare-table tr:hover td{background:#f8fafc}
+    .check{color:var(--blue);font-size:16px}
+    .cross{color:#cbd5e1;font-size:16px}
+    .col-pro-cell{background:#fafbff}
+
+    .faq-section{padding:72px 5%;max-width:760px;margin:0 auto}
+    .faq-section h2{font-size:clamp(22px,3vw,36px);font-weight:800;text-align:center;margin-bottom:48px;letter-spacing:-0.5px}
+    .faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+    .faq-q{font-size:16px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .faq-q::after{content:'＋';font-size:20px;color:var(--blue);flex-shrink:0}
+    .faq-item.open .faq-q::after{content:'－'}
+    .faq-a{font-size:15px;color:var(--muted);line-height:1.7;margin-top:12px;display:none}
+    .faq-item.open .faq-a{display:block}
+
+    .cta-section{background:linear-gradient(135deg,var(--blue),var(--blue-dark));padding:80px 5%;text-align:center;color:#fff}
+    .cta-section h2{font-size:clamp(22px,3vw,40px);font-weight:800;margin-bottom:16px;letter-spacing:-0.5px}
+    .cta-section p{font-size:16px;opacity:.8;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+    footer{background:#0f172a;color:#94a3b8;padding:40px 5%;text-align:center;font-size:14px}
+    footer .logo{font-size:20px;margin-bottom:12px;display:inline-block}
+    footer p{margin-top:8px}
+    footer strong{color:var(--gold)}
+
+    #user-nav{display:none}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+  <div class="nav-links">
+    <a href="index.html#como-funciona">Como funciona</a>
+    <a href="index.html#categorias">Categorias</a>
+    <a href="pricing.html" style="color:var(--blue)">Planos</a>
+  </div>
+  <div class="nav-actions">
+    <div id="guest-nav">
+      <a href="auth.html" class="btn btn-outline">Entrar</a>
+      <a href="auth.html?tab=register" class="btn btn-solid">Registar grátis</a>
+    </div>
+    <div id="user-nav">
+      <a href="dashboard.html" class="btn btn-outline">Dashboard</a>
+      <button class="btn btn-solid" onclick="signOut()">Sair</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Planos simples,<br><span>sem surpresas</span></h1>
+  <p>Começa grátis e faz upgrade quando precisares. Cancela quando quiseres.</p>
+</section>
+
+<div class="pricing-wrap">
+  <div class="pricing-toggle">
+    <span class="toggle-label active" id="label-monthly">Mensal</span>
+    <button class="toggle" id="billing-toggle" onclick="toggleBilling()"><div class="toggle-thumb" id="toggle-thumb"></div></button>
+    <span class="toggle-label" id="label-yearly">Anual <span class="badge-save">Poupa 20%</span></span>
+  </div>
+
+  <div class="plans-grid">
+    <!-- FREE -->
+    <div class="plan-card">
+      <div class="plan-icon">🆓</div>
+      <div class="plan-name">Grátis</div>
+      <div class="plan-price"><span class="amount">€0</span><span class="per">/sempre</span></div>
+      <div class="plan-desc">Para começar a explorar a plataforma sem qualquer compromisso.</div>
+      <a href="auth.html?tab=register" class="plan-cta" style="background:var(--bg);color:var(--text);border:2px solid var(--border)">Começar grátis</a>
+      <ul class="plan-features">
+        <li><span class="feat-yes">✓</span> Perfil profissional básico</li>
+        <li><span class="feat-yes">✓</span> Até 2 serviços listados</li>
+        <li><span class="feat-yes">✓</span> Mensagens de clientes</li>
+        <li><span class="feat-yes">✓</span> Avaliações e estrelas</li>
+        <li class="dim"><span class="feat-no">✕</span> Portfólio de fotos</li>
+        <li class="dim"><span class="feat-no">✕</span> Badge verificado</li>
+        <li class="dim"><span class="feat-no">✕</span> Destaque nas pesquisas</li>
+        <li class="dim"><span class="feat-no">✕</span> Suporte prioritário</li>
+      </ul>
+    </div>
+    <!-- PRO -->
+    <div class="plan-card popular">
+      <div class="popular-tag">⭐ Mais popular</div>
+      <div class="plan-icon">🚀</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price" id="pro-price">
+        <span class="amount">€9</span><span class="per">/mês</span>
+      </div>
+      <div class="plan-desc">Para profissionais que querem crescer e ter mais credibilidade junto dos clientes.</div>
+      <button class="plan-cta btn-solid" onclick="requestUpgrade('pro')">Obter plano Pro</button>
+      <ul class="plan-features">
+        <li><span class="feat-yes">✓</span> Perfil profissional completo</li>
+        <li><span class="feat-yes">✓</span> Até 10 serviços</li>
+        <li><span class="feat-yes">✓</span> Mensagens ilimitadas</li>
+        <li><span class="feat-yes">✓</span> Avaliações e estrelas</li>
+        <li><span class="feat-yes">✓</span> 10 fotos de portfólio</li>
+        <li><span class="feat-yes">✓</span> Badge verificado ✅</li>
+        <li class="dim"><span class="feat-no">✕</span> Destaque nas pesquisas</li>
+        <li class="dim"><span class="feat-no">✕</span> Suporte prioritário</li>
+      </ul>
+    </div>
+    <!-- PREMIUM -->
+    <div class="plan-card">
+      <div class="plan-icon">👑</div>
+      <div class="plan-name">Premium</div>
+      <div class="plan-price" id="premium-price">
+        <span class="amount">€19</span><span class="per">/mês</span>
+      </div>
+      <div class="plan-desc">Para os que querem o máximo de visibilidade e aparecer primeiro nas pesquisas.</div>
+      <button class="plan-cta btn-gold" onclick="requestUpgrade('premium')">Obter plano Premium</button>
+      <ul class="plan-features">
+        <li><span class="feat-yes">✓</span> Perfil profissional completo</li>
+        <li><span class="feat-yes">✓</span> Serviços ilimitados</li>
+        <li><span class="feat-yes">✓</span> Mensagens ilimitadas</li>
+        <li><span class="feat-yes">✓</span> Avaliações e estrelas</li>
+        <li><span class="feat-yes">✓</span> Fotos de portfólio ilimitadas</li>
+        <li><span class="feat-yes">✓</span> Badge verificado ✅</li>
+        <li><span class="feat-yes">✓</span> 🚀 Destaque nas pesquisas</li>
+        <li><span class="feat-yes">✓</span> Suporte prioritário</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE TABLE -->
+<section class="compare-section">
+  <h2>Comparação completa</h2>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Funcionalidade</th>
+        <th>Grátis</th>
+        <th class="col-pro">Pro</th>
+        <th>Premium</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Perfil público</td><td><span class="check">✓</span></td><td class="col-pro-cell"><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Número de serviços</td><td>2</td><td class="col-pro-cell">10</td><td>Ilimitado</td></tr>
+      <tr><td>Mensagens de clientes</td><td><span class="check">✓</span></td><td class="col-pro-cell"><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Avaliações e estrelas</td><td><span class="check">✓</span></td><td class="col-pro-cell"><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Fotos de portfólio</td><td><span class="cross">✕</span></td><td class="col-pro-cell">Até 10</td><td>Ilimitado</td></tr>
+      <tr><td>Badge verificado</td><td><span class="cross">✕</span></td><td class="col-pro-cell"><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Destaque nas pesquisas</td><td><span class="cross">✕</span></td><td class="col-pro-cell"><span class="cross">✕</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Suporte prioritário</td><td><span class="cross">✕</span></td><td class="col-pro-cell"><span class="cross">✕</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Foto de capa</td><td><span class="cross">✕</span></td><td class="col-pro-cell"><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2>Perguntas frequentes</h2>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Como posso fazer upgrade do meu plano?</div>
+    <div class="faq-a">Clica em "Obter plano Pro" ou "Obter plano Premium", envia-nos um email ou contacta-nos diretamente. A ativação do plano é feita manualmente em até 24 horas.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Posso cancelar a qualquer momento?</div>
+    <div class="faq-a">Sim. Não há contratos nem períodos mínimos. Contacta-nos e o cancelamento é feito de imediato. O plano continua ativo até ao fim do período pago.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Os clientes pagam alguma coisa?</div>
+    <div class="faq-a">Não. A plataforma é completamente gratuita para clientes. Os profissionais é que escolhem se querem um plano pago para ter mais visibilidade.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Quanto tempo demora a ativação do plano?</div>
+    <div class="faq-a">Após confirmação do pagamento, o teu plano é ativado em até 24 horas úteis. Receberás uma confirmação por email.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Que métodos de pagamento aceitam?</div>
+    <div class="faq-a">Aceitamos transferência bancária, MB Way e cartão de crédito/débito. Entra em contacto connosco após clicar no botão de upgrade.</div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Começa hoje, grátis</h2>
+  <p>Cria o teu perfil em 5 minutos e começa a receber contactos de clientes.</p>
+  <div class="cta-btns">
+    <a href="auth.html?tab=register" class="btn btn-gold" style="padding:14px 32px;font-size:16px">Criar conta grátis →</a>
+    <a href="index.html" class="btn" style="background:rgba(255,255,255,.15);color:#fff;padding:14px 32px;font-size:16px">Ver profissionais</a>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+  <p>© 2025 <strong>Proliga</strong> — Todos os direitos reservados</p>
+</footer>
+
+<!-- UPGRADE MODAL -->
+<div id="upgrade-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:20px;padding:36px;max-width:420px;width:90%;text-align:center">
+    <div style="font-size:48px;margin-bottom:16px" id="modal-icon">🚀</div>
+    <h3 style="font-size:22px;font-weight:800;margin-bottom:8px" id="modal-title">Obter plano Pro</h3>
+    <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px">Para ativar o teu plano, entra em contacto connosco. A ativação é feita em até 24 horas após confirmação do pagamento.</p>
+    <a href="mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga&body=Olá,%20quero%20fazer%20upgrade%20para%20o%20plano%20Pro." id="modal-email-link"
+       class="btn btn-solid" style="display:block;padding:14px;font-size:15px;margin-bottom:12px">
+      Enviar email para upgrade
+    </a>
+    <button onclick="closeModal()" style="background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;font-family:inherit">Fechar</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
+const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+let isYearly=false
+
+async function init(){
+  const{data:{session}}=await db.auth.getSession()
+  if(session){
+    document.getElementById('guest-nav').style.display='none'
+    document.getElementById('user-nav').style.display='flex'
+  }
+}
+
+function toggleBilling(){
+  isYearly=!isYearly
+  const toggle=document.getElementById('billing-toggle')
+  toggle.classList.toggle('yearly',isYearly)
+  document.getElementById('label-monthly').classList.toggle('active',!isYearly)
+  document.getElementById('label-yearly').classList.toggle('active',isYearly)
+  const proEl=document.getElementById('pro-price')
+  const premiumEl=document.getElementById('premium-price')
+  if(isYearly){
+    proEl.innerHTML='<span class="original">€9</span><span class="amount">€7</span><span class="per">/mês · faturado €86/ano</span>'
+    premiumEl.innerHTML='<span class="original">€19</span><span class="amount">€15</span><span class="per">/mês · faturado €182/ano</span>'
+  }else{
+    proEl.innerHTML='<span class="amount">€9</span><span class="per">/mês</span>'
+    premiumEl.innerHTML='<span class="amount">€19</span><span class="per">/mês</span>'
+  }
+}
+
+function requestUpgrade(plan){
+  const modal=document.getElementById('upgrade-modal')
+  const icon=document.getElementById('modal-icon')
+  const title=document.getElementById('modal-title')
+  const link=document.getElementById('modal-email-link')
+  if(plan==='pro'){
+    icon.textContent='🚀'
+    title.textContent='Obter plano Pro'
+    link.href=`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20Pro&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20Pro%20(€${isYearly?'86/ano':'9/mês'}).`
+  }else{
+    icon.textContent='👑'
+    title.textContent='Obter plano Premium'
+    link.href=`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20Premium&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20Premium%20(€${isYearly?'182/ano':'19/mês'}).`
+  }
+  modal.style.display='flex'
+}
+function closeModal(){document.getElementById('upgrade-modal').style.display='none'}
+document.getElementById('upgrade-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()})
+
+function toggleFaq(el){el.parentElement.classList.toggle('open')}
+
+async function signOut(){await db.auth.signOut();location.href='index.html'}
+init()
+</script>
+</body>
+</html>
