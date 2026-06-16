@@ -84,6 +84,9 @@
         <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
       </div>
       <button class="btn-submit" id="login-btn" onclick="doLogin()">Entrar na conta</button>
+<div style="text-align:center;margin-top:14px">
+<a href="#" onclick="doResetPassword(event)" style="font-size:13px;color:#1d4ed8;text-decoration:none">Esqueci a palavra-passe</a>
+</div>
     </div>
 
     <!-- REGISTER -->
@@ -156,7 +159,7 @@
       }
 
       // Check if admin
-      if (data.user.email === 'davidscampos10@gmail.com') {
+      if (data.user.email === 'davidscampos14@gmail.com') {
         showMsg('login-msg', 'Bem-vindo, admin! A redirecionar...', 'success')
         setTimeout(() => location.href = 'admin.html', 800)
         return
@@ -227,14 +230,14 @@
       const { data: signInData, error: signInError } = await db.auth.signInWithPassword({ email, password })
 
       if (!signInError && signInData?.session) {
-        await insertProfile(userId, name, email)
+        await insertProfile(signInData.user.id, name, email)
         showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
         setTimeout(() => location.href = 'dashboard.html', 800)
         return
       }
 
       // Step 4: Fallback — created but needs email confirmation
-      showMsg('reg-msg', 'Conta criada! Verifica o teu email para confirmar e depois faz login.', 'success')
+      showMsg('reg-msg', '✅ Conta criada! Verifica o email ' + email + ' e clica no link de confirmação. Depois faz login aqui.', 'success')
       btn.disabled = false
       btn.textContent = 'Criar conta'
 
@@ -261,7 +264,16 @@
     }, { onConflict: 'user_id' })
   }
 
-  // Enter key support
+  async function doResetPassword(e) {
+  e.preventDefault()
+  const email = document.getElementById('login-email').value.trim()
+  if (!email) { showMsg('login-msg', 'Escreve o teu email acima primeiro.', 'error'); return }
+  const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/auth.html' })
+  if (error) { showMsg('login-msg', 'Erro ao enviar email de recuperação.', 'error') }
+  else { showMsg('login-msg', 'Email de recuperação enviado para ' + email + '!', 'success') }
+}
+
+// Enter key support
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return
     if (document.getElementById('form-login').style.display !== 'none') doLogin()
