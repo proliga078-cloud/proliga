@@ -3,378 +3,309 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Proliga – Encontra o Profissional Certo</title>
+  <title>Proliga – Marketplace de Profissionais no Porto e Maia</title>
+  <meta name="description" content="Encontra os melhores profissionais no Porto e na Maia. Eletricistas, canalizadores, pintores, jardineiros, designers e muito mais."/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc}
-    body{font-family:'Inter',sans-serif;color:var(--text);background:#fff}
+    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-mid:#2563eb;--blue-light:#dbeafe;--gold:#f59e0b;--gold-dark:#d97706;--green:#16a34a;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff;--card-shadow:0 2px 12px rgba(0,0,0,.08)}
+    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--white)}
     a{text-decoration:none;color:inherit}
-    /* NAV */
-    nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-    .logo{font-size:24px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
-    .nav-links{display:flex;gap:28px;align-items:center}
-    .nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s}.nav-links a:hover{color:var(--blue)}
-    .nav-actions{display:flex;gap:10px;align-items:center}
-    .btn{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+    img{display:block;max-width:100%}
+    nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:20px}
+    .logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px;white-space:nowrap}.logo span{color:var(--gold)}
+    .nav-search{flex:1;max-width:480px;position:relative;display:none}
+    @media(min-width:768px){.nav-search{display:block}}
+    .nav-search input{width:100%;padding:9px 16px 9px 40px;border:1.5px solid var(--border);border-radius:99px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
+    .nav-search input:focus{border-color:var(--blue)}
+    .nav-search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
+    .nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+    .btn{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+    .btn-ghost{background:transparent;color:var(--text)}.btn-ghost:hover{background:var(--bg)}
     .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
     .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
-    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
-    #user-nav{display:none;align-items:center;gap:10px}
-    /* HERO */
-    .hero{background:linear-gradient(135deg,#0f172a 0%,var(--blue-dark) 50%,var(--blue) 100%);padding:100px 5% 120px;color:#fff;text-align:center;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
-    .hero-badge{display:inline-block;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);padding:6px 16px;border-radius:99px;font-size:13px;font-weight:600;margin-bottom:24px;color:#fff}
-    .hero h1{font-size:clamp(32px,5vw,60px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}
+    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--gold-dark)}
+    .nav-user{display:none;align-items:center;gap:10px}
+    .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .hero{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue-mid) 60%,#3b82f6 100%);padding:72px 5% 64px;text-align:center;position:relative;overflow:hidden}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-bottom:20px;backdrop-filter:blur(8px)}
+    .hero h1{font-size:clamp(28px,5vw,52px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px;letter-spacing:-1px}
     .hero h1 span{color:var(--gold)}
-    .hero p{font-size:18px;opacity:.8;max-width:560px;margin:0 auto 40px;line-height:1.7}
-    .search-wrap{max-width:640px;margin:0 auto;background:#fff;border-radius:14px;display:flex;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-    .search-wrap select{border:none;outline:none;padding:0 16px;font-size:14px;font-family:inherit;color:var(--muted);background:#f1f5f9;border-right:1px solid var(--border);min-width:140px;cursor:pointer}
-    .search-wrap input{flex:1;border:none;outline:none;padding:18px 20px;font-size:16px;font-family:inherit;color:var(--text)}
-    .search-wrap button{background:var(--gold);border:none;padding:0 28px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;transition:background .2s}.search-wrap button:hover{background:#d97706}
-    .hero-stats{display:flex;justify-content:center;gap:48px;margin-top:56px;flex-wrap:wrap}
-    .hero-stat{color:rgba(255,255,255,.9)}
-    .hero-stat strong{display:block;font-size:32px;font-weight:800;color:#fff}
-    .hero-stat span{font-size:13px;opacity:.7}
-    /* HOW IT WORKS */
-    .section{padding:80px 5%}
-    .section-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:12px}
-    .section-title{font-size:clamp(24px,3vw,40px);font-weight:800;letter-spacing:-0.5px;line-height:1.2;margin-bottom:16px}
-    .section-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.7}
-    .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px;margin-top:56px}
-    .how-card{text-align:center;padding:36px 28px}
-    .how-number{width:56px;height:56px;border-radius:50%;background:var(--blue-light);color:var(--blue);font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
-    .how-icon{font-size:36px;margin-bottom:16px}
-    .how-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
-    .how-card p{font-size:14px;color:var(--muted);line-height:1.7}
-    /* CATEGORIES */
-    .cats-section{background:var(--bg);padding:80px 5%}
-    .cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;margin-top:48px}
-    .cat-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:24px 14px;text-align:center;cursor:pointer;transition:all .2s}
-    .cat-card:hover{border-color:var(--blue);box-shadow:0 6px 20px rgba(29,78,216,.12);transform:translateY(-3px)}
-    .cat-icon{font-size:36px;margin-bottom:10px}
-    .cat-name{font-size:13px;font-weight:600;color:var(--text)}
-    .cat-count{font-size:11px;color:var(--muted);margin-top:3px}
-    /* PROS */
-    .pros-section{padding:80px 5%}
-    .pros-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:16px}
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
-    .filter-btn{padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--muted)}
-    .filter-btn:hover,.filter-btn.active{border-color:var(--blue);background:var(--blue);color:#fff}
-    .pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px}
-    .pro-card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;transition:all .2s;display:block;color:inherit}
-    .pro-card:hover{box-shadow:0 12px 32px rgba(0,0,0,.1);transform:translateY(-4px)}
-    .pro-card-cover{height:80px;background:linear-gradient(135deg,var(--blue-light),#eff6ff);position:relative}
-    .pro-avatar{width:64px;height:64px;border-radius:50%;border:3px solid #fff;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;position:absolute;bottom:-24px;left:20px;overflow:hidden}
+    .hero p{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.85);margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6}
+    .hero-search{display:flex;max-width:600px;margin:0 auto 28px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+    .hero-search input{flex:1;padding:16px 20px;font-size:16px;font-family:inherit;border:none;outline:none;color:var(--text)}
+    .hero-search select{padding:0 16px;border:none;border-left:1px solid var(--border);font-size:14px;font-family:inherit;color:var(--muted);outline:none;background:#fff;cursor:pointer}
+    .hero-search button{padding:14px 28px;background:var(--blue);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;white-space:nowrap}
+    .hero-search button:hover{background:var(--blue-dark)}
+    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+    .hero-tag{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);font-size:13px;padding:6px 14px;border-radius:99px;cursor:pointer;transition:background .2s;border:1px solid rgba(255,255,255,.2)}
+    .hero-tag:hover{background:rgba(255,255,255,.22)}
+    .hero-stats{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
+    .hero-stat strong{display:block;font-size:26px;font-weight:900;color:#fff}
+    .hero-stat span{font-size:13px;color:rgba(255,255,255,.7)}
+    .loc-banner{background:var(--blue-light);padding:14px 5%;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+    .loc-chip{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--blue)}
+    section{padding:64px 5%}
+    .section-header{text-align:center;margin-bottom:40px}
+    .section-header h2{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-0.5px;margin-bottom:10px}
+    .section-header p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
+    .cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+    .cat-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+    .cat-card:hover{border-color:var(--blue);box-shadow:0 4px 20px rgba(29,78,216,.12);transform:translateY(-2px)}
+    .cat-card:hover .cat-icon{background:var(--blue);color:#fff}
+    .cat-icon{width:56px;height:56px;border-radius:14px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;transition:all .2s}
+    .cat-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+    .cat-sub{font-size:12px;color:var(--muted)}
+    .how-section{background:var(--bg)}
+    .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;max-width:900px;margin:0 auto}
+    .step-card{background:var(--white);border-radius:20px;padding:32px 24px;text-align:center;box-shadow:var(--card-shadow)}
+    .step-num{width:48px;height:48px;border-radius:50%;background:var(--blue);color:#fff;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .step-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+    .step-card p{font-size:14px;color:var(--muted);line-height:1.6}
+    .pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+    .pro-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+    .pro-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-3px);border-color:var(--blue)}
+    .pro-card-cover{height:100px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));position:relative}
+    .pro-avatar{width:68px;height:68px;border-radius:50%;border:3px solid #fff;background:var(--blue);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;position:absolute;bottom:-24px;left:20px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.15)}
     .pro-avatar img{width:100%;height:100%;object-fit:cover}
-    .plan-badge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px}
-    .plan-pro{background:#7c3aed;color:#fff}
-    .plan-premium{background:var(--gold);color:#fff}
-    .pro-card-body{padding:36px 20px 20px}
-    .pro-name{font-size:16px;font-weight:700;margin-bottom:4px}
-    .pro-cat{display:inline-block;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:600;padding:2px 10px;border-radius:99px;margin-bottom:8px}
-    .pro-loc{font-size:12px;color:var(--muted);margin-bottom:8px}
-    .pro-bio{font-size:13px;color:#475569;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:12px}
-    .pro-footer{display:flex;justify-content:space-between;align-items:center}
-    .pro-rating{font-size:13px;display:flex;align-items:center;gap:4px}
-    .stars{color:var(--gold)}
-    .pro-btn{padding:6px 14px;background:var(--blue-light);color:var(--blue);border-radius:8px;font-size:12px;font-weight:600;border:none;cursor:pointer}
-    /* PRICING */
-    .pricing-section{background:var(--bg);padding:80px 5%}
-    .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:56px;max-width:960px;margin-left:auto;margin-right:auto}
-    .plan-card{background:#fff;border-radius:20px;border:2px solid var(--border);padding:36px;transition:all .2s}
-    .plan-card.popular{border-color:var(--blue);box-shadow:0 8px 32px rgba(29,78,216,.15);position:relative}
-    .popular-tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:12px;font-weight:700;padding:4px 16px;border-radius:99px;white-space:nowrap}
-    .plan-name{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
-    .plan-price{font-size:48px;font-weight:900;letter-spacing:-2px;margin-bottom:4px}
-    .plan-price span{font-size:16px;font-weight:500;color:var(--muted)}
-    .plan-desc{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6}
-    .plan-features{list-style:none;margin-bottom:32px}
-    .plan-features li{font-size:14px;padding:8px 0;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:10px}
-    .plan-features li::before{content:'✓';color:var(--blue);font-weight:700;font-size:13px}
-    .plan-features li.no::before{content:'✗';color:#cbd5e1}
-    .plan-features li.no{color:var(--muted)}
-    .plan-cta{display:block;width:100%;padding:14px;border-radius:10px;font-size:15px;font-weight:700;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:all .2s}
-    /* TESTIMONIALS */
-    .testi-section{padding:80px 5%}
-    .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:48px}
-    .testi-card{background:var(--bg);border-radius:16px;padding:28px}
-    .testi-stars{color:var(--gold);font-size:16px;margin-bottom:14px}
-    .testi-text{font-size:15px;line-height:1.7;color:#334155;margin-bottom:20px}
-    .testi-author{display:flex;align-items:center;gap:12px}
-    .testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
-    .testi-name{font-weight:700;font-size:14px}
-    .testi-role{font-size:12px;color:var(--muted)}
-    /* CTA SECTION */
-    .cta-section{background:linear-gradient(135deg,var(--blue),var(--blue-dark));padding:80px 5%;text-align:center;color:#fff}
-    .cta-section h2{font-size:clamp(24px,3vw,40px);font-weight:800;margin-bottom:16px;letter-spacing:-0.5px}
-    .cta-section p{font-size:16px;opacity:.8;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}
-    .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-    /* FOOTER */
-    footer{background:#0f172a;color:#94a3b8;padding:60px 5% 32px}
-    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
-    .footer-brand .logo{font-size:22px;margin-bottom:14px;display:block}
-    .footer-brand p{font-size:14px;line-height:1.7;max-width:260px}
-    .footer-col h4{font-size:13px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
-    .footer-col a{display:block;font-size:14px;margin-bottom:10px;transition:color .2s}.footer-col a:hover{color:#fff}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-    .footer-bottom p{font-size:13px}
-    .footer-bottom strong{color:var(--gold)}
-    /* UTILS */
-    .loading{text-align:center;padding:48px;color:var(--muted)}
-    .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+    .pro-card-body{padding:32px 16px 16px}
+    .pro-card-name{font-size:15px;font-weight:700;margin-bottom:2px}
+    .pro-card-cat{font-size:12px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .plan-dot{width:6px;height:6px;border-radius:50%}
+    .plan-dot.free{background:#94a3b8}.plan-dot.pro{background:#7c3aed}.plan-dot.premium{background:var(--gold)}
+    .pro-rating{display:flex;align-items:center;gap:4px;font-size:13px;margin-bottom:8px}
+    .pro-rating .stars{color:var(--gold)}
+    .pro-loc{font-size:12px;color:var(--muted);margin-bottom:10px}
+    .pro-price{font-size:13px;color:var(--muted)}
+    .pro-price strong{color:var(--blue);font-size:15px}
+    .verif{background:#dcfce7;color:var(--green);font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px}
+    .loc-section{background:linear-gradient(135deg,var(--blue-dark),var(--blue-mid));padding:64px 5%}
+    .loc-section .section-header h2{color:#fff}
+    .loc-section .section-header p{color:rgba(255,255,255,.75)}
+    .loc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:800px;margin:0 auto}
+    .loc-card{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:32px;cursor:pointer;transition:all .2s}
+    .loc-card:hover{background:rgba(255,255,255,.18);transform:translateY(-3px)}
+    .loc-card h3{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px}
+    .loc-card p{font-size:14px;color:rgba(255,255,255,.75);margin-bottom:16px;line-height:1.5}
+    .loc-zones{display:flex;flex-wrap:wrap;gap:6px}
+    .loc-zone{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:12px;padding:4px 10px;border-radius:99px}
+    .trust-section{background:var(--bg);padding:48px 5%}
+    .trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;max-width:900px;margin:0 auto;text-align:center}
+    .trust-item strong{display:block;font-size:28px;font-weight:900;color:var(--blue);margin-bottom:4px}
+    .trust-item p{font-size:13px;color:var(--muted)}
+    .cta-section{background:var(--white);padding:72px 5%;text-align:center}
+    .cta-section h2{font-size:clamp(24px,3vw,36px);font-weight:900;letter-spacing:-0.5px;margin-bottom:12px}
+    .cta-section p{font-size:16px;color:var(--muted);margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta-btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+    .btn-lg{padding:16px 36px;font-size:16px;border-radius:12px}
+    footer{background:var(--text);color:rgba(255,255,255,.7);padding:48px 5% 28px}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+    @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr}}
+    .footer-brand p{font-size:13px;line-height:1.7;max-width:260px;margin-top:10px}
+    .footer-col h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+    .footer-col a{display:block;font-size:13px;margin-bottom:8px;transition:color .2s}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px}
+    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .empty{text-align:center;padding:64px;color:var(--muted)}
-    .empty-icon{font-size:48px;margin-bottom:16px}
-    @media(max-width:768px){
-      .nav-links{display:none}
-      .footer-grid{grid-template-columns:1fr 1fr}
-      .hero-stats{gap:24px}
-    }
-    @media(max-width:480px){
-      .footer-grid{grid-template-columns:1fr}
-      .search-wrap select{display:none}
-    }
+    @media(max-width:600px){.hero-search{flex-direction:column;border-radius:12px}.hero-stats{gap:20px}}
   </style>
 </head>
 <body>
+
 <nav>
   <a href="index.html" class="logo">Pro<span>liga</span></a>
-  <div class="nav-links">
-    <a href="#como-funciona">Como funciona</a>
-    <a href="#categorias">Categorias</a>
-    <a href="pricing.html">Planos</a>
+  <div class="nav-search">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" placeholder="Ex: eletricista, pintor, designer..." onkeydown="if(event.key==='Enter')doSearch(this.value)"/>
   </div>
-  <div class="nav-actions">
-    <div id="guest-nav">
-      <a href="auth.html" class="btn btn-outline">Entrar</a>
-      <a href="auth.html?tab=register" class="btn btn-solid">Registar grátis</a>
+  <div class="nav-right">
+    <div id="nav-guest" style="display:flex;gap:8px">
+      <a href="auth.html?tab=login" class="btn btn-ghost">Entrar</a>
+      <a href="auth.html?tab=register" class="btn btn-solid">Registar</a>
     </div>
-    <div id="user-nav">
-      <span id="user-greeting" style="font-size:14px;font-weight:600;color:var(--muted)"></span>
+    <div class="nav-user" id="nav-user">
       <a href="dashboard.html" class="btn btn-outline">Dashboard</a>
-      <button class="btn btn-solid" onclick="signOut()">Sair</button>
+      <div class="nav-avatar" id="nav-avatar" onclick="location.href='dashboard.html'">?</div>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">🇵🇹 A plataforma #1 de profissionais em Portugal</div>
-  <h1>Encontra o <span>Profissional</span><br>que Precisas, Agora</h1>
-  <p>Canalizadores, eletricistas, pintores e mais de 50 categorias. Profissionais verificados, avaliações reais, contacto direto.</p>
-  <div class="search-wrap">
-    <select id="cat-select">
-      <option value="">Todas as categorias</option>
-      <option>Eletricista</option>
-      <option>Canalizador</option>
-      <option>Pintor</option>
-      <option>Carpinteiro</option>
-      <option>Serralheiro</option>
-      <option>Jardineiro</option>
-      <option>Limpeza</option>
+<div class="hero">
+  <div class="hero-badge">📍 Porto &amp; Maia · Profissionais Verificados</div>
+  <h1>Encontra o <span>Profissional Certo</span><br/>Perto de Ti</h1>
+  <p>O marketplace local de serviços no Porto e na Maia. Compara orçamentos, lê avaliações reais e contrata em minutos.</p>
+  <div class="hero-search">
+    <input type="text" id="hero-input" placeholder="Que serviço precisas? Ex: eletricista, pintor..."/>
+    <select id="hero-loc">
+      <option value="">Toda a área</option>
+      <option value="Porto">Porto</option>
+      <option value="Maia">Maia</option>
     </select>
-    <input type="text" id="search-input" placeholder="Ex: reparação de torneira em Lisboa..."/>
-    <button onclick="doSearch()">Pesquisar</button>
+    <button onclick="doSearch()">Procurar</button>
+  </div>
+  <div class="hero-tags">
+    <span class="hero-tag" onclick="goCategory('Eletricistas')">⚡ Eletricistas</span>
+    <span class="hero-tag" onclick="goCategory('Canalizadores')">🔧 Canalizadores</span>
+    <span class="hero-tag" onclick="goCategory('Pintores')">🎨 Pintores</span>
+    <span class="hero-tag" onclick="goCategory('Jardineiros')">🌿 Jardineiros</span>
+    <span class="hero-tag" onclick="goCategory('Designers')">💻 Designers</span>
+    <span class="hero-tag" onclick="goCategory('Personal Trainers')">💪 Personal Trainers</span>
   </div>
   <div class="hero-stats">
-    <div class="hero-stat"><strong id="stat-pros">--</strong><span>Profissionais</span></div>
-    <div class="hero-stat"><strong>8+</strong><span>Categorias</span></div>
-    <div class="hero-stat"><strong id="stat-reviews">--</strong><span>Avaliações</span></div>
-    <div class="hero-stat"><strong>100%</strong><span>Gratuito para clientes</span></div>
+    <div class="hero-stat"><strong id="stat-pros">...</strong><span>Profissionais</span></div>
+    <div class="hero-stat"><strong id="stat-reviews">...</strong><span>Avaliações</span></div>
+    <div class="hero-stat"><strong>16</strong><span>Categorias</span></div>
+    <div class="hero-stat"><strong>Porto &amp; Maia</strong><span>Cobertura</span></div>
+  </div>
+</div>
+
+<div class="loc-banner">
+  <div class="loc-chip">📍 <strong>Porto</strong> · Centro, Boavista, Foz, Paranhos, Campanhã, Cedofeita</div>
+  <div style="width:1px;height:20px;background:var(--blue);opacity:.3"></div>
+  <div class="loc-chip">📍 <strong>Maia</strong> · Castêlo da Maia, Águas Santas, Moreira, Vermoim, Folgosa</div>
+</div>
+
+<section>
+  <div class="section-header">
+    <h2>Explora por Categoria</h2>
+    <p>Encontra o especialista certo para cada trabalho</p>
+  </div>
+  <div class="cat-grid">
+    <a href="categoria.html?cat=Eletricistas" class="cat-card"><div class="cat-icon">⚡</div><div class="cat-name">Eletricistas</div><div class="cat-sub">Obras &amp; Construção</div></a>
+    <a href="categoria.html?cat=Canalizadores" class="cat-card"><div class="cat-icon">🔧</div><div class="cat-name">Canalizadores</div><div class="cat-sub">Obras &amp; Construção</div></a>
+    <a href="categoria.html?cat=Pintores" class="cat-card"><div class="cat-icon">🎨</div><div class="cat-name">Pintores</div><div class="cat-sub">Obras &amp; Construção</div></a>
+    <a href="categoria.html?cat=Pedreiros" class="cat-card"><div class="cat-icon">🧱</div><div class="cat-name">Pedreiros</div><div class="cat-sub">Obras &amp; Construção</div></a>
+    <a href="categoria.html?cat=Carpinteiros" class="cat-card"><div class="cat-icon">🪚</div><div class="cat-name">Carpinteiros</div><div class="cat-sub">Obras &amp; Construção</div></a>
+    <a href="categoria.html?cat=Serralheiros" class="cat-card"><div class="cat-icon">🔩</div><div class="cat-name">Serralheiros</div><div class="cat-sub">Obras &amp; Construção</div></a>
+    <a href="categoria.html?cat=Jardineiros" class="cat-card"><div class="cat-icon">🌿</div><div class="cat-name">Jardineiros</div><div class="cat-sub">Casa &amp; Jardim</div></a>
+    <a href="categoria.html?cat=Limpeza" class="cat-card"><div class="cat-icon">🧹</div><div class="cat-name">Limpeza</div><div class="cat-sub">Casa &amp; Jardim</div></a>
+    <a href="categoria.html?cat=Mudanças" class="cat-card"><div class="cat-icon">📦</div><div class="cat-name">Mudanças</div><div class="cat-sub">Casa &amp; Jardim</div></a>
+    <a href="categoria.html?cat=Decoradores" class="cat-card"><div class="cat-icon">🛋️</div><div class="cat-name">Decoradores</div><div class="cat-sub">Casa &amp; Jardim</div></a>
+    <a href="categoria.html?cat=Programadores" class="cat-card"><div class="cat-icon">💻</div><div class="cat-name">Programadores</div><div class="cat-sub">Tecnologia</div></a>
+    <a href="categoria.html?cat=Designers" class="cat-card"><div class="cat-icon">🎭</div><div class="cat-name">Designers</div><div class="cat-sub">Tecnologia</div></a>
+    <a href="categoria.html?cat=Reparações" class="cat-card"><div class="cat-icon">🖥️</div><div class="cat-name">Reparações Tech</div><div class="cat-sub">Tecnologia</div></a>
+    <a href="categoria.html?cat=Personal Trainers" class="cat-card"><div class="cat-icon">💪</div><div class="cat-name">Personal Trainers</div><div class="cat-sub">Bem-estar</div></a>
+    <a href="categoria.html?cat=Cabeleireiros" class="cat-card"><div class="cat-icon">✂️</div><div class="cat-name">Cabeleireiros</div><div class="cat-sub">Bem-estar &amp; Beleza</div></a>
+    <a href="categoria.html?cat=Esteticistas" class="cat-card"><div class="cat-icon">💆</div><div class="cat-name">Esteticistas</div><div class="cat-sub">Bem-estar &amp; Beleza</div></a>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="section" id="como-funciona">
-  <div style="text-align:center;max-width:600px;margin:0 auto 0">
-    <div class="section-label">Como funciona</div>
-    <h2 class="section-title">Simples, rápido e sem complicações</h2>
-    <p class="section-sub" style="margin:0 auto">Encontrar o profissional certo nunca foi tão fácil. Em 3 passos tens o serviço que precisas.</p>
+<section class="how-section">
+  <div class="section-header">
+    <h2>Como Funciona</h2>
+    <p>Contrata um profissional em 3 passos simples</p>
   </div>
-  <div class="how-grid">
-    <div class="how-card">
-      <div class="how-icon">🔍</div>
-      <div class="how-number">1</div>
-      <h3>Pesquisa o serviço</h3>
-      <p>Usa a barra de pesquisa ou navega pelas categorias para encontrar o tipo de profissional que precisas.</p>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>Procura o Serviço</h3>
+      <p>Usa a pesquisa ou navega pelas categorias para encontrar o profissional certo na tua zona do Porto ou Maia.</p>
     </div>
-    <div class="how-card">
-      <div class="how-icon">👤</div>
-      <div class="how-number">2</div>
-      <h3>Vê o perfil e portfólio</h3>
-      <p>Consulta as avaliações, fotos do trabalho anterior e informações do profissional antes de decidir.</p>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>Compara e Contacta</h3>
+      <p>Lê avaliações reais, vê portfólios e compara preços. Envia mensagem diretamente ao profissional.</p>
     </div>
-    <div class="how-card">
-      <div class="how-icon">📩</div>
-      <div class="how-number">3</div>
-      <h3>Contacta diretamente</h3>
-      <p>Envia uma mensagem ou liga diretamente. Sem intermediários, sem taxas — comunicação direta.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CATEGORIES -->
-<section class="cats-section" id="categorias">
-  <div class="section-label">Categorias</div>
-  <h2 class="section-title">Todas as áreas cobertas</h2>
-  <div class="cats-grid">
-    <div class="cat-card" onclick="filterCat('Eletricista')"><div class="cat-icon">⚡</div><div class="cat-name">Eletricista</div></div>
-    <div class="cat-card" onclick="filterCat('Canalizador')"><div class="cat-icon">🔧</div><div class="cat-name">Canalizador</div></div>
-    <div class="cat-card" onclick="filterCat('Pintor')"><div class="cat-icon">🎨</div><div class="cat-name">Pintor</div></div>
-    <div class="cat-card" onclick="filterCat('Carpinteiro')"><div class="cat-icon">🪵</div><div class="cat-name">Carpinteiro</div></div>
-    <div class="cat-card" onclick="filterCat('Serralheiro')"><div class="cat-icon">🔩</div><div class="cat-name">Serralheiro</div></div>
-    <div class="cat-card" onclick="filterCat('Jardineiro')"><div class="cat-icon">🌿</div><div class="cat-name">Jardineiro</div></div>
-    <div class="cat-card" onclick="filterCat('Limpeza')"><div class="cat-icon">🧹</div><div class="cat-name">Limpeza</div></div>
-    <div class="cat-card" onclick="filterCat('')"><div class="cat-icon">✨</div><div class="cat-name">Ver todos</div></div>
-  </div>
-</section>
-
-<!-- PROFESSIONALS -->
-<section class="pros-section" id="profissionais">
-  <div class="pros-header">
-    <div>
-      <div class="section-label">Profissionais</div>
-      <h2 class="section-title" id="pros-title">Em destaque</h2>
-    </div>
-    <a href="#" onclick="filterCat('')" style="font-size:14px;font-weight:600;color:var(--blue)">Ver todos →</a>
-  </div>
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterCat('')">Todos</button>
-    <button class="filter-btn" onclick="filterCat('Eletricista')">⚡ Eletricistas</button>
-    <button class="filter-btn" onclick="filterCat('Canalizador')">🔧 Canalizadores</button>
-    <button class="filter-btn" onclick="filterCat('Pintor')">🎨 Pintores</button>
-    <button class="filter-btn" onclick="filterCat('Carpinteiro')">🪵 Carpinteiros</button>
-    <button class="filter-btn" onclick="filterCat('Jardineiro')">🌿 Jardineiros</button>
-    <button class="filter-btn" onclick="filterCat('Limpeza')">🧹 Limpeza</button>
-  </div>
-  <div id="pros-grid" class="pros-grid">
-    <div class="loading"><div class="spinner"></div><p>A carregar profissionais...</p></div>
-  </div>
-</section>
-
-<!-- PRICING PREVIEW -->
-<section class="pricing-section">
-  <div style="text-align:center;max-width:600px;margin:0 auto 0">
-    <div class="section-label">Planos</div>
-    <h2 class="section-title">Começa grátis, cresce com o negócio</h2>
-    <p class="section-sub" style="margin:0 auto">Regista-te gratuitamente e faz upgrade quando precisares de mais visibilidade.</p>
-  </div>
-  <div class="pricing-grid">
-    <div class="plan-card">
-      <div class="plan-name">Grátis</div>
-      <div class="plan-price">€0<span>/mês</span></div>
-      <div class="plan-desc">Para começar e testar a plataforma sem riscos.</div>
-      <ul class="plan-features">
-        <li>Perfil profissional básico</li>
-        <li>Até 2 serviços</li>
-        <li>Mensagens ilimitadas</li>
-        <li>Avaliações de clientes</li>
-        <li class="no">Fotos de portfólio</li>
-        <li class="no">Badge verificado</li>
-        <li class="no">Destaque nas pesquisas</li>
-      </ul>
-      <a href="auth.html?tab=register" class="plan-cta btn-outline" style="border:2px solid var(--border);color:var(--text)">Começar grátis</a>
-    </div>
-    <div class="plan-card popular">
-      <div class="popular-tag">⭐ Mais popular</div>
-      <div class="plan-name">Pro</div>
-      <div class="plan-price">€9<span>/mês</span></div>
-      <div class="plan-desc">Para profissionais que querem mais clientes e credibilidade.</div>
-      <ul class="plan-features">
-        <li>Perfil profissional completo</li>
-        <li>Até 10 serviços</li>
-        <li>Mensagens ilimitadas</li>
-        <li>Avaliações de clientes</li>
-        <li>10 fotos de portfólio</li>
-        <li>Badge verificado ✓</li>
-        <li class="no">Destaque nas pesquisas</li>
-      </ul>
-      <a href="pricing.html" class="plan-cta btn-solid">Obter Pro</a>
-    </div>
-    <div class="plan-card">
-      <div class="plan-name">Premium</div>
-      <div class="plan-price">€19<span>/mês</span></div>
-      <div class="plan-desc">Para os que querem o máximo de visibilidade e crescimento.</div>
-      <ul class="plan-features">
-        <li>Perfil profissional completo</li>
-        <li>Serviços ilimitados</li>
-        <li>Mensagens ilimitadas</li>
-        <li>Avaliações de clientes</li>
-        <li>Fotos ilimitadas</li>
-        <li>Badge verificado ✓</li>
-        <li>Destaque nas pesquisas 🚀</li>
-      </ul>
-      <a href="pricing.html" class="plan-cta btn-gold">Obter Premium</a>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>Contrata com Confiança</h3>
+      <p>Profissionais verificados, avaliações reais e suporte da Proliga. Trabalho garantido.</p>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="testi-section">
-  <div style="text-align:center;max-width:600px;margin:0 auto 48px">
-    <div class="section-label">Testemunhos</div>
-    <h2 class="section-title">O que dizem sobre a Proliga</h2>
+<section>
+  <div class="section-header">
+    <h2>Profissionais em Destaque</h2>
+    <p>Os mais bem avaliados na tua área</p>
   </div>
-  <div class="testi-grid">
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Encontrei um eletricista de confiança em menos de 10 minutos. O perfil tinha fotos do trabalho anterior e as avaliações eram todas 5 estrelas."</p>
-      <div class="testi-author"><div class="testi-avatar">AC</div><div><div class="testi-name">Ana Costa</div><div class="testi-role">Cliente, Lisboa</div></div></div>
+  <div class="pros-grid" id="pros-grid">
+    <div style="grid-column:1/-1;display:flex;justify-content:center;padding:40px"><div class="spinner"></div></div>
+  </div>
+  <div style="text-align:center;margin-top:32px">
+    <a href="categoria.html" class="btn btn-outline btn-lg">Ver todos os profissionais →</a>
+  </div>
+</section>
+
+<section class="loc-section">
+  <div class="section-header">
+    <h2>Servimos o Porto e a Maia</h2>
+    <p>Profissionais locais, a minutos de ti</p>
+  </div>
+  <div class="loc-grid">
+    <div class="loc-card" onclick="location.href='categoria.html?loc=Porto'">
+      <h3>🏙️ Porto</h3>
+      <p>Centenas de profissionais qualificados em todas as zonas da cidade do Porto.</p>
+      <div class="loc-zones">
+        <span class="loc-zone">Centro</span><span class="loc-zone">Boavista</span><span class="loc-zone">Foz do Douro</span>
+        <span class="loc-zone">Paranhos</span><span class="loc-zone">Campanhã</span><span class="loc-zone">Cedofeita</span>
+        <span class="loc-zone">Bonfim</span><span class="loc-zone">Massarelos</span>
+      </div>
     </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Desde que me registei na Proliga recebi 3x mais contactos. O plano Pro valeu logo no primeiro mês com dois trabalhos novos."</p>
-      <div class="testi-author"><div class="testi-avatar">RS</div><div><div class="testi-name">Rui Silva</div><div class="testi-role">Canalizador, Porto</div></div></div>
-    </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"A plataforma é muito fácil de usar. Criei o meu perfil em 5 minutos, adicionei fotos dos meus trabalhos e já tenho clientes novos."</p>
-      <div class="testi-author"><div class="testi-avatar">MF</div><div><div class="testi-name">Miguel Ferreira</div><div class="testi-role">Pintor, Braga</div></div></div>
+    <div class="loc-card" onclick="location.href='categoria.html?loc=Maia'">
+      <h3>🌆 Maia</h3>
+      <p>Profissionais de confiança em todos os concelhos e freguesias da Maia.</p>
+      <div class="loc-zones">
+        <span class="loc-zone">Castêlo da Maia</span><span class="loc-zone">Águas Santas</span><span class="loc-zone">Moreira</span>
+        <span class="loc-zone">Vermoim</span><span class="loc-zone">Folgosa</span><span class="loc-zone">Gemunde</span><span class="loc-zone">Nogueira</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
+<section class="trust-section">
+  <div class="trust-grid">
+    <div class="trust-item"><strong id="t-pros">200+</strong><p>Profissionais registados</p></div>
+    <div class="trust-item"><strong>✅ 100%</strong><p>Perfis verificados</p></div>
+    <div class="trust-item"><strong>⭐ 4.8</strong><p>Avaliação média</p></div>
+    <div class="trust-item"><strong>24h</strong><p>Resposta média</p></div>
+    <div class="trust-item"><strong>🔒 RGPD</strong><p>Dados seguros</p></div>
+  </div>
+</section>
+
 <section class="cta-section">
-  <h2>Pronto para crescer o teu negócio?</h2>
-  <p>Junta-te a centenas de profissionais que já usam a Proliga para encontrar mais clientes todos os dias.</p>
+  <h2>És Profissional? <span style="color:var(--blue)">Junta-te à Proliga</span></h2>
+  <p>Cria o teu perfil gratuito e começa a receber clientes hoje. Sem comissões, sem surpresas.</p>
   <div class="cta-btns">
-    <a href="auth.html?tab=register" class="btn btn-gold" style="padding:14px 32px;font-size:16px">Criar conta grátis →</a>
-    <a href="#como-funciona" class="btn" style="background:rgba(255,255,255,.15);color:#fff;padding:14px 32px;font-size:16px">Como funciona</a>
+    <a href="auth.html?tab=register" class="btn btn-solid btn-lg">Criar perfil grátis →</a>
+    <a href="pricing.html" class="btn btn-outline btn-lg">Ver planos</a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="index.html" class="logo">Pro<span>liga</span></a>
-      <p>A plataforma portuguesa que liga clientes a profissionais de confiança em todas as áreas.</p>
+      <a href="index.html" class="logo" style="color:rgba(255,255,255,.9)">Pro<span>liga</span></a>
+      <p>O marketplace local de serviços profissionais no Porto e na Maia. Conectamos clientes a profissionais de confiança.</p>
     </div>
     <div class="footer-col">
-      <h4>Plataforma</h4>
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#categorias">Categorias</a>
-      <a href="pricing.html">Planos e preços</a>
+      <h4>Categorias</h4>
+      <a href="categoria.html?cat=Eletricistas">Eletricistas</a>
+      <a href="categoria.html?cat=Canalizadores">Canalizadores</a>
+      <a href="categoria.html?cat=Pintores">Pintores</a>
+      <a href="categoria.html?cat=Jardineiros">Jardineiros</a>
+      <a href="categoria.html">Ver todas →</a>
+    </div>
+    <div class="footer-col">
+      <h4>Localizações</h4>
+      <a href="categoria.html?loc=Porto">Porto</a>
+      <a href="categoria.html?loc=Maia">Maia</a>
+      <a href="categoria.html?loc=Porto&zona=Boavista">Boavista</a>
+      <a href="categoria.html?loc=Porto&zona=Foz do Douro">Foz do Douro</a>
+      <a href="categoria.html?loc=Maia&zona=Castêlo da Maia">Castêlo da Maia</a>
+    </div>
+    <div class="footer-col">
+      <h4>Proliga</h4>
+      <a href="pricing.html">Planos e Preços</a>
       <a href="auth.html?tab=register">Registar</a>
-    </div>
-    <div class="footer-col">
-      <h4>Profissionais</h4>
-      <a href="auth.html?tab=register">Criar perfil</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="pricing.html">Upgrade de plano</a>
-    </div>
-    <div class="footer-col">
-      <h4>Suporte</h4>
-      <a href="mailto:avlistech2@gmail.com">Contacto</a>
-      <a href="#">Termos de uso</a>
-      <a href="#">Privacidade</a>
+      <a href="auth.html?tab=login">Entrar</a>
+      <a href="admin.html">Admin</a>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 <strong>Proliga</strong> — Todos os direitos reservados</p>
-    <p>Feito com ❤️ em Portugal</p>
+    <span>© 2025 Proliga · Porto &amp; Maia</span>
+    <span>Feito com ❤️ para profissionais locais</span>
   </div>
 </footer>
 
@@ -383,82 +314,86 @@
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
-let currentCat='',currentSearch=''
 
 async function init(){
   const{data:{session}}=await db.auth.getSession()
   if(session){
-    document.getElementById('guest-nav').style.display='none'
-    document.getElementById('user-nav').style.display='flex'
-    const{data:p}=await db.from('profiles').select('name').eq('id',session.user.id).single()
-    if(p)document.getElementById('user-greeting').textContent='Olá, '+p.name.split(' ')[0]
+    document.getElementById('nav-guest').style.display='none'
+    const u=document.getElementById('nav-user')
+    u.style.display='flex'
+    const name=session.user.user_metadata?.name||session.user.email||'U'
+    document.getElementById('nav-avatar').textContent=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
   }
   loadStats()
-  loadPros()
+  loadFeatured()
 }
 
 async function loadStats(){
-  const[{count:prosCount},{count:revCount}]=await Promise.all([
-    db.from('profiles').select('*',{count:'exact',head:true}),
+  const[{count:pc},{count:rc}]=await Promise.all([
+    db.from('profiles').select('*',{count:'exact',head:true}).eq('is_active',true),
     db.from('reviews').select('*',{count:'exact',head:true})
   ])
-  document.getElementById('stat-pros').textContent=(prosCount||0)+'+'
-  document.getElementById('stat-reviews').textContent=(revCount||0)+'+'
+  document.getElementById('stat-pros').textContent=(pc||0)+'+'
+  document.getElementById('stat-reviews').textContent=(rc||0)+'+'
+  document.getElementById('t-pros').textContent=(pc||0)+'+'
 }
 
-async function loadPros(){
+async function loadFeatured(){
+  const{data}=await db.from('profiles')
+    .select('id,name,category,location,plan,photo_url,verified')
+    .eq('is_active',true).order('plan',{ascending:false}).limit(8)
   const grid=document.getElementById('pros-grid')
-  grid.innerHTML='<div class="loading"><div class="spinner"></div><p>A carregar...</p></div>'
-  let q=db.from('profiles').select('*,reviews(rating)').eq('suspended',false).eq('approved',true)
-  if(currentCat)q=q.eq('category',currentCat)
-  if(currentSearch)q=q.ilike('name',`%${currentSearch}%`)
-  // Premium first, then Pro, then free
-  q=q.order('plan',{ascending:false}).order('created_at',{ascending:false}).limit(12)
-  const{data,error}=await q
-  if(!data||data.length===0){grid.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><p>Nenhum profissional encontrado.</p></div>';return}
+  if(!data||!data.length){
+    grid.innerHTML='<p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:40px">Nenhum profissional ainda. <a href="auth.html?tab=register" style="color:var(--blue)">Sê o primeiro!</a></p>'
+    return
+  }
+  const ids=data.map(p=>p.id)
+  const[{data:reviews},{data:services}]=await Promise.all([
+    db.from('reviews').select('professional_id,rating').in('professional_id',ids),
+    db.from('services').select('professional_id,price_from').in('professional_id',ids)
+  ])
+  const rMap={},pMap={}
+  reviews&&reviews.forEach(r=>{if(!rMap[r.professional_id])rMap[r.professional_id]={s:0,c:0};rMap[r.professional_id].s+=r.rating;rMap[r.professional_id].c++})
+  services&&services.forEach(s=>{if(s.price_from&&(!pMap[s.professional_id]||s.price_from<pMap[s.professional_id]))pMap[s.professional_id]=s.price_from})
   grid.innerHTML=data.map(pro=>{
-    const reviews=pro.reviews||[]
-    const avg=reviews.length?(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1):null
-    const stars=avg?'★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg)):'☆☆☆☆☆'
+    const r=rMap[pro.id];const avg=r?(r.s/r.c).toFixed(1):'Novo';const n=r?Math.round(r.s/r.c):0
+    const stars=r?('★'.repeat(n)+'☆'.repeat(5-n)):'☆☆☆☆☆'
+    const count=r?`(${r.c})`:'sem avaliações'
+    const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<strong>Orçamento grátis</strong>'
     const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
     const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
-    const planBadge=pro.plan==='premium'?`<div class="plan-badge plan-premium">⭐ Premium</div>`:pro.plan==='pro'?`<div class="plan-badge plan-pro">✓ Pro</div>`:''
-    const coverBg=pro.cover_url?`background:url('${pro.cover_url}') center/cover`:''
-    return`<a href="profile.html?id=${pro.id}" class="pro-card">
-      <div class="pro-card-cover" style="${coverBg}">${planBadge}<div class="pro-avatar">${avatar}</div></div>
+    const covStyle=pro.plan==='premium'?'background:linear-gradient(135deg,#92400e,var(--gold))':pro.plan==='pro'?'background:linear-gradient(135deg,#4c1d95,#7c3aed)':''
+    const verif=(pro.verified||pro.plan!=='free')?'<span class="verif">✅ Verificado</span>':''
+    return`<a class="pro-card" href="profile.html?id=${pro.id}">
+      <div class="pro-card-cover" style="${covStyle}"></div>
+      <div class="pro-avatar">${avatar}</div>
       <div class="pro-card-body">
-        <div class="pro-name">${pro.name}</div>
-        <div class="pro-cat">${pro.category}</div>
-        <div class="pro-loc">📍 ${pro.location}</div>
-        ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
-        <div class="pro-footer">
-          <div class="pro-rating"><span class="stars">${stars}</span> ${avg||'Novo'} ${reviews.length?`(${reviews.length})`:''}
-          </div>
-          <button class="pro-btn">Ver perfil</button>
-        </div>
+        <div class="pro-card-name">${pro.name}</div>
+        <div class="pro-card-cat"><span class="plan-dot ${pro.plan||'free'}"></span>${pro.category||'Profissional'}</div>
+        <div class="pro-rating"><span class="stars">${stars}</span><span style="font-weight:700;margin-left:2px">${avg}</span><span style="color:var(--muted)">&nbsp;${count}</span></div>
+        <div class="pro-loc">📍 ${pro.location||'Porto / Maia'}</div>
+        <div class="pro-price">${price}</div>
+        <div style="margin-top:8px">${verif}</div>
       </div>
     </a>`
   }).join('')
 }
 
-function filterCat(cat){
-  currentCat=cat
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'))
-  document.getElementById('pros-title').textContent=cat?`${cat}s em destaque`:'Todos os profissionais'
-  loadPros()
-  document.getElementById('profissionais').scrollIntoView({behavior:'smooth'})
-}
-
 function doSearch(){
-  currentSearch=document.getElementById('search-input').value.trim()
-  currentCat=document.getElementById('cat-select').value
-  loadPros()
-  document.getElementById('profissionais').scrollIntoView({behavior:'smooth'})
+  const q=document.getElementById('hero-input').value
+  const loc=document.getElementById('hero-loc').value
+  const p=new URLSearchParams()
+  if(q)p.set('q',q)
+  if(loc)p.set('loc',loc)
+  location.href='categoria.html?'+p.toString()
 }
 
-document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()})
+function goCategory(cat){location.href='categoria.html?cat='+encodeURIComponent(cat)}
 
-async function signOut(){await db.auth.signOut();location.reload()}
+document.querySelector('.nav-search input').addEventListener('keydown',e=>{
+  if(e.key==='Enter')location.href='categoria.html?q='+encodeURIComponent(e.target.value)
+})
+
 init()
 </script>
 </body>

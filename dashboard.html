@@ -7,289 +7,290 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--sidebar:240px}
+    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--green:#16a34a;--red:#dc2626;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff}
     body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);display:flex;min-height:100vh}
     a{text-decoration:none;color:inherit}
-    .sidebar{width:var(--sidebar);flex-shrink:0;background:#0f172a;color:#94a3b8;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
-    .sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .sidebar-logo a{font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px}
-    .sidebar-logo a span{color:var(--gold)}
-    .sidebar-plan{padding:10px 16px;background:rgba(255,255,255,.06);margin:12px 12px 4px;border-radius:10px}
-    .sidebar-plan .plan-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:3px}
-    .sidebar-plan .plan-name{font-size:14px;font-weight:700;color:#fff}
-    .nav-section{padding:10px 20px 2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#475569;margin-top:4px}
-    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;color:#94a3b8;border:none;background:none;width:100%;text-align:left;font-family:inherit}
-    .nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
-    .nav-item.active{background:var(--blue);color:#fff}
-    .nav-item .icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
-    .sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
-    .sidebar-user{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-    .sidebar-avatar{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+
+    /* SIDEBAR NAV */
+    .sidebar{width:240px;background:var(--blue-dark);min-height:100vh;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0}
+    .sidebar-logo{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .logo{font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px}.logo span{color:var(--gold)}
+    .sidebar-user{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
+    .sidebar-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
     .sidebar-avatar img{width:100%;height:100%;object-fit:cover}
     .sidebar-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .btn-signout{width:100%;padding:9px;background:rgba(255,255,255,.08);border:none;border-radius:8px;color:#94a3b8;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
-    .btn-signout:hover{background:rgba(255,255,255,.14);color:#fff}
-    .main{flex:1;margin-left:var(--sidebar);display:flex;flex-direction:column;min-height:100vh}
-    .topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-    .topbar-title{font-size:18px;font-weight:700}
-    .btn{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
-    .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
-    .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
-    .btn-danger{background:#fef2f2;color:#b91c1c;border:1.5px solid #fecaca}.btn-danger:hover{background:#b91c1c;color:#fff;border-color:#b91c1c}
-    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
-    .btn-sm{padding:6px 12px;font-size:12px;border-radius:6px}
-    .content{padding:28px 32px;flex:1}
-    .panel{display:none}.panel.active{display:block}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-bottom:28px}
-    .stat-card{background:#fff;border-radius:14px;padding:20px;border:1px solid var(--border)}
-    .stat-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
-    .stat-val{font-size:32px;font-weight:800;letter-spacing:-1px}
-    .stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
-    .card{background:#fff;border-radius:14px;padding:24px;border:1px solid var(--border);margin-bottom:20px}
-    .card-title{font-size:15px;font-weight:700;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
-    .form-group{margin-bottom:16px}
+    .sidebar-plan{font-size:11px;color:rgba(255,255,255,.6)}
+    .sidebar-nav{flex:1;padding:12px 0}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:14px;font-weight:500;color:rgba(255,255,255,.75);cursor:pointer;transition:all .2s;border-left:3px solid transparent}
+    .nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+    .nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:var(--gold)}
+    .nav-item .icon{font-size:16px;width:20px;text-align:center}
+    .sidebar-bottom{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1)}
+    .btn-signout{width:100%;padding:9px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .2s}
+    .btn-signout:hover{background:rgba(255,255,255,.2);color:#fff}
+
+    /* MOBILE NAV */
+    .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:100;padding:8px 0 max(8px,env(safe-area-inset-bottom))}
+    .mobile-nav-items{display:flex;justify-content:space-around}
+    .mob-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 12px;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:8px;transition:color .2s}
+    .mob-item.active{color:var(--blue)}
+    .mob-item .icon{font-size:20px}
+    @media(max-width:768px){.sidebar{display:none}.mobile-nav{display:block}.main-content{padding:20px 16px 80px}}
+
+    /* MAIN */
+    .main-content{flex:1;padding:32px;overflow-y:auto;max-width:1000px}
+    .page-section{display:none}.page-section.active{display:block}
+    .page-title{font-size:22px;font-weight:800;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+
+    /* STATS CARDS */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+    .stat-card{background:var(--white);border-radius:14px;padding:20px;border:1px solid var(--border)}
+    .stat-card .s-icon{font-size:24px;margin-bottom:8px}
+    .stat-card .s-value{font-size:28px;font-weight:900;color:var(--blue);margin-bottom:2px}
+    .stat-card .s-label{font-size:13px;color:var(--muted)}
+
+    /* FORMS */
+    .form-section{background:var(--white);border-radius:16px;padding:24px;margin-bottom:20px;border:1px solid var(--border)}
+    .form-title{font-size:16px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+    .form-group{margin-bottom:14px}
+    .form-group.full{grid-column:1/-1}
     label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
     input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
     input:focus,select:focus,textarea:focus{border-color:var(--blue)}
     textarea{resize:vertical;min-height:80px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .form-hint{font-size:11px;color:var(--muted);margin-top:4px}
-    .msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none}
-    .msg.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
-    .msg.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
-    .avatar-upload{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-    .avatar-preview{width:72px;height:72px;border-radius:50%;background:var(--blue);color:#fff;font-size:24px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;border:3px solid var(--border);flex-shrink:0}
-    .avatar-preview img{width:100%;height:100%;object-fit:cover}
-    .service-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--bg)}
-    .service-row:last-child{border-bottom:none}
-    .service-info{flex:1}
-    .service-name{font-size:14px;font-weight:600}
-    .service-detail{font-size:12px;color:var(--muted);margin-top:2px}
-    .portfolio-grid-dash{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:4px}
-    .portfolio-item-dash{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden}
-    .portfolio-item-dash img{width:100%;height:100%;object-fit:cover}
-    .portfolio-item-dash .del-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
-    .portfolio-item-dash:hover .del-overlay{opacity:1}
-    .del-btn{background:#ef4444;color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-    .portfolio-caption{font-size:11px;color:rgba(255,255,255,.8);position:absolute;bottom:6px;left:6px;right:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .msg-row{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--bg);cursor:pointer;transition:background .15s;border-radius:6px}
-    .msg-row:last-child{border-bottom:none}
-    .msg-row:hover{background:#f8fafc;padding:14px 10px;margin:0 -10px}
-    .msg-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;visibility:hidden}
-    .msg-row.unread .msg-dot{visibility:visible}
-    .msg-row.unread .msg-subject{font-weight:700}
-    .msg-body{flex:1;min-width:0}
-    .msg-sender{font-size:13px;color:var(--muted)}
-    .msg-subject{font-size:14px;font-weight:500;margin:2px 0}
-    .msg-preview{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .msg-time{font-size:11px;color:var(--muted);flex-shrink:0;margin-top:2px;white-space:nowrap}
-    .badge{display:inline-block;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;vertical-align:middle;margin-left:4px}
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
-    .modal-overlay.open{display:flex}
-    .modal{background:#fff;border-radius:16px;padding:28px;max-width:520px;width:90%;max-height:90vh;overflow-y:auto}
-    .modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
-    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
-    .loading{text-align:center;padding:40px;color:var(--muted)}
-    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+    .btn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+    .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-dark)}
+    .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
+    .btn-danger{background:transparent;color:var(--red);border:1.5px solid var(--red)}.btn-danger:hover{background:#fef2f2}
+    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
+    .btn-sm{padding:6px 12px;font-size:12px}
+
+    /* LISTS */
+    .item-list{display:flex;flex-direction:column;gap:10px}
+    .list-item{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:flex-start;gap:12px}
+    .list-item-body{flex:1}
+    .list-item-title{font-size:15px;font-weight:600;margin-bottom:4px}
+    .list-item-sub{font-size:13px;color:var(--muted);line-height:1.5}
+    .list-item-actions{display:flex;gap:6px;margin-top:8px}
+    .item-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+    .badge-new{background:#fef3c7;color:#92400e}
+    .badge-read{background:#f1f5f9;color:var(--muted)}
+
+    /* PORTFOLIO UPLOAD */
+    .upload-area{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
+    .upload-area:hover{border-color:var(--blue);background:var(--blue-light)}
+    .upload-area p{font-size:14px;color:var(--muted);margin-top:8px}
+    .portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+    .port-img{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative}
+    .port-img img{width:100%;height:100%;object-fit:cover}
+    .port-img .del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer;display:none;align-items:center;justify-content:center}
+    .port-img:hover .del{display:flex}
+
+    /* MESSAGES */
+    .msg-item{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+    .msg-item:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);border-color:var(--blue)}
+    .msg-item.unread{border-left:3px solid var(--blue)}
+    .msg-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+    .msg-from{font-size:14px;font-weight:700}
+    .msg-date{font-size:12px;color:var(--muted)}
+    .msg-subject{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:4px}
+    .msg-preview{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* ALERTS */
+    .alert{padding:12px 16px;border-radius:8px;font-size:14px;margin-bottom:16px;display:none}
+    .alert.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+    .alert.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+    .alert.info{background:var(--blue-light);color:var(--blue-dark);border:1px solid #bfdbfe}
+
+    /* UPGRADE BANNER */
+    .upgrade-banner{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:16px;padding:24px;color:#fff;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+    .upgrade-banner h3{font-size:16px;font-weight:700;margin-bottom:4px}
+    .upgrade-banner p{font-size:13px;color:rgba(255,255,255,.8)}
+
+    .spinner{width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:20px auto;display:block}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .empty{text-align:center;padding:36px;color:var(--muted);font-size:14px}
-    .empty-icon{font-size:36px;margin-bottom:10px}
-    @media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.row{grid-template-columns:1fr}}
+    .empty{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+    .tab-bar{display:flex;gap:4px;margin-bottom:20px;background:var(--bg);border-radius:10px;padding:4px}
+    .tab{padding:9px 16px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s}
+    .tab.active{background:var(--white);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
   </style>
 </head>
 <body>
 
-<aside class="sidebar">
-  <div class="sidebar-logo"><a href="index.html">Pro<span>liga</span></a></div>
-  <div class="sidebar-plan">
-    <div class="plan-label">O teu plano</div>
-    <div class="plan-name" id="sidebar-plan-name">A carregar...</div>
-  </div>
-  <div class="nav-section">Principal</div>
-  <button class="nav-item active" data-panel="overview" onclick="showPanel('overview')"><span class="icon">📊</span> Visão geral</button>
-  <button class="nav-item" data-panel="messages" onclick="showPanel('messages')"><span class="icon">📩</span> Mensagens<span id="unread-badge" class="badge" style="display:none"></span></button>
-  <div class="nav-section">Perfil</div>
-  <button class="nav-item" data-panel="profile" onclick="showPanel('profile')"><span class="icon">👤</span> Editar perfil</button>
-  <button class="nav-item" data-panel="services" onclick="showPanel('services')"><span class="icon">🛠️</span> Serviços</button>
-  <button class="nav-item" data-panel="portfolio" onclick="showPanel('portfolio')"><span class="icon">📸</span> Portfólio</button>
-  <div class="nav-section">Conta</div>
-  <button class="nav-item" data-panel="plan" onclick="showPanel('plan')"><span class="icon">⭐</span> Plano & upgrade</button>
-  <a class="nav-item" id="view-profile-link" href="#" target="_blank"><span class="icon">🔗</span> Ver meu perfil</a>
-  <div class="sidebar-footer">
-    <div class="sidebar-user">
-      <div class="sidebar-avatar" id="sidebar-avatar"></div>
-      <div class="sidebar-name" id="sidebar-name"></div>
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo"><a href="index.html" class="logo">Pro<span>liga</span></a></div>
+  <div class="sidebar-user">
+    <div class="sidebar-avatar" id="sb-avatar">?</div>
+    <div>
+      <div class="sidebar-name" id="sb-name">A carregar...</div>
+      <div class="sidebar-plan" id="sb-plan">Plano Grátis</div>
     </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" data-page="overview" onclick="showPage('overview')"><span class="icon">📊</span> Resumo</div>
+    <div class="nav-item" data-page="profile" onclick="showPage('profile')"><span class="icon">👤</span> O Meu Perfil</div>
+    <div class="nav-item" data-page="services" onclick="showPage('services')"><span class="icon">🛠️</span> Serviços</div>
+    <div class="nav-item" data-page="portfolio" onclick="showPage('portfolio')"><span class="icon">📸</span> Portfólio</div>
+    <div class="nav-item" data-page="messages" onclick="showPage('messages')"><span class="icon">💬</span> Mensagens <span id="msg-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
+    <div class="nav-item" data-page="reviews" onclick="showPage('reviews')"><span class="icon">⭐</span> Avaliações</div>
+    <div class="nav-item" onclick="location.href='pricing.html'"><span class="icon">💎</span> Atualizar Plano</div>
+    <div class="nav-item" onclick="window.open('profile.html?id='+profileId,'_blank')"><span class="icon">👁️</span> Ver Perfil Público</div>
+  </nav>
+  <div class="sidebar-bottom">
     <button class="btn-signout" onclick="signOut()">Sair da conta</button>
   </div>
-</aside>
+</nav>
 
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="topbar-title">Visão geral</div>
-    <a href="index.html" class="btn btn-outline btn-sm">← Início</a>
-  </div>
-  <div class="content">
-
-    <!-- OVERVIEW -->
-    <div class="panel active" id="panel-overview">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Mensagens</div><div class="stat-val" id="stat-msgs">–</div><div class="stat-sub">no total</div></div>
-        <div class="stat-card"><div class="stat-label">Não lidas</div><div class="stat-val" id="stat-unread">–</div><div class="stat-sub">mensagens</div></div>
-        <div class="stat-card"><div class="stat-label">Serviços</div><div class="stat-val" id="stat-srvs">–</div><div class="stat-sub">listados</div></div>
-        <div class="stat-card"><div class="stat-label">Avaliação</div><div class="stat-val" id="stat-rating">–</div><div class="stat-sub" id="stat-rating-sub"></div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Acesso rápido</div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px">
-          <button class="btn btn-solid" onclick="showPanel('profile')">✏️ Editar perfil</button>
-          <button class="btn btn-outline" onclick="showPanel('services')">🛠️ Gerir serviços</button>
-          <button class="btn btn-outline" onclick="showPanel('messages')">📩 Ver mensagens</button>
-          <button class="btn btn-outline" onclick="showPanel('portfolio')">📸 Portfólio</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROFILE -->
-    <div class="panel" id="panel-profile">
-      <div class="msg error" id="profile-error"></div>
-      <div class="msg success" id="profile-success"></div>
-      <div class="card">
-        <div class="card-title">Foto de perfil</div>
-        <div class="avatar-upload">
-          <div class="avatar-preview" id="avatar-preview"></div>
-          <div>
-            <label for="avatar-file" class="btn btn-outline btn-sm" style="cursor:pointer;margin-bottom:6px;display:inline-flex">📁 Escolher foto</label>
-            <input type="file" id="avatar-file" accept="image/*" style="display:none"/>
-            <div class="form-hint">JPG, PNG até 2MB</div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Foto de capa <span style="color:var(--muted)">(plano Pro/Premium)</span></label>
-          <label for="cover-file" class="btn btn-outline btn-sm" style="cursor:pointer;display:inline-flex">📁 Escolher capa</label>
-          <input type="file" id="cover-file" accept="image/*" style="display:none"/>
-          <div id="cover-preview" style="display:none;margin-top:8px;height:70px;border-radius:8px;background-size:cover;background-position:center;border:2px solid var(--border)"></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Informações profissionais</div>
-        <div class="row">
-          <div class="form-group"><label>Nome completo *</label><input type="text" id="p-name"/></div>
-          <div class="form-group"><label>Categoria *</label>
-            <select id="p-category"><option value="">Selecionar...</option><option>Eletricista</option><option>Canalizador</option><option>Pintor</option><option>Carpinteiro</option><option>Serralheiro</option><option>Jardineiro</option><option>Limpeza</option><option>Outro</option></select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group"><label>Localização *</label><input type="text" id="p-location"/></div>
-          <div class="form-group"><label>Telefone</label><input type="tel" id="p-phone"/></div>
-        </div>
-        <div class="form-group"><label>Website</label><input type="url" id="p-website" placeholder="https://..."/></div>
-        <div class="form-group"><label>Sobre mim</label><textarea id="p-bio" rows="4" placeholder="Descreve a tua experiência e especialidades..."></textarea></div>
-        <button class="btn btn-solid" id="save-profile-btn" onclick="saveProfile()">💾 Guardar alterações</button>
-      </div>
-    </div>
-
-    <!-- SERVICES -->
-    <div class="panel" id="panel-services">
-      <div class="card" id="add-service-card">
-        <div class="card-title">Adicionar serviço</div>
-        <div class="msg error" id="srv-error"></div>
-        <div class="msg success" id="srv-success"></div>
-        <div class="form-group"><label>Título *</label><input type="text" id="srv-title" placeholder="Ex: Instalação elétrica doméstica"/></div>
-        <div class="form-group"><label>Descrição</label><textarea id="srv-desc" placeholder="O que inclui este serviço..."></textarea></div>
-        <div class="row">
-          <div class="form-group"><label>Preço base (€)</label><input type="number" id="srv-pfrom" placeholder="50"/></div>
-          <div class="form-group"><label>Preço máximo (€)</label><input type="number" id="srv-pto" placeholder="150"/></div>
-        </div>
-        <div class="form-group"><label>Unidade</label><select id="srv-unit"><option value="hora">Por hora</option><option value="dia">Por dia</option><option value="projeto">Por projeto</option></select></div>
-        <button class="btn btn-solid" onclick="addService()">+ Adicionar serviço</button>
-      </div>
-      <div class="card">
-        <div class="card-title">Os meus serviços <span id="srv-count" class="badge">0</span></div>
-        <div id="services-list"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
-
-    <!-- PORTFOLIO -->
-    <div class="panel" id="panel-portfolio">
-      <div id="portfolio-locked" style="display:none" class="card">
-        <div style="text-align:center;padding:24px">
-          <div style="font-size:48px;margin-bottom:12px">📸</div>
-          <h3 style="margin-bottom:8px">Portfólio disponível no plano Pro</h3>
-          <p style="color:var(--muted);font-size:14px;margin-bottom:16px">Mostra fotos dos teus trabalhos e conquista mais clientes.</p>
-          <button class="btn btn-solid" onclick="showPanel('plan')">Ver planos e preços →</button>
-        </div>
-      </div>
-      <div id="portfolio-content" style="display:none">
-        <div class="card">
-          <div class="card-title">Adicionar foto</div>
-          <div class="msg error" id="port-error"></div>
-          <div class="msg success" id="port-success"></div>
-          <div class="form-group"><label>Foto *</label><input type="file" id="port-file" accept="image/*"/><div class="form-hint">JPG, PNG, WebP até 5MB</div></div>
-          <div id="port-preview" style="display:none;height:110px;border-radius:8px;background-size:cover;background-position:center;border:2px solid var(--border);margin-bottom:12px"></div>
-          <div class="form-group"><label>Legenda (opcional)</label><input type="text" id="port-caption" placeholder="Ex: Remodelação completa de casa de banho"/></div>
-          <button class="btn btn-solid" id="port-btn" onclick="uploadPortfolio()">📤 Fazer upload</button>
-        </div>
-        <div class="card">
-          <div class="card-title">As minhas fotos <span id="port-count" class="badge">0</span></div>
-          <div class="portfolio-grid-dash" id="portfolio-grid"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MESSAGES -->
-    <div class="panel" id="panel-messages">
-      <div class="card">
-        <div class="card-title">Caixa de entrada</div>
-        <div id="messages-list"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
-
-    <!-- PLAN -->
-    <div class="panel" id="panel-plan">
-      <div class="card" id="current-plan-card">
-        <div class="card-title">Plano atual</div>
-        <div id="current-plan-info"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Fazer upgrade</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
-          <div style="border:2px solid var(--border);border-radius:12px;padding:20px">
-            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Pro</div>
-            <div style="font-size:32px;font-weight:800;margin-bottom:8px">€9<span style="font-size:14px;font-weight:400;color:var(--muted)">/mês</span></div>
-            <ul style="list-style:none;font-size:13px;margin-bottom:16px;color:#475569;line-height:2">
-              <li>✓ Até 10 serviços</li><li>✓ 10 fotos de portfólio</li><li>✓ Badge verificado</li><li>✓ Foto de capa</li>
-            </ul>
-            <button class="btn btn-solid" style="width:100%" onclick="requestUpgrade('pro')">Obter Pro →</button>
-          </div>
-          <div style="border:2px solid var(--gold);border-radius:12px;padding:20px;position:relative">
-            <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:2px 12px;border-radius:99px;white-space:nowrap">👑 Melhor escolha</div>
-            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px">Premium</div>
-            <div style="font-size:32px;font-weight:800;margin-bottom:8px">€19<span style="font-size:14px;font-weight:400;color:var(--muted)">/mês</span></div>
-            <ul style="list-style:none;font-size:13px;margin-bottom:16px;color:#475569;line-height:2">
-              <li>✓ Serviços ilimitados</li><li>✓ Fotos ilimitadas</li><li>✓ Destaque nas pesquisas</li><li>✓ Suporte prioritário</li>
-            </ul>
-            <button class="btn btn-gold" style="width:100%" onclick="requestUpgrade('premium')">Obter Premium →</button>
-          </div>
-        </div>
-        <p style="font-size:13px;color:var(--muted);margin-top:16px">Após clicar, abre-se o teu email para nos contactares. Ativamos o plano em até 24h.</p>
-      </div>
-    </div>
-
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <div class="mobile-nav-items">
+    <div class="mob-item active" onclick="showPage('overview')"><span class="icon">📊</span>Resumo</div>
+    <div class="mob-item" onclick="showPage('profile')"><span class="icon">👤</span>Perfil</div>
+    <div class="mob-item" onclick="showPage('services')"><span class="icon">🛠️</span>Serviços</div>
+    <div class="mob-item" onclick="showPage('messages')"><span class="icon">💬</span>Msgs</div>
+    <div class="mob-item" onclick="showPage('portfolio')"><span class="icon">📸</span>Portfolio</div>
   </div>
 </div>
 
-<!-- MESSAGE MODAL -->
-<div class="modal-overlay" id="msg-modal">
-  <div class="modal">
-    <div class="modal-title" id="modal-subject">Mensagem</div>
-    <div id="modal-meta" style="font-size:13px;color:var(--muted);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)"></div>
-    <div id="modal-content" style="font-size:15px;line-height:1.8;white-space:pre-wrap"></div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal()">Fechar</button>
-      <a id="modal-reply" href="#" class="btn btn-solid">📧 Responder</a>
+<!-- MAIN -->
+<div class="main-content">
+
+  <!-- OVERVIEW -->
+  <div id="page-overview" class="page-section active">
+    <div class="page-title">📊 Resumo</div>
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="s-icon">👁️</div><div class="s-value" id="stat-views">—</div><div class="s-label">Visualizações do perfil</div></div>
+      <div class="stat-card"><div class="s-icon">💬</div><div class="s-value" id="stat-msgs">—</div><div class="s-label">Mensagens recebidas</div></div>
+      <div class="stat-card"><div class="s-icon">⭐</div><div class="s-value" id="stat-avg">—</div><div class="s-label">Avaliação média</div></div>
+      <div class="stat-card"><div class="s-icon">🛠️</div><div class="s-value" id="stat-services">—</div><div class="s-label">Serviços publicados</div></div>
+    </div>
+    <div id="upgrade-banner-wrap"></div>
+    <div class="form-section">
+      <div class="form-title">🔔 Mensagens Recentes</div>
+      <div id="recent-msgs"></div>
+      <div style="margin-top:12px"><button class="btn btn-outline btn-sm" onclick="showPage('messages')">Ver todas →</button></div>
+    </div>
+    <div class="form-section">
+      <div class="form-title">⭐ Últimas Avaliações</div>
+      <div id="recent-reviews"></div>
     </div>
   </div>
+
+  <!-- PROFILE -->
+  <div id="page-profile" class="page-section">
+    <div class="page-title">👤 O Meu Perfil</div>
+    <div class="alert success" id="profile-success"></div>
+    <div class="alert error" id="profile-error"></div>
+    <div class="form-section">
+      <div class="form-title">📝 Informação Pessoal</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome completo *</label><input id="p-name" type="text" placeholder="João Silva"/></div>
+        <div class="form-group"><label>Categoria *</label>
+          <select id="p-cat">
+            <option value="">Escolhe uma categoria</option>
+            <option>Eletricistas</option><option>Canalizadores</option><option>Pintores</option>
+            <option>Pedreiros</option><option>Carpinteiros</option><option>Serralheiros</option>
+            <option>Jardineiros</option><option>Limpeza</option><option>Mudanças</option>
+            <option>Decoradores</option><option>Programadores</option><option>Designers</option>
+            <option>Reparações</option><option>Personal Trainers</option><option>Cabeleireiros</option>
+            <option>Esteticistas</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Telefone</label><input id="p-phone" type="tel" placeholder="912 000 000"/></div>
+        <div class="form-group"><label>Website</label><input id="p-website" type="url" placeholder="https://o-meu-site.pt"/></div>
+        <div class="form-group"><label>Localização *</label>
+          <select id="p-loc">
+            <option value="">Escolhe a zona</option>
+            <optgroup label="Porto">
+              <option>Porto – Centro</option><option>Porto – Boavista</option>
+              <option>Porto – Foz do Douro</option><option>Porto – Paranhos</option>
+              <option>Porto – Campanhã</option><option>Porto – Cedofeita</option>
+              <option>Porto – Bonfim</option><option>Porto – Massarelos</option>
+            </optgroup>
+            <optgroup label="Maia">
+              <option>Maia – Castêlo da Maia</option><option>Maia – Águas Santas</option>
+              <option>Maia – Moreira</option><option>Maia – Vermoim</option>
+              <option>Maia – Folgosa</option><option>Maia – Gemunde</option>
+              <option>Maia – Nogueira</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group"><label>URL da foto de perfil</label><input id="p-photo" type="url" placeholder="https://..."/></div>
+        <div class="form-group full"><label>Sobre mim (bio)</label><textarea id="p-bio" placeholder="Descreve a tua experiência, especialidades e o que te diferencia..."></textarea></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveProfile()">💾 Guardar perfil</button>
+    </div>
+    <div class="form-section">
+      <div class="form-title">👁️ Visibilidade</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+        <div><div style="font-size:14px;font-weight:600">Perfil público</div><div style="font-size:12px;color:var(--muted)">O teu perfil aparece nos resultados de pesquisa</div></div>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin:0">
+          <input type="checkbox" id="p-active" style="width:auto;accent-color:var(--blue);width:18px;height:18px"/>
+          <span style="font-size:14px;font-weight:600">Ativo</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div id="page-services" class="page-section">
+    <div class="page-title">🛠️ Serviços</div>
+    <div class="alert success" id="srv-success"></div>
+    <div class="alert error" id="srv-error"></div>
+    <div class="form-section">
+      <div class="form-title">➕ Adicionar Serviço</div>
+      <div class="form-grid">
+        <div class="form-group full"><label>Nome do serviço *</label><input id="srv-title" type="text" placeholder="Ex: Instalação elétrica completa"/></div>
+        <div class="form-group full"><label>Descrição</label><textarea id="srv-desc" placeholder="Descreve o serviço em detalhe..."></textarea></div>
+        <div class="form-group"><label>Preço mínimo (€)</label><input id="srv-pmin" type="number" placeholder="Ex: 50" min="0"/></div>
+        <div class="form-group"><label>Preço máximo (€)</label><input id="srv-pmax" type="number" placeholder="Ex: 200" min="0"/></div>
+        <div class="form-group"><label>Unidade de preço</label>
+          <select id="srv-unit"><option value="hora">Por hora</option><option value="dia">Por dia</option><option value="trabalho">Por trabalho</option><option value="m²">Por m²</option></select>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="addService()">Adicionar serviço</button>
+    </div>
+    <div class="form-section">
+      <div class="form-title">📋 Os Meus Serviços</div>
+      <div id="services-list" class="item-list"></div>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO -->
+  <div id="page-portfolio" class="page-section">
+    <div class="page-title">📸 Portfólio</div>
+    <div class="alert info" id="port-info" style="display:block">💡 Para adicionar fotos ao portfólio, precisas do plano Pro ou Premium. <a href="pricing.html" style="color:var(--blue-dark);font-weight:700">Ver planos →</a></div>
+    <div id="port-pro-section" style="display:none">
+      <div class="alert success" id="port-success"></div>
+      <div class="alert error" id="port-error"></div>
+      <div class="form-section">
+        <div class="form-title">➕ Adicionar Foto</div>
+        <div class="form-group"><label>URL da imagem *</label><input id="port-url" type="url" placeholder="https://..."/></div>
+        <div class="form-group"><label>Legenda (opcional)</label><input id="port-cap" type="text" placeholder="Ex: Instalação completa em Boavista"/></div>
+        <button class="btn btn-primary" onclick="addPortfolioItem()">Adicionar foto</button>
+      </div>
+      <div class="form-section">
+        <div class="form-title">🖼️ Fotos no Portfólio</div>
+        <div class="portfolio-grid" id="portfolio-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div id="page-messages" class="page-section">
+    <div class="page-title">💬 Mensagens</div>
+    <div id="messages-list"></div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div id="page-reviews" class="page-section">
+    <div class="page-title">⭐ Avaliações</div>
+    <div id="reviews-list"></div>
+  </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -297,212 +298,284 @@
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
-let me=null,myPlan='free',newAvatarFile=null,newCoverFile=null,newPortFile=null
-
-const panelTitles={overview:'Visão geral',profile:'Editar perfil',services:'Serviços',portfolio:'Portfólio',messages:'Mensagens',plan:'Plano & Upgrade'}
+let user=null,profileData=null,profileId=null
 
 async function init(){
   const{data:{session}}=await db.auth.getSession()
   if(!session){location.href='auth.html';return}
-  const{data:pro}=await db.from('profiles').select('*').eq('id',session.user.id).single()
-  if(!pro){location.href='auth.html';return}
-  me=pro;myPlan=pro.plan||'free'
-  const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
-  document.getElementById('sidebar-name').textContent=pro.name
-  const sa=document.getElementById('sidebar-avatar')
-  sa.innerHTML=pro.photo_url?`<img src="${pro.photo_url}" alt=""/>`:`${initials}`
-  const planLabels={free:'Plano Grátis',pro:'✓ Plano Pro',premium:'👑 Plano Premium'}
-  document.getElementById('sidebar-plan-name').textContent=planLabels[myPlan]||'Plano Grátis'
-  document.getElementById('view-profile-link').href=`profile.html?id=${pro.id}`
-  // Fill profile form
-  document.getElementById('p-name').value=pro.name||''
-  document.getElementById('p-category').value=pro.category||''
-  document.getElementById('p-location').value=pro.location||''
-  document.getElementById('p-phone').value=pro.phone||''
-  document.getElementById('p-website').value=pro.website||''
-  document.getElementById('p-bio').value=pro.bio||''
-  const ap=document.getElementById('avatar-preview')
-  ap.innerHTML=pro.photo_url?`<img src="${pro.photo_url}" alt=""/>`:`${initials}`
-  if(pro.cover_url){document.getElementById('cover-preview').style.backgroundImage=`url('${pro.cover_url}')`;document.getElementById('cover-preview').style.display='block'}
-  // Portfolio panel
-  if(myPlan==='free'){document.getElementById('portfolio-locked').style.display='block'}
-  else{document.getElementById('portfolio-content').style.display='block';loadPortfolio()}
-  // File listeners
-  document.getElementById('avatar-file').onchange=e=>{
-    newAvatarFile=e.target.files[0]
-    if(newAvatarFile){const r=new FileReader();r.onload=ev=>{document.getElementById('avatar-preview').innerHTML=`<img src="${ev.target.result}" alt=""/>` };r.readAsDataURL(newAvatarFile)}
-  }
-  document.getElementById('cover-file').onchange=e=>{
-    if(myPlan==='free'){alert('Foto de capa disponível a partir do plano Pro.');e.target.value='';return}
-    newCoverFile=e.target.files[0]
-    if(newCoverFile){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('cover-preview');el.style.backgroundImage=`url('${ev.target.result}')`;el.style.display='block'};r.readAsDataURL(newCoverFile)}
-  }
-  document.getElementById('port-file').onchange=e=>{
-    newPortFile=e.target.files[0]
-    if(newPortFile){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('port-preview');el.style.backgroundImage=`url('${ev.target.result}')`;el.style.display='block'};r.readAsDataURL(newPortFile)}
-  }
-  loadStats();loadServices();loadMessages();loadPlanInfo()
+  user=session.user
+  const{data:pro}=await db.from('profiles').select('*').eq('user_id',user.id).single()
+  if(pro){profileData=pro;profileId=pro.id;fillProfileForm(pro)}
+  else await createProfile()
+  updateSidebar()
+  loadStats()
+  loadRecentMsgs()
+  loadRecentReviews()
+  checkUpgrade()
 }
 
-function showPanel(id){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
-  document.querySelectorAll('.nav-item[data-panel]').forEach(b=>b.classList.toggle('active',b.dataset.panel===id))
-  document.getElementById(`panel-${id}`).classList.add('active')
-  document.getElementById('topbar-title').textContent=panelTitles[id]||id
+async function createProfile(){
+  const name=user.user_metadata?.name||user.email.split('@')[0]
+  const{data}=await db.from('profiles').insert({user_id:user.id,name,email:user.email,plan:'free',is_active:true}).select().single()
+  profileData=data;profileId=data?.id
+  if(data)fillProfileForm(data)
+}
+
+function updateSidebar(){
+  const name=profileData?.name||user.email
+  document.getElementById('sb-name').textContent=name
+  const plan=profileData?.plan||'free'
+  document.getElementById('sb-plan').textContent=plan==='premium'?'👑 Premium':plan==='pro'?'🚀 Pro':'Plano Grátis'
+  const initials=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
+  const av=document.getElementById('sb-avatar')
+  if(profileData?.photo_url)av.innerHTML=`<img src="${profileData.photo_url}" alt="${name}"/>`
+  else av.textContent=initials
+}
+
+function fillProfileForm(pro){
+  document.getElementById('p-name').value=pro.name||''
+  document.getElementById('p-cat').value=pro.category||''
+  document.getElementById('p-phone').value=pro.phone||''
+  document.getElementById('p-website').value=pro.website||''
+  document.getElementById('p-loc').value=pro.location||''
+  document.getElementById('p-photo').value=pro.photo_url||''
+  document.getElementById('p-bio').value=pro.bio||''
+  document.getElementById('p-active').checked=pro.is_active!==false
+}
+
+async function saveProfile(){
+  const name=document.getElementById('p-name').value.trim()
+  const category=document.getElementById('p-cat').value
+  const location=document.getElementById('p-loc').value
+  if(!name||!category||!location){showAlert('profile-error','Preenche nome, categoria e localização.');return}
+  const updates={
+    name,category,location,
+    phone:document.getElementById('p-phone').value.trim()||null,
+    website:document.getElementById('p-website').value.trim()||null,
+    photo_url:document.getElementById('p-photo').value.trim()||null,
+    bio:document.getElementById('p-bio').value.trim()||null,
+    is_active:document.getElementById('p-active').checked,
+    updated_at:new Date().toISOString()
+  }
+  const{error}=await db.from('profiles').update(updates).eq('id',profileId)
+  if(error){showAlert('profile-error','Erro ao guardar: '+error.message);return}
+  profileData={...profileData,...updates}
+  updateSidebar()
+  showAlert('profile-success','Perfil guardado com sucesso!')
 }
 
 async function loadStats(){
-  const[{count:msgs},{count:unread},{count:srvs},{data:revs}]=await Promise.all([
-    db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',me.id),
-    db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',me.id).eq('read',false),
-    db.from('services').select('*',{count:'exact',head:true}).eq('professional_id',me.id),
-    db.from('reviews').select('rating').eq('professional_id',me.id)
+  const[{count:mc},{count:rc},{data:revs},{count:sc}]=await Promise.all([
+    db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',profileId),
+    db.from('reviews').select('*',{count:'exact',head:true}).eq('professional_id',profileId),
+    db.from('reviews').select('rating').eq('professional_id',profileId),
+    db.from('services').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
   ])
-  document.getElementById('stat-msgs').textContent=msgs||0
-  document.getElementById('stat-unread').textContent=unread||0
-  document.getElementById('stat-srvs').textContent=srvs||0
+  document.getElementById('stat-views').textContent='—'
+  document.getElementById('stat-msgs').textContent=mc||0
+  document.getElementById('stat-services').textContent=sc||0
   if(revs&&revs.length){
     const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
-    document.getElementById('stat-rating').textContent=avg
-    document.getElementById('stat-rating-sub').textContent=`${revs.length} avaliações`
-  }else{
-    document.getElementById('stat-rating').textContent='–'
-    document.getElementById('stat-rating-sub').textContent='sem avaliações'
-  }
-  if(unread>0){const b=document.getElementById('unread-badge');b.textContent=unread;b.style.display='inline'}
-}
-
-async function loadServices(){
-  const{data}=await db.from('services').select('*').eq('professional_id',me.id).order('created_at')
-  document.getElementById('srv-count').textContent=(data||[]).length
-  if(!data||!data.length){document.getElementById('services-list').innerHTML='<div class="empty"><div class="empty-icon">🛠️</div>Nenhum serviço ainda.</div>';return}
-  document.getElementById('services-list').innerHTML=data.map(s=>{
-    const price=s.price_from?`€${s.price_from}${s.price_to?`–€${s.price_to}`:''} / ${s.price_unit}`:''
-    return`<div class="service-row"><div class="service-info"><div class="service-name">${s.title}</div><div class="service-detail">${s.description?(s.description.substring(0,70)+(s.description.length>70?'...':'')):''} ${price?`· <strong>${price}</strong>`:''}</div></div><button class="btn btn-danger btn-sm" onclick="delService('${s.id}')">✕</button></div>`
-  }).join('')
-  const limit=myPlan==='premium'?9999:myPlan==='pro'?10:2
-  if(data.length>=limit){
-    const el=document.getElementById('srv-error')
-    el.textContent=`Atingiste o limite de ${limit} serviços. Faz upgrade para adicionar mais.`;el.style.display='block'
-    document.getElementById('add-service-card').style.opacity='.5';document.getElementById('add-service-card').style.pointerEvents='none'
+    document.getElementById('stat-avg').textContent=avg+'⭐'
+  } else document.getElementById('stat-avg').textContent='—'
+  // Badge
+  const{count:unread}=await db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',profileId).eq('read',false)
+  if(unread>0){
+    const badge=document.getElementById('msg-badge')
+    badge.style.display='inline'
+    badge.textContent=unread
   }
 }
 
-async function addService(){
-  const title=document.getElementById('srv-title').value.trim()
-  if(!title)return showFMsg('srv-error','Título obrigatório.')
-  const{error}=await db.from('services').insert({professional_id:me.id,title,description:document.getElementById('srv-desc').value.trim(),price_from:document.getElementById('srv-pfrom').value||null,price_to:document.getElementById('srv-pto').value||null,price_unit:document.getElementById('srv-unit').value})
-  if(error)return showFMsg('srv-error','Erro: '+error.message)
-  document.getElementById('srv-title').value='';document.getElementById('srv-desc').value='';document.getElementById('srv-pfrom').value='';document.getElementById('srv-pto').value=''
-  showFMsg('srv-success','Serviço adicionado!','success');loadServices()
+async function loadRecentMsgs(){
+  const{data}=await db.from('messages').select('*').eq('professional_id',profileId).order('created_at',{ascending:false}).limit(3)
+  const el=document.getElementById('recent-msgs')
+  if(!data||!data.length){el.innerHTML='<div class="empty">Sem mensagens ainda</div>';return}
+  el.innerHTML=data.map(m=>`
+    <div class="msg-item ${!m.read?'unread':''}">
+      <div class="msg-header"><div class="msg-from">${m.sender_name} <span style="font-weight:400;color:var(--muted)">· ${m.sender_email}</span></div><div class="msg-date">${new Date(m.created_at).toLocaleDateString('pt-PT')}</div></div>
+      <div class="msg-subject">${m.subject}</div>
+      <div class="msg-preview">${m.content}</div>
+    </div>`).join('')
 }
 
-async function delService(id){if(!confirm('Remover este serviço?'))return;await db.from('services').delete().eq('id',id);loadServices()}
-
-async function loadPortfolio(){
-  const{data}=await db.from('portfolio_items').select('*').eq('professional_id',me.id).order('created_at',{ascending:false})
-  document.getElementById('port-count').textContent=(data||[]).length
-  if(!data||!data.length){document.getElementById('portfolio-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📷</div>Nenhuma foto ainda.</div>';return}
-  document.getElementById('portfolio-grid').innerHTML=data.map(item=>`<div class="portfolio-item-dash"><img src="${item.photo_url}" loading="lazy"/>${item.caption?`<div class="portfolio-caption">${item.caption}</div>`:''}<div class="del-overlay"><button class="del-btn" onclick="delPortfolio('${item.id}','${item.photo_url}')">✕</button></div></div>`).join('')
-  if(myPlan==='pro'&&data.length>=10){showFMsg('port-error','Limite de 10 fotos no plano Pro. Faz upgrade para ilimitadas.')}
-}
-
-async function uploadPortfolio(){
-  if(!newPortFile)return showFMsg('port-error','Seleciona uma foto.')
-  const btn=document.getElementById('port-btn');btn.disabled=true;btn.textContent='A fazer upload...'
-  const ext=newPortFile.name.split('.').pop()
-  const path=`${me.id}/${Date.now()}.${ext}`
-  const{error:upErr}=await db.storage.from('portfolio').upload(path,newPortFile)
-  if(upErr){showFMsg('port-error','Erro no upload: '+upErr.message);btn.disabled=false;btn.textContent='📤 Fazer upload';return}
-  const{data:{publicUrl}}=db.storage.from('portfolio').getPublicUrl(path)
-  const{error}=await db.from('portfolio_items').insert({professional_id:me.id,photo_url:publicUrl,caption:document.getElementById('port-caption').value.trim()})
-  if(error){showFMsg('port-error','Erro ao guardar.');btn.disabled=false;btn.textContent='📤 Fazer upload';return}
-  showFMsg('port-success','Foto adicionada!','success')
-  document.getElementById('port-caption').value='';document.getElementById('port-file').value='';document.getElementById('port-preview').style.display='none';newPortFile=null
-  btn.disabled=false;btn.textContent='📤 Fazer upload';loadPortfolio()
-}
-
-async function delPortfolio(id,url){
-  if(!confirm('Remover esta foto?'))return
-  const path=url.split('/portfolio/')[1]
-  if(path)await db.storage.from('portfolio').remove([path])
-  await db.from('portfolio_items').delete().eq('id',id);loadPortfolio()
-}
-
-async function loadMessages(){
-  const{data}=await db.from('messages').select('*').eq('professional_id',me.id).order('created_at',{ascending:false})
-  if(!data||!data.length){document.getElementById('messages-list').innerHTML='<div class="empty"><div class="empty-icon">📭</div>Nenhuma mensagem ainda.</div>';return}
-  document.getElementById('messages-list').innerHTML=data.map(m=>{
-    const date=new Date(m.created_at).toLocaleDateString('pt-PT',{day:'2-digit',month:'short'})
-    return`<div class="msg-row ${m.read?'':'unread'}" onclick="openMsg('${m.id}')">
-      <div class="msg-dot"></div>
-      <div class="msg-body">
-        <div class="msg-sender">${m.sender_name}${m.sender_phone?` · ${m.sender_phone}`:''}</div>
-        <div class="msg-subject">${m.subject}</div>
-        <div class="msg-preview">${m.content.substring(0,80)}${m.content.length>80?'...':''}</div>
+async function loadRecentReviews(){
+  const{data}=await db.from('reviews').select('*').eq('professional_id',profileId).order('created_at',{ascending:false}).limit(3)
+  const el=document.getElementById('recent-reviews')
+  if(!data||!data.length){el.innerHTML='<div class="empty">Sem avaliações ainda</div>';return}
+  el.innerHTML=data.map(r=>{
+    const stars='★'.repeat(r.rating)+'☆'.repeat(5-r.rating)
+    return`<div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${r.reviewer_name} <span style="color:var(--gold)">${stars}</span></div>
+        <div class="list-item-sub">${r.comment||'(sem comentário)'}</div>
       </div>
-      <div class="msg-time">${date}</div>
     </div>`
   }).join('')
 }
 
-async function openMsg(id){
-  const{data:m}=await db.from('messages').select('*').eq('id',id).single()
-  if(!m)return
-  document.getElementById('modal-subject').textContent=m.subject
-  document.getElementById('modal-meta').innerHTML=`<strong>${m.sender_name}</strong> &lt;${m.sender_email}&gt;${m.sender_phone?` · ${m.sender_phone}`:''}<br>${new Date(m.created_at).toLocaleString('pt-PT')}`
-  document.getElementById('modal-content').textContent=m.content
-  document.getElementById('modal-reply').href=`mailto:${m.sender_email}?subject=Re%3A%20${encodeURIComponent(m.subject)}`
-  document.getElementById('msg-modal').classList.add('open')
-  if(!m.read){await db.from('messages').update({read:true}).eq('id',id);loadMessages();loadStats()}
-}
-function closeModal(){document.getElementById('msg-modal').classList.remove('open')}
-document.getElementById('msg-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()})
-
-async function saveProfile(){
-  const name=document.getElementById('p-name').value.trim()
-  const category=document.getElementById('p-category').value
-  const location=document.getElementById('p-location').value.trim()
-  if(!name||!category||!location)return showFMsg('profile-error','Preenche os campos obrigatórios.')
-  const btn=document.getElementById('save-profile-btn');btn.disabled=true;btn.textContent='A guardar...'
-  let photo_url=me.photo_url,cover_url=me.cover_url
-  if(newAvatarFile){
-    const ext=newAvatarFile.name.split('.').pop(),path=`${me.id}/avatar.${ext}`
-    await db.storage.from('avatars').upload(path,newAvatarFile,{upsert:true})
-    const{data:{publicUrl}}=db.storage.from('avatars').getPublicUrl(path);photo_url=publicUrl
+function checkUpgrade(){
+  const plan=profileData?.plan||'free'
+  const banner=document.getElementById('upgrade-banner-wrap')
+  if(plan==='free'){
+    banner.innerHTML=`<div class="upgrade-banner">
+      <div><h3>🚀 Aumenta a visibilidade do teu perfil</h3><p>Plano Pro: portfólio, badge verificado, destaque nas pesquisas. A partir de €9/mês.</p></div>
+      <button class="btn btn-gold" onclick="location.href='pricing.html'">Atualizar plano →</button>
+    </div>`
+  } else if(plan==='pro'){
+    banner.innerHTML=`<div class="upgrade-banner" style="background:linear-gradient(135deg,#92400e,var(--gold))">
+      <div><h3>👑 Vai para Premium</h3><p>Aparece primeiro nas pesquisas e tem destaque máximo na tua categoria.</p></div>
+      <button class="btn btn-solid" onclick="location.href='pricing.html'">Ver Premium →</button>
+    </div>`
   }
-  if(newCoverFile&&myPlan!=='free'){
-    const ext=newCoverFile.name.split('.').pop(),path=`${me.id}/cover.${ext}`
-    await db.storage.from('avatars').upload(path,newCoverFile,{upsert:true})
-    const{data:{publicUrl}}=db.storage.from('avatars').getPublicUrl(path);cover_url=publicUrl
+  // Portfolio visibility
+  if(plan!=='free'){
+    document.getElementById('port-info').style.display='none'
+    document.getElementById('port-pro-section').style.display='block'
+    loadPortfolio()
   }
-  const updates={name,category,location,phone:document.getElementById('p-phone').value.trim(),website:document.getElementById('p-website').value.trim(),bio:document.getElementById('p-bio').value.trim(),photo_url,cover_url}
-  const{error}=await db.from('profiles').update(updates).eq('id',me.id)
-  if(error){showFMsg('profile-error','Erro: '+error.message);btn.disabled=false;btn.textContent='💾 Guardar alterações';return}
-  me={...me,...updates}
-  const initials=name.split(' ').map(n=>n[0]).slice(0,2).join('')
-  document.getElementById('sidebar-name').textContent=name
-  const sa=document.getElementById('sidebar-avatar');sa.innerHTML=photo_url?`<img src="${photo_url}" alt=""/>`:`${initials}`
-  showFMsg('profile-success','Perfil guardado!','success');btn.disabled=false;btn.textContent='💾 Guardar alterações'
 }
 
-function loadPlanInfo(){
-  const cfg={free:{icon:'🆓',label:'Grátis',color:'#64748b',desc:'Perfil básico, 2 serviços, mensagens.'},pro:{icon:'🚀',label:'Pro',color:'#7c3aed',desc:'10 serviços, 10 fotos portfólio, badge verificado, foto de capa.'},premium:{icon:'👑',label:'Premium',color:'var(--gold)',desc:'Tudo ilimitado + destaque nas pesquisas + suporte prioritário.'}}
-  const c=cfg[myPlan]||cfg.free
-  document.getElementById('current-plan-info').innerHTML=`<div style="display:flex;align-items:center;gap:16px;padding:16px;background:${c.color}11;border-radius:12px;border:1px solid ${c.color}33"><span style="font-size:48px">${c.icon}</span><div><div style="font-size:22px;font-weight:800;color:${c.color}">${c.label}</div><div style="font-size:14px;color:var(--muted);margin-top:4px">${c.desc}</div></div></div>`
+// SERVICES
+async function loadServices(){
+  const{data}=await db.from('services').select('*').eq('professional_id',profileId).order('created_at')
+  const el=document.getElementById('services-list')
+  if(!data||!data.length){el.innerHTML='<div class="empty">Sem serviços publicados ainda.</div>';return}
+  el.innerHTML=data.map(s=>`
+    <div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${s.title}</div>
+        <div class="list-item-sub">${s.description||''} ${s.price_from?`· €${s.price_from}${s.price_to?'–€'+s.price_to:''} / ${s.price_unit||'hora'}`:''}
+        </div>
+      </div>
+      <div><button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">🗑</button></div>
+    </div>`).join('')
 }
 
-function requestUpgrade(plan){
-  const prices={pro:'€9/mês',premium:'€19/mês'}
-  window.open(`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20${plan}&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20${plan.charAt(0).toUpperCase()+plan.slice(1)}%20(${prices[plan]}).%0A%0ANome:%20${encodeURIComponent(me.name)}`)
+async function addService(){
+  const title=document.getElementById('srv-title').value.trim()
+  if(!title){showAlert('srv-error','O nome do serviço é obrigatório.');return}
+  const{error}=await db.from('services').insert({
+    professional_id:profileId,title,
+    description:document.getElementById('srv-desc').value.trim()||null,
+    price_from:parseFloat(document.getElementById('srv-pmin').value)||null,
+    price_to:parseFloat(document.getElementById('srv-pmax').value)||null,
+    price_unit:document.getElementById('srv-unit').value
+  })
+  if(error){showAlert('srv-error','Erro: '+error.message);return}
+  showAlert('srv-success','Serviço adicionado!')
+  ;['srv-title','srv-desc','srv-pmin','srv-pmax'].forEach(id=>document.getElementById(id).value='')
+  loadServices()
 }
 
-function showFMsg(id,txt,type='error'){
-  const el=document.getElementById(id);el.textContent=txt;el.className=`msg ${type}`;el.style.display='block'
-  if(type==='success')setTimeout(()=>{el.style.display='none'},4000)
+async function deleteService(id){
+  if(!confirm('Remover este serviço?'))return
+  await db.from('services').delete().eq('id',id)
+  loadServices()
 }
 
-async function signOut(){await db.auth.signOut();location.href='index.html'}
+// PORTFOLIO
+async function loadPortfolio(){
+  const{data}=await db.from('portfolio_items').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
+  const grid=document.getElementById('portfolio-grid')
+  if(!grid)return
+  if(!data||!data.length){grid.innerHTML='<div class="empty">Sem fotos ainda.</div>';return}
+  grid.innerHTML=data.map(item=>`
+    <div class="port-img">
+      <img src="${item.photo_url}" alt="${item.caption||''}"/>
+      <button class="del" onclick="deletePortItem('${item.id}')">✕</button>
+    </div>`).join('')
+}
+
+async function addPortfolioItem(){
+  const url=document.getElementById('port-url').value.trim()
+  if(!url){showAlert('port-error','Insere o URL da imagem.');return}
+  const{error}=await db.from('portfolio_items').insert({
+    professional_id:profileId,
+    photo_url:url,
+    caption:document.getElementById('port-cap').value.trim()||null
+  })
+  if(error){showAlert('port-error','Erro: '+error.message);return}
+  showAlert('port-success','Foto adicionada!')
+  document.getElementById('port-url').value=''
+  document.getElementById('port-cap').value=''
+  loadPortfolio()
+}
+
+async function deletePortItem(id){
+  if(!confirm('Remover esta foto?'))return
+  await db.from('portfolio_items').delete().eq('id',id)
+  loadPortfolio()
+}
+
+// MESSAGES
+async function loadMessages(){
+  const{data}=await db.from('messages').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
+  const el=document.getElementById('messages-list')
+  if(!data||!data.length){el.innerHTML='<div class="empty">Sem mensagens ainda.</div>';return}
+  // Mark all as read
+  db.from('messages').update({read:true}).eq('professional_id',profileId).eq('read',false).then(()=>{
+    document.getElementById('msg-badge').style.display='none'
+  })
+  el.innerHTML=data.map(m=>`
+    <div class="msg-item ${!m.read?'unread':''}">
+      <div class="msg-header">
+        <div><div class="msg-from">${m.sender_name}</div><div style="font-size:12px;color:var(--muted)">${m.sender_email}${m.sender_phone?' · '+m.sender_phone:''}</div></div>
+        <div class="msg-date">${new Date(m.created_at).toLocaleDateString('pt-PT')}</div>
+      </div>
+      <div class="msg-subject">${m.subject}</div>
+      <div style="font-size:14px;color:#475569;margin-top:6px;line-height:1.6">${m.content}</div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <a href="mailto:${m.sender_email}?subject=Re: ${encodeURIComponent(m.subject)}" class="btn btn-outline btn-sm">Responder por email</a>
+        ${m.sender_phone?`<a href="tel:${m.sender_phone}" class="btn btn-gold btn-sm">Ligar</a>`:''}
+      </div>
+    </div>`).join('')
+}
+
+// REVIEWS
+async function loadReviews(){
+  const{data}=await db.from('reviews').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
+  const el=document.getElementById('reviews-list')
+  if(!data||!data.length){el.innerHTML='<div class="empty">Sem avaliações ainda.</div>';return}
+  const avg=(data.reduce((s,r)=>s+r.rating,0)/data.length).toFixed(1)
+  el.innerHTML=`<div style="background:var(--white);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center;border:1px solid var(--border)">
+    <div style="font-size:48px;font-weight:900;color:var(--blue)">${avg}</div>
+    <div style="color:var(--gold);font-size:24px">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}</div>
+    <div style="font-size:14px;color:var(--muted)">${data.length} avaliação${data.length!==1?'ões':''}</div>
+  </div>`+data.map(r=>`
+    <div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${r.reviewer_name} <span style="color:var(--gold)">${'★'.repeat(r.rating)+'☆'.repeat(5-r.rating)}</span> <span style="font-size:12px;color:var(--muted);font-weight:400">${new Date(r.created_at).toLocaleDateString('pt-PT')}</span></div>
+        <div class="list-item-sub">${r.comment||'(sem comentário)'}</div>
+      </div>
+    </div>`).join('')
+}
+
+function showPage(name){
+  document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'))
+  document.getElementById(`page-${name}`).classList.add('active')
+  document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.classList.toggle('active',n.dataset.page===name))
+  document.querySelectorAll('.mob-item').forEach((m,i)=>{
+    const pages=['overview','profile','services','messages','portfolio']
+    m.classList.toggle('active',pages[i]===name)
+  })
+  if(name==='services')loadServices()
+  if(name==='messages')loadMessages()
+  if(name==='reviews')loadReviews()
+}
+
+function showAlert(id,msg,type='success'){
+  const el=document.getElementById(id)
+  if(!el)return
+  el.textContent=msg;el.className=`alert ${type}`;el.style.display='block'
+  if(type==='success')setTimeout(()=>el.style.display='none',4000)
+}
+
+async function signOut(){
+  await db.auth.signOut()
+  location.href='index.html'
+}
+
 init()
 </script>
 </body>
