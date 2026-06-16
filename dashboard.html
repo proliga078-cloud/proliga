@@ -221,7 +221,18 @@
             </optgroup>
           </select>
         </div>
-        <div class="form-group"><label>URL da foto de perfil</label><input id="p-photo" type="url" placeholder="https://..."/></div>
+        <div class="form-group">
+<label>Foto de perfil</label>
+<div style="display:flex;flex-direction:column;gap:8px">
+<input id="p-photo" type="url" placeholder="https://... (URL da foto)" style="margin-bottom:0"/>
+<div style="font-size:12px;color:var(--muted);text-align:center">— ou —</div>
+<label for="p-photo-file" style="background:var(--blue-light);color:var(--blue);border:1.5px dashed var(--blue);border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;margin:0">
+📷 Carregar foto do computador
+<input type="file" id="p-photo-file" accept="image/*" style="display:none" onchange="uploadProfilePhoto(this)"/>
+</label>
+<div id="p-photo-preview" style="display:none;margin-top:6px"></div>
+</div>
+</div>
         <div class="form-group full"><label>Sobre mim (bio)</label><textarea id="p-bio" placeholder="Descreve a tua experiência, especialidades e o que te diferencia..."></textarea></div>
       </div>
       <button class="btn btn-primary" onclick="saveProfile()">💾 Guardar perfil</button>
@@ -262,13 +273,22 @@
   <!-- PORTFOLIO -->
   <div id="page-portfolio" class="page-section">
     <div class="page-title">📸 Portfólio</div>
-    <div class="alert info" id="port-info" style="display:block">💡 Para adicionar fotos ao portfólio, precisas do plano Pro ou Premium. <a href="pricing.html" style="color:var(--blue-dark);font-weight:700">Ver planos →</a></div>
-    <div id="port-pro-section" style="display:none">
+    <div class="alert info" id="port-info" style="display:none">💡 Para adicionar fotos ao portfólio, precisas do plano Pro ou Premium. <a href="pricing.html" style="color:var(--blue-dark);font-weight:700">Ver planos →</a></div>
+    <div id="port-pro-section" style="display:block">
       <div class="alert success" id="port-success"></div>
       <div class="alert error" id="port-error"></div>
       <div class="form-section">
         <div class="form-title">➕ Adicionar Foto</div>
-        <div class="form-group"><label>URL da imagem *</label><input id="port-url" type="url" placeholder="https://..."/></div>
+        <div class="form-group">
+<label>Foto do trabalho</label>
+<input id="port-url" type="url" placeholder="https://... (URL da imagem)" style="margin-bottom:8px"/>
+<div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:8px">— ou —</div>
+<label for="port-file" style="background:var(--blue-light);color:var(--blue);border:1.5px dashed var(--blue);border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;display:block">
+📷 Carregar foto do computador
+<input type="file" id="port-file" accept="image/*" style="display:none" onchange="uploadPortfolioPhoto(this)"/>
+</label>
+<div id="port-upload-preview" style="display:none;margin-top:8px"></div>
+</div>
         <div class="form-group"><label>Legenda (opcional)</label><input id="port-cap" type="text" placeholder="Ex: Instalação completa em Boavista"/></div>
         <button class="btn btn-primary" onclick="addPortfolioItem()">Adicionar foto</button>
       </div>
@@ -300,6 +320,66 @@ const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 let user=null,profileData=null,profileId=null
 
+
+// Upload foto de perfil para Supabase Storage
+async function uploadProfilePhoto(input){
+const file = input.files[0];
+if(!file) return;
+if(file.size > 5 * 1024 * 1024){ showAlert('profile-error','Foto demasiado grande. Máx 5MB.','error'); return; }
+const preview = document.getElementById('p-photo-preview');
+preview.innerHTML = '<div style="font-size:13px;color:var(--muted)">⏳ A carregar...</div>';
+preview.style.display = 'block';
+try {
+const ext = file.name.split('.').pop();
+const path = `profiles/${user.id}/avatar.${ext}`;
+const { data, error } = await db.storage.from('proliga-media').upload(path, file, { upsert: true, contentType: file.type });
+if(error) throw error;
+const { data: urlData } = db.storage.from('proliga-media').getPublicUrl(path);
+const url = urlData.publicUrl;
+document.getElementById('p-photo').value = url;
+preview.innerHTML = `<img src="${url}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--blue)"/>`;
+} catch(e) {
+// Fallback: converter para base64 e usar como data URL (solução sem Storage)
+const reader = new FileReader();
+reader.onload = (ev) => {
+const dataUrl = ev.target.result;
+document.getElementById('p-photo').value = dataUrl;
+preview.innerHTML = `<img src="${dataUrl}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--blue)"/>`;
+preview.style.display = 'block';
+};
+reader.readAsDataURL(file);
+}
+}
+
+// Upload foto de portfólio para Supabase Storage
+async function uploadPortfolioPhoto(input){
+const file = input.files[0];
+if(!file) return;
+if(file.size > 10 * 1024 * 1024){ showAlert('port-error','Foto demasiado grande. Máx 10MB.','error'); return; }
+const preview = document.getElementById('port-upload-preview');
+preview.innerHTML = '<div style="font-size:13px;color:var(--muted)">⏳ A carregar...</div>';
+preview.style.display = 'block';
+try {
+const ext = file.name.split('.').pop();
+const path = `portfolio/${profileId}/${Date.now()}.${ext}`;
+const { data, error } = await db.storage.from('proliga-media').upload(path, file, { contentType: file.type });
+if(error) throw error;
+const { data: urlData } = db.storage.from('proliga-media').getPublicUrl(path);
+const url = urlData.publicUrl;
+document.getElementById('port-url').value = url;
+preview.innerHTML = `<img src="${url}" style="width:100px;height:100px;border-radius:10px;object-fit:cover;border:2px solid var(--blue)"/>`;
+} catch(e) {
+// Fallback: usar FileReader
+const reader = new FileReader();
+reader.onload = (ev) => {
+document.getElementById('port-url').value = ev.target.result;
+preview.innerHTML = `<img src="${ev.target.result}" style="width:100px;height:100px;border-radius:10px;object-fit:cover"/>`;
+preview.style.display = 'block';
+};
+reader.readAsDataURL(file);
+}
+}
+
 async function init(){
   try {
     const{data:{session}}=await db.auth.getSession()
@@ -313,6 +393,9 @@ async function init(){
       loadStats()
       loadRecentMsgs()
       loadRecentReviews()
+      loadMessages()
+      loadReviews()
+      loadServices()
     }
     checkUpgrade()
   } catch(e) {
@@ -444,12 +527,8 @@ function checkUpgrade(){
       <button class="btn btn-solid" onclick="location.href='pricing.html'">Ver Premium →</button>
     </div>`
   }
-  // Portfolio visibility
-  if(plan!=='free'){
-    document.getElementById('port-info').style.display='none'
-    document.getElementById('port-pro-section').style.display='block'
-    loadPortfolio()
-  }
+  // Portfolio disponivel para todos
+  loadPortfolio()
 }
 
 // SERVICES
