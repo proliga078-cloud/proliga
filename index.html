@@ -330,7 +330,7 @@ async function init(){
 
 async function loadStats(){
   const[{count:pc},{count:rc}]=await Promise.all([
-    db.from('profiles').select('*',{count:'exact',head:true}).eq('is_active',true),
+    db.from('profiles').select('*',{count:'exact',head:true}),
     db.from('reviews').select('*',{count:'exact',head:true})
   ])
   document.getElementById('stat-pros').textContent=(pc||0)+'+'
@@ -341,7 +341,7 @@ async function loadStats(){
 async function loadFeatured(){
   const{data}=await db.from('profiles')
     .select('id,name,category,location,plan,photo_url,verified')
-    .eq('is_active',true).order('plan',{ascending:false}).limit(8)
+    .order('plan',{ascending:false}).limit(8)
   const grid=document.getElementById('pros-grid')
   if(!data||!data.length){
     grid.innerHTML='<p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:40px">Nenhum profissional ainda. <a href="auth.html?tab=register" style="color:var(--blue)">Sê o primeiro!</a></p>'

@@ -289,7 +289,7 @@ async function loadPros(){
   container.innerHTML=`<div class="loading-grid">${Array(6).fill(`<div class="skeleton"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:80%"></div></div></div>`).join('')}</div>`
 
   // Build query
-  let q=db.from('profiles').select('id,name,category,location,plan,photo_url,bio,verified,created_at',{count:'exact'}).eq('is_active',true)
+  let q=db.from('profiles').select('id,name,category,location,plan,photo_url,bio,verified,created_at',{count:'exact'})
   if(filters.cat)q=q.ilike('category',`%${filters.cat}%`)
   if(filters.loc)q=q.ilike('location',`%${filters.loc}%`)
   if(filters.zona)q=q.ilike('location',`%${filters.zona}%`)

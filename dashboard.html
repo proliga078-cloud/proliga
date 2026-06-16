@@ -226,11 +226,8 @@
     <div class="form-section">
       <div class="form-title">👁️ Visibilidade</div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
-        <div><div style="font-size:14px;font-weight:600">Perfil público</div><div style="font-size:12px;color:var(--muted)">O teu perfil aparece nos resultados de pesquisa</div></div>
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin:0">
-          <input type="checkbox" id="p-active" style="width:auto;accent-color:var(--blue);width:18px;height:18px"/>
-          <span style="font-size:14px;font-weight:600">Ativo</span>
-        </label>
+        <div><div style="font-size:14px;font-weight:600">Perfil público</div><div style="font-size:12px;color:var(--muted)">O teu perfil aparece nos resultados de pesquisa após criação</div></div>
+        <span style="font-size:13px;color:#16a34a;font-weight:600">✅ Sempre ativo</span>
       </div>
     </div>
   </div>
@@ -316,7 +313,7 @@ async function init(){
 
 async function createProfile(){
   const name=user.user_metadata?.name||user.email.split('@')[0]
-  const{data}=await db.from('profiles').insert({user_id:user.id,name,email:user.email,plan:'free',is_active:true}).select().single()
+  const{data}=await db.from('profiles').insert({user_id:user.id,name,email:user.email,plan:'free'}).select().single()
   profileData=data;profileId=data?.id
   if(data)fillProfileForm(data)
 }
@@ -340,7 +337,7 @@ function fillProfileForm(pro){
   document.getElementById('p-loc').value=pro.location||''
   document.getElementById('p-photo').value=pro.photo_url||''
   document.getElementById('p-bio').value=pro.bio||''
-  document.getElementById('p-active').checked=pro.is_active!==false
+  // is_active field removed
 }
 
 async function saveProfile(){
@@ -354,7 +351,6 @@ async function saveProfile(){
     website:document.getElementById('p-website').value.trim()||null,
     photo_url:document.getElementById('p-photo').value.trim()||null,
     bio:document.getElementById('p-bio').value.trim()||null,
-    is_active:document.getElementById('p-active').checked,
     updated_at:new Date().toISOString()
   }
   const{error}=await db.from('profiles').update(updates).eq('id',profileId)
