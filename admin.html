@@ -4,256 +4,199 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Admin – Proliga</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--sidebar:240px;--red:#ef4444;--green:#16a34a}
-    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);display:flex;min-height:100vh}
+    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--green:#16a34a;--red:#dc2626;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff}
+    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
     a{text-decoration:none;color:inherit}
-    .sidebar{width:var(--sidebar);flex-shrink:0;background:#0f172a;color:#94a3b8;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
-    .sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .sidebar-logo a{font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px}
-    .sidebar-logo a span{color:var(--gold)}
-    .admin-badge{margin:12px 12px 4px;background:#7c3aed;color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-align:center;letter-spacing:0.5px}
-    .nav-section{padding:10px 20px 2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#475569;margin-top:4px}
-    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;color:#94a3b8;border:none;background:none;width:100%;text-align:left;font-family:inherit}
-    .nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
-    .nav-item.active{background:var(--blue);color:#fff}
-    .nav-item .icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
-    .sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
-    .btn-signout{width:100%;padding:9px;background:rgba(255,255,255,.08);border:none;border-radius:8px;color:#94a3b8;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
-    .btn-signout:hover{background:rgba(255,255,255,.14);color:#fff}
-    .main{flex:1;margin-left:var(--sidebar);display:flex;flex-direction:column;min-height:100vh}
-    .topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-    .topbar-title{font-size:18px;font-weight:700}
-    .topbar-right{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted)}
-    .btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
-    .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
-    .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
-    .btn-sm{padding:5px 10px;font-size:12px;border-radius:6px}
-    .btn-green{background:#dcfce7;color:var(--green);border:1px solid #bbf7d0}.btn-green:hover{background:var(--green);color:#fff}
-    .btn-red{background:#fef2f2;color:var(--red);border:1px solid #fecaca}.btn-red:hover{background:var(--red);color:#fff}
-    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
-    .content{padding:28px 32px;flex:1}
-    .panel{display:none}.panel.active{display:block}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px}
-    .stat-card{background:#fff;border-radius:14px;padding:20px;border:1px solid var(--border)}
-    .stat-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
-    .stat-val{font-size:32px;font-weight:800;letter-spacing:-1px}
-    .stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
-    .card{background:#fff;border-radius:14px;padding:24px;border:1px solid var(--border);margin-bottom:20px}
-    .card-title{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-    .search-bar{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:220px;transition:border-color .2s}
-    .search-bar:focus{border-color:var(--blue)}
-    /* USER TABLE */
-    table{width:100%;border-collapse:collapse;font-size:14px}
-    th{padding:10px 14px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--border);background:var(--bg)}
-    td{padding:12px 14px;border-bottom:1px solid var(--bg);vertical-align:middle}
-    tr:last-child td{border-bottom:none}
-    tr:hover td{background:#fafbff}
-    .user-cell{display:flex;align-items:center;gap:10px}
-    .u-avatar{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
-    .u-avatar img{width:100%;height:100%;object-fit:cover}
-    .u-name{font-weight:600;font-size:14px}
-    .u-email{font-size:12px;color:var(--muted)}
-    .pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
-    .pill-free{background:#f1f5f9;color:#475569}
-    .pill-pro{background:#ede9fe;color:#7c3aed}
-    .pill-premium{background:#fef3c7;color:#d97706}
-    .pill-ok{background:#dcfce7;color:var(--green)}
-    .pill-suspended{background:#fef2f2;color:var(--red)}
-    .pill-pending{background:#fff7ed;color:#ea580c}
-    .actions-cell{display:flex;gap:6px;flex-wrap:wrap}
-    /* PLAN MODAL */
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
-    .modal-overlay.open{display:flex}
-    .modal{background:#fff;border-radius:16px;padding:28px;max-width:420px;width:90%}
-    .modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
-    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
-    .form-group{margin-bottom:14px}
+
+    /* LOGIN */
+    #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+    .login-box{background:var(--white);border-radius:20px;padding:40px;width:100%;max-width:400px;box-shadow:0 8px 40px rgba(0,0,0,.1);border:1px solid var(--border)}
+    .login-logo{font-size:28px;font-weight:900;color:var(--blue);letter-spacing:-1px;margin-bottom:6px}.login-logo span{color:var(--gold)}
+    .login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+    .login-title{font-size:20px;font-weight:800;margin-bottom:20px}
+    .form-group{margin-bottom:16px}
     label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
-    select,input{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
-    select:focus,input:focus{border-color:var(--blue)}
-    /* REVIEWS */
-    .review-row td{vertical-align:top}
-    .stars-gold{color:var(--gold)}
-    /* MESSAGES */
-    .msg-row-admin{padding:12px 0;border-bottom:1px solid var(--bg);display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start}
-    .msg-meta{font-size:12px;color:var(--muted)}
-    .msg-subject-a{font-size:14px;font-weight:600;margin:2px 0}
-    .msg-preview-a{font-size:13px;color:var(--muted)}
-    .loading{text-align:center;padding:40px;color:var(--muted)}
-    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .empty{text-align:center;padding:36px;color:var(--muted);font-size:14px}
-    #access-denied{display:none;position:fixed;inset:0;background:#fff;z-index:999;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:40px}
-    .table-wrap{overflow-x:auto}
-    @media(max-width:768px){.sidebar{display:none}.main{margin-left:0}}
+    input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
+    input:focus{border-color:var(--blue)}
+    .btn-login{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:4px}
+    .btn-login:hover{background:var(--blue-dark)}
+    .btn-login:disabled{background:#93c5fd;cursor:not-allowed}
+    .login-error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none}
+
+    /* ADMIN LAYOUT */
+    #admin-panel{display:none;flex-direction:column;min-height:100vh}
+    .admin-topbar{background:var(--blue-dark);color:#fff;padding:0 28px;height:60px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+    .admin-logo{font-size:20px;font-weight:900;letter-spacing:-0.5px}.admin-logo span{color:var(--gold)}
+    .admin-badge{background:rgba(255,255,255,.15);font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.5px}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+    .topbar-email{font-size:12px;color:rgba(255,255,255,.7)}
+    .btn-signout{padding:7px 14px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2);border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .2s}
+    .btn-signout:hover{background:rgba(255,255,255,.2);color:#fff}
+
+    .admin-tabs{background:var(--white);border-bottom:2px solid var(--border);padding:0 28px;display:flex;gap:0;overflow-x:auto}
+    .atab{padding:14px 18px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+    .atab:hover{color:var(--text)}
+    .atab.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+    .admin-body{padding:28px;flex:1}
+    .page-section{display:none}.page-section.active{display:block}
+
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+    .stat-card{background:var(--white);border-radius:14px;padding:22px;border:1px solid var(--border);display:flex;align-items:center;gap:16px}
+    .stat-icon{font-size:28px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--blue-light);flex-shrink:0}
+    .stat-val{font-size:28px;font-weight:900;color:var(--text);line-height:1}
+    .stat-lbl{font-size:13px;color:var(--muted);margin-top:2px}
+
+    /* TABLES */
+    .table-wrap{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:24px}
+    .table-head{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
+    .table-title{font-size:15px;font-weight:700}
+    table{width:100%;border-collapse:collapse}
+    th{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);background:#fafafa}
+    td{font-size:13px;padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#fafafa}
+    .btn{padding:6px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .2s;display:inline-flex;align-items:center;gap:4px}
+    .btn-approve{background:#dcfce7;color:#166534}.btn-approve:hover{background:#bbf7d0}
+    .btn-unapprove{background:#fef9c3;color:#854d0e}.btn-unapprove:hover{background:#fef08a}
+    .btn-delete{background:#fef2f2;color:var(--red);border:1px solid #fecaca}.btn-delete:hover{background:#fee2e2}
+    .btn-view{background:var(--blue-light);color:var(--blue)}.btn-view:hover{background:#bfdbfe}
+    .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;display:inline-block}
+    .badge-approved{background:#dcfce7;color:#166534}
+    .badge-pending{background:#fef9c3;color:#854d0e}
+    .badge-premium{background:var(--gold);color:#fff}
+    .badge-pro{background:#7c3aed;color:#fff}
+    .badge-free{background:var(--border);color:var(--muted)}
+    .pro-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--blue);overflow:hidden;flex-shrink:0}
+    .pro-avatar img{width:100%;height:100%;object-fit:cover}
+    .td-flex{display:flex;align-items:center;gap:10px}
+    .td-name{font-weight:600}
+    .td-sub{font-size:11px;color:var(--muted)}
+    .search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:220px}
+    .search-box:focus{border-color:var(--blue)}
+    .empty-row td{text-align:center;padding:32px;color:var(--muted)}
+    .msg-preview{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+    .unread-dot{width:8px;height:8px;background:var(--blue);border-radius:50%;display:inline-block;margin-right:4px}
+    .overview-grids{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:900px){.overview-grids{grid-template-columns:1fr}}
+    @media(max-width:768px){.admin-body{padding:16px}.stats-grid{grid-template-columns:repeat(2,1fr)}.table-wrap{overflow-x:auto}table{min-width:580px}}
   </style>
 </head>
 <body>
 
-<!-- ACCESS DENIED -->
-<div id="access-denied" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
-  <div style="font-size:64px">🔒</div>
-  <h2 style="font-size:24px;font-weight:800">Acesso restrito</h2>
-  <p style="color:var(--muted)">Esta página é apenas para administradores.</p>
-  <a href="index.html" style="color:var(--blue);font-weight:600">← Voltar ao início</a>
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Pro<span>liga</span></div>
+    <div class="login-sub">Área restrita — apenas administradores</div>
+    <div class="login-title">🔐 Acesso Admin</div>
+    <div class="login-error" id="login-error"></div>
+    <div class="form-group">
+      <label>Email</label>
+      <input id="admin-email" type="email" placeholder="admin@proliga.pt" autocomplete="username"/>
+    </div>
+    <div class="form-group">
+      <label>Palavra-passe</label>
+      <input id="admin-pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()"/>
+    </div>
+    <button class="btn-login" id="login-btn" onclick="adminLogin()">Entrar no painel</button>
+  </div>
 </div>
 
-<aside class="sidebar" id="sidebar" style="display:none">
-  <div class="sidebar-logo"><a href="index.html">Pro<span>liga</span></a></div>
-  <div class="admin-badge">🛡️ Painel Admin</div>
-  <div class="nav-section">Estatísticas</div>
-  <button class="nav-item active" data-panel="overview" onclick="showPanel('overview')"><span class="icon">📊</span> Visão geral</button>
-  <div class="nav-section">Gestão</div>
-  <button class="nav-item" data-panel="users" onclick="showPanel('users')"><span class="icon">👥</span> Utilizadores</button>
-  <button class="nav-item" data-panel="reviews" onclick="showPanel('reviews')"><span class="icon">⭐</span> Avaliações</button>
-  <div class="nav-section">Plataforma</div>
-  <button class="nav-item" data-panel="messages" onclick="showPanel('messages')"><span class="icon">📩</span> Mensagens</button>
-  <button class="nav-item" data-panel="sql" onclick="showPanel('sql')"><span class="icon">🔧</span> SQL Rápido</button>
-  <div class="sidebar-footer">
-    <a href="dashboard.html" class="btn-signout" style="display:block;text-align:center;margin-bottom:8px">← Dashboard pessoal</a>
-    <button class="btn-signout" onclick="signOut()">Sair</button>
-  </div>
-</aside>
-
-<div class="main" id="main-content" style="display:none">
-  <div class="topbar">
-    <div class="topbar-title" id="topbar-title">Visão geral</div>
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-topbar">
+    <div class="admin-logo">Pro<span>liga</span></div>
+    <div class="admin-badge">ADMIN</div>
     <div class="topbar-right">
-      <span id="admin-email-tag" style="background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:700"></span>
-      <a href="index.html" class="btn btn-outline btn-sm">← Site</a>
+      <div class="topbar-email" id="topbar-email"></div>
+      <button class="btn-signout" onclick="adminSignOut()">Sair</button>
     </div>
   </div>
-  <div class="content">
+  <div class="admin-tabs">
+    <div class="atab active" onclick="showAdminPage('overview')">📊 Visão Geral</div>
+    <div class="atab" onclick="showAdminPage('profiles')">👤 Profissionais</div>
+    <div class="atab" onclick="showAdminPage('messages')">💬 Mensagens</div>
+    <div class="atab" onclick="showAdminPage('reviews')">⭐ Avaliações</div>
+    <div class="atab" onclick="showAdminPage('services')">🛠️ Serviços</div>
+  </div>
+  <div class="admin-body">
 
     <!-- OVERVIEW -->
-    <div class="panel active" id="panel-overview">
-      <div class="stats-grid" id="admin-stats">
-        <div class="stat-card"><div class="stat-label">Total utilizadores</div><div class="stat-val" id="s-total">–</div></div>
-        <div class="stat-card"><div class="stat-label">Plano Grátis</div><div class="stat-val" id="s-free">–</div></div>
-        <div class="stat-card"><div class="stat-label">Plano Pro</div><div class="stat-val" id="s-pro">–</div><div class="stat-sub" style="color:#7c3aed">€/mês</div></div>
-        <div class="stat-card"><div class="stat-label">Plano Premium</div><div class="stat-val" id="s-premium">–</div><div class="stat-sub" style="color:var(--gold)">€/mês</div></div>
-        <div class="stat-card"><div class="stat-label">Total reviews</div><div class="stat-val" id="s-reviews">–</div></div>
-        <div class="stat-card"><div class="stat-label">Total mensagens</div><div class="stat-val" id="s-messages">–</div></div>
-        <div class="stat-card"><div class="stat-label">Receita mensal est.</div><div class="stat-val" id="s-revenue">–</div><div class="stat-sub">estimada</div></div>
-        <div class="stat-card"><div class="stat-label">Suspensos</div><div class="stat-val" id="s-suspended" style="color:var(--red)">–</div></div>
+    <div id="page-overview" class="page-section active">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">👤</div><div><div class="stat-val" id="s-pros">—</div><div class="stat-lbl">Profissionais</div></div></div>
+        <div class="stat-card"><div class="stat-icon">💬</div><div><div class="stat-val" id="s-msgs">—</div><div class="stat-lbl">Mensagens</div></div></div>
+        <div class="stat-card"><div class="stat-icon">⭐</div><div><div class="stat-val" id="s-revs">—</div><div class="stat-lbl">Avaliações</div></div></div>
+        <div class="stat-card"><div class="stat-icon">🛠️</div><div><div class="stat-val" id="s-srvs">—</div><div class="stat-lbl">Serviços</div></div></div>
       </div>
-      <div class="card">
-        <div class="card-title">Últimos utilizadores registados</div>
-        <div id="recent-users"><div class="loading"><div class="spinner"></div></div></div>
-      </div>
-    </div>
-
-    <!-- USERS -->
-    <div class="panel" id="panel-users">
-      <div class="card">
-        <div class="card-title">
-          Todos os utilizadores
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <input class="search-bar" type="text" placeholder="Pesquisar nome ou email..." oninput="filterUsers(this.value)" id="user-search"/>
-            <select class="search-bar" style="width:auto" onchange="filterUsersPlan(this.value)" id="plan-filter">
-              <option value="">Todos os planos</option>
-              <option value="free">Grátis</option>
-              <option value="pro">Pro</option>
-              <option value="premium">Premium</option>
-            </select>
-          </div>
+      <div class="overview-grids">
+        <div class="table-wrap">
+          <div class="table-head"><div class="table-title">👤 Últimos Profissionais</div></div>
+          <table><thead><tr><th>Nome</th><th>Categoria</th><th>Plano</th></tr></thead>
+          <tbody id="recent-pros"></tbody></table>
         </div>
         <div class="table-wrap">
-          <table id="users-table">
-            <thead><tr><th>Utilizador</th><th>Categoria</th><th>Localização</th><th>Plano</th><th>Estado</th><th>Registado</th><th>Ações</th></tr></thead>
-            <tbody id="users-tbody"><tr><td colspan="7"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
-          </table>
+          <div class="table-head"><div class="table-title">💬 Últimas Mensagens</div></div>
+          <table><thead><tr><th>De</th><th>Assunto</th><th>Data</th></tr></thead>
+          <tbody id="recent-msgs-tbl"></tbody></table>
         </div>
       </div>
     </div>
 
-    <!-- REVIEWS -->
-    <div class="panel" id="panel-reviews">
-      <div class="card">
-        <div class="card-title">Todas as avaliações <span id="rev-count" style="font-size:14px;color:var(--muted);font-weight:400"></span></div>
-        <div class="table-wrap">
-          <table id="reviews-table">
-            <thead><tr><th>Avaliador</th><th>Profissional</th><th>Estrelas</th><th>Comentário</th><th>Data</th><th>Ações</th></tr></thead>
-            <tbody id="reviews-tbody"><tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
-          </table>
+    <!-- PROFILES -->
+    <div id="page-profiles" class="page-section">
+      <div class="table-wrap">
+        <div class="table-head">
+          <div class="table-title">👤 Todos os Profissionais <span id="pros-count" style="font-weight:400;color:var(--muted);font-size:13px"></span></div>
+          <input class="search-box" type="search" placeholder="🔍 Pesquisar nome, categoria..." oninput="filterPros(this.value)"/>
         </div>
+        <table>
+          <thead><tr><th>Profissional</th><th>Categoria</th><th>Localização</th><th>Plano</th><th>Estado</th><th>Ações</th></tr></thead>
+          <tbody id="pros-tbody"></tbody>
+        </table>
       </div>
     </div>
 
     <!-- MESSAGES -->
-    <div class="panel" id="panel-messages">
-      <div class="card">
-        <div class="card-title">Todas as mensagens <span id="msgs-count" style="font-size:14px;color:var(--muted);font-weight:400"></span></div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>De</th><th>Para</th><th>Assunto</th><th>Data</th><th>Estado</th></tr></thead>
-            <tbody id="msgs-tbody"><tr><td colspan="5"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
-          </table>
-        </div>
+    <div id="page-messages" class="page-section">
+      <div class="table-wrap">
+        <div class="table-head"><div class="table-title">💬 Todas as Mensagens</div></div>
+        <table>
+          <thead><tr><th>De</th><th>Para</th><th>Assunto</th><th>Mensagem</th><th>Data</th><th>Lida</th></tr></thead>
+          <tbody id="msgs-tbody"></tbody>
+        </table>
       </div>
     </div>
 
-    <!-- SQL -->
-    <div class="panel" id="panel-sql">
-      <div class="card">
-        <div class="card-title">SQL Rápido</div>
-        <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Exemplos de comandos SQL para gerir a plataforma. Corre no <a href="https://supabase.com/dashboard/project/cdwinidhtfxfxowflize/sql" target="_blank" style="color:var(--blue)">Supabase SQL Editor</a>.</p>
-        <div style="display:grid;gap:14px">
-          <div style="background:#1e293b;border-radius:10px;padding:16px">
-            <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase">Atualizar plano de utilizador</div>
-            <pre style="color:#93c5fd;font-size:13px;white-space:pre-wrap;font-family:monospace">UPDATE profiles SET plan = 'pro' WHERE id = 'UUID_DO_UTILIZADOR';</pre>
-          </div>
-          <div style="background:#1e293b;border-radius:10px;padding:16px">
-            <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase">Suspender utilizador</div>
-            <pre style="color:#93c5fd;font-size:13px;white-space:pre-wrap;font-family:monospace">UPDATE profiles SET suspended = true WHERE id = 'UUID_DO_UTILIZADOR';</pre>
-          </div>
-          <div style="background:#1e293b;border-radius:10px;padding:16px">
-            <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase">Dar permissão de admin</div>
-            <pre style="color:#93c5fd;font-size:13px;white-space:pre-wrap;font-family:monospace">UPDATE profiles SET is_admin = true WHERE id = 'UUID_DO_UTILIZADOR';</pre>
-          </div>
-          <div style="background:#1e293b;border-radius:10px;padding:16px">
-            <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase">Ver todos os profissionais e planos</div>
-            <pre style="color:#93c5fd;font-size:13px;white-space:pre-wrap;font-family:monospace">SELECT name, email_from_auth, plan, suspended, created_at FROM profiles ORDER BY created_at DESC;</pre>
-          </div>
-          <div style="background:#1e293b;border-radius:10px;padding:16px">
-            <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase">Apagar avaliação</div>
-            <pre style="color:#93c5fd;font-size:13px;white-space:pre-wrap;font-family:monospace">DELETE FROM reviews WHERE id = 'UUID_DA_AVALIACAO';</pre>
-          </div>
-        </div>
-        <p style="font-size:13px;color:var(--muted);margin-top:20px">💡 Para obter o UUID de um utilizador, clica em "Ver ID" na tabela de utilizadores acima.</p>
+    <!-- REVIEWS -->
+    <div id="page-reviews" class="page-section">
+      <div class="table-wrap">
+        <div class="table-head"><div class="table-title">⭐ Todas as Avaliações</div></div>
+        <table>
+          <thead><tr><th>Avaliador</th><th>Profissional</th><th>Nota</th><th>Comentário</th><th>Data</th><th>Ações</th></tr></thead>
+          <tbody id="revs-tbody"></tbody>
+        </table>
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- SERVICES -->
+    <div id="page-services" class="page-section">
+      <div class="table-wrap">
+        <div class="table-head"><div class="table-title">🛠️ Todos os Serviços</div></div>
+        <table>
+          <thead><tr><th>Serviço</th><th>Profissional</th><th>Preço</th><th>Data</th><th>Ações</th></tr></thead>
+          <tbody id="srvs-tbody"></tbody>
+        </table>
+      </div>
+    </div>
 
-<!-- PLAN MODAL -->
-<div class="modal-overlay" id="plan-modal">
-  <div class="modal">
-    <div class="modal-title">Atualizar plano</div>
-    <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Utilizador: <strong id="modal-user-name"></strong></p>
-    <div class="form-group">
-      <label>Plano</label>
-      <select id="modal-plan-select">
-        <option value="free">Grátis</option>
-        <option value="pro">Pro (€9/mês)</option>
-        <option value="premium">Premium (€19/mês)</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Suspender conta</label>
-      <select id="modal-suspended-select">
-        <option value="false">Não (conta ativa)</option>
-        <option value="true">Sim (suspender)</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closePlanModal()">Cancelar</button>
-      <button class="btn btn-solid" onclick="savePlanModal()">Guardar</button>
-    </div>
   </div>
 </div>
 
@@ -261,170 +204,191 @@
 <script>
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
-const ADMIN_EMAIL='avlistech2@gmail.com'
+const ADMIN_EMAIL='davidscampos10@gmail.com'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
-let allUsers=[],editingUserId=null
-const panelTitles={overview:'Visão geral',users:'Utilizadores',reviews:'Avaliações',messages:'Mensagens',sql:'SQL Rápido'}
+let allPros=[]
 
 async function init(){
   const{data:{session}}=await db.auth.getSession()
-  if(!session){document.getElementById('access-denied').style.display='flex';return}
-  // Check admin: email or is_admin flag
-  const{data:pro}=await db.from('profiles').select('*').eq('id',session.user.id).single()
-  const isAdmin=(session.user.email===ADMIN_EMAIL)||(pro&&pro.is_admin)
-  if(!isAdmin){document.getElementById('access-denied').style.display='flex';return}
-  document.getElementById('access-denied').style.display='none'
-  document.getElementById('sidebar').style.display='flex'
-  document.getElementById('main-content').style.display='flex'
-  document.getElementById('admin-email-tag').textContent='Admin: '+session.user.email
-  loadStats();loadUsers();loadReviews();loadMessages()
+  if(session&&session.user.email===ADMIN_EMAIL)showAdmin(session.user)
 }
 
-function showPanel(id){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
-  document.querySelectorAll('.nav-item[data-panel]').forEach(b=>b.classList.toggle('active',b.dataset.panel===id))
-  document.getElementById(`panel-${id}`).classList.add('active')
-  document.getElementById('topbar-title').textContent=panelTitles[id]||id
+async function adminLogin(){
+  const email=document.getElementById('admin-email').value.trim()
+  const pass=document.getElementById('admin-pass').value
+  const btn=document.getElementById('login-btn')
+  const errEl=document.getElementById('login-error')
+  errEl.style.display='none'
+  if(!email||!pass){showLoginError('Preenche email e palavra-passe.');return}
+  btn.disabled=true;btn.textContent='A verificar...'
+  const{data,error}=await db.auth.signInWithPassword({email,password:pass})
+  if(error){showLoginError('Credenciais inválidas.');btn.disabled=false;btn.textContent='Entrar no painel';return}
+  if(data.user.email!==ADMIN_EMAIL){
+    await db.auth.signOut()
+    showLoginError('Acesso negado. Esta conta não tem permissões de administrador.')
+    btn.disabled=false;btn.textContent='Entrar no painel';return
+  }
+  showAdmin(data.user)
 }
 
-async function loadStats(){
-  const[{data:users},{count:revs},{count:msgs}]=await Promise.all([
-    db.from('profiles').select('plan,suspended'),
+function showLoginError(msg){const el=document.getElementById('login-error');el.textContent=msg;el.style.display='block'}
+
+function showAdmin(user){
+  document.getElementById('login-screen').style.display='none'
+  const p=document.getElementById('admin-panel')
+  p.style.display='flex';p.style.flexDirection='column'
+  document.getElementById('topbar-email').textContent=user.email
+  loadOverview();loadProfiles()
+}
+
+async function adminSignOut(){await db.auth.signOut();location.reload()}
+
+// OVERVIEW
+async function loadOverview(){
+  const[{count:pc},{count:mc},{count:rc},{count:sc}]=await Promise.all([
+    db.from('profiles').select('*',{count:'exact',head:true}),
+    db.from('messages').select('*',{count:'exact',head:true}),
     db.from('reviews').select('*',{count:'exact',head:true}),
-    db.from('messages').select('*',{count:'exact',head:true})
+    db.from('services').select('*',{count:'exact',head:true})
   ])
-  const all=users||[]
-  const free=all.filter(u=>!u.plan||u.plan==='free').length
-  const pro=all.filter(u=>u.plan==='pro').length
-  const premium=all.filter(u=>u.plan==='premium').length
-  const suspended=all.filter(u=>u.suspended).length
-  const revenue=pro*9+premium*19
-  document.getElementById('s-total').textContent=all.length
-  document.getElementById('s-free').textContent=free
-  document.getElementById('s-pro').textContent=pro
-  document.getElementById('s-premium').textContent=premium
-  document.getElementById('s-reviews').textContent=revs||0
-  document.getElementById('s-messages').textContent=msgs||0
-  document.getElementById('s-revenue').textContent=`€${revenue}`
-  document.getElementById('s-suspended').textContent=suspended
+  document.getElementById('s-pros').textContent=pc||0
+  document.getElementById('s-msgs').textContent=mc||0
+  document.getElementById('s-revs').textContent=rc||0
+  document.getElementById('s-srvs').textContent=sc||0
+  const{data:pros}=await db.from('profiles').select('name,category,plan').order('created_at',{ascending:false}).limit(5)
+  document.getElementById('recent-pros').innerHTML=(pros||[]).map(p=>`
+    <tr><td><div class="td-name">${p.name||'—'}</div></td>
+    <td>${p.category||'—'}</td>
+    <td><span class="badge badge-${p.plan||'free'}">${p.plan||'free'}</span></td></tr>`).join('')||'<tr class="empty-row"><td colspan="3">Sem registos</td></tr>'
+  const{data:msgs}=await db.from('messages').select('sender_name,subject,created_at').order('created_at',{ascending:false}).limit(5)
+  document.getElementById('recent-msgs-tbl').innerHTML=(msgs||[]).map(m=>`
+    <tr><td>${m.sender_name}</td>
+    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.subject}</td>
+    <td>${new Date(m.created_at).toLocaleDateString('pt-PT')}</td></tr>`).join('')||'<tr class="empty-row"><td colspan="3">Sem mensagens</td></tr>'
 }
 
-async function loadUsers(){
+// PROFILES
+async function loadProfiles(){
   const{data}=await db.from('profiles').select('*').order('created_at',{ascending:false})
-  allUsers=data||[]
-  renderUsers(allUsers)
-  // Recent users preview
-  const recent=(data||[]).slice(0,5)
-  document.getElementById('recent-users').innerHTML=recent.length===0?'<div class="empty">Sem utilizadores.</div>':
-    `<table style="width:100%;font-size:14px"><tbody>${recent.map(u=>{
-      const initials=u.name.split(' ').map(n=>n[0]).slice(0,2).join('')
-      return`<tr><td style="padding:10px 0"><div class="user-cell"><div class="u-avatar">${u.photo_url?`<img src="${u.photo_url}"/>`:`${initials}`}</div><div><div class="u-name">${u.name}</div><div class="u-email">${u.category} · ${u.location}</div></div></div></td><td><span class="pill pill-${u.plan||'free'}">${(u.plan||'free').toUpperCase()}</span></td><td>${new Date(u.created_at).toLocaleDateString('pt-PT')}</td><td><a href="profile.html?id=${u.id}" target="_blank" class="btn btn-outline btn-sm">Ver</a></td></tr>`
-    }).join('')}</tbody></table>`
+  allPros=data||[];renderPros(allPros)
 }
 
-function renderUsers(users){
-  if(!users.length){document.getElementById('users-tbody').innerHTML='<tr><td colspan="7"><div class="empty">Nenhum utilizador.</div></td></tr>';return}
-  document.getElementById('users-tbody').innerHTML=users.map(u=>{
-    const initials=u.name.split(' ').map(n=>n[0]).slice(0,2).join('')
-    const plan=u.plan||'free'
-    const state=u.suspended?'suspended':'ok'
-    const stateLabel=u.suspended?'Suspenso':'Ativo'
+function renderPros(pros){
+  document.getElementById('pros-count').textContent=`(${pros.length})`
+  const tbody=document.getElementById('pros-tbody')
+  if(!pros.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Nenhum profissional encontrado</td></tr>';return}
+  tbody.innerHTML=pros.map(p=>{
+    const approved=p.approved!==false
+    const av=p.photo_url?`<img src="${p.photo_url}" alt=""/>`:((p.name||'?').split(' ').map(n=>n[0]).slice(0,2).join(''))
     return`<tr>
-      <td><div class="user-cell"><div class="u-avatar">${u.photo_url?`<img src="${u.photo_url}"/>`:`${initials}`}</div><div><div class="u-name">${u.name}</div><div class="u-email">${u.id.substring(0,12)}...</div></div></div></td>
-      <td>${u.category}</td>
-      <td>${u.location}</td>
-      <td><span class="pill pill-${plan}">${plan.toUpperCase()}</span></td>
-      <td><span class="pill pill-${state}">${stateLabel}</span></td>
-      <td>${new Date(u.created_at).toLocaleDateString('pt-PT')}</td>
-      <td><div class="actions-cell">
-        <a href="profile.html?id=${u.id}" target="_blank" class="btn btn-outline btn-sm">👁️</a>
-        <button class="btn btn-gold btn-sm" onclick="openPlanModal('${u.id}','${u.name.replace(/'/g,"\\'")}','${plan}','${u.suspended}')">✏️ Plano</button>
-        <button class="btn btn-sm" onclick="copyId('${u.id}')" style="background:#f1f5f9;color:#475569;border:1px solid var(--border)" title="Copiar UUID">📋 ID</button>
-      </div></td>
-    </tr>`
+      <td><div class="td-flex"><div class="pro-avatar">${av}</div>
+        <div><div class="td-name">${p.name||'—'}</div><div class="td-sub">${p.phone||''}</div></div></div></td>
+      <td>${p.category||'—'}</td>
+      <td>${p.location||'—'}</td>
+      <td><span class="badge badge-${p.plan||'free'}">${p.plan||'free'}</span></td>
+      <td><span class="badge ${approved?'badge-approved':'badge-pending'}">${approved?'Ativo':'Pendente'}</span></td>
+      <td><div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-view" onclick="window.open('profile.html?id=${p.id}','_blank')">👁 Ver</button>
+        ${approved
+          ?`<button class="btn btn-unapprove" onclick="toggleApprove('${p.id}',false)">⏸ Suspender</button>`
+          :`<button class="btn btn-approve" onclick="toggleApprove('${p.id}',true)">✅ Aprovar</button>`}
+        <button class="btn btn-delete" onclick="deletePro('${p.id}','${(p.name||'').replace(/'/g,"\\'")}')">🗑</button>
+      </div></td></tr>`
   }).join('')
 }
 
-function filterUsers(q){
-  const plan=document.getElementById('plan-filter').value
-  const filtered=allUsers.filter(u=>{
-    const match=!q||(u.name.toLowerCase().includes(q.toLowerCase())||u.category.toLowerCase().includes(q.toLowerCase()))
-    const planMatch=!plan||u.plan===plan||(plan==='free'&&(!u.plan||u.plan==='free'))
-    return match&&planMatch
-  })
-  renderUsers(filtered)
-}
-function filterUsersPlan(plan){
-  const q=document.getElementById('user-search').value
-  filterUsers(q)
+function filterPros(q){
+  const lq=q.toLowerCase()
+  renderPros(allPros.filter(p=>(p.name||'').toLowerCase().includes(lq)||(p.category||'').toLowerCase().includes(lq)||(p.location||'').toLowerCase().includes(lq)))
 }
 
+async function toggleApprove(id,approved){
+  await db.from('profiles').update({approved}).eq('id',id);loadProfiles()
+}
+
+async function deletePro(id,name){
+  if(!confirm(`Eliminar "${name}"? Esta acção é irreversível.`))return
+  await db.from('profiles').delete().eq('id',id)
+  allPros=allPros.filter(p=>p.id!==id);renderPros(allPros);loadOverview()
+}
+
+// MESSAGES
+async function loadMessages(){
+  const[{data:msgs},{data:pros}]=await Promise.all([
+    db.from('messages').select('*').order('created_at',{ascending:false}),
+    db.from('profiles').select('id,name')
+  ])
+  const pm={};(pros||[]).forEach(p=>pm[p.id]=p.name)
+  const tbody=document.getElementById('msgs-tbody')
+  if(!msgs||!msgs.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Sem mensagens</td></tr>';return}
+  tbody.innerHTML=msgs.map(m=>`
+    <tr>
+      <td><div class="td-name">${m.sender_name}</div><div class="td-sub">${m.sender_email}</div></td>
+      <td>${pm[m.professional_id]||'—'}</td>
+      <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.subject}</td>
+      <td class="msg-preview">${m.content}</td>
+      <td>${new Date(m.created_at).toLocaleDateString('pt-PT')}</td>
+      <td>${m.read?'✅':'<span class="unread-dot"></span>Não lida'}</td></tr>`).join('')
+}
+
+// REVIEWS
 async function loadReviews(){
-  const{data}=await db.from('reviews').select('*,profiles(name)').order('created_at',{ascending:false}).limit(100)
-  const revs=data||[]
-  document.getElementById('rev-count').textContent=`(${revs.length})`
-  if(!revs.length){document.getElementById('reviews-tbody').innerHTML='<tr><td colspan="6"><div class="empty">Sem avaliações.</div></td></tr>';return}
-  document.getElementById('reviews-tbody').innerHTML=revs.map(r=>{
-    const stars='★'.repeat(r.rating)+'☆'.repeat(5-r.rating)
-    const date=new Date(r.created_at).toLocaleDateString('pt-PT')
-    return`<tr class="review-row">
-      <td><div class="u-name">${r.reviewer_name}</div><div class="u-email">${r.reviewer_email}</div></td>
-      <td>${r.profiles?.name||'–'}</td>
-      <td><span class="stars-gold" style="font-size:15px">${stars}</span></td>
-      <td style="max-width:200px;font-size:13px;color:#475569">${r.comment||'–'}</td>
-      <td style="font-size:13px">${date}</td>
-      <td><button class="btn btn-sm btn-red" onclick="deleteReview('${r.id}')">🗑️ Apagar</button></td>
-    </tr>`
-  }).join('')
+  const[{data:revs},{data:pros}]=await Promise.all([
+    db.from('reviews').select('*').order('created_at',{ascending:false}),
+    db.from('profiles').select('id,name')
+  ])
+  const pm={};(pros||[]).forEach(p=>pm[p.id]=p.name)
+  const tbody=document.getElementById('revs-tbody')
+  if(!revs||!revs.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Sem avaliações</td></tr>';return}
+  tbody.innerHTML=revs.map(r=>`
+    <tr>
+      <td><div class="td-name">${r.reviewer_name}</div><div class="td-sub">${r.reviewer_email}</div></td>
+      <td>${pm[r.professional_id]||'—'}</td>
+      <td><span style="color:var(--gold)">${'★'.repeat(r.rating)+'☆'.repeat(5-r.rating)}</span></td>
+      <td class="msg-preview">${r.comment||'(sem comentário)'}</td>
+      <td>${new Date(r.created_at).toLocaleDateString('pt-PT')}</td>
+      <td><button class="btn btn-delete" onclick="deleteReview('${r.id}')">🗑</button></td></tr>`).join('')
 }
 
 async function deleteReview(id){
-  if(!confirm('Apagar esta avaliação definitivamente?'))return
-  await db.from('reviews').delete().eq('id',id)
-  loadReviews();loadStats()
+  if(!confirm('Eliminar esta avaliação?'))return
+  await db.from('reviews').delete().eq('id',id);loadReviews()
 }
 
-async function loadMessages(){
-  const{data}=await db.from('messages').select('*,profiles(name)').order('created_at',{ascending:false}).limit(200)
-  const msgs=data||[]
-  document.getElementById('msgs-count').textContent=`(${msgs.length})`
-  if(!msgs.length){document.getElementById('msgs-tbody').innerHTML='<tr><td colspan="5"><div class="empty">Sem mensagens.</div></td></tr>';return}
-  document.getElementById('msgs-tbody').innerHTML=msgs.map(m=>{
-    const date=new Date(m.created_at).toLocaleDateString('pt-PT')
-    return`<tr>
-      <td><div class="u-name">${m.sender_name}</div><div class="u-email">${m.sender_email}</div></td>
-      <td>${m.profiles?.name||'–'}</td>
-      <td style="font-size:13px">${m.subject}</td>
-      <td style="font-size:13px">${date}</td>
-      <td><span class="pill ${m.read?'pill-ok':'pill-pending'}">${m.read?'Lida':'Não lida'}</span></td>
-    </tr>`
-  }).join('')
+// SERVICES
+async function loadServices(){
+  const[{data:srvs},{data:pros}]=await Promise.all([
+    db.from('services').select('*').order('created_at',{ascending:false}),
+    db.from('profiles').select('id,name')
+  ])
+  const pm={};(pros||[]).forEach(p=>pm[p.id]=p.name)
+  const tbody=document.getElementById('srvs-tbody')
+  if(!srvs||!srvs.length){tbody.innerHTML='<tr class="empty-row"><td colspan="5">Sem serviços</td></tr>';return}
+  tbody.innerHTML=srvs.map(s=>`
+    <tr>
+      <td><div class="td-name">${s.title}</div><div class="td-sub msg-preview">${s.description||''}</div></td>
+      <td>${pm[s.professional_id]||'—'}</td>
+      <td>${s.price_from?`€${s.price_from}${s.price_to?'–€'+s.price_to:''} / ${s.price_unit||'hora'}`:'—'}</td>
+      <td>${new Date(s.created_at).toLocaleDateString('pt-PT')}</td>
+      <td><button class="btn btn-delete" onclick="deleteService('${s.id}')">🗑</button></td></tr>`).join('')
 }
 
-function openPlanModal(id,name,plan,suspended){
-  editingUserId=id
-  document.getElementById('modal-user-name').textContent=name
-  document.getElementById('modal-plan-select').value=plan
-  document.getElementById('modal-suspended-select').value=suspended==='true'?'true':'false'
-  document.getElementById('plan-modal').classList.add('open')
-}
-function closePlanModal(){document.getElementById('plan-modal').classList.remove('open');editingUserId=null}
-document.getElementById('plan-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closePlanModal()})
-
-async function savePlanModal(){
-  if(!editingUserId)return
-  const plan=document.getElementById('modal-plan-select').value
-  const suspended=document.getElementById('modal-suspended-select').value==='true'
-  const{error}=await db.from('profiles').update({plan,suspended}).eq('id',editingUserId)
-  if(error){alert('Erro ao guardar: '+error.message);return}
-  closePlanModal();loadUsers();loadStats()
+async function deleteService(id){
+  if(!confirm('Eliminar este serviço?'))return
+  await db.from('services').delete().eq('id',id);loadServices()
 }
 
-async function copyId(id){
-  try{await navigator.clipboard.writeText(id);alert('UUID copiado: '+id)}catch{alert('UUID: '+id)}
+// NAVIGATION
+function showAdminPage(name){
+  document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'))
+  document.getElementById(`page-${name}`).classList.add('active')
+  const names=['overview','profiles','messages','reviews','services']
+  document.querySelectorAll('.atab').forEach((t,i)=>t.classList.toggle('active',names[i]===name))
+  if(name==='messages')loadMessages()
+  if(name==='reviews')loadReviews()
+  if(name==='services')loadServices()
 }
 
-async function signOut(){await db.auth.signOut();location.href='index.html'}
 init()
 </script>
 </body>
