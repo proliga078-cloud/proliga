@@ -561,13 +561,13 @@ async function loadStats(){
       db.from('profiles').select('*',{count:'exact',head:true}),
       db.from('reviews').select('*',{count:'exact',head:true})
     ])
-    document.getElementById('stat-pros').textContent=(pc>0?pc+'+':'200+')
-    document.getElementById('stat-reviews').textContent=(rc>0?rc+'+':'500+')
-    document.getElementById('t-pros').textContent=(pc>0?pc+'+':'200+')
+    document.getElementById('stat-pros').textContent=(pc!=null?pc+'+':'A crescer')
+    document.getElementById('stat-reviews').textContent=(rc!=null?rc+'+':'Em breve')
+    document.getElementById('t-pros').textContent=(pc!=null?pc+'+':'A crescer')
   }catch(e){
-    document.getElementById('stat-pros').textContent='200+'
-    document.getElementById('stat-reviews').textContent='500+'
-    document.getElementById('t-pros').textContent='200+'
+    document.getElementById('stat-pros').textContent='A crescer'
+    document.getElementById('stat-reviews').textContent='Em breve'
+    document.getElementById('t-pros').textContent='A crescer'
   }
 }
 
