@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contacto – Proliga</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--white);line-height:1.7}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:64px;display:flex;align-items:center;gap:20px}
+.logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px}
+.logo span{color:#f59e0b}
+.legal-hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:48px 5% 40px;color:#fff;text-align:center}
+.legal-hero h1{font-size:clamp(24px,4vw,40px);font-weight:800;margin-bottom:8px}
+.legal-hero p{font-size:15px;opacity:.8}
+.legal-body{max-width:680px;margin:0 auto;padding:48px 5%}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
+@media(max-width:560px){.contact-grid{grid-template-columns:1fr}}
+.contact-card{background:var(--bg);border-radius:14px;padding:24px;text-align:center}
+.contact-card .ic{font-size:28px;margin-bottom:10px}
+.contact-card strong{display:block;font-size:15px;margin-bottom:4px}
+.contact-card p{font-size:13px;color:var(--muted);margin:0}
+.legal-body p.lead{font-size:15px;color:#334155;text-align:center;margin-bottom:28px}
+footer{background:var(--text);color:rgba(255,255,255,.6);padding:28px 5%;text-align:center;font-size:13px}
+footer a{color:rgba(255,255,255,.7)}
+footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">Pro<span>liga</span></a>
+</nav>
+<div class="legal-hero">
+<h1>Fala connosco</h1>
+<p>Estamos aqui para ajudar — clientes, profissionais ou apenas curiosos.</p>
+</div>
+<div class="legal-body">
+<p class="lead">Respondemos por email o mais rápido possível, normalmente dentro de 1 a 2 dias úteis.</p>
+<div class="contact-grid">
+<a href="mailto:geral@proliga.pt" class="contact-card">
+<div class="ic">✉️</div>
+<strong>Email geral</strong>
+<p>geral@proliga.pt</p>
+</a>
+<a href="mailto:legal@proliga.pt" class="contact-card">
+<div class="ic">⚖️</div>
+<strong>Questões legais</strong>
+<p>legal@proliga.pt</p>
+</a>
+</div>
+</div>
+<footer>
+<p>© 2026 Proliga · <a href="termos.html">Termos</a> · <a href="privacidade.html">Privacidade</a> · <a href="cookies.html">Cookies</a> · <a href="rgpd.html">RGPD</a> · <a href="index.html">Voltar ao início</a></p>
+</footer>
+</body>
+</html>
