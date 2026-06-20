@@ -147,7 +147,7 @@
       <div class="plan-icon">🚀</div>
       <div class="plan-name">Pro</div>
       <div class="plan-price" id="pro-price">
-        <span class="amount">€9</span><span class="per">/mês</span>
+        <span class="amount">€9,99</span><span class="per">/mês</span>
       </div>
       <div class="plan-desc">Para profissionais que querem crescer e ter mais credibilidade junto dos clientes.</div>
       <button class="plan-cta btn-solid" onclick="requestUpgrade('pro')">Obter plano Pro</button>
@@ -167,7 +167,7 @@
       <div class="plan-icon">👑</div>
       <div class="plan-name">Premium</div>
       <div class="plan-price" id="premium-price">
-        <span class="amount">€19</span><span class="per">/mês</span>
+        <span class="amount">€19,99</span><span class="per">/mês</span>
       </div>
       <div class="plan-desc">Para os que querem o máximo de visibilidade e aparecer primeiro nas pesquisas.</div>
       <button class="plan-cta btn-gold" onclick="requestUpgrade('premium')">Obter plano Premium</button>
@@ -216,7 +216,7 @@
   <h2>Perguntas frequentes</h2>
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)">Como posso fazer upgrade do meu plano?</div>
-    <div class="faq-a">Clica em "Obter plano Pro" ou "Obter plano Premium", envia-nos um email ou contacta-nos diretamente. A ativação do plano é feita manualmente em até 24 horas.</div>
+    <div class="faq-a">Clica em "Obter plano Pro" ou "Obter plano Premium" e serás redirecionado para um checkout seguro do Stripe. O plano é ativado automaticamente logo após o pagamento ser confirmado.</div>
   </div>
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)">Posso cancelar a qualquer momento?</div>
@@ -228,11 +228,11 @@
   </div>
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)">Quanto tempo demora a ativação do plano?</div>
-    <div class="faq-a">Após confirmação do pagamento, o teu plano é ativado em até 24 horas úteis. Receberás uma confirmação por email.</div>
+    <div class="faq-a">O plano é ativado automaticamente, em poucos segundos após o pagamento ser confirmado pelo Stripe.</div>
   </div>
   <div class="faq-item">
     <div class="faq-q" onclick="toggleFaq(this)">Que métodos de pagamento aceitam?</div>
-    <div class="faq-a">Aceitamos transferência bancária, MB Way e cartão de crédito/débito. Entra em contacto connosco após clicar no botão de upgrade.</div>
+    <div class="faq-a">Aceitamos cartão de crédito e débito, através de um checkout seguro processado pelo Stripe.</div>
   </div>
 </section>
 
@@ -288,11 +288,11 @@ function toggleBilling(){
   const proEl=document.getElementById('pro-price')
   const premiumEl=document.getElementById('premium-price')
   if(isYearly){
-    proEl.innerHTML='<span class="original">€9</span><span class="amount">€7</span><span class="per">/mês · faturado €86/ano</span>'
-    premiumEl.innerHTML='<span class="original">€19</span><span class="amount">€15</span><span class="per">/mês · faturado €182/ano</span>'
+    proEl.innerHTML='<span class="original">€9,99</span><span class="amount">€7,17</span><span class="per">/mês · faturado €86/ano</span>'
+    premiumEl.innerHTML='<span class="original">€19,99</span><span class="amount">€15,17</span><span class="per">/mês · faturado €182/ano</span>'
   }else{
-    proEl.innerHTML='<span class="amount">€9</span><span class="per">/mês</span>'
-    premiumEl.innerHTML='<span class="amount">€19</span><span class="per">/mês</span>'
+    proEl.innerHTML='<span class="amount">€9,99</span><span class="per">/mês</span>'
+    premiumEl.innerHTML='<span class="amount">€19,99</span><span class="per">/mês</span>'
   }
 }
 
