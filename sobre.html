@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sobre nós – Proliga</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--white);line-height:1.7}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:64px;display:flex;align-items:center;gap:20px}
+.logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px}
+.logo span{color:#f59e0b}
+.legal-hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:48px 5% 40px;color:#fff}
+.legal-hero h1{font-size:clamp(24px,4vw,40px);font-weight:800;margin-bottom:8px}
+.legal-hero p{font-size:15px;opacity:.8}
+.legal-body{max-width:860px;margin:0 auto;padding:48px 5%}
+.legal-body h2{font-size:20px;font-weight:700;margin:36px 0 12px;padding-top:16px;border-top:1px solid var(--border)}
+.legal-body h2:first-child{border-top:none;margin-top:0}
+.legal-body p{font-size:15px;color:#334155;margin-bottom:14px}
+.legal-body ul{margin:10px 0 16px 20px}
+.legal-body ul li{font-size:15px;color:#334155;margin-bottom:8px}
+.legal-body .highlight{background:var(--bg);border-left:4px solid var(--blue);padding:16px 20px;border-radius:0 8px 8px 0;margin:20px 0;font-size:14px;color:var(--muted)}
+.values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:16px 0 24px}
+@media(max-width:640px){.values-grid{grid-template-columns:1fr}}
+.value-card{background:var(--bg);border-radius:12px;padding:18px}
+.value-card strong{display:block;margin-bottom:6px;font-size:15px}
+footer{background:var(--text);color:rgba(255,255,255,.6);padding:28px 5%;text-align:center;font-size:13px}
+footer a{color:rgba(255,255,255,.7)}
+footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">Pro<span>liga</span></a>
+</nav>
+<div class="legal-hero">
+<h1>Sobre a Proliga</h1>
+<p>O marketplace local que liga clientes a profissionais de confiança no Porto e na Maia.</p>
+</div>
+<div class="legal-body">
+<div class="highlight">
+Acreditamos que encontrar um bom profissional não devia ser uma questão de sorte. A Proliga existe para tornar essa procura simples, transparente e local.
+</div>
+
+<h2>Quem somos</h2>
+<p>A Proliga é uma plataforma criada para conectar pessoas que precisam de um serviço — limpeza, eletricidade, jardinagem, explicações, e muito mais — com profissionais qualificados na zona do Porto e da Maia.</p>
+<p>Trabalhamos com profissionais verificados e damos aos clientes acesso a avaliações reais, para que cada contratação seja feita com confiança.</p>
+
+<h2>Porque criámos a Proliga</h2>
+<p>Procurar um profissional de confiança costuma significar perguntar a amigos, percorrer grupos de Facebook ou confiar em anúncios sem garantias. Quisemos criar um sítio único onde isso fosse mais fácil — para quem procura um serviço, e para quem o presta.</p>
+
+<h2>O que nos diferencia</h2>
+<div class="values-grid">
+<div class="value-card"><strong>🏠 100% local</strong>Focados exclusivamente no Porto e na Maia, para ligações mais próximas e relevantes.</div>
+<div class="value-card"><strong>💶 Sem comissões</strong>O profissional recebe 100% do valor acordado com o cliente — nunca cobramos uma percentagem por trabalho fechado.</div>
+<div class="value-card"><strong>✅ Perfis verificados</strong>Verificamos os profissionais para que os clientes contratem com mais confiança.</div>
+<div class="value-card"><strong>⭐ Avaliações reais</strong>Só clientes que efetivamente contactaram o profissional podem avaliar.</div>
+</div>
+
+<h2>Fala connosco</h2>
+<p>Tens alguma sugestão, dúvida ou queres ser profissional parceiro? Visita a nossa página de <a href="contacto.html">contacto</a> ou consulta <a href="como-funciona.html">como funciona</a> a plataforma.</p>
+</div>
+<footer>
+<p>© 2026 Proliga · <a href="termos.html">Termos</a> · <a href="privacidade.html">Privacidade</a> · <a href="cookies.html">Cookies</a> · <a href="rgpd.html">RGPD</a> · <a href="index.html">Voltar ao início</a></p>
+</footer>
+</body>
+</html>
