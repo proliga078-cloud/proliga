@@ -35,7 +35,7 @@ const plan=(typeof profileData!=='undefined'&&profileData&&profileData.plan)||'f
 const banner=document.getElementById('upgrade-banner-wrap')
 if(banner){
 if(plan==='free'){
-banner.innerHTML='<div class="upgrade-banner"><div><h3>🚀 Aumenta a visibilidade do teu perfil</h3><p>Plano Pro: portfólio, badge verificado, destaque nas pesquisas. A partir de €9/mês.</p></div><button class="btn btn-gold" onclick="location.href=\'pricing.html\'">Atualizar plano →</button></div>'
+banner.innerHTML='<div class="upgrade-banner"><div><h3>🚀 Aumenta a visibilidade do teu perfil</h3><p>Plano Pro: portfólio, badge verificado, destaque nas pesquisas. A partir de €9,99/mês.</p></div><button class="btn btn-gold" onclick="location.href=\'pricing.html\'">Atualizar plano →</button></div>'
 }else if(plan==='pro'){
 banner.innerHTML='<div class="upgrade-banner" style="background:linear-gradient(135deg,#92400e,#f59e0b)"><div><h3>👑 Vai para Premium</h3><p>Aparece primeiro nas pesquisas e tem destaque máximo na tua categoria.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-solid" onclick="location.href=\'pricing.html\'">Ver Premium →</button><button class="btn btn-outline" style="background:#fff" onclick="manageBilling()">Gerir subscrição</button></div></div>'
 }else if(plan==='premium'){
