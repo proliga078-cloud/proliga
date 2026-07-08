@@ -122,7 +122,7 @@ const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 
-let myId=null,conversations=[],activeConvId=null,activeOther=null,msgChannel=null
+let myId=null,myName='Alguém',conversations=[],activeConvId=null,activeOther=null,msgChannel=null
 
 async function init(){
 const{data:{session}}=await db.auth.getSession()
@@ -133,6 +133,8 @@ location.href='auth.html?tab=login&redirect='+encodeURIComponent(redirect)
 return
 }
 myId=session.user.id
+const{data:myProf}=await db.from('profiles').select('name').eq('id',myId).single()
+if(myProf)myName=myProf.name
 await loadConversations()
 
 const withId=new URLSearchParams(location.search).get('with')
@@ -151,7 +153,7 @@ renderConvList()
 return
 }
 const otherIds=[...new Set(data.map(c=>c.professional_id===myId?c.client_id:c.professional_id))]
-const{data:profs}=await db.from('profiles').select('id,name,photo_url,category').in('id',otherIds)
+const{data:profs}=await db.from('profiles').select('id,name,photo_url,category,email').in('id',otherIds)
 const profMap={}
 ;(profs||[]).forEach(p=>profMap[p.id]=p)
 conversations=data.map(c=>{
@@ -197,7 +199,7 @@ if(!existing)return
 await loadConversations()
 conv=conversations.find(c=>c.id===existing.id)
 }else{
-const{data:prof}=await db.from('profiles').select('id,name,photo_url,category').eq('id',otherId).single()
+const{data:prof}=await db.from('profiles').select('id,name,photo_url,category,email').eq('id',otherId).single()
 conv={...data,other:prof||{id:otherId,name:'Utilizador'}}
 conversations.unshift(conv)
 renderConvList()
@@ -271,6 +273,22 @@ const conv=conversations.find(c=>c.id===activeConvId)
 if(conv){conv.last_message=content;conv.last_message_at=new Date().toISOString()}
 conversations.sort((a,b)=>new Date(b.last_message_at)-new Date(a.last_message_at))
 renderConvList()
+notifyNewMessage(content)
+}
+
+function notifyNewMessage(content){
+if(!activeOther||!activeOther.email)return
+fetch('/.netlify/functions/notify-message',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+to:activeOther.email,
+toName:activeOther.name,
+fromName:myName,
+preview:content,
+link:location.origin+'/messages.html?with='+myId
+})
+}).catch(()=>{})
 }
 
 function subscribeToNewMessages(){
