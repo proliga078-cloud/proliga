@@ -138,7 +138,8 @@
     <div class="nav-item" data-page="services" onclick="showPage('services')"><span class="icon">🛠️</span> Serviços</div>
     <div class="nav-item" data-page="portfolio" onclick="showPage('portfolio')"><span class="icon">📸</span> Portfólio</div>
     <div class="nav-item" onclick="location.href='messages.html'"><span class="icon">💬</span> Chat</div>
-<div class="nav-item" data-page="messages" onclick="showPage('messages')"><span class="icon">📩</span> Pedidos Recebidos <span id="msg-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
+<div class="nav-item" data-page="myrequests" onclick="showPage('myrequests')"><span class="icon">📢</span> Os Meus Pedidos</div>
+<div class="nav-item" data-page="messages" onclick="showPage('messages')"><span class="icon">📩</span> Contactos (Formulário) <span id="msg-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
     <div class="nav-item" data-page="reviews" onclick="showPage('reviews')"><span class="icon">⭐</span> Avaliações</div>
     <div class="nav-item" onclick="location.href='pricing.html'"><span class="icon">💎</span> Atualizar Plano</div>
     <div class="nav-item" onclick="viewPublicProfile()"><span class="icon">👁️</span> Ver Perfil Público</div>
@@ -297,6 +298,55 @@
         <div class="form-title">🖼️ Fotos no Portfólio</div>
         <div class="portfolio-grid" id="portfolio-grid"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- MEUS PEDIDOS -->
+  <div id="page-myrequests" class="page-section">
+    <div class="page-title">📢 Os Meus Pedidos</div>
+    <div class="alert success" id="req-success"></div>
+    <div class="alert error" id="req-error"></div>
+    <div class="form-section">
+      <div class="form-title">➕ Publicar Novo Pedido</div>
+      <div class="form-grid">
+        <div class="form-group full"><label>Título *</label><input id="req-title" type="text" placeholder="Ex: Preciso de um eletricista urgente"/></div>
+        <div class="form-group"><label>Categoria *</label>
+          <select id="req-cat">
+            <option value="">Escolhe uma categoria</option>
+            <option>Eletricistas</option><option>Canalizadores</option><option>Pintores</option>
+            <option>Pedreiros</option><option>Carpinteiros</option><option>Serralheiros</option>
+            <option>Jardineiros</option><option>Limpeza</option><option>Mudanças</option>
+            <option>Decoradores</option><option>Programadores</option><option>Designers</option>
+            <option>Reparações</option><option>Personal Trainers</option><option>Cabeleireiros</option>
+            <option>Esteticistas</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Zona *</label>
+          <select id="req-loc">
+            <option value="">Escolhe a zona</option>
+            <optgroup label="Porto">
+              <option>Porto – Centro</option><option>Porto – Boavista</option>
+              <option>Porto – Foz do Douro</option><option>Porto – Paranhos</option>
+              <option>Porto – Campanhã</option><option>Porto – Cedofeita</option>
+              <option>Porto – Bonfim</option><option>Porto – Massarelos</option>
+            </optgroup>
+            <optgroup label="Maia">
+              <option>Maia – Castêlo da Maia</option><option>Maia – Águas Santas</option>
+              <option>Maia – Moreira</option><option>Maia – Vermoim</option>
+              <option>Maia – Folgosa</option><option>Maia – Gemunde</option>
+              <option>Maia – Nogueira</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group"><label>Orçamento mín. (€)</label><input id="req-bmin" type="number" min="0" placeholder="Ex: 30"/></div>
+        <div class="form-group"><label>Orçamento máx. (€)</label><input id="req-bmax" type="number" min="0" placeholder="Ex: 100"/></div>
+        <div class="form-group full"><label>Descrição</label><textarea id="req-desc" placeholder="Dá detalhes sobre o que precisas..."></textarea></div>
+      </div>
+      <button class="btn btn-primary" onclick="addMyRequest()">Publicar pedido</button>
+    </div>
+    <div class="form-section">
+      <div class="form-title">📋 Os Meus Pedidos Publicados</div>
+      <div id="myrequests-list" class="item-list"></div>
     </div>
   </div>
 
@@ -659,6 +709,49 @@ function showPage(name){
   if(name==='services')loadServices()
   if(name==='messages')loadMessages()
   if(name==='reviews')loadReviews()
+  if(name==='myrequests')loadMyRequests()
+}
+
+// MEUS PEDIDOS
+async function loadMyRequests(){
+  const{data}=await db.from('requests').select('*').eq('client_id',user.id).order('created_at',{ascending:false})
+  const el=document.getElementById('myrequests-list')
+  if(!data||!data.length){el.innerHTML='<div class="empty">Ainda não publicaste nenhum pedido.</div>';return}
+  el.innerHTML=data.map(r=>{
+    const budget=r.budget_from?('€'+r.budget_from+(r.budget_to?' – €'+r.budget_to:'')):'Sem orçamento definido'
+    return `<div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${r.title}</div>
+        <div class="list-item-sub">${r.category} · ${r.location} · ${budget}</div>
+      </div>
+      <div><button class="btn btn-danger btn-sm" onclick="deleteMyRequest('${r.id}')">🗑</button></div>
+    </div>`
+  }).join('')
+}
+
+async function addMyRequest(){
+  const title=document.getElementById('req-title').value.trim()
+  const category=document.getElementById('req-cat').value
+  const location=document.getElementById('req-loc').value
+  if(!title||!category||!location){showAlert('req-error','Preenche título, categoria e zona.','error');return}
+  const{error}=await db.from('requests').insert({
+    client_id:user.id,title,category,location,
+    description:document.getElementById('req-desc').value.trim()||null,
+    budget_from:parseFloat(document.getElementById('req-bmin').value)||null,
+    budget_to:parseFloat(document.getElementById('req-bmax').value)||null
+  })
+  if(error){showAlert('req-error','Erro: '+error.message,'error');return}
+  showAlert('req-success','Pedido publicado com sucesso!')
+  ;['req-title','req-desc','req-bmin','req-bmax'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('req-cat').value=''
+  document.getElementById('req-loc').value=''
+  loadMyRequests()
+}
+
+async function deleteMyRequest(id){
+  if(!confirm('Remover este pedido?'))return
+  await db.from('requests').delete().eq('id',id)
+  loadMyRequests()
 }
 
 function viewPublicProfile(){
