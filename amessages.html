@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mensagens – Proliga</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%94%A7</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--green:#16a34a;--red:#dc2626;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit}
+
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;height:60px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+.logo{font-size:20px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
+.back-link{font-size:13px;font-weight:600;color:var(--muted);margin-left:auto}
+.back-link:hover{color:var(--blue)}
+
+.wrap{flex:1;display:flex;overflow:hidden}
+
+/* CONVERSATION LIST */
+.conv-panel{width:340px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.conv-header{padding:18px 20px;border-bottom:1px solid var(--border);font-size:16px;font-weight:800}
+.conv-list{flex:1;overflow-y:auto}
+.conv-item{display:flex;gap:12px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--bg);transition:background .15s;position:relative}
+.conv-item:hover{background:var(--bg)}
+.conv-item.active{background:var(--blue-light)}
+.conv-avatar{width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.conv-avatar img{width:100%;height:100%;object-fit:cover}
+.conv-body{flex:1;min-width:0}
+.conv-name{font-size:14px;font-weight:700;display:flex;justify-content:space-between;gap:6px}
+.conv-time{font-size:11px;color:var(--muted);font-weight:500}
+.conv-preview{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.conv-item.unread .conv-preview{color:var(--text);font-weight:600}
+.unread-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);position:absolute;right:16px;top:22px}
+.conv-empty{padding:40px 24px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
+
+/* CHAT PANEL */
+.chat-panel{flex:1;display:flex;flex-direction:column;background:var(--bg);min-width:0}
+.chat-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--muted)}
+.chat-empty .ico{font-size:48px}
+.chat-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.chat-header .conv-avatar{width:38px;height:38px;font-size:13px}
+.chat-header-name{font-size:15px;font-weight:700}
+.chat-header-cat{font-size:12px;color:var(--muted)}
+.chat-header a{margin-left:auto;font-size:12px;font-weight:700;color:var(--blue)}
+
+.chat-messages{flex:1;overflow-y:auto;padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.bubble-row{display:flex}
+.bubble-row.mine{justify-content:flex-end}
+.bubble{max-width:65%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5;word-wrap:break-word}
+.bubble-row.theirs .bubble{background:var(--white);border:1px solid var(--border);border-bottom-left-radius:4px}
+.bubble-row.mine .bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.bubble-time{font-size:10px;color:var(--muted);margin-top:3px;padding:0 4px}
+.bubble-row.mine .bubble-time{text-align:right}
+.day-sep{text-align:center;font-size:11px;color:var(--muted);font-weight:600;margin:10px 0}
+
+.chat-input-bar{background:var(--white);border-top:1px solid var(--border);padding:14px 20px;display:flex;gap:10px;flex-shrink:0}
+.chat-input-bar textarea{flex:1;border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;font-size:14px;font-family:inherit;resize:none;max-height:100px;outline:none}
+.chat-input-bar textarea:focus{border-color:var(--blue)}
+.btn-send{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:0 20px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s}
+.btn-send:hover{background:var(--blue-dark)}
+.btn-send:disabled{background:#93c5fd;cursor:not-allowed}
+
+.spinner{width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:30px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:760px){
+.conv-panel{width:100%;position:absolute;inset:60px 0 0 0;z-index:5}
+.conv-panel.hide-mobile{display:none}
+.chat-panel{position:absolute;inset:60px 0 0 0}
+.chat-panel.hide-mobile{display:none}
+.chat-header .back-btn{display:inline-block!important}
+}
+.back-btn{display:none;font-size:20px;cursor:pointer;color:var(--muted);margin-right:2px}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html" class="logo">Pro<span>liga</span></a>
+<span style="font-size:14px;font-weight:700;color:var(--muted)">💬 Mensagens</span>
+<a href="dashboard.html" class="back-link">← Dashboard</a>
+</nav>
+
+<div class="wrap">
+<div class="conv-panel" id="conv-panel">
+<div class="conv-header">Conversas</div>
+<div class="conv-list" id="conv-list"><div class="spinner"></div></div>
+</div>
+
+<div class="chat-panel" id="chat-panel">
+<div class="chat-empty" id="chat-empty">
+<div class="ico">💬</div>
+<div>Seleciona uma conversa para começar</div>
+</div>
+<div id="chat-active" style="display:none;flex:1;flex-direction:column;min-height:0">
+<div class="chat-header">
+<span class="back-btn" onclick="backToList()">←</span>
+<div class="conv-avatar" id="ch-avatar">?</div>
+<div>
+<div class="chat-header-name" id="ch-name">—</div>
+<div class="chat-header-cat" id="ch-cat"></div>
+</div>
+<a id="ch-profile-link" href="#" target="_blank">Ver perfil</a>
+</div>
+<div class="chat-messages" id="chat-messages"></div>
+<div class="chat-input-bar">
+<textarea id="msg-input" placeholder="Escreve uma mensagem..." rows="1"></textarea>
+<button class="btn-send" id="send-btn" onclick="sendMessage()">Enviar</button>
+</div>
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
+const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+
+let myId=null,conversations=[],activeConvId=null,activeOther=null,msgChannel=null
+
+async function init(){
+const{data:{session}}=await db.auth.getSession()
+if(!session){
+const withParam=new URLSearchParams(location.search).get('with')
+const redirect='messages.html'+(withParam?('?with='+withParam):'')
+location.href='auth.html?tab=login&redirect='+encodeURIComponent(redirect)
+return
+}
+myId=session.user.id
+await loadConversations()
+
+const withId=new URLSearchParams(location.search).get('with')
+if(withId && withId!==myId){
+await openOrCreateConversation(withId)
+}
+
+subscribeToNewMessages()
+}
+
+async function loadConversations(){
+const{data,error}=await db.from('conversations').select('*').or('professional_id.eq.'+myId+',client_id.eq.'+myId).order('last_message_at',{ascending:false})
+if(error||!data||!data.length){
+conversations=[]
+renderConvList()
+return
+}
+const otherIds=[...new Set(data.map(c=>c.professional_id===myId?c.client_id:c.professional_id))]
+const{data:profs}=await db.from('profiles').select('id,name,photo_url,category').in('id',otherIds)
+const profMap={}
+;(profs||[]).forEach(p=>profMap[p.id]=p)
+conversations=data.map(c=>{
+const otherId=c.professional_id===myId?c.client_id:c.professional_id
+return{...c,other:profMap[otherId]||{id:otherId,name:'Utilizador',category:''}}
+})
+renderConvList()
+}
+
+function initialsOf(name){
+return(name||'?').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
+}
+
+function renderConvList(){
+const el=document.getElementById('conv-list')
+if(!conversations.length){
+el.innerHTML='<div class="conv-empty">Ainda não tens conversas.<br>Contacta um profissional a partir do perfil dele para começar a falar.</div>'
+return
+}
+el.innerHTML=conversations.map(c=>{
+const unread=c._unread
+const avatar=c.other.photo_url?'<img src="'+c.other.photo_url+'" alt="">':initialsOf(c.other.name)
+const time=c.last_message_at?timeAgo(c.last_message_at):''
+return '<div class="conv-item'+(c.id===activeConvId?' active':'')+(unread?' unread':'')+'" onclick="openConversation(\''+c.id+'\')">'+
+'<div class="conv-avatar">'+avatar+'</div>'+
+'<div class="conv-body">'+
+'<div class="conv-name"><span>'+escapeHtml(c.other.name)+'</span><span class="conv-time">'+time+'</span></div>'+
+'<div class="conv-preview">'+escapeHtml(c.last_message||'Conversa iniciada')+'</div>'+
+'</div>'+
+(unread?'<div class="unread-dot"></div>':'')+
+'</div>'
+}).join('')
+}
+
+async function openOrCreateConversation(otherId){
+let conv=conversations.find(c=>(c.professional_id===otherId&&c.client_id===myId)||(c.professional_id===myId&&c.client_id===otherId))
+if(!conv){
+const{data,error}=await db.from('conversations').insert({professional_id:otherId,client_id:myId}).select().single()
+if(error){
+// pode já existir (corrida) - tenta buscar
+const{data:existing}=await db.from('conversations').select('*').or('and(professional_id.eq.'+otherId+',client_id.eq.'+myId+'),and(professional_id.eq.'+myId+',client_id.eq.'+otherId+')').limit(1).single()
+if(!existing)return
+await loadConversations()
+conv=conversations.find(c=>c.id===existing.id)
+}else{
+const{data:prof}=await db.from('profiles').select('id,name,photo_url,category').eq('id',otherId).single()
+conv={...data,other:prof||{id:otherId,name:'Utilizador'}}
+conversations.unshift(conv)
+renderConvList()
+}
+}
+if(conv)openConversation(conv.id)
+}
+
+async function openConversation(id){
+activeConvId=id
+const conv=conversations.find(c=>c.id===id)
+if(!conv)return
+activeOther=conv.other
+document.getElementById('chat-empty').style.display='none'
+document.getElementById('chat-active').style.display='flex'
+document.getElementById('conv-panel').classList.add('hide-mobile')
+document.getElementById('ch-avatar').innerHTML=conv.other.photo_url?'<img src="'+conv.other.photo_url+'">':initialsOf(conv.other.name)
+document.getElementById('ch-name').textContent=conv.other.name
+document.getElementById('ch-cat').textContent=conv.other.category||''
+document.getElementById('ch-profile-link').href='profile.html?id='+conv.other.id
+renderConvList()
+await loadMessages(id)
+await db.from('messages').update({read:true}).eq('conversation_id',id).neq('sender_id',myId)
+}
+
+function backToList(){
+document.getElementById('conv-panel').classList.remove('hide-mobile')
+document.getElementById('chat-panel').classList.add('hide-mobile')
+}
+
+async function loadMessages(convId){
+const el=document.getElementById('chat-messages')
+el.innerHTML='<div class="spinner"></div>'
+const{data,error}=await db.from('messages').select('*').eq('conversation_id',convId).order('created_at',{ascending:true})
+if(error||!data){el.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px">Erro ao carregar mensagens.</div>';return}
+renderMessages(data)
+}
+
+function renderMessages(msgs){
+const el=document.getElementById('chat-messages')
+if(!msgs.length){
+el.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Ainda sem mensagens. Diz olá! 👋</div>'
+return
+}
+let lastDay=''
+let html=''
+msgs.forEach(m=>{
+const d=new Date(m.created_at)
+const dayKey=d.toLocaleDateString('pt-PT')
+if(dayKey!==lastDay){html+='<div class="day-sep">'+dayKey+'</div>';lastDay=dayKey}
+const mine=m.sender_id===myId
+const time=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
+html+='<div class="bubble-row '+(mine?'mine':'theirs')+'"><div><div class="bubble">'+escapeHtml(m.content)+'</div><div class="bubble-time">'+time+'</div></div></div>'
+})
+el.innerHTML=html
+el.scrollTop=el.scrollHeight
+}
+
+async function sendMessage(){
+const input=document.getElementById('msg-input')
+const content=input.value.trim()
+if(!content||!activeConvId)return
+const btn=document.getElementById('send-btn')
+btn.disabled=true
+input.value=''
+const{error}=await db.from('messages').insert({conversation_id:activeConvId,sender_id:myId,content})
+btn.disabled=false
+if(error){alert('Erro ao enviar mensagem: '+error.message);return}
+await loadMessages(activeConvId)
+const conv=conversations.find(c=>c.id===activeConvId)
+if(conv){conv.last_message=content;conv.last_message_at=new Date().toISOString()}
+conversations.sort((a,b)=>new Date(b.last_message_at)-new Date(a.last_message_at))
+renderConvList()
+}
+
+function subscribeToNewMessages(){
+msgChannel=db.channel('messages-listener').on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},payload=>{
+const m=payload.new
+if(m.sender_id===myId)return
+const conv=conversations.find(c=>c.id===m.conversation_id)
+if(conv){
+conv.last_message=m.content
+conv.last_message_at=m.created_at
+if(m.conversation_id===activeConvId){
+loadMessages(activeConvId)
+db.from('messages').update({read:true}).eq('id',m.id)
+}else{
+conv._unread=true
+}
+conversations.sort((a,b)=>new Date(b.last_message_at)-new Date(a.last_message_at))
+renderConvList()
+}else{
+loadConversations()
+}
+}).subscribe()
+}
+
+function timeAgo(iso){
+const diff=(Date.now()-new Date(iso).getTime())/1000
+if(diff<60)return 'agora'
+if(diff<3600)return Math.floor(diff/60)+'m'
+if(diff<86400)return Math.floor(diff/3600)+'h'
+if(diff<604800)return Math.floor(diff/86400)+'d'
+return new Date(iso).toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit'})
+}
+
+function escapeHtml(s){
+const d=document.createElement('div')
+d.textContent=s||''
+return d.innerHTML
+}
+
+document.getElementById('msg-input').addEventListener('keydown',e=>{
+if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}
+})
+document.getElementById('msg-input').addEventListener('input',function(){
+this.style.height='auto'
+this.style.height=Math.min(this.scrollHeight,100)+'px'
+})
+
+init()
+</script>
+</body>
+</html>
