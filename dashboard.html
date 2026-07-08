@@ -137,7 +137,8 @@
     <div class="nav-item" data-page="profile" onclick="showPage('profile')"><span class="icon">👤</span> O Meu Perfil</div>
     <div class="nav-item" data-page="services" onclick="showPage('services')"><span class="icon">🛠️</span> Serviços</div>
     <div class="nav-item" data-page="portfolio" onclick="showPage('portfolio')"><span class="icon">📸</span> Portfólio</div>
-    <div class="nav-item" data-page="messages" onclick="showPage('messages')"><span class="icon">💬</span> Mensagens <span id="msg-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
+    <div class="nav-item" onclick="location.href='messages.html'"><span class="icon">💬</span> Chat</div>
+<div class="nav-item" data-page="messages" onclick="showPage('messages')"><span class="icon">📩</span> Pedidos Recebidos <span id="msg-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
     <div class="nav-item" data-page="reviews" onclick="showPage('reviews')"><span class="icon">⭐</span> Avaliações</div>
     <div class="nav-item" onclick="location.href='pricing.html'"><span class="icon">💎</span> Atualizar Plano</div>
     <div class="nav-item" onclick="viewPublicProfile()"><span class="icon">👁️</span> Ver Perfil Público</div>
@@ -153,7 +154,7 @@
     <div class="mob-item active" onclick="showPage('overview')"><span class="icon">📊</span>Resumo</div>
     <div class="mob-item" onclick="showPage('profile')"><span class="icon">👤</span>Perfil</div>
     <div class="mob-item" onclick="showPage('services')"><span class="icon">🛠️</span>Serviços</div>
-    <div class="mob-item" onclick="showPage('messages')"><span class="icon">💬</span>Msgs</div>
+    <div class="mob-item" onclick="location.href='messages.html'"><span class="icon">💬</span>Chat</div>
     <div class="mob-item" onclick="showPage('portfolio')"><span class="icon">📸</span>Portfolio</div>
   </div>
 </div>
@@ -465,7 +466,7 @@ async function saveProfile(){
 
 async function loadStats(){
   const[{count:mc},{count:rc},{data:revs},{count:sc}]=await Promise.all([
-    db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',profileId),
+    db.from('messages_legacy_contact_form').select('*',{count:'exact',head:true}).eq('professional_id',profileId),
     db.from('reviews').select('*',{count:'exact',head:true}).eq('professional_id',profileId),
     db.from('reviews').select('rating').eq('professional_id',profileId),
     db.from('services').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
@@ -478,7 +479,7 @@ async function loadStats(){
     document.getElementById('stat-avg').textContent=avg+'⭐'
   } else document.getElementById('stat-avg').textContent='—'
   // Badge
-  const{count:unread}=await db.from('messages').select('*',{count:'exact',head:true}).eq('professional_id',profileId).eq('read',false)
+  const{count:unread}=await db.from('messages_legacy_contact_form').select('*',{count:'exact',head:true}).eq('professional_id',profileId).eq('read',false)
   if(unread>0){
     const badge=document.getElementById('msg-badge')
     badge.style.display='inline'
@@ -487,7 +488,7 @@ async function loadStats(){
 }
 
 async function loadRecentMsgs(){
-  const{data}=await db.from('messages').select('*').eq('professional_id',profileId).order('created_at',{ascending:false}).limit(3)
+  const{data}=await db.from('messages_legacy_contact_form').select('*').eq('professional_id',profileId).order('created_at',{ascending:false}).limit(3)
   const el=document.getElementById('recent-msgs')
   if(!data||!data.length){el.innerHTML='<div class="empty">Sem mensagens ainda</div>';return}
   el.innerHTML=data.map(m=>`
@@ -606,11 +607,11 @@ async function deletePortItem(id){
 
 // MESSAGES
 async function loadMessages(){
-  const{data}=await db.from('messages').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
+  const{data}=await db.from('messages_legacy_contact_form').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
   const el=document.getElementById('messages-list')
   if(!data||!data.length){el.innerHTML='<div class="empty">Sem mensagens ainda.</div>';return}
   // Mark all as read
-  db.from('messages').update({read:true}).eq('professional_id',profileId).eq('read',false).then(()=>{
+  db.from('messages_legacy_contact_form').update({read:true}).eq('professional_id',profileId).eq('read',false).then(()=>{
     document.getElementById('msg-badge').style.display='none'
   })
   el.innerHTML=data.map(m=>`
