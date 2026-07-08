@@ -242,15 +242,10 @@
   <!-- SIDEBAR -->
   <div>
     <div class="contact-card">
-      <h3>📩 Contactar Profissional</h3>
+      <h3>💬 Fala com o Profissional</h3>
+      <p style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:16px">Envia uma mensagem diretamente pela Proliga. Sem sair do site, sem partilhar contactos externos.</p>
       <div class="msg error" id="msg-error"></div>
-      <div class="msg success" id="msg-success"></div>
-      <div class="form-group"><label>O teu nome *</label><input id="msg-name" type="text" placeholder="O teu nome"/></div>
-      <div class="form-group"><label>Email *</label><input id="msg-email" type="email" placeholder="o-teu@email.com"/></div>
-      <div class="form-group"><label>Telefone</label><input id="msg-phone" type="tel" placeholder="912 000 000"/></div>
-      <div class="form-group"><label>Assunto *</label><input id="msg-subject" type="text" placeholder="Ex: Reparação urgente"/></div>
-      <div class="form-group"><label>Mensagem *</label><textarea id="msg-content" placeholder="Descreve o que precisas..."></textarea></div>
-      <button class="btn-contact" id="msg-btn" onclick="sendMessage()">Enviar mensagem</button>
+      <button class="btn-contact" id="msg-btn" onclick="startConversation()">💬 Enviar mensagem</button>
     </div>
 
     <div class="info-card">
@@ -398,7 +393,7 @@ async function loadServices(){
         <div class="package-price">€${basic.price_from||'—'}<span>/hora</span></div>
         <div class="package-desc">${basic.description||basic.title}</div>
         <ul class="package-features"><li>${basic.title}</li></ul>
-        <button class="btn btn-outline" style="width:100%" onclick="document.getElementById('msg-subject').value='Plano Básico – ${basic.title}';document.querySelector('.contact-card').scrollIntoView({behavior:'smooth'})">Contratar</button>
+        <button class="btn btn-outline" style="width:100%" onclick="document.querySelector('.contact-card').scrollIntoView({behavior:'smooth'})">Contratar</button>
       </div>
       <div class="package-card recommended">
         <div class="rec-badge">⭐ Mais Popular</div>
@@ -406,14 +401,14 @@ async function loadServices(){
         <div class="package-price">€${standard.price_from||'—'}<span>/hora</span></div>
         <div class="package-desc">${standard.description||standard.title}</div>
         <ul class="package-features"><li>${basic.title}</li><li>${standard.title}</li></ul>
-        <button class="btn btn-solid" style="width:100%" onclick="document.getElementById('msg-subject').value='Plano Standard – ${standard.title}';document.querySelector('.contact-card').scrollIntoView({behavior:'smooth'})">Contratar</button>
+        <button class="btn btn-solid" style="width:100%" onclick="document.querySelector('.contact-card').scrollIntoView({behavior:'smooth'})">Contratar</button>
       </div>
       <div class="package-card">
         <h4>Premium</h4>
         <div class="package-price">€${premium.price_from||'—'}<span>/hora</span></div>
         <div class="package-desc">${premium.description||premium.title}</div>
         <ul class="package-features"><li>${basic.title}</li><li>${standard.title}</li><li>${premium.title}</li></ul>
-        <button class="btn btn-gold" style="width:100%" onclick="document.getElementById('msg-subject').value='Plano Premium – ${premium.title}';document.querySelector('.contact-card').scrollIntoView({behavior:'smooth'})">Contratar</button>
+        <button class="btn btn-gold" style="width:100%" onclick="document.querySelector('.contact-card').scrollIntoView({behavior:'smooth'})">Contratar</button>
       </div>`
   }
 }
@@ -475,20 +470,19 @@ async function submitReview(){
   setTimeout(loadReviews,800)
 }
 
-async function sendMessage(){
-  const name=document.getElementById('msg-name').value.trim()
-  const email=document.getElementById('msg-email').value.trim()
-  const phone=document.getElementById('msg-phone').value.trim()
-  const subject=document.getElementById('msg-subject').value.trim()
-  const content=document.getElementById('msg-content').value.trim()
-  const btn=document.getElementById('msg-btn')
-  if(!name||!email||!subject||!content)return showMsg('msg-error','Preenche todos os campos obrigatórios.')
-  btn.disabled=true;btn.textContent='A enviar...'
-  const{error}=await db.from('messages').insert({professional_id:proId,sender_name:name,sender_email:email,sender_phone:phone,subject,content})
-  if(error){showMsg('msg-error','Erro ao enviar. Tenta de novo.');btn.disabled=false;btn.textContent='Enviar mensagem';return}
-  showMsg('msg-success','Mensagem enviada com sucesso! O profissional irá contactar-te em breve.','success')
-  ;['msg-name','msg-email','msg-phone','msg-subject','msg-content'].forEach(id=>document.getElementById(id).value='')
-  btn.disabled=false;btn.textContent='Enviar mensagem'
+async function startConversation(){
+const btn=document.getElementById('msg-btn')
+const{data:{session}}=await db.auth.getSession()
+if(!session){
+location.href='auth.html?tab=login&redirect='+encodeURIComponent('messages.html?with='+proId)
+return
+}
+if(session.user.id===proId){
+showMsg('msg-error','Não podes enviar mensagem a ti próprio.')
+return
+}
+btn.disabled=true;btn.textContent='A abrir conversa...'
+location.href='messages.html?with='+proId
 }
 
 function showMsg(id,txt,type='error'){
