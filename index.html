@@ -194,7 +194,8 @@
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" placeholder="Ex: eletricista, pintor, designer..." onkeydown="if(event.key==='Enter')doSearch(this.value)"/>
   </div>
-  <div class="nav-right">
+  <a href="pedidos.html" class="btn btn-ghost" style="white-space:nowrap">📢 Pedidos</a>
+<div class="nav-right">
     <div id="nav-guest" style="display:flex;gap:8px">
       <a href="auth.html?tab=login" class="btn btn-ghost">Entrar</a>
       <a href="auth.html?tab=register" class="btn btn-solid">Registar</a>
@@ -219,6 +220,7 @@
     </select>
     <button onclick="doSearch()">Procurar</button>
   </div>
+  <div style="margin-bottom:20px"><a href="pedidos.html" style="color:rgba(255,255,255,.85);font-size:14px;font-weight:600;text-decoration:underline">📢 Ou publica o que precisas e deixa os profissionais encontrarem-te →</a></div>
   <div class="hero-tags">
     <span class="hero-tag" onclick="goCategory('Eletricistas')">⚡ Eletricistas</span>
     <span class="hero-tag" onclick="goCategory('Canalizadores')">🔧 Canalizadores</span>
