@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pedidos de Clientes – Proliga</title>
+<meta name="description" content="Vê o que os clientes precisam no Porto e na Maia. Publica o teu pedido e deixa os profissionais encontrarem-te."/>
+<meta name="robots" content="index, follow"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%94%A7</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#dbeafe;--gold:#f59e0b;--green:#16a34a;--red:#dc2626;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
+a{text-decoration:none;color:inherit}
+nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
+.logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
+.btn{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn-ghost{background:transparent;color:var(--text)}.btn-ghost:hover{background:var(--bg)}
+.btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
+.btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
+.nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+.hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:48px 5% 40px;color:#fff;text-align:center}
+.hero h1{font-size:30px;font-weight:900;letter-spacing:-1px;margin-bottom:10px}
+.hero p{font-size:15px;color:rgba(255,255,255,.85);max-width:560px;margin:0 auto 22px}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+.wrap{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;background:var(--white);padding:14px;border-radius:14px;border:1px solid var(--border)}
+.filters select,.filters input{padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none}
+.filters input{flex:1;min-width:180px}
+.filters select:focus,.filters input:focus{border-color:var(--blue)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.req-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s}
+.req-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.req-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.req-title{font-size:16px;font-weight:700;line-height:1.4}
+.req-time{font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.req-cat{display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;width:fit-content}
+.req-loc{font-size:13px;color:var(--muted)}
+.req-desc{font-size:13px;color:#475569;line-height:1.6;flex:1}
+.req-budget{font-size:14px;font-weight:700;color:var(--green)}
+.req-footer{display:flex;gap:8px;margin-top:4px}
+.req-footer .btn{flex:1;justify-content:center;font-size:13px;padding:9px}
+
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+.empty .ico{font-size:44px;margin-bottom:10px}
+.loading{grid-column:1/-1;text-align:center;padding:60px}
+.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MODAL */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:999;align-items:center;justify-content:center;padding:20px}
+#modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:18px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:28px}
+.modal h2{font-size:19px;font-weight:800;margin-bottom:18px}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
+input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{resize:vertical;min-height:80px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.modal-actions .btn{flex:1;justify-content:center}
+.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;display:none}
+.msg.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;display:block}
+.msg.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;display:block}
+
+@media(max-width:600px){nav{padding:0 4%}.hero{padding:36px 5% 30px}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html" class="logo">Pro<span>liga</span></a>
+<div style="display:flex;gap:8px;margin-left:auto;align-items:center">
+<a href="categoria.html" class="btn btn-ghost" style="font-size:13px">🛠️ Profissionais</a>
+<div id="nav-guest" style="display:flex;gap:8px">
+<a href="auth.html?tab=login" class="btn btn-ghost">Entrar</a>
+<a href="auth.html?tab=register" class="btn btn-solid">Registar</a>
+</div>
+<div id="nav-user" style="display:none;align-items:center;gap:8px">
+<a href="dashboard.html" class="btn btn-outline">Dashboard</a>
+<div class="nav-avatar" id="nav-avatar" onclick="location.href='dashboard.html'">?</div>
+</div>
+</div>
+</nav>
+
+<div class="hero">
+<h1>📢 O Que Os Clientes Precisam</h1>
+<p>Vê pedidos reais de pessoas à procura de profissionais no Porto e na Maia — e sê o primeiro a responder.</p>
+<div class="hero-actions">
+<button class="btn btn-gold" onclick="openModal()">➕ Publicar um Pedido</button>
+</div>
+</div>
+
+<div class="wrap">
+<div class="filters">
+<input type="text" id="f-search" placeholder="🔍 Procurar por título ou descrição..." oninput="renderList()"/>
+<select id="f-cat" onchange="renderList()">
+<option value="">Todas as categorias</option>
+</select>
+<select id="f-loc" onchange="renderList()">
+<option value="">Toda a área</option>
+<option value="Porto">Porto</option>
+<option value="Maia">Maia</option>
+</select>
+</div>
+
+<div class="grid" id="grid"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+
+<!-- MODAL: criar pedido -->
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+<div class="modal">
+<h2>📢 Publicar um Pedido</h2>
+<div class="msg error" id="m-error"></div>
+<div class="msg success" id="m-success"></div>
+<div id="modal-body">
+<div class="form-group"><label>Título *</label><input id="m-title" type="text" placeholder="Ex: Preciso de um eletricista urgente"/></div>
+<div class="form-group"><label>Categoria *</label>
+<select id="m-cat">
+<option value="">Escolhe uma categoria</option>
+<option>Eletricistas</option><option>Canalizadores</option><option>Pintores</option>
+<option>Pedreiros</option><option>Carpinteiros</option><option>Serralheiros</option>
+<option>Jardineiros</option><option>Limpeza</option><option>Mudanças</option>
+<option>Decoradores</option><option>Programadores</option><option>Designers</option>
+<option>Reparações</option><option>Personal Trainers</option><option>Cabeleireiros</option>
+<option>Esteticistas</option><option>Outro</option>
+</select>
+</div>
+<div class="form-group"><label>Zona *</label>
+<select id="m-loc">
+<option value="">Escolhe a zona</option>
+<optgroup label="Porto">
+<option>Porto – Centro</option><option>Porto – Boavista</option>
+<option>Porto – Foz do Douro</option><option>Porto – Paranhos</option>
+<option>Porto – Campanhã</option><option>Porto – Cedofeita</option>
+<option>Porto – Bonfim</option><option>Porto – Massarelos</option>
+</optgroup>
+<optgroup label="Maia">
+<option>Maia – Castêlo da Maia</option><option>Maia – Águas Santas</option>
+<option>Maia – Moreira</option><option>Maia – Vermoim</option>
+<option>Maia – Folgosa</option><option>Maia – Gemunde</option>
+<option>Maia – Nogueira</option>
+</optgroup>
+</select>
+</div>
+<div class="form-group"><label>Descreve o que precisas</label><textarea id="m-desc" placeholder="Dá detalhes: quando, o que precisa de ser feito, etc."></textarea></div>
+<div class="row2">
+<div class="form-group"><label>Orçamento mín. (€)</label><input id="m-bmin" type="number" min="0" placeholder="Ex: 30"/></div>
+<div class="form-group"><label>Orçamento máx. (€)</label><input id="m-bmax" type="number" min="0" placeholder="Ex: 100"/></div>
+</div>
+</div>
+<div class="modal-actions">
+<button class="btn btn-ghost" style="border:1.5px solid var(--border)" onclick="closeModal()">Cancelar</button>
+<button class="btn btn-gold" id="submit-btn" onclick="submitRequest()">Publicar</button>
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
+const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+let session=null,allRequests=[]
+
+const CATEGORIES=['Eletricistas','Canalizadores','Pintores','Pedreiros','Carpinteiros','Serralheiros','Jardineiros','Limpeza','Mudanças','Decoradores','Programadores','Designers','Reparações','Personal Trainers','Cabeleireiros','Esteticistas','Outro']
+
+async function init(){
+const catSel=document.getElementById('f-cat')
+CATEGORIES.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;catSel.appendChild(o)})
+
+const{data:{session:s}}=await db.auth.getSession()
+session=s
+if(session){
+document.getElementById('nav-guest').style.display='none'
+const u=document.getElementById('nav-user');u.style.display='flex'
+const name=session.user.user_metadata?.name||session.user.email||'U'
+document.getElementById('nav-avatar').textContent=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
+}
+
+await loadRequests()
+}
+
+async function loadRequests(){
+const{data,error}=await db.from('requests').select('*,profiles:client_id(name,photo_url)').eq('status','open').order('created_at',{ascending:false})
+if(error){document.getElementById('grid').innerHTML='<div class="empty">Erro ao carregar pedidos.</div>';return}
+allRequests=data||[]
+renderList()
+}
+
+function timeAgo(iso){
+const diff=(Date.now()-new Date(iso).getTime())/1000
+if(diff<3600)return Math.max(1,Math.floor(diff/60))+'m atrás'
+if(diff<86400)return Math.floor(diff/3600)+'h atrás'
+if(diff<604800)return Math.floor(diff/86400)+'d atrás'
+return new Date(iso).toLocaleDateString('pt-PT')
+}
+
+function renderList(){
+const search=document.getElementById('f-search').value.toLowerCase().trim()
+const cat=document.getElementById('f-cat').value
+const loc=document.getElementById('f-loc').value
+let list=allRequests.filter(r=>{
+if(cat&&r.category!==cat)return false
+if(loc&&!(r.location||'').startsWith(loc))return false
+if(search&&!(r.title+' '+(r.description||'')).toLowerCase().includes(search))return false
+return true
+})
+const grid=document.getElementById('grid')
+if(!list.length){
+grid.innerHTML='<div class="empty"><div class="ico">📭</div>Ainda não há pedidos que correspondam.<br>Sê o primeiro a publicar!</div>'
+return
+}
+grid.innerHTML=list.map(r=>{
+const budget=r.budget_from?('€'+r.budget_from+(r.budget_to?' – €'+r.budget_to:'+')):''
+const clientName=r.profiles?.name||'Cliente'
+return `<div class="req-card">
+<div class="req-top"><div class="req-title">${escapeHtml(r.title)}</div><div class="req-time">${timeAgo(r.created_at)}</div></div>
+<span class="req-cat">${escapeHtml(r.category)}</span>
+<div class="req-loc">📍 ${escapeHtml(r.location)} · por ${escapeHtml(clientName)}</div>
+${r.description?'<div class="req-desc">'+escapeHtml(r.description)+'</div>':''}
+${budget?'<div class="req-budget">💰 '+budget+'</div>':''}
+<div class="req-footer">
+<button class="btn btn-solid" onclick="contactClient('${r.client_id}')">💬 Contactar</button>
+</div>
+</div>`
+}).join('')
+}
+
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
+
+function contactClient(clientId){
+if(!session){location.href='auth.html?tab=login&redirect='+encodeURIComponent('messages.html?with='+clientId);return}
+if(session.user.id===clientId){alert('Este é o teu próprio pedido.');return}
+location.href='messages.html?with='+clientId
+}
+
+function openModal(){
+if(!session){location.href='auth.html?tab=login&redirect=pedidos.html';return}
+document.getElementById('modal-overlay').classList.add('open')
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
+
+async function submitRequest(){
+const title=document.getElementById('m-title').value.trim()
+const category=document.getElementById('m-cat').value
+const location=document.getElementById('m-loc').value
+const description=document.getElementById('m-desc').value.trim()
+const bmin=document.getElementById('m-bmin').value
+const bmax=document.getElementById('m-bmax').value
+const btn=document.getElementById('submit-btn')
+document.getElementById('m-error').style.display='none'
+if(!title||!category||!location){
+const el=document.getElementById('m-error');el.textContent='Preenche título, categoria e zona.';el.style.display='block';return
+}
+btn.disabled=true;btn.textContent='A publicar...'
+const{error}=await db.from('requests').insert({
+client_id:session.user.id,title,category,location,
+description:description||null,
+budget_from:bmin?parseFloat(bmin):null,
+budget_to:bmax?parseFloat(bmax):null
+})
+btn.disabled=false;btn.textContent='Publicar'
+if(error){
+const el=document.getElementById('m-error');el.textContent='Erro ao publicar: '+error.message;el.style.display='block';return
+}
+const el=document.getElementById('m-success');el.textContent='Pedido publicado com sucesso!';el.style.display='block'
+setTimeout(()=>{
+closeModal()
+document.getElementById('m-success').style.display='none'
+;['m-title','m-desc','m-bmin','m-bmax'].forEach(id=>document.getElementById(id).value='')
+document.getElementById('m-cat').value=''
+document.getElementById('m-loc').value=''
+loadRequests()
+},1200)
+}
+
+init()
+</script>
+</body>
+</html>
