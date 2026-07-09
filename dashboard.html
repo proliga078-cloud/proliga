@@ -206,23 +206,32 @@
         </div>
         <div class="form-group"><label>Telefone</label><input id="p-phone" type="tel" placeholder="912 000 000"/></div>
         <div class="form-group"><label>Website</label><input id="p-website" type="url" placeholder="https://o-meu-site.pt"/></div>
-        <div class="form-group"><label>Localização *</label>
-          <select id="p-loc">
-            <option value="">Escolhe a zona</option>
-            <optgroup label="Porto">
-              <option>Porto – Centro</option><option>Porto – Boavista</option>
-              <option>Porto – Foz do Douro</option><option>Porto – Paranhos</option>
-              <option>Porto – Campanhã</option><option>Porto – Cedofeita</option>
-              <option>Porto – Bonfim</option><option>Porto – Massarelos</option>
-            </optgroup>
-            <optgroup label="Maia">
-              <option>Maia – Castêlo da Maia</option><option>Maia – Águas Santas</option>
-              <option>Maia – Moreira</option><option>Maia – Vermoim</option>
-              <option>Maia – Folgosa</option><option>Maia – Gemunde</option>
-              <option>Maia – Nogueira</option>
-            </optgroup>
+        <div class="form-group"><label>Distrito *</label>
+          <select id="p-district">
+            <option value="">Escolhe o distrito</option>
+              <option>Aveiro</option>
+              <option>Beja</option>
+              <option>Braga</option>
+              <option>Bragança</option>
+              <option>Castelo Branco</option>
+              <option>Coimbra</option>
+              <option>Évora</option>
+              <option>Faro</option>
+              <option>Guarda</option>
+              <option>Leiria</option>
+              <option>Lisboa</option>
+              <option>Portalegre</option>
+              <option>Porto</option>
+              <option>Santarém</option>
+              <option>Setúbal</option>
+              <option>Viana do Castelo</option>
+              <option>Vila Real</option>
+              <option>Viseu</option>
+              <option>Açores</option>
+              <option>Madeira</option>
           </select>
         </div>
+        <div class="form-group"><label>Cidade / Zona</label><input id="p-city" type="text" placeholder="Ex: Sintra, Braga (centro)..."/></div>
         <div class="form-group">
 <label>Foto de perfil</label>
 <div style="display:flex;flex-direction:column;gap:8px">
@@ -321,23 +330,32 @@
             <option>Esteticistas</option><option>Outro</option>
           </select>
         </div>
-        <div class="form-group"><label>Zona *</label>
-          <select id="req-loc">
-            <option value="">Escolhe a zona</option>
-            <optgroup label="Porto">
-              <option>Porto – Centro</option><option>Porto – Boavista</option>
-              <option>Porto – Foz do Douro</option><option>Porto – Paranhos</option>
-              <option>Porto – Campanhã</option><option>Porto – Cedofeita</option>
-              <option>Porto – Bonfim</option><option>Porto – Massarelos</option>
-            </optgroup>
-            <optgroup label="Maia">
-              <option>Maia – Castêlo da Maia</option><option>Maia – Águas Santas</option>
-              <option>Maia – Moreira</option><option>Maia – Vermoim</option>
-              <option>Maia – Folgosa</option><option>Maia – Gemunde</option>
-              <option>Maia – Nogueira</option>
-            </optgroup>
-          </select>
-        </div>
+        <div class="form-group"><label>Distrito *</label>
+        <select id="req-district">
+          <option value="">Escolhe o distrito</option>
+            <option>Aveiro</option>
+            <option>Beja</option>
+            <option>Braga</option>
+            <option>Bragança</option>
+            <option>Castelo Branco</option>
+            <option>Coimbra</option>
+            <option>Évora</option>
+            <option>Faro</option>
+            <option>Guarda</option>
+            <option>Leiria</option>
+            <option>Lisboa</option>
+            <option>Portalegre</option>
+            <option>Porto</option>
+            <option>Santarém</option>
+            <option>Setúbal</option>
+            <option>Viana do Castelo</option>
+            <option>Vila Real</option>
+            <option>Viseu</option>
+            <option>Açores</option>
+            <option>Madeira</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Cidade / Zona</label><input id="req-city" type="text" placeholder="Ex: Sintra, Braga (centro)..."/></div>
         <div class="form-group"><label>Orçamento mín. (€)</label><input id="req-bmin" type="number" min="0" placeholder="Ex: 30"/></div>
         <div class="form-group"><label>Orçamento máx. (€)</label><input id="req-bmax" type="number" min="0" placeholder="Ex: 100"/></div>
         <div class="form-group full"><label>Descrição</label><textarea id="req-desc" placeholder="Dá detalhes sobre o que precisas..."></textarea></div>
@@ -487,7 +505,9 @@ function fillProfileForm(pro){
   document.getElementById('p-cat').value=pro.category||''
   document.getElementById('p-phone').value=pro.phone||''
   document.getElementById('p-website').value=pro.website||''
-  document.getElementById('p-loc').value=pro.location||''
+  const _loc=(pro.location||'').split(' – ');
+document.getElementById('p-district').value=_loc[0]||''
+document.getElementById('p-city').value=_loc[1]||''
   document.getElementById('p-photo').value=pro.photo_url||''
   document.getElementById('p-bio').value=pro.bio||''
   // is_active field removed
@@ -497,7 +517,9 @@ async function saveProfile(){
   if(!profileId){showAlert('profile-error','Erro: perfil não carregado. Recarrega a página.','error');return}
   const name=document.getElementById('p-name').value.trim()
   const category=document.getElementById('p-cat').value
-  const location=document.getElementById('p-loc').value
+  const _district=document.getElementById('p-district').value
+const _city=document.getElementById('p-city').value.trim()
+const location=_district?(_city?_district+' – '+_city:_district):''
   if(!name||!category||!location){showAlert('profile-error','Preenche nome, categoria e localização.','error');return}
   const updates={
     name,category,location,
@@ -732,7 +754,9 @@ async function loadMyRequests(){
 async function addMyRequest(){
   const title=document.getElementById('req-title').value.trim()
   const category=document.getElementById('req-cat').value
-  const location=document.getElementById('req-loc').value
+  const _rdistrict=document.getElementById('req-district').value
+const _rcity=document.getElementById('req-city').value.trim()
+const location=_rdistrict?(_rcity?_rdistrict+' – '+_rcity:_rdistrict):''
   if(!title||!category||!location){showAlert('req-error','Preenche título, categoria e zona.','error');return}
   const{error}=await db.from('requests').insert({
     client_id:user.id,title,category,location,
@@ -744,7 +768,8 @@ async function addMyRequest(){
   showAlert('req-success','Pedido publicado com sucesso!')
   ;['req-title','req-desc','req-bmin','req-bmax'].forEach(id=>document.getElementById(id).value='')
   document.getElementById('req-cat').value=''
-  document.getElementById('req-loc').value=''
+  document.getElementById('req-district').value=''
+  document.getElementById('req-city').value=''
   loadMyRequests()
 }
 
