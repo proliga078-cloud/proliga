@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Pedidos de Clientes – Proliga</title>
-<meta name="description" content="Vê o que os clientes precisam no Porto e na Maia. Publica o teu pedido e deixa os profissionais encontrarem-te."/>
+<meta name="description" content="Vê o que os clientes precisam em Portugal. Publica o teu pedido e deixa os profissionais encontrarem-te."/>
 <meta name="robots" content="index, follow"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%94%A7</text></svg>"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -91,7 +91,7 @@ textarea{resize:vertical;min-height:80px}
 
 <div class="hero">
 <h1>📢 O Que Os Clientes Precisam</h1>
-<p>Vê pedidos reais de pessoas à procura de profissionais no Porto e na Maia — e sê o primeiro a responder.</p>
+<p>Vê pedidos reais de pessoas à procura de profissionais em Portugal — e sê o primeiro a responder.</p>
 <div class="hero-actions">
 <button class="btn btn-gold" onclick="openModal()">➕ Publicar um Pedido</button>
 </div>
@@ -104,9 +104,27 @@ textarea{resize:vertical;min-height:80px}
 <option value="">Todas as categorias</option>
 </select>
 <select id="f-loc" onchange="renderList()">
-<option value="">Toda a área</option>
+<option value="">Todo o país</option>
+<option value="Aveiro">Aveiro</option>
+<option value="Beja">Beja</option>
+<option value="Braga">Braga</option>
+<option value="Bragança">Bragança</option>
+<option value="Castelo Branco">Castelo Branco</option>
+<option value="Coimbra">Coimbra</option>
+<option value="Évora">Évora</option>
+<option value="Faro">Faro</option>
+<option value="Guarda">Guarda</option>
+<option value="Leiria">Leiria</option>
+<option value="Lisboa">Lisboa</option>
+<option value="Portalegre">Portalegre</option>
 <option value="Porto">Porto</option>
-<option value="Maia">Maia</option>
+<option value="Santarém">Santarém</option>
+<option value="Setúbal">Setúbal</option>
+<option value="Viana do Castelo">Viana do Castelo</option>
+<option value="Vila Real">Vila Real</option>
+<option value="Viseu">Viseu</option>
+<option value="Açores">Açores</option>
+<option value="Madeira">Madeira</option>
 </select>
 </div>
 
@@ -132,23 +150,32 @@ textarea{resize:vertical;min-height:80px}
 <option>Esteticistas</option><option>Outro</option>
 </select>
 </div>
-<div class="form-group"><label>Zona *</label>
-<select id="m-loc">
-<option value="">Escolhe a zona</option>
-<optgroup label="Porto">
-<option>Porto – Centro</option><option>Porto – Boavista</option>
-<option>Porto – Foz do Douro</option><option>Porto – Paranhos</option>
-<option>Porto – Campanhã</option><option>Porto – Cedofeita</option>
-<option>Porto – Bonfim</option><option>Porto – Massarelos</option>
-</optgroup>
-<optgroup label="Maia">
-<option>Maia – Castêlo da Maia</option><option>Maia – Águas Santas</option>
-<option>Maia – Moreira</option><option>Maia – Vermoim</option>
-<option>Maia – Folgosa</option><option>Maia – Gemunde</option>
-<option>Maia – Nogueira</option>
-</optgroup>
+<div class="form-group"><label>Distrito *</label>
+<select id="m-district">
+<option value="">Escolhe o distrito</option>
+<option>Aveiro</option>
+<option>Beja</option>
+<option>Braga</option>
+<option>Bragança</option>
+<option>Castelo Branco</option>
+<option>Coimbra</option>
+<option>Évora</option>
+<option>Faro</option>
+<option>Guarda</option>
+<option>Leiria</option>
+<option>Lisboa</option>
+<option>Portalegre</option>
+<option>Porto</option>
+<option>Santarém</option>
+<option>Setúbal</option>
+<option>Viana do Castelo</option>
+<option>Vila Real</option>
+<option>Viseu</option>
+<option>Açores</option>
+<option>Madeira</option>
 </select>
 </div>
+<div class="form-group"><label>Cidade / Zona</label><input id="m-city" type="text" placeholder="Ex: Sintra, Braga (centro)..."/></div>
 <div class="form-group"><label>Descreve o que precisas</label><textarea id="m-desc" placeholder="Dá detalhes: quando, o que precisa de ser feito, etc."></textarea></div>
 <div class="row2">
 <div class="form-group"><label>Orçamento mín. (€)</label><input id="m-bmin" type="number" min="0" placeholder="Ex: 30"/></div>
@@ -250,7 +277,9 @@ function closeModal(){document.getElementById('modal-overlay').classList.remove(
 async function submitRequest(){
 const title=document.getElementById('m-title').value.trim()
 const category=document.getElementById('m-cat').value
-const location=document.getElementById('m-loc').value
+const _mdistrict=document.getElementById('m-district').value
+const _mcity=document.getElementById('m-city').value.trim()
+const location=_mdistrict?(_mcity?_mdistrict+' – '+_mcity:_mdistrict):''
 const description=document.getElementById('m-desc').value.trim()
 const bmin=document.getElementById('m-bmin').value
 const bmax=document.getElementById('m-bmax').value
@@ -276,7 +305,8 @@ closeModal()
 document.getElementById('m-success').style.display='none'
 ;['m-title','m-desc','m-bmin','m-bmax'].forEach(id=>document.getElementById(id).value='')
 document.getElementById('m-cat').value=''
-document.getElementById('m-loc').value=''
+document.getElementById('m-district').value=''
+document.getElementById('m-city').value=''
 loadRequests()
 },1200)
 }
