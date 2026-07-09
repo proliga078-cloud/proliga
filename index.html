@@ -1,540 +1,506 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Proliga – Marketplace de Profissionais no Porto e Maia</title>
-  <meta name="description" content="Encontra e contrata profissionais verificados no Porto e na Maia. Eletricistas, canalizadores, pintores, jardineiros, designers e muito mais. Grátis para começar."/>
-  <meta name="keywords" content="profissionais porto, eletricista porto, canalizador porto, pintor porto, profissionais maia, marketplace serviços porto maia, contratar profissional"/>
-  <meta name="robots" content="index, follow"/>
-  <link rel="canonical" href="https://proliga-app.netlify.app"/>
-  <meta property="og:title" content="Proliga – Marketplace de Profissionais no Porto e Maia"/>
-  <meta property="og:description" content="O único marketplace local 100% dedicado ao Porto e à Maia. Profissionais verificados, avaliações reais, sem comissões."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://proliga-app.netlify.app"/>
-  <meta property="og:locale" content="pt_PT"/>
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Proliga – Profissionais no Porto e Maia"/>
-  <meta name="twitter:description" content="Contrata profissionais verificados perto de ti. 16 categorias, Porto & Maia."/>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-mid:#2563eb;--blue-light:#dbeafe;--gold:#f59e0b;--gold-dark:#d97706;--green:#16a34a;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--bg:#f8fafc;--white:#fff;--card-shadow:0 2px 12px rgba(0,0,0,.08)}
-    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--white)}
-    a{text-decoration:none;color:inherit}
-    img{display:block;max-width:100%}
-    nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:20px}
-    .logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px;white-space:nowrap}.logo span{color:var(--gold)}
-    .nav-search{flex:1;max-width:480px;position:relative;display:none}
-    @media(min-width:768px){.nav-search{display:block}}
-    .nav-search input{width:100%;padding:9px 16px 9px 40px;border:1.5px solid var(--border);border-radius:99px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
-    .nav-search input:focus{border-color:var(--blue)}
-    .nav-search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
-    .nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
-    .btn{padding:8px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
-    .btn-ghost{background:transparent;color:var(--text)}.btn-ghost:hover{background:var(--bg)}
-    .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
-    .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
-    .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--gold-dark)}
-    .nav-user{display:none;align-items:center;gap:10px}
-    .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
-    .hero{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue-mid) 60%,#3b82f6 100%);padding:72px 5% 64px;text-align:center;position:relative;overflow:hidden}
-    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-bottom:20px;backdrop-filter:blur(8px)}
-    .hero h1{font-size:clamp(28px,5vw,52px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px;letter-spacing:-1px}
-    .hero h1 span{color:var(--gold)}
-    .hero p{font-size:clamp(15px,2vw,18px);color:rgba(255,255,255,.85);margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6}
-    .hero-search{display:flex;max-width:600px;margin:0 auto 28px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.2)}
-    .hero-search input{flex:1;padding:16px 20px;font-size:16px;font-family:inherit;border:none;outline:none;color:var(--text)}
-    .hero-search select{padding:0 16px;border:none;border-left:1px solid var(--border);font-size:14px;font-family:inherit;color:var(--muted);outline:none;background:#fff;cursor:pointer}
-    .hero-search button{padding:14px 28px;background:var(--blue);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;white-space:nowrap}
-    .hero-search button:hover{background:var(--blue-dark)}
-    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-    .hero-tag{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);font-size:13px;padding:6px 14px;border-radius:99px;cursor:pointer;transition:background .2s;border:1px solid rgba(255,255,255,.2)}
-    .hero-tag:hover{background:rgba(255,255,255,.22)}
-    .hero-stats{display:flex;justify-content:center;gap:40px;margin-top:40px;flex-wrap:wrap}
-    .hero-stat strong{display:block;font-size:26px;font-weight:900;color:#fff}
-    .hero-stat span{font-size:13px;color:rgba(255,255,255,.7)}
-    .loc-banner{background:var(--blue-light);padding:14px 5%;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-    .loc-chip{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--blue)}
-    section{padding:64px 5%}
-    .section-header{text-align:center;margin-bottom:40px}
-    .section-header h2{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-0.5px;margin-bottom:10px}
-    .section-header p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
-    .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-    @media(max-width:768px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
-    .cat-card{border-radius:18px;padding:28px 20px 22px;text-align:center;cursor:pointer;transition:all .25s;text-decoration:none;display:block;border:2px solid transparent;position:relative;overflow:hidden}
-    .cat-card::before{content:'';position:absolute;inset:0;opacity:.08;background:currentColor;pointer-events:none}
-    .cat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.12);border-color:currentColor}
-    .cat-icon{font-size:36px;margin-bottom:12px;display:block;line-height:1}
-    .cat-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
-    .cat-sub{font-size:12px;color:var(--muted);font-weight:500}
-    .cat-count{font-size:11px;margin-top:6px;font-weight:600;opacity:.7}
-    .cat-more{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px}
-    .btn-cats{background:var(--bg);border:1.5px solid var(--border);color:var(--text);padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
-    .btn-cats:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
-    .how-section{background:var(--bg)}
-    .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;max-width:900px;margin:0 auto}
-    .step-card{background:var(--white);border-radius:20px;padding:32px 24px;text-align:center;box-shadow:var(--card-shadow)}
-    .step-num{width:48px;height:48px;border-radius:50%;background:var(--blue);color:#fff;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
-    .step-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
-    .step-card p{font-size:14px;color:var(--muted);line-height:1.6}
-    .pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
-    .pro-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
-    .pro-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-3px);border-color:var(--blue)}
-    .pro-card-cover{height:100px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));position:relative}
-    .pro-avatar{width:68px;height:68px;border-radius:50%;border:3px solid #fff;background:var(--blue);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;position:absolute;bottom:-24px;left:20px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-    .pro-avatar img{width:100%;height:100%;object-fit:cover}
-    .pro-card-body{padding:32px 16px 16px}
-    .pro-card-name{font-size:15px;font-weight:700;margin-bottom:2px}
-    .pro-card-cat{font-size:12px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-    .plan-dot{width:6px;height:6px;border-radius:50%}
-    .plan-dot.free{background:#94a3b8}.plan-dot.pro{background:#7c3aed}.plan-dot.premium{background:var(--gold)}
-    .pro-rating{display:flex;align-items:center;gap:4px;font-size:13px;margin-bottom:8px}
-    .pro-rating .stars{color:var(--gold)}
-    .pro-loc{font-size:12px;color:var(--muted);margin-bottom:10px}
-    .pro-price{font-size:13px;color:var(--muted)}
-    .pro-price strong{color:var(--blue);font-size:15px}
-    .verif{background:#dcfce7;color:var(--green);font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:3px}
-    .loc-section{background:linear-gradient(135deg,var(--blue-dark),var(--blue-mid));padding:64px 5%}
-    .loc-section .section-header h2{color:#fff}
-    .loc-section .section-header p{color:rgba(255,255,255,.75)}
-    .loc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:800px;margin:0 auto}
-    .loc-card{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:32px;cursor:pointer;transition:all .2s}
-    .loc-card:hover{background:rgba(255,255,255,.18);transform:translateY(-3px)}
-    .loc-card h3{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px}
-    .loc-card p{font-size:14px;color:rgba(255,255,255,.75);margin-bottom:16px;line-height:1.5}
-    .loc-zones{display:flex;flex-wrap:wrap;gap:6px}
-    .loc-zone{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:12px;padding:4px 10px;border-radius:99px}
-    .trust-section{background:var(--bg);padding:48px 5%}
-    .trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;max-width:900px;margin:0 auto;text-align:center}
-    .trust-item strong{display:block;font-size:28px;font-weight:900;color:var(--blue);margin-bottom:4px}
-    .trust-item p{font-size:13px;color:var(--muted)}
-    .cta-section{background:var(--white);padding:72px 5%;text-align:center}
-    .cta-section h2{font-size:clamp(24px,3vw,36px);font-weight:900;letter-spacing:-0.5px;margin-bottom:12px}
-    .cta-section p{font-size:16px;color:var(--muted);margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto}
-    .cta-btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
-    .btn-lg{padding:16px 36px;font-size:16px;border-radius:12px}
-    footer{background:var(--text);color:rgba(255,255,255,.7);padding:48px 5% 28px}
-    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:20px;margin-bottom:40px}
-    @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr 1fr}}
-    .footer-brand p{font-size:13px;line-height:1.7;max-width:260px;margin-top:10px}
-    .footer-col h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
-    .footer-col a{display:block;font-size:13px;margin-bottom:8px;transition:color .2s}
-    .footer-col a:hover{color:#fff}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px}
-    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    /* Why Proliga section */
-    .why-section{background:var(--bg)}
-    .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1020px;margin:0 auto 48px}
-    .why-card{background:var(--white);border-radius:16px;padding:24px;border:1.5px solid var(--border);display:flex;gap:16px;align-items:flex-start;transition:all .2s}
-    .why-card:hover{border-color:var(--blue);box-shadow:0 4px 20px rgba(29,78,216,.1)}
-    .why-icon{width:48px;height:48px;border-radius:12px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-    .why-card h3{font-size:15px;font-weight:700;margin-bottom:5px}
-    .why-card p{font-size:13px;color:var(--muted);line-height:1.6}
-    .compare-wrap{max-width:720px;margin:0 auto;overflow-x:auto;border-radius:16px;border:1.5px solid var(--border)}
-    .compare-wrap table{width:100%;border-collapse:collapse;background:var(--white)}
-    .compare-wrap th{padding:14px 18px;font-size:13px;font-weight:700;text-align:center;background:var(--bg)}
-    .compare-wrap th:first-child{text-align:left;width:45%}
-    .compare-wrap th.hl{background:var(--blue);color:#fff}
-    .compare-wrap td{padding:11px 18px;font-size:13px;text-align:center;border-top:1px solid var(--border)}
-    .compare-wrap td:first-child{text-align:left;font-weight:500;color:var(--text)}
-    .compare-wrap .yes{color:#16a34a;font-weight:700}
-    .compare-wrap .no{color:#dc2626}
-    .compare-wrap .partial{color:var(--gold)}
-    /* Testimonials */
-    .testimonials-section{background:var(--white)}
-    .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1020px;margin:0 auto}
-    .t-card{background:var(--bg);border-radius:16px;padding:24px;border:1.5px solid var(--border)}
-    .t-stars{color:var(--gold);font-size:16px;margin-bottom:12px;letter-spacing:2px}
-    .t-text{font-size:14px;color:var(--text);line-height:1.75;margin-bottom:18px;font-style:italic}
-    .t-author{display:flex;align-items:center;gap:12px}
-    .t-avatar{width:42px;height:42px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .t-name{font-size:13px;font-weight:700}
-    .t-role{font-size:12px;color:var(--muted)}
-    /* Mobile */
-    @media(max-width:768px){
-      .pros-grid{grid-template-columns:1fr 1fr}
-      .why-grid{grid-template-columns:1fr}
-      section{padding:48px 4%}
-      .steps-grid{grid-template-columns:1fr}
-      .hero-search select{display:none}
-      .footer-grid{grid-template-columns:1fr 1fr}
-    }
-    @media(max-width:480px){
-      .cat-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-      .pros-grid{grid-template-columns:1fr}
-      .trust-grid{grid-template-columns:repeat(2,1fr)}
-      .hero h1{font-size:26px}
-      .hero-stats{gap:14px}
-      .hero-stat strong{font-size:20px}
-      .hero-search{flex-direction:column;border-radius:12px}
-      .hero-stats{gap:20px}
-      .testimonials-grid{grid-template-columns:1fr}
-      .loc-grid{grid-template-columns:1fr}
-      .footer-grid{grid-template-columns:1fr}
-      nav{padding:0 4%}
-    }
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    .hero>*{animation:fadeUp .5s ease both}
-    .hero-badge{animation-delay:.05s}
-    .hero h1{animation-delay:.1s}
-    .hero p{animation-delay:.15s}
-    .hero-search{animation-delay:.2s}
-    .hero-tags{animation-delay:.25s}
-    .hero-stats{animation-delay:.3s}
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Proliga – Marketplace de Profissionais no Porto e Maia</title>
+<meta name="description" content="Encontra e contrata profissionais verificados no Porto e na Maia. Eletricistas, canalizadores, pintores, jardineiros, designers e muito mais. Grátis para começar."/>
+<meta name="keywords" content="profissionais porto, eletricista porto, canalizador porto, pintor porto, profissionais maia, marketplace serviços porto maia, contratar profissional"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://proliga-app.netlify.app"/>
+<meta property="og:title" content="Proliga – Marketplace de Profissionais no Porto e Maia"/>
+<meta property="og:description" content="O único marketplace local 100% dedicado ao Porto e à Maia. Profissionais verificados, avaliações reais, sem comissões."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://proliga-app.netlify.app"/>
+<meta property="og:locale" content="pt_PT"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Proliga – Profissionais no Porto e Maia"/>
+<meta name="twitter:description" content="Contrata profissionais verificados perto de ti. 16 categorias, Porto & Maia."/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%94%A7</text></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#182228;
+  --azulejo:#1F5C82;
+  --azulejo-deep:#0F3A54;
+  --azulejo-wash:#E7EFF3;
+  --terracota:#B85A2A;
+  --terracota-deep:#96461E;
+  --ochre:#CE9A45;
+  --paper:#FBF7F1;
+  --paper-2:#F2ECE0;
+  --line:#E2D9C8;
+  --muted:#6B6459;
+  --white:#FFFFFF;
+  --green:#3F7A52;
+  --red:#AE4530;
+  --shadow:0 1px 2px rgba(24,20,10,.05),0 10px 28px rgba(24,20,10,.06);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+h1,h2,h3{font-family:'Fraunces',serif;letter-spacing:-.01em}
+em{font-style:italic;color:var(--terracota)}
+.mono{font-family:'IBM Plex Mono',monospace}
+:focus-visible{outline:2px solid var(--azulejo);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ICONS */
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.15em;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(251,247,241,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:0 5%;height:70px;display:flex;align-items:center;gap:20px}
+.logo{font-family:'Fraunces',serif;font-size:23px;font-weight:700;color:var(--azulejo-deep);letter-spacing:-.01em;white-space:nowrap}
+.logo em{color:var(--terracota)}
+.nav-search{flex:1;max-width:460px;position:relative;display:none}
+@media(min-width:900px){.nav-search{display:block}}
+.nav-search input{width:100%;padding:10px 16px 10px 40px;border:1.5px solid var(--line);border-radius:99px;font-size:14px;font-family:inherit;outline:none;background:var(--white);transition:border-color .2s}
+.nav-search input:focus{border-color:var(--azulejo)}
+.nav-search .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.nav-link{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;display:inline-flex;align-items:center;gap:6px;padding:8px 4px}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.btn{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn-ghost{background:transparent;color:var(--ink)}.btn-ghost:hover{background:var(--paper-2)}
+.btn-line{background:transparent;color:var(--azulejo-deep);border-color:var(--azulejo)}.btn-line:hover{background:var(--azulejo-wash)}
+.btn-ink{background:var(--azulejo-deep);color:var(--white)}.btn-ink:hover{background:var(--azulejo)}
+.btn-terra{background:var(--terracota);color:var(--white)}.btn-terra:hover{background:var(--terracota-deep)}
+.nav-user{display:none;align-items:center;gap:10px}
+.nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--azulejo-deep);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Fraunces',serif}
+
+/* HERO */
+.hero{position:relative;padding:76px 5% 56px;background:var(--azulejo-deep);overflow:hidden}
+.hero-tiles{position:absolute;inset:0;opacity:.10;background-image:
+  linear-gradient(45deg,#fff 25%,transparent 25%),linear-gradient(-45deg,#fff 25%,transparent 25%),
+  linear-gradient(45deg,transparent 75%,#fff 75%),linear-gradient(-45deg,transparent 75%,#fff 75%);
+  background-size:64px 64px;background-position:0 0,0 32px,32px -32px,-32px 0}
+.hero-inner{position:relative;max-width:760px;margin:0 auto;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:99px;margin-bottom:24px;font-family:'IBM Plex Mono',monospace;letter-spacing:.02em}
+.hero h1{font-size:clamp(32px,5.4vw,58px);font-weight:600;color:#fff;line-height:1.08;margin-bottom:18px;letter-spacing:-.02em}
+.hero p{font-size:clamp(15px,1.8vw,18px);color:rgba(255,255,255,.78);margin-bottom:34px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
+.search-ticket{background:#fff;border-radius:14px;padding:8px;display:flex;max-width:600px;margin:0 auto 14px;box-shadow:0 20px 50px rgba(0,0,0,.28);position:relative}
+.search-ticket::before,.search-ticket::after{content:'';position:absolute;top:50%;width:16px;height:16px;background:var(--azulejo-deep);border-radius:50%;transform:translateY(-50%)}
+.search-ticket::before{left:-8px}.search-ticket::after{right:-8px}
+.search-ticket input{flex:1;padding:12px 14px;font-size:15px;font-family:inherit;border:none;outline:none;color:var(--ink);background:transparent;min-width:0}
+.search-ticket select{padding:0 12px;border:none;border-left:1px dashed var(--line);font-size:13px;font-family:inherit;color:var(--muted);outline:none;background:transparent;cursor:pointer}
+.search-ticket button{padding:12px 24px;background:var(--terracota);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;white-space:nowrap}
+.search-ticket button:hover{background:var(--terracota-deep)}
+.hero-alt{margin-bottom:26px}
+.hero-alt a{color:rgba(255,255,255,.82);font-size:13.5px;font-weight:600;border-bottom:1px dashed rgba(255,255,255,.4);padding-bottom:1px}
+.hero-alt a:hover{color:#fff;border-color:#fff}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:44px}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);font-size:13px;padding:7px 14px;border-radius:99px;cursor:pointer;transition:background .2s;border:1px solid rgba(255,255,255,.16)}
+.hero-tag:hover{background:rgba(255,255,255,.18)}
+.hero-tag .ic{width:14px;height:14px}
+.ledger{display:flex;justify-content:center;gap:0;flex-wrap:wrap;border-top:1px dashed rgba(255,255,255,.25);padding-top:26px;max-width:560px;margin:0 auto}
+.ledger-item{flex:1;min-width:110px;text-align:center;padding:0 14px}
+.ledger-item strong{display:block;font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600;color:#fff}
+.ledger-item span{font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
+
+/* LOC BANNER */
+.loc-banner{background:var(--azulejo-wash);padding:13px 5%;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;font-size:13.5px}
+.loc-chip{display:flex;align-items:center;gap:7px;font-weight:600;color:var(--azulejo-deep)}
+.loc-chip .ic{color:var(--terracota)}
+.loc-sep{width:1px;height:16px;background:var(--azulejo);opacity:.25}
+
+section{padding:72px 5%}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--terracota);margin-bottom:10px;display:block}
+.section-header{text-align:center;margin-bottom:44px}
+.section-header h2{font-size:clamp(24px,3.2vw,36px);font-weight:600;letter-spacing:-.01em;margin-bottom:10px;color:var(--ink)}
+.section-header p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.6}
+
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1040px;margin:0 auto}
+@media(max-width:860px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+.cat-card{background:var(--white);border-radius:14px;padding:26px 18px 20px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;display:block;border:1px solid var(--line)}
+.cat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--azulejo)}
+.cat-icon{width:38px;height:38px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;border-radius:10px}
+.cat-icon .ic{width:20px;height:20px}
+.cat-name{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:2px;font-family:'Fraunces',serif}
+.cat-sub{font-size:11.5px;color:var(--muted);font-weight:500}
+.cat-more{display:flex;align-items:center;justify-content:center;margin-top:30px}
+.btn-cats{background:var(--white);border:1.5px solid var(--line);color:var(--ink);padding:12px 26px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-cats:hover{border-color:var(--azulejo);color:var(--azulejo-deep);background:var(--azulejo-wash)}
+
+/* HOW IT WORKS */
+.how-section{background:var(--paper-2)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:900px;margin:0 auto}
+.step-card{background:var(--white);border-radius:16px;padding:30px 24px;border:1px solid var(--line);position:relative}
+.step-num{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--terracota);margin-bottom:16px;display:block}
+.step-card h3{font-size:16.5px;font-weight:600;margin-bottom:8px;font-family:'Fraunces',serif}
+.step-card p{font-size:13.5px;color:var(--muted);line-height:1.65}
+
+/* WHY + TABLE */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1020px;margin:0 auto 54px}
+.why-card{background:var(--white);border-radius:14px;padding:22px;border:1px solid var(--line);display:flex;gap:15px;align-items:flex-start;transition:all .2s}
+.why-card:hover{border-color:var(--azulejo);box-shadow:var(--shadow)}
+.why-icon{width:42px;height:42px;border-radius:10px;background:var(--azulejo-wash);color:var(--azulejo-deep);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.why-icon .ic{width:20px;height:20px}
+.why-card h3{font-size:14.5px;font-weight:700;margin-bottom:5px;font-family:'Fraunces',serif}
+.why-card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+.spec-wrap{max-width:740px;margin:0 auto;background:var(--white);border-radius:16px;border:1px solid var(--line);overflow:hidden;box-shadow:var(--shadow)}
+.spec-head{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.spec-head .eyebrow{margin:0}
+.spec-head span{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--muted)}
+.spec-wrap table{width:100%;border-collapse:collapse}
+.spec-wrap th{padding:12px 16px;font-size:12px;font-weight:700;text-align:center;background:var(--paper-2);font-family:'IBM Plex Mono',monospace;letter-spacing:.02em;color:var(--muted)}
+.spec-wrap th:first-child{text-align:left;width:42%;color:var(--ink)}
+.spec-wrap th.hl{background:var(--azulejo-wash);color:var(--azulejo-deep)}
+.spec-wrap td{padding:12px 16px;font-size:13.5px;text-align:center;border-top:1px solid var(--line)}
+.spec-wrap td:first-child{text-align:left;font-weight:500;color:var(--ink)}
+.spec-wrap td.hl{background:rgba(231,239,243,.4)}
+.chk{display:inline-flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center}
+.chk.yes{background:#E4EFE7;color:var(--green)}
+.chk.no{background:#F3E6E1;color:var(--red)}
+.chk.partial{background:#F7EDDB;color:var(--ochre)}
+
+/* PROFESSIONALS - TICKET CARDS (signature) */
+.pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;max-width:1040px;margin:0 auto}
+.ticket-card{background:var(--white);border-radius:14px;border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block;box-shadow:var(--shadow)}
+.ticket-card:hover{transform:translateY(-3px)}
+.ticket-top{padding:20px 18px 16px;display:flex;gap:12px;align-items:center}
+.ticket-avatar{width:52px;height:52px;border-radius:50%;background:var(--azulejo-deep);color:#fff;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;font-family:'Fraunces',serif}
+.ticket-avatar img{width:100%;height:100%;object-fit:cover}
+.ticket-name{font-size:15px;font-weight:700;font-family:'Fraunces',serif;margin-bottom:2px}
+.ticket-cat{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.plan-dot{width:6px;height:6px;border-radius:50%}
+.plan-dot.free{background:#B8B0A0}.plan-dot.pro{background:var(--azulejo)}.plan-dot.premium{background:var(--ochre)}
+.tear{position:relative;height:1px;border-top:1.5px dashed var(--line);margin:0 18px}
+.tear::before,.tear::after{content:'';position:absolute;top:50%;width:14px;height:14px;background:var(--paper);border-radius:50%;transform:translateY(-50%)}
+.tear::before{left:-25px}.tear::after{right:-25px}
+.ticket-bottom{padding:16px 18px 18px}
+.ticket-rating{display:flex;align-items:center;gap:5px;font-size:12.5px;margin-bottom:8px}
+.ticket-rating .stars{color:var(--ochre);letter-spacing:1px}
+.ticket-loc{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-bottom:10px}
+.ticket-price{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted)}
+.ticket-price strong{color:var(--azulejo-deep);font-size:15px}
+.verif{background:#E4EFE7;color:var(--green);font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-family:'IBM Plex Mono',monospace}
+
+/* LOCATIONS */
+.loc-section{background:var(--azulejo-deep);position:relative;overflow:hidden}
+.loc-section .section-header h2{color:#fff}
+.loc-section .section-header p{color:rgba(255,255,255,.7)}
+.loc-section .eyebrow{color:var(--ochre)}
+.loc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;max-width:800px;margin:0 auto;position:relative}
+.loc-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:30px;cursor:pointer;transition:all .2s}
+.loc-card:hover{background:rgba(255,255,255,.12);transform:translateY(-3px)}
+.loc-card h3{font-size:21px;font-weight:600;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:9px;font-family:'Fraunces',serif}
+.loc-card p{font-size:13.5px;color:rgba(255,255,255,.68);margin-bottom:16px;line-height:1.55}
+.loc-zones{display:flex;flex-wrap:wrap;gap:6px}
+.loc-zone{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-size:11.5px;padding:4px 10px;border-radius:99px}
+
+/* TRUST */
+.trust-section{background:var(--paper-2);padding:52px 5%}
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;max-width:900px;margin:0 auto;text-align:center}
+.trust-item strong{display:block;font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--azulejo-deep);margin-bottom:4px}
+.trust-item p{font-size:12.5px;color:var(--muted);font-weight:500}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1020px;margin:0 auto}
+.t-card{background:var(--white);border-radius:14px;padding:26px;border:1px solid var(--line)}
+.t-quote{font-family:'Fraunces',serif;font-size:32px;color:var(--terracota);line-height:1;margin-bottom:8px;font-style:italic}
+.t-text{font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:20px;font-style:italic;font-family:'Fraunces',serif;font-weight:500}
+.t-author{display:flex;align-items:center;gap:12px}
+.t-avatar{width:38px;height:38px;border-radius:50%;background:var(--azulejo-wash);color:var(--azulejo-deep);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Fraunces',serif}
+.t-name{font-size:13px;font-weight:700}
+.t-role{font-size:11.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+
+/* PRO CTA (dark) */
+.pro-cta{background:var(--ink);padding:76px 5%}
+.pro-cta .section-header h2{color:#fff}
+.pro-cta .section-header p{color:rgba(255,255,255,.65)}
+.pro-cta .eyebrow{color:var(--ochre)}
+.mini-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:1020px;margin:0 auto 40px}
+.mini-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:18px;display:flex;gap:12px;align-items:flex-start}
+.mini-card .ic{width:22px;height:22px;color:var(--ochre);flex-shrink:0;margin-top:2px}
+.mini-card strong{display:block;color:#fff;font-size:13.5px;margin-bottom:3px}
+.mini-card span{color:rgba(255,255,255,.55);font-size:12.5px;line-height:1.5}
+
+/* CTA */
+.cta-section{background:var(--white);padding:80px 5%;text-align:center}
+.cta-section h2{font-size:clamp(26px,3.4vw,38px);font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
+.cta-section p{font-size:15.5px;color:var(--muted);margin-bottom:32px;max-width:460px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.btn-lg{padding:15px 32px;font-size:15px;border-radius:11px}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(255,255,255,.62);padding:52px 5% 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:24px;margin-bottom:44px}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr 1fr}}
+.footer-brand .logo{color:#fff}
+.footer-brand p{font-size:13px;line-height:1.7;max-width:260px;margin-top:12px;color:rgba(255,255,255,.55)}
+.footer-col h4{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em}
+.footer-col a{display:block;font-size:13px;margin-bottom:9px;transition:color .2s;color:rgba(255,255,255,.55)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.4)}
+
+.spinner{width:26px;height:26px;border:2.5px solid var(--line);border-top-color:var(--azulejo);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero-inner>*{animation:fadeUp .6s ease both}
+.hero-badge{animation-delay:.03s}.hero h1{animation-delay:.08s}.hero p{animation-delay:.13s}
+.search-ticket{animation-delay:.18s}.hero-alt{animation-delay:.22s}.hero-tags{animation-delay:.26s}.ledger{animation-delay:.3s}
+
+@media(max-width:768px){
+.pros-grid{grid-template-columns:1fr 1fr}
+.why-grid{grid-template-columns:1fr}
+section{padding:52px 4%}
+.steps-grid{grid-template-columns:1fr}
+.search-ticket select{display:none}
+.footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+.cat-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+.pros-grid{grid-template-columns:1fr}
+.trust-grid{grid-template-columns:repeat(2,1fr)}
+.search-ticket{flex-direction:column;border-radius:12px}
+.search-ticket::before,.search-ticket::after{display:none}
+.testimonials-grid{grid-template-columns:1fr}
+.loc-grid{grid-template-columns:1fr}
+.footer-grid{grid-template-columns:1fr}
+nav{padding:0 4%}
+}
+</style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="logo">Pro<span>liga</span></a>
-  <div class="nav-search">
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" placeholder="Ex: eletricista, pintor, designer..." onkeydown="if(event.key==='Enter')doSearch(this.value)"/>
-  </div>
-  <a href="pedidos.html" class="btn btn-ghost" style="white-space:nowrap">📢 Pedidos</a>
+<a href="index.html" class="logo">Pro<em>liga</em></a>
+<div class="nav-search">
+<svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<input type="text" placeholder="Ex: eletricista, pintor, designer..." onkeydown="if(event.key==='Enter')location.href='categoria.html?q='+encodeURIComponent(this.value)"/>
+</div>
 <div class="nav-right">
-    <div id="nav-guest" style="display:flex;gap:8px">
-      <a href="auth.html?tab=login" class="btn btn-ghost">Entrar</a>
-      <a href="auth.html?tab=register" class="btn btn-solid">Registar</a>
-    </div>
-    <div class="nav-user" id="nav-user">
-      <a href="dashboard.html" class="btn btn-outline">Dashboard</a>
-      <div class="nav-avatar" id="nav-avatar" onclick="location.href='dashboard.html'">?</div>
-    </div>
-  </div>
+<a href="pedidos.html" class="nav-link"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg>Pedidos</a>
+<div id="nav-guest" style="display:flex;gap:8px">
+<a href="auth.html?tab=login" class="btn btn-ghost">Entrar</a>
+<a href="auth.html?tab=register" class="btn btn-ink">Registar</a>
+</div>
+<div class="nav-user" id="nav-user">
+<a href="dashboard.html" class="btn btn-line">Dashboard</a>
+<div class="nav-avatar" id="nav-avatar" onclick="location.href='dashboard.html'">?</div>
+</div>
+</div>
 </nav>
 
 <div class="hero">
-  <div class="hero-badge">📍 Porto &amp; Maia · Profissionais Verificados</div>
-  <h1>Encontra o <span>Profissional Certo</span><br/>Perto de Ti</h1>
-  <p>O marketplace local de serviços no Porto e na Maia. Compara orçamentos, lê avaliações reais e contrata em minutos.</p>
-  <div class="hero-search">
-    <input type="text" id="hero-input" placeholder="Que serviço precisas? Ex: eletricista, pintor..."/>
-    <select id="hero-loc">
-      <option value="">Toda a área</option>
-      <option value="Porto">Porto</option>
-      <option value="Maia">Maia</option>
-    </select>
-    <button onclick="doSearch()">Procurar</button>
-  </div>
-  <div style="margin-bottom:20px"><a href="pedidos.html" style="color:rgba(255,255,255,.85);font-size:14px;font-weight:600;text-decoration:underline">📢 Ou publica o que precisas e deixa os profissionais encontrarem-te →</a></div>
-  <div class="hero-tags">
-    <span class="hero-tag" onclick="goCategory('Eletricistas')">⚡ Eletricistas</span>
-    <span class="hero-tag" onclick="goCategory('Canalizadores')">🔧 Canalizadores</span>
-    <span class="hero-tag" onclick="goCategory('Pintores')">🎨 Pintores</span>
-    <span class="hero-tag" onclick="goCategory('Jardineiros')">🌿 Jardineiros</span>
-    <span class="hero-tag" onclick="goCategory('Designers')">💻 Designers</span>
-    <span class="hero-tag" onclick="goCategory('Personal Trainers')">💪 Personal Trainers</span>
-  </div>
-  <div class="hero-stats">
-    <div class="hero-stat"><strong id="stat-pros">...</strong><span>Profissionais</span></div>
-    <div class="hero-stat"><strong id="stat-reviews">...</strong><span>Avaliações</span></div>
-    <div class="hero-stat"><strong>16</strong><span>Categorias</span></div>
-    <div class="hero-stat"><strong>Porto &amp; Maia</strong><span>Cobertura</span></div>
-  </div>
+<div class="hero-tiles"></div>
+<div class="hero-inner">
+<div class="hero-badge">
+<svg class="ic" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+PORTO &amp; MAIA · PROFISSIONAIS VERIFICADOS
+</div>
+<h1>Encontra o profissional <em>certo</em><br/>perto de ti</h1>
+<p>O marketplace local de serviços no Porto e na Maia. Compara orçamentos, lê avaliações reais e contrata em minutos.</p>
+<div class="search-ticket">
+<input type="text" id="hero-input" placeholder="Que serviço precisas? Ex: eletricista, pintor..."/>
+<select id="hero-loc">
+<option value="">Toda a área</option>
+<option value="Porto">Porto</option>
+<option value="Maia">Maia</option>
+</select>
+<button onclick="doSearch()">Procurar</button>
+</div>
+<div class="hero-alt">
+<a href="pedidos.html">Ou publica o que precisas e deixa os profissionais encontrarem-te →</a>
+</div>
+<div class="hero-tags">
+<span class="hero-tag" onclick="goCategory('Eletricistas')"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>Eletricistas</span>
+<span class="hero-tag" onclick="goCategory('Canalizadores')"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2C9 6 6 9.5 6 13a6 6 0 0 0 12 0c0-3.5-3-7-6-11z"/></svg>Canalizadores</span>
+<span class="hero-tag" onclick="goCategory('Pintores')"><svg class="ic" viewBox="0 0 24 24"><path d="M18 3a2 2 0 0 1 2 2c0 2-3 3-3 6h-4c0-3-3-4-3-6a2 2 0 0 1 2-2z"/><path d="M13 11v4a2 2 0 0 1-2 2H9l-2 5"/></svg>Pintores</span>
+<span class="hero-tag" onclick="goCategory('Jardineiros')"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 7 8 5 4 5c0 5 3 8 8 8z"/><path d="M12 12c0-4 3-6 8-6 0 5-3 8-8 8z"/></svg>Jardineiros</span>
+<span class="hero-tag" onclick="goCategory('Designers')"><svg class="ic" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4M14.5 4l-5 16"/></svg>Designers</span>
+<span class="hero-tag" onclick="goCategory('Personal Trainers')"><svg class="ic" viewBox="0 0 24 24"><path d="M6.5 6.5 3 10l4 4M17.5 17.5 21 14l-4-4M8 8l8 8M4 4l3 3M20 20l-3-3"/></svg>Treino</span>
+</div>
+<div class="ledger">
+<div class="ledger-item"><strong id="stat-pros">···</strong><span>Profissionais</span></div>
+<div class="ledger-item"><strong id="stat-reviews">···</strong><span>Avaliações</span></div>
+<div class="ledger-item"><strong>16</strong><span>Categorias</span></div>
+<div class="ledger-item"><strong>P&amp;M</strong><span>Porto &amp; Maia</span></div>
+</div>
+</div>
 </div>
 
 <div class="loc-banner">
-  <div class="loc-chip">📍 <strong>Porto</strong> · Centro, Boavista, Foz, Paranhos, Campanhã, Cedofeita</div>
-  <div style="width:1px;height:20px;background:var(--blue);opacity:.3"></div>
-  <div class="loc-chip">📍 <strong>Maia</strong> · Castêlo da Maia, Águas Santas, Moreira, Vermoim, Folgosa</div>
+<div class="loc-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Porto · Centro, Boavista, Foz, Paranhos, Campanhã, Cedofeita</div>
+<div class="loc-sep"></div>
+<div class="loc-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Maia · Castêlo da Maia, Águas Santas, Moreira, Vermoim, Folgosa</div>
 </div>
 
 <section>
-  <div class="section-header">
-    <h2>Explora por Categoria</h2>
-    <p>Encontra o especialista certo para cada trabalho</p>
-  </div>
-  <div class="cat-grid">
-    <a href="categoria.html?cat=Eletricistas" class="cat-card" style="background:#eff6ff;color:#1d4ed8">
-      <span class="cat-icon">⚡</span>
-      <div class="cat-name">Eletricistas</div>
-      <div class="cat-sub">Instalações &amp; reparações</div>
-    </a>
-    <a href="categoria.html?cat=Canalizadores" class="cat-card" style="background:#f0fdf4;color:#16a34a">
-      <span class="cat-icon">🔧</span>
-      <div class="cat-name">Canalizadores</div>
-      <div class="cat-sub">Água &amp; saneamento</div>
-    </a>
-    <a href="categoria.html?cat=Pintores" class="cat-card" style="background:#fef9c3;color:#a16207">
-      <span class="cat-icon">🎨</span>
-      <div class="cat-name">Pintores</div>
-      <div class="cat-sub">Interior &amp; exterior</div>
-    </a>
-    <a href="categoria.html?cat=Jardineiros" class="cat-card" style="background:#f0fdf4;color:#15803d">
-      <span class="cat-icon">🌿</span>
-      <div class="cat-name">Jardineiros</div>
-      <div class="cat-sub">Jardim &amp; espaços verdes</div>
-    </a>
-    <a href="categoria.html?cat=Limpeza" class="cat-card" style="background:#f0f9ff;color:#0369a1">
-      <span class="cat-icon">🧹</span>
-      <div class="cat-name">Limpeza</div>
-      <div class="cat-sub">Casa &amp; escritórios</div>
-    </a>
-    <a href="categoria.html?cat=Programadores" class="cat-card" style="background:#faf5ff;color:#7c3aed">
-      <span class="cat-icon">💻</span>
-      <div class="cat-name">Programadores</div>
-      <div class="cat-sub">Web &amp; apps</div>
-    </a>
-    <a href="categoria.html?cat=Carpinteiros" class="cat-card" style="background:#fff7ed;color:#c2410c">
-      <span class="cat-icon">🪚</span>
-      <div class="cat-name">Carpinteiros</div>
-      <div class="cat-sub">Madeira &amp; mobiliário</div>
-    </a>
-    <a href="categoria.html?cat=Personal Trainers" class="cat-card" style="background:#fff1f2;color:#be123c">
-      <span class="cat-icon">💪</span>
-      <div class="cat-name">Personal Trainers</div>
-      <div class="cat-sub">Fitness &amp; bem-estar</div>
-    </a>
-  </div>
-  <div class="cat-more">
-    <a href="categoria.html" class="btn-cats">Ver todas as categorias →</a>
-  </div>
+<div class="section-header">
+<span class="eyebrow">Categorias</span>
+<h2>Explora por categoria</h2>
+<p>Encontra o especialista certo para cada trabalho</p>
+</div>
+<div class="cat-grid">
+<a href="categoria.html?cat=Eletricistas" class="cat-card"><div class="cat-icon" style="background:#FDF0E4;color:var(--terracota)"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></div><div class="cat-name">Eletricistas</div><div class="cat-sub">Instalações &amp; reparações</div></a>
+<a href="categoria.html?cat=Canalizadores" class="cat-card"><div class="cat-icon" style="background:var(--azulejo-wash);color:var(--azulejo-deep)"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2C9 6 6 9.5 6 13a6 6 0 0 0 12 0c0-3.5-3-7-6-11z"/></svg></div><div class="cat-name">Canalizadores</div><div class="cat-sub">Água &amp; saneamento</div></a>
+<a href="categoria.html?cat=Pintores" class="cat-card"><div class="cat-icon" style="background:#F7EDDB;color:var(--ochre)"><svg class="ic" viewBox="0 0 24 24"><path d="M18 3a2 2 0 0 1 2 2c0 2-3 3-3 6h-4c0-3-3-4-3-6a2 2 0 0 1 2-2z"/><path d="M13 11v4a2 2 0 0 1-2 2H9l-2 5"/></svg></div><div class="cat-name">Pintores</div><div class="cat-sub">Interior &amp; exterior</div></a>
+<a href="categoria.html?cat=Jardineiros" class="cat-card"><div class="cat-icon" style="background:#E4EFE7;color:var(--green)"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 7 8 5 4 5c0 5 3 8 8 8z"/><path d="M12 12c0-4 3-6 8-6 0 5-3 8-8 8z"/></svg></div><div class="cat-name">Jardineiros</div><div class="cat-sub">Jardim &amp; espaços verdes</div></a>
+<a href="categoria.html?cat=Limpeza" class="cat-card"><div class="cat-icon" style="background:var(--azulejo-wash);color:var(--azulejo-deep)"><svg class="ic" viewBox="0 0 24 24"><path d="M15 4 5 14l3 3 10-10z"/><path d="M18 7l2 2M9 18H4v-3"/></svg></div><div class="cat-name">Limpeza</div><div class="cat-sub">Casa &amp; escritórios</div></a>
+<a href="categoria.html?cat=Programadores" class="cat-card"><div class="cat-icon" style="background:#EDE8F4;color:#6B4FA0"><svg class="ic" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4M14.5 4l-5 16"/></svg></div><div class="cat-name">Programadores</div><div class="cat-sub">Web &amp; apps</div></a>
+<a href="categoria.html?cat=Carpinteiros" class="cat-card"><div class="cat-icon" style="background:#FDF0E4;color:var(--terracota)"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="4"/><path d="M7 14v4M17 14v4M5 6l4 4M19 6l-4 4"/></svg></div><div class="cat-name">Carpinteiros</div><div class="cat-sub">Madeira &amp; mobiliário</div></a>
+<a href="categoria.html?cat=Personal Trainers" class="cat-card"><div class="cat-icon" style="background:#F3E6E1;color:var(--red)"><svg class="ic" viewBox="0 0 24 24"><path d="M6.5 6.5 3 10l4 4M17.5 17.5 21 14l-4-4M8 8l8 8M4 4l3 3M20 20l-3-3"/></svg></div><div class="cat-name">Personal Trainers</div><div class="cat-sub">Fitness &amp; bem-estar</div></a>
+</div>
+<div class="cat-more"><a href="categoria.html" class="btn-cats">Ver todas as categorias<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
 </section>
 
 <section class="how-section">
-  <div class="section-header">
-    <h2>Como Funciona</h2>
-    <p>Contrata um profissional em 3 passos simples</p>
-  </div>
-  <div class="steps-grid">
-    <div class="step-card">
-      <div class="step-num">1</div>
-      <h3>Procura o Serviço</h3>
-      <p>Usa a pesquisa ou navega pelas categorias para encontrar o profissional certo na tua zona do Porto ou Maia.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">2</div>
-      <h3>Compara e Contacta</h3>
-      <p>Lê avaliações reais, vê portfólios e compara preços. Envia mensagem diretamente ao profissional.</p>
-    </div>
-    <div class="step-card">
-      <div class="step-num">3</div>
-      <h3>Contrata com Confiança</h3>
-      <p>Profissionais verificados, avaliações reais e suporte da Proliga. Trabalho garantido.</p>
-    </div>
-  </div>
-</section>
-
-<section class="why-section">
-  <div class="section-header">
-    <h2>Porquê a <span style="color:var(--blue)">Proliga</span>?</h2>
-    <p>O único marketplace exclusivamente dedicado ao Porto e à Maia</p>
-  </div>
-  <div class="why-grid">
-    <div class="why-card"><div class="why-icon">🎯</div><div><h3>100% Local</h3><p>Apenas profissionais do Porto e da Maia. Chega de encontrar alguém do outro lado do país sem conhecer a zona.</p></div></div>
-    <div class="why-card"><div class="why-icon">✅</div><div><h3>Todos Verificados</h3><p>Cada perfil é revisto antes de ser publicado. Zero perfis falsos, abandonados ou desatualizados.</p></div></div>
-    <div class="why-card"><div class="why-icon">💬</div><div><h3>Contacto Direto</h3><p>Fala diretamente com o profissional. Sem formulários intermináveis, sem call centers, sem intermediários.</p></div></div>
-    <div class="why-card"><div class="why-icon">💰</div><div><h3>Sem Comissões</h3><p>Não cobramos nada por cada trabalho fechado. O profissional fica com 100% do que cobra. Sempre.</p></div></div>
-    <div class="why-card"><div class="why-icon">⭐</div><div><h3>Avaliações Reais</h3><p>Só clientes que efetivamente contrataram podem avaliar. Nada de reviews compradas ou falsas.</p></div></div>
-    <div class="why-card"><div class="why-icon">🚀</div><div><h3>Grátis para Começar</h3><p>Profissional ou cliente, cria a tua conta sem pagar nada. Upgradia apenas quando precisares de mais.</p></div></div>
-  </div>
-  <div class="compare-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Funcionalidade</th>
-          <th class="hl">✨ Proliga</th>
-          <th>OLX</th>
-          <th>Fixando</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>100% Porto &amp; Maia</td><td class="hl yes">✅</td><td class="no">❌</td><td class="no">❌</td></tr>
-        <tr><td>Perfis verificados</td><td class="hl yes">✅</td><td class="no">❌</td><td class="partial">⚠️ Parcial</td></tr>
-        <tr><td>Sem comissão por trabalho</td><td class="hl yes">✅</td><td class="partial">⚠️</td><td class="no">❌</td></tr>
-        <tr><td>Avaliações verificadas</td><td class="hl yes">✅</td><td class="no">❌</td><td class="yes">✅</td></tr>
-        <tr><td>Portfólio visual</td><td class="hl yes">✅</td><td class="no">❌</td><td class="partial">⚠️ Limitado</td></tr>
-        <tr><td>Plano 100% gratuito</td><td class="hl yes">✅</td><td class="yes">✅</td><td class="no">❌</td></tr>
-      </tbody>
-    </table>
-  </div>
+<div class="section-header">
+<span class="eyebrow">Processo</span>
+<h2>Como funciona</h2>
+<p>Contrata um profissional em 3 passos simples</p>
+</div>
+<div class="steps-grid">
+<div class="step-card"><span class="step-num">01 / PROCURAR</span><h3>Procura o serviço</h3><p>Usa a pesquisa ou navega pelas categorias para encontrar o profissional certo na tua zona do Porto ou Maia.</p></div>
+<div class="step-card"><span class="step-num">02 / COMPARAR</span><h3>Compara e contacta</h3><p>Lê avaliações reais, vê portfólios e compara preços. Envia mensagem diretamente ao profissional.</p></div>
+<div class="step-card"><span class="step-num">03 / CONTRATAR</span><h3>Contrata com confiança</h3><p>Profissionais verificados, avaliações reais e suporte da Proliga. Trabalho garantido.</p></div>
+</div>
 </section>
 
 <section>
-  <div class="section-header">
-    <h2>Profissionais em Destaque</h2>
-    <p>Os mais bem avaliados na tua área</p>
-  </div>
-  <div class="pros-grid" id="pros-grid">
-    <div style="grid-column:1/-1;display:flex;justify-content:center;padding:40px"><div class="spinner"></div></div>
-  </div>
-  <div style="text-align:center;margin-top:32px">
-    <a href="categoria.html" class="btn btn-outline btn-lg">Ver todos os profissionais →</a>
-  </div>
+<div class="section-header">
+<span class="eyebrow">Vantagens</span>
+<h2>Porquê a <em>Proliga</em>?</h2>
+<p>O único marketplace exclusivamente dedicado ao Porto e à Maia</p>
+</div>
+<div class="why-grid">
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".5" fill="currentColor"/></svg></div><div><h3>100% Local</h3><p>Apenas profissionais do Porto e da Maia. Chega de encontrar alguém do outro lado do país sem conhecer a zona.</p></div></div>
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><div><h3>Todos verificados</h3><p>Cada perfil é revisto antes de ser publicado. Zero perfis falsos, abandonados ou desatualizados.</p></div></div>
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div><div><h3>Contacto direto</h3><p>Fala diretamente com o profissional. Sem formulários intermináveis, sem call centers, sem intermediários.</p></div></div>
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M15 9.5c0-1.4-1.3-2.5-3-2.5s-3 1-3 2.3c0 3 6 1.5 6 4.4 0 1.3-1.3 2.3-3 2.3s-3-1.1-3-2.5"/></svg></div><div><h3>Sem comissões</h3><p>Não cobramos nada por cada trabalho fechado. O profissional fica com 100% do que cobra. Sempre.</p></div></div>
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><div><h3>Avaliações reais</h3><p>Só clientes que efetivamente contrataram podem avaliar. Nada de reviews compradas ou falsas.</p></div></div>
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></div><div><h3>Grátis para começar</h3><p>Profissional ou cliente, cria a tua conta sem pagar nada. Upgradia apenas quando precisares de mais.</p></div></div>
+</div>
+
+<div class="spec-wrap">
+<div class="spec-head"><span class="eyebrow" style="margin:0">Ficha comparativa</span><span>ATUALIZADO · 2026</span></div>
+<table>
+<thead><tr><th>Funcionalidade</th><th class="hl">Proliga</th><th>OLX</th><th>Fixando</th></tr></thead>
+<tbody>
+<tr><td>100% Porto &amp; Maia</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk no">✗</span></td><td><span class="chk no">✗</span></td></tr>
+<tr><td>Perfis verificados</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk no">✗</span></td><td><span class="chk partial">~</span></td></tr>
+<tr><td>Sem comissão por trabalho</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk partial">~</span></td><td><span class="chk no">✗</span></td></tr>
+<tr><td>Avaliações verificadas</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk no">✗</span></td><td><span class="chk yes">✓</span></td></tr>
+<tr><td>Portfólio visual</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk no">✗</span></td><td><span class="chk partial">~</span></td></tr>
+<tr><td>Chat interno</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk no">✗</span></td><td><span class="chk yes">✓</span></td></tr>
+<tr><td>Pedidos de clientes</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk yes">✓</span></td><td><span class="chk no">✗</span></td></tr>
+<tr><td>Plano 100% gratuito</td><td class="hl"><span class="chk yes">✓</span></td><td><span class="chk yes">✓</span></td><td><span class="chk no">✗</span></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="background:var(--paper-2)">
+<div class="section-header">
+<span class="eyebrow">Destaques</span>
+<h2>Profissionais em destaque</h2>
+<p>Os mais bem avaliados na tua área</p>
+</div>
+<div class="pros-grid" id="pros-grid">
+<div style="grid-column:1/-1;display:flex;justify-content:center;padding:40px"><div class="spinner"></div></div>
+</div>
+<div style="text-align:center;margin-top:34px">
+<a href="categoria.html" class="btn btn-line btn-lg">Ver todos os profissionais</a>
+</div>
 </section>
 
 <section class="loc-section">
-  <div class="section-header">
-    <h2>Servimos o Porto e a Maia</h2>
-    <p>Profissionais locais, a minutos de ti</p>
-  </div>
-  <div class="loc-grid">
-    <div class="loc-card" onclick="location.href='categoria.html?loc=Porto'">
-      <h3>🏙️ Porto</h3>
-      <p>Centenas de profissionais qualificados em todas as zonas da cidade do Porto.</p>
-      <div class="loc-zones">
-        <span class="loc-zone">Centro</span><span class="loc-zone">Boavista</span><span class="loc-zone">Foz do Douro</span>
-        <span class="loc-zone">Paranhos</span><span class="loc-zone">Campanhã</span><span class="loc-zone">Cedofeita</span>
-        <span class="loc-zone">Bonfim</span><span class="loc-zone">Massarelos</span>
-      </div>
-    </div>
-    <div class="loc-card" onclick="location.href='categoria.html?loc=Maia'">
-      <h3>🌆 Maia</h3>
-      <p>Profissionais de confiança em todos os concelhos e freguesias da Maia.</p>
-      <div class="loc-zones">
-        <span class="loc-zone">Castêlo da Maia</span><span class="loc-zone">Águas Santas</span><span class="loc-zone">Moreira</span>
-        <span class="loc-zone">Vermoim</span><span class="loc-zone">Folgosa</span><span class="loc-zone">Gemunde</span><span class="loc-zone">Nogueira</span>
-      </div>
-    </div>
-  </div>
+<div class="section-header">
+<span class="eyebrow">Cobertura</span>
+<h2>Servimos o Porto e a Maia</h2>
+<p>Profissionais locais, a minutos de ti</p>
+</div>
+<div class="loc-grid">
+<div class="loc-card" onclick="location.href='categoria.html?loc=Porto'">
+<h3><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Porto</h3>
+<p>Centenas de profissionais qualificados em todas as zonas da cidade do Porto.</p>
+<div class="loc-zones"><span class="loc-zone">Centro</span><span class="loc-zone">Boavista</span><span class="loc-zone">Foz do Douro</span><span class="loc-zone">Paranhos</span><span class="loc-zone">Campanhã</span><span class="loc-zone">Cedofeita</span><span class="loc-zone">Bonfim</span><span class="loc-zone">Massarelos</span></div>
+</div>
+<div class="loc-card" onclick="location.href='categoria.html?loc=Maia'">
+<h3><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Maia</h3>
+<p>Profissionais de confiança em todos os concelhos e freguesias da Maia.</p>
+<div class="loc-zones"><span class="loc-zone">Castêlo da Maia</span><span class="loc-zone">Águas Santas</span><span class="loc-zone">Moreira</span><span class="loc-zone">Vermoim</span><span class="loc-zone">Folgosa</span><span class="loc-zone">Gemunde</span><span class="loc-zone">Nogueira</span></div>
+</div>
+</div>
 </section>
 
 <section class="trust-section">
-  <div class="trust-grid">
-    <div class="trust-item"><strong id="t-pros">200+</strong><p>Profissionais registados</p></div>
-    <div class="trust-item"><strong>✅ 100%</strong><p>Perfis verificados</p></div>
-    <div class="trust-item"><strong>⭐ 4.8</strong><p>Avaliação média</p></div>
-    <div class="trust-item"><strong>24h</strong><p>Resposta média</p></div>
-    <div class="trust-item"><strong>🔒 RGPD</strong><p>Dados seguros</p></div>
-  </div>
+<div class="trust-grid">
+<div class="trust-item"><strong id="t-pros">200+</strong><p>Profissionais registados</p></div>
+<div class="trust-item"><strong>100%</strong><p>Perfis verificados</p></div>
+<div class="trust-item"><strong>4.8</strong><p>Avaliação média</p></div>
+<div class="trust-item"><strong>24h</strong><p>Resposta média</p></div>
+<div class="trust-item"><strong>RGPD</strong><p>Dados seguros</p></div>
+</div>
 </section>
 
-<section class="testimonials-section">
-  <div class="section-header">
-    <h2>O que dizem de nós</h2>
-    <p>Profissionais e clientes que já confiam na Proliga</p>
-  </div>
-  <div class="testimonials-grid">
-    <div class="t-card">
-      <div class="t-stars">★★★★★</div>
-      <p class="t-text">"Em menos de 2 horas tinha 3 orçamentos de eletricistas da minha zona. Contratei o João e ficou um trabalho impecável. Nunca mais uso o OLX."</p>
-      <div class="t-author">
-        <div class="t-avatar">AF</div>
-        <div><div class="t-name">Ana Ferreira</div><div class="t-role">Cliente · Porto, Paranhos</div></div>
-      </div>
-    </div>
-    <div class="t-card">
-      <div class="t-stars">★★★★★</div>
-      <p class="t-text">"Sou eletricista há 12 anos e nunca tive tanta visibilidade. A Proliga deu-me 20 novos clientes no primeiro mês, sem pagar comissões a ninguém."</p>
-      <div class="t-author">
-        <div class="t-avatar">JS</div>
-        <div><div class="t-name">João Silva</div><div class="t-role">Eletricista · Maia</div></div>
-      </div>
-    </div>
-    <div class="t-card">
-      <div class="t-stars">★★★★★</div>
-      <p class="t-text">"Finalmente uma alternativa ao Fixando que não cobra por cada lead. O perfil é gratuito, o contacto é direto. É o que os profissionais do Porto precisavam."</p>
-      <div class="t-author">
-        <div class="t-avatar">MC</div>
-        <div><div class="t-name">Miguel Cardoso</div><div class="t-role">Canalizador · Porto, Boavista</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="pro-how-section" style="background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);padding:72px 5%">
+<section>
 <div class="section-header">
-<h2 style="color:#fff">És Profissional? <span style="color:var(--gold)">Começa Aqui</span></h2>
-<p style="color:rgba(255,255,255,.7)">Em menos de 5 minutos tens o teu perfil online e começas a receber clientes</p>
+<span class="eyebrow">Testemunhos</span>
+<h2>O que dizem de nós</h2>
+<p>Profissionais e clientes que já confiam na Proliga</p>
 </div>
-<div class="steps-grid" style="max-width:1020px;margin:0 auto 48px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
-<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
-<div class="step-num" style="background:var(--gold);color:#fff">1</div>
-<h3 style="color:#fff">Cria a tua conta</h3>
-<p style="color:rgba(255,255,255,.65)">Regista-te gratuitamente com o teu email. Sem cartão de crédito, sem compromisso.</p>
+<div class="testimonials-grid">
+<div class="t-card"><div class="t-quote">"</div><p class="t-text">Em menos de 2 horas tinha 3 orçamentos de eletricistas da minha zona. Contratei o João e ficou um trabalho impecável. Nunca mais uso o OLX.</p><div class="t-author"><div class="t-avatar">AF</div><div><div class="t-name">Ana Ferreira</div><div class="t-role">CLIENTE · PORTO</div></div></div></div>
+<div class="t-card"><div class="t-quote">"</div><p class="t-text">Sou eletricista há 12 anos e nunca tive tanta visibilidade. A Proliga deu-me clientes novos no primeiro mês, sem pagar comissões a ninguém.</p><div class="t-author"><div class="t-avatar">JS</div><div><div class="t-name">João Silva</div><div class="t-role">ELETRICISTA · MAIA</div></div></div></div>
+<div class="t-card"><div class="t-quote">"</div><p class="t-text">Finalmente uma alternativa que não cobra por cada lead. O perfil é gratuito, o contacto é direto. É o que os profissionais do Porto precisavam.</p><div class="t-author"><div class="t-avatar">MC</div><div><div class="t-name">Miguel Cardoso</div><div class="t-role">CANALIZADOR · PORTO</div></div></div></div>
 </div>
-<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
-<div class="step-num" style="background:var(--gold);color:#fff">2</div>
-<h3 style="color:#fff">Preenche o teu perfil</h3>
-<p style="color:rgba(255,255,255,.65)">Adiciona a tua bio, especialidades, zona de atuação, preços e portfólio com fotos do teu trabalho.</p>
+</section>
+
+<section class="pro-cta">
+<div class="section-header">
+<span class="eyebrow">Para profissionais</span>
+<h2>És profissional? <em>Começa aqui</em></h2>
+<p>Em menos de 5 minutos tens o teu perfil online e começas a receber clientes</p>
 </div>
-<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
-<div class="step-num" style="background:var(--gold);color:#fff">3</div>
-<h3 style="color:#fff">Verificação rápida</h3>
-<p style="color:rgba(255,255,255,.65)">A nossa equipa valida o teu perfil em até 24h. O badge ✅ Verificado aumenta a confiança dos clientes.</p>
+<div class="steps-grid" style="max-width:1020px;margin:0 auto 40px">
+<div class="step-card" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)"><span class="step-num" style="color:var(--ochre)">01</span><h3 style="color:#fff">Cria a tua conta</h3><p style="color:rgba(255,255,255,.6)">Regista-te gratuitamente com o teu email. Sem cartão de crédito, sem compromisso.</p></div>
+<div class="step-card" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)"><span class="step-num" style="color:var(--ochre)">02</span><h3 style="color:#fff">Preenche o teu perfil</h3><p style="color:rgba(255,255,255,.6)">Adiciona a tua bio, especialidades, zona de atuação, preços e portfólio com fotos do teu trabalho.</p></div>
+<div class="step-card" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)"><span class="step-num" style="color:var(--ochre)">03</span><h3 style="color:#fff">Verificação rápida</h3><p style="color:rgba(255,255,255,.6)">A nossa equipa valida o teu perfil em até 24h. O selo Verificado aumenta a confiança dos clientes.</p></div>
+<div class="step-card" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)"><span class="step-num" style="color:var(--ochre)">04</span><h3 style="color:#fff">Recebe clientes</h3><p style="color:rgba(255,255,255,.6)">Os clientes encontram-te, enviam mensagem direta e tu fazes o orçamento. Sem intermediários.</p></div>
 </div>
-<div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
-<div class="step-num" style="background:var(--gold);color:#fff">4</div>
-<h3 style="color:#fff">Recebe clientes</h3>
-<p style="color:rgba(255,255,255,.65)">Os clientes encontram-te, enviam mensagem direta e tu fazes o orçamento. Sem intermediários, sem comissões.</p>
-</div>
-</div>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:1020px;margin:0 auto 40px">
-<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
-<span style="font-size:28px">🆓</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Plano Grátis para sempre</div><div style="color:rgba(255,255,255,.6);font-size:13px">Perfil público, mensagens ilimitadas. Sem expiração.</div></div>
-</div>
-<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
-<span style="font-size:28px">🚫</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Zero comissões</div><div style="color:rgba(255,255,255,.6);font-size:13px">Cobras €500? Recebes €500. Nunca cobramos por trabalho fechado.</div></div>
-</div>
-<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
-<span style="font-size:28px">📍</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Clientes locais</div><div style="color:rgba(255,255,255,.6);font-size:13px">Só clientes do Porto e Maia. Sem deslocações desnecessárias.</div></div>
-</div>
-<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
-<span style="font-size:28px">⭐</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Avaliações que ficam</div><div style="color:rgba(255,255,255,.6);font-size:13px">Cada bom trabalho constrói a tua reputação. O teu histórico é teu.</div></div>
-</div>
+<div class="mini-cards">
+<div class="mini-card"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg><div><strong>Plano grátis para sempre</strong><span>Perfil público, mensagens ilimitadas. Sem expiração.</span></div></div>
+<div class="mini-card"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg><div><strong>Zero comissões</strong><span>Cobras €500? Recebes €500. Nunca cobramos por trabalho fechado.</span></div></div>
+<div class="mini-card"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><strong>Clientes locais</strong><span>Só clientes do Porto e Maia. Sem deslocações desnecessárias.</span></div></div>
+<div class="mini-card"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg><div><strong>Avaliações que ficam</strong><span>Cada bom trabalho constrói a tua reputação. O teu histórico é teu.</span></div></div>
 </div>
 <div style="text-align:center;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-<a href="auth.html?tab=register" class="btn btn-gold btn-lg">Criar perfil grátis →</a>
-<a href="pricing.html" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.3)">Ver planos Pro</a>
+<a href="auth.html?tab=register" class="btn btn-terra btn-lg">Criar perfil grátis</a>
+<a href="pricing.html" class="btn btn-lg" style="background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.25)">Ver planos Pro</a>
 </div>
 </section>
 
 <section class="cta-section">
-  <h2>És Profissional? <span style="color:var(--blue)">Junta-te à Proliga</span></h2>
-  <p>Cria o teu perfil gratuito e começa a receber clientes hoje. Sem comissões, sem surpresas.</p>
-  <div class="cta-btns">
-    <a href="auth.html?tab=register" class="btn btn-solid btn-lg">Criar perfil grátis →</a>
-    <a href="pricing.html" class="btn btn-outline btn-lg">Ver planos</a>
-  </div>
+<h2>És profissional? <em>Junta-te à Proliga</em></h2>
+<p>Cria o teu perfil gratuito e começa a receber clientes hoje. Sem comissões, sem surpresas.</p>
+<div class="cta-btns">
+<a href="auth.html?tab=register" class="btn btn-ink btn-lg">Criar perfil grátis</a>
+<a href="pricing.html" class="btn btn-line btn-lg">Ver planos</a>
+</div>
 </section>
 
 <footer>
 <div class="footer-grid">
 <div class="footer-brand">
-<a href="index.html" class="logo" style="color:rgba(255,255,255,.9)">Pro<span>liga</span></a>
+<a href="index.html" class="logo">Pro<em>liga</em></a>
 <p>O marketplace local de serviços profissionais no Porto e na Maia. Conectamos clientes a profissionais de confiança.</p>
-<p style="margin-top:12px;font-size:12px">📧 <a href="mailto:geral@proliga.pt" style="color:rgba(255,255,255,.6)">geral@proliga.pt</a></p>
+<p style="margin-top:12px;font-size:12px"><a href="mailto:geral@proliga.pt" style="color:rgba(255,255,255,.5)">geral@proliga.pt</a></p>
 </div>
-<div class="footer-col">
-<h4>Categorias</h4>
-<a href="categoria.html?cat=Eletricistas">Eletricistas</a>
-<a href="categoria.html?cat=Canalizadores">Canalizadores</a>
-<a href="categoria.html?cat=Pintores">Pintores</a>
-<a href="categoria.html?cat=Jardineiros">Jardineiros</a>
-<a href="categoria.html?cat=Programadores">Programadores</a>
-<a href="categoria.html">Ver todas →</a>
-</div>
-<div class="footer-col">
-<h4>Localizações</h4>
-<a href="categoria.html?loc=Porto">Porto</a>
-<a href="categoria.html?loc=Maia">Maia</a>
-<a href="categoria.html?loc=Porto&zona=Boavista">Boavista</a>
-<a href="categoria.html?loc=Porto&zona=Foz do Douro">Foz do Douro</a>
-<a href="categoria.html?loc=Maia&zona=Cast%C3%AAlo da Maia">Castêlo da Maia</a>
-</div>
-<div class="footer-col">
-<h4>Empresa</h4>
-<a href="sobre.html">Sobre nós</a>
-<a href="como-funciona.html">Como funciona</a>
-<a href="pricing.html">Planos e Preços</a>
-<a href="contacto.html">Contacto</a>
-<a href="auth.html?tab=register">Registar profissional</a>
-</div>
-<div class="footer-col">
-<h4>Legal</h4>
-<a href="termos.html">Termos de Serviço</a>
-<a href="privacidade.html">Política de Privacidade</a>
-<a href="cookies.html">Política de Cookies</a>
-<a href="rgpd.html">RGPD</a>
-</div>
+<div class="footer-col"><h4>Categorias</h4><a href="categoria.html?cat=Eletricistas">Eletricistas</a><a href="categoria.html?cat=Canalizadores">Canalizadores</a><a href="categoria.html?cat=Pintores">Pintores</a><a href="categoria.html?cat=Jardineiros">Jardineiros</a><a href="categoria.html?cat=Programadores">Programadores</a><a href="categoria.html">Ver todas →</a></div>
+<div class="footer-col"><h4>Localizações</h4><a href="categoria.html?loc=Porto">Porto</a><a href="categoria.html?loc=Maia">Maia</a><a href="categoria.html?loc=Porto&zona=Boavista">Boavista</a><a href="categoria.html?loc=Porto&zona=Foz do Douro">Foz do Douro</a><a href="categoria.html?loc=Maia&zona=Cast%C3%AAlo da Maia">Castêlo da Maia</a></div>
+<div class="footer-col"><h4>Empresa</h4><a href="sobre.html">Sobre nós</a><a href="como-funciona.html">Como funciona</a><a href="pricing.html">Planos e Preços</a><a href="contacto.html">Contacto</a><a href="auth.html?tab=register">Registar profissional</a></div>
+<div class="footer-col"><h4>Legal</h4><a href="termos.html">Termos de Serviço</a><a href="privacidade.html">Política de Privacidade</a><a href="cookies.html">Política de Cookies</a><a href="rgpd.html">RGPD</a></div>
 </div>
 <div class="footer-bottom">
-<span>© 2026 Proliga · Porto &amp; Maia · Todos os direitos reservados</span>
-<span>Feito com ❤️ para profissionais locais</span>
+<span>© 2026 PROLIGA · PORTO &amp; MAIA</span>
+<span>FEITO COM CUIDADO PARA PROFISSIONAIS LOCAIS</span>
 </div>
 </footer>
 
@@ -545,103 +511,96 @@ const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 
 async function init(){
-  const{data:{session}}=await db.auth.getSession()
-  if(session){
-    document.getElementById('nav-guest').style.display='none'
-    const u=document.getElementById('nav-user')
-    u.style.display='flex'
-    const name=session.user.user_metadata?.name||session.user.email||'U'
-    document.getElementById('nav-avatar').textContent=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
-  }
-  loadStats()
-  loadFeatured()
+const{data:{session}}=await db.auth.getSession()
+if(session){
+document.getElementById('nav-guest').style.display='none'
+const u=document.getElementById('nav-user')
+u.style.display='flex'
+const name=session.user.user_metadata?.name||session.user.email||'U'
+document.getElementById('nav-avatar').textContent=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
+}
+loadStats()
+loadFeatured()
 }
 
 async function loadStats(){
-  try{
-    const[{count:pc},{count:rc}]=await Promise.all([
-      db.from('profiles').select('*',{count:'exact',head:true}),
-      db.from('reviews').select('*',{count:'exact',head:true})
-    ])
-    document.getElementById('stat-pros').textContent=(pc!=null?pc+'+':'A crescer')
-    document.getElementById('stat-reviews').textContent=(rc!=null?rc+'+':'Em breve')
-    document.getElementById('t-pros').textContent=(pc!=null?pc+'+':'A crescer')
-  }catch(e){
-    document.getElementById('stat-pros').textContent='A crescer'
-    document.getElementById('stat-reviews').textContent='Em breve'
-    document.getElementById('t-pros').textContent='A crescer'
-  }
+try{
+const[{count:pc},{count:rc}]=await Promise.all([
+db.from('profiles').select('*',{count:'exact',head:true}),
+db.from('reviews').select('*',{count:'exact',head:true})
+])
+document.getElementById('stat-pros').textContent=(pc!=null?pc+'+':'···')
+document.getElementById('stat-reviews').textContent=(rc!=null?rc+'+':'···')
+document.getElementById('t-pros').textContent=(pc!=null?pc+'+':'A crescer')
+}catch(e){
+document.getElementById('stat-pros').textContent='···'
+document.getElementById('stat-reviews').textContent='···'
+document.getElementById('t-pros').textContent='A crescer'
+}
 }
 
 async function loadFeatured(){
-  const{data}=await db.from('profiles')
-    .select('id,name,category,location,plan,photo_url,verified')
-    .order('plan',{ascending:false}).limit(8)
-  const grid=document.getElementById('pros-grid')
-  if(!data||!data.length){
-    grid.innerHTML='<p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:40px">Nenhum profissional ainda. <a href="auth.html?tab=register" style="color:var(--blue)">Sê o primeiro!</a></p>'
-    return
-  }
-  const ids=data.map(p=>p.id)
-  const[{data:reviews},{data:services}]=await Promise.all([
-    db.from('reviews').select('professional_id,rating').in('professional_id',ids),
-    db.from('services').select('professional_id,price_from').in('professional_id',ids)
-  ])
-  const rMap={},pMap={}
-  reviews&&reviews.forEach(r=>{if(!rMap[r.professional_id])rMap[r.professional_id]={s:0,c:0};rMap[r.professional_id].s+=r.rating;rMap[r.professional_id].c++})
-  services&&services.forEach(s=>{if(s.price_from&&(!pMap[s.professional_id]||s.price_from<pMap[s.professional_id]))pMap[s.professional_id]=s.price_from})
-  grid.innerHTML=data.map(pro=>{
-    const r=rMap[pro.id];const avg=r?(r.s/r.c).toFixed(1):'Novo';const n=r?Math.round(r.s/r.c):0
-    const stars=r?('★'.repeat(n)+'☆'.repeat(5-n)):'☆☆☆☆☆'
-    const count=r?`(${r.c})`:'sem avaliações'
-    const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<strong>Orçamento grátis</strong>'
-    const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
-    const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
-    const covStyle=pro.plan==='premium'?'background:linear-gradient(135deg,#92400e,var(--gold))':pro.plan==='pro'?'background:linear-gradient(135deg,#4c1d95,#7c3aed)':''
-    const verif=(pro.verified||pro.plan!=='free')?'<span class="verif">✅ Verificado</span>':''
-    return`<a class="pro-card" href="profile.html?id=${pro.id}">
-      <div class="pro-card-cover" style="${covStyle}"></div>
-      <div class="pro-avatar">${avatar}</div>
-      <div class="pro-card-body">
-        <div class="pro-card-name">${pro.name}</div>
-        <div class="pro-card-cat"><span class="plan-dot ${pro.plan||'free'}"></span>${pro.category||'Profissional'}</div>
-        <div class="pro-rating"><span class="stars">${stars}</span><span style="font-weight:700;margin-left:2px">${avg}</span><span style="color:var(--muted)">&nbsp;${count}</span></div>
-        <div class="pro-loc">📍 ${pro.location||'Porto / Maia'}</div>
-        <div class="pro-price">${price}</div>
-        <div style="margin-top:8px">${verif}</div>
-      </div>
-    </a>`
-  }).join('')
+const{data}=await db.from('profiles')
+.select('id,name,category,location,plan,photo_url,verified')
+.order('plan',{ascending:false}).limit(8)
+const grid=document.getElementById('pros-grid')
+if(!data||!data.length){
+grid.innerHTML='<p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:40px">Nenhum profissional ainda. <a href="auth.html?tab=register" style="color:var(--azulejo-deep);font-weight:600">Sê o primeiro!</a></p>'
+return
+}
+const ids=data.map(p=>p.id)
+const[{data:reviews},{data:services}]=await Promise.all([
+db.from('reviews').select('professional_id,rating').in('professional_id',ids),
+db.from('services').select('professional_id,price_from').in('professional_id',ids)
+])
+const rMap={},pMap={}
+reviews&&reviews.forEach(r=>{if(!rMap[r.professional_id])rMap[r.professional_id]={s:0,c:0};rMap[r.professional_id].s+=r.rating;rMap[r.professional_id].c++})
+services&&services.forEach(s=>{if(s.price_from&&(!pMap[s.professional_id]||s.price_from<pMap[s.professional_id]))pMap[s.professional_id]=s.price_from})
+grid.innerHTML=data.map(pro=>{
+const r=rMap[pro.id];const avg=r?(r.s/r.c).toFixed(1):'Novo';const n=r?Math.round(r.s/r.c):0
+const stars=r?('★'.repeat(n)+'☆'.repeat(5-n)):'☆☆☆☆☆'
+const count=r?('('+r.c+')'):'sem avaliações'
+const price=pMap[pro.id]?('A partir de <strong>€'+pMap[pro.id]+'</strong>'):'<strong>Orçamento grátis</strong>'
+const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
+const avatar=pro.photo_url?('<img src="'+pro.photo_url+'" alt="'+pro.name+'"/>'):initials
+const verif=(pro.verified||pro.plan!=='free')?'<div class="verif"><svg class="ic" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M20 6 9 17l-5-5"/></svg>VERIFICADO</div>':''
+return '<a class="ticket-card" href="profile.html?id='+pro.id+'">'+
+'<div class="ticket-top"><div class="ticket-avatar">'+avatar+'</div><div><div class="ticket-name">'+pro.name+'</div><div class="ticket-cat"><span class="plan-dot '+(pro.plan||'free')+'"></span>'+(pro.category||'Profissional')+'</div></div></div>'+
+'<div class="tear"></div>'+
+'<div class="ticket-bottom"><div class="ticket-rating"><span class="stars">'+stars+'</span><strong>'+avg+'</strong><span style="color:var(--muted)">'+count+'</span></div>'+
+'<div class="ticket-loc"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'+(pro.location||'Porto / Maia')+'</div>'+
+'<div class="ticket-price">'+price+'</div>'+verif+'</div></a>'
+}).join('')
 }
 
 function doSearch(){
-  const q=document.getElementById('hero-input').value
-  const loc=document.getElementById('hero-loc').value
-  const p=new URLSearchParams()
-  if(q)p.set('q',q)
-  if(loc)p.set('loc',loc)
-  location.href='categoria.html?'+p.toString()
+const q=document.getElementById('hero-input').value
+const loc=document.getElementById('hero-loc').value
+const p=new URLSearchParams()
+if(q)p.set('q',q)
+if(loc)p.set('loc',loc)
+location.href='categoria.html?'+p.toString()
 }
 
 function goCategory(cat){location.href='categoria.html?cat='+encodeURIComponent(cat)}
 
 document.querySelector('.nav-search input').addEventListener('keydown',e=>{
-  if(e.key==='Enter')location.href='categoria.html?q='+encodeURIComponent(e.target.value)
+if(e.key==='Enter')location.href='categoria.html?q='+encodeURIComponent(e.target.value)
 })
 
 init()
 </script>
 
 <!-- Banner de Cookies -->
-<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#0f172a;color:#fff;padding:20px 5%;box-shadow:0 -4px 24px rgba(0,0,0,.3)">
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--ink);color:#fff;padding:20px 5%;box-shadow:0 -4px 24px rgba(0,0,0,.3)">
 <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
 <div style="flex:1;min-width:280px">
-<div style="font-size:15px;font-weight:700;margin-bottom:6px">🍪 Utilizamos cookies</div>
-<div style="font-size:13px;color:rgba(255,255,255,.75);line-height:1.6">Usamos cookies essenciais para o funcionamento da plataforma e cookies analíticos (com o seu consentimento) para melhorar a experiência. Consulte a nossa <a href="cookies.html" style="color:#93c5fd;text-decoration:underline">Política de Cookies</a> e <a href="privacidade.html" style="color:#93c5fd;text-decoration:underline">Política de Privacidade</a>.</div>
+<div style="font-size:15px;font-weight:700;margin-bottom:6px;font-family:'Fraunces',serif">Utilizamos cookies</div>
+<div style="font-size:13px;color:rgba(255,255,255,.7);line-height:1.6">Usamos cookies essenciais para o funcionamento da plataforma e cookies analíticos (com o seu consentimento) para melhorar a experiência. Consulte a nossa <a href="cookies.html" style="color:#9DC3D8;text-decoration:underline">Política de Cookies</a> e <a href="privacidade.html" style="color:#9DC3D8;text-decoration:underline">Política de Privacidade</a>.</div>
 </div>
 <div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0">
 <button onclick="acceptCookies('essential')" style="padding:10px 20px;background:transparent;color:rgba(255,255,255,.7);border:1.5px solid rgba(255,255,255,.3);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Só essenciais</button>
-<button onclick="acceptCookies('all')" style="padding:10px 20px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Aceitar todos</button>
+<button onclick="acceptCookies('all')" style="padding:10px 20px;background:var(--terracota);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Aceitar todos</button>
 <a href="cookies.html" style="padding:10px 20px;background:transparent;color:rgba(255,255,255,.6);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;display:inline-flex;align-items:center">Gerir preferências</a>
 </div>
 </div>
@@ -658,7 +617,6 @@ try{
 const saved=localStorage.getItem('proliga_cookie_consent');
 if(!saved){document.getElementById('cookie-banner').style.display='block';return;}
 const p=JSON.parse(saved);
-// Mostrar banner se não tiver sido aceite ou se for de há mais de 12 meses
 const savedDate=new Date(p.saved);
 const oneYear=365*24*60*60*1000;
 if(Date.now()-savedDate.getTime()>oneYear){
@@ -667,7 +625,6 @@ document.getElementById('cookie-banner').style.display='block';
 }
 }catch(e){document.getElementById('cookie-banner').style.display='block';}
 }
-// Verificar consentimento após carregar a página
 window.addEventListener('load',checkCookieConsent);
 </script>
 </body>
