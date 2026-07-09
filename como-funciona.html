@@ -3,72 +3,243 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Como funciona – Proliga</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<title>Como Funciona – Proliga</title>
+<meta name="description" content="Descobre como funciona a Proliga, para clientes e para profissionais. Passo a passo, perguntas frequentes e tudo o que precisas saber."/>
+<meta name="robots" content="index, follow"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%94%A7</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1E4FD6;--blue-dark:#1740B0;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff;--gold:#B4650A}
-body{font-family:'Inter',sans-serif;color:var(--text);background:var(--white);line-height:1.7}
-a{color:var(--blue);text-decoration:none}
-a:hover{text-decoration:underline}
-nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:64px;display:flex;align-items:center;gap:20px}
-.logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px}
-.logo span{color:var(--gold)}
-.legal-hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:48px 5% 40px;color:#fff;text-align:center}
-.legal-hero h1{font-size:clamp(24px,4vw,40px);font-weight:800;margin-bottom:8px}
-.legal-hero p{font-size:15px;opacity:.8}
-.legal-body{max-width:960px;margin:0 auto;padding:48px 5%}
-.legal-body h2{font-size:24px;font-weight:800;margin:8px 0 24px;text-align:center}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px}
-@media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:500px){.steps{grid-template-columns:1fr}}
-.step-card{background:var(--bg);border-radius:14px;padding:22px 18px;text-align:center}
-.step-num{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.step-card strong{display:block;font-size:15px;margin-bottom:6px}
-.step-card p{font-size:13px;color:var(--muted);margin:0}
-.cta-box{background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-radius:16px;padding:36px;text-align:center;color:#fff;margin-top:24px}
-.cta-box h3{font-size:20px;font-weight:700;margin-bottom:8px}
-.cta-box p{opacity:.85;font-size:14px;margin-bottom:18px}
-.btn{display:inline-block;padding:12px 26px;border-radius:8px;font-weight:700;font-size:14px}
-.btn-gold{background:var(--gold);color:#fff}
-footer{background:var(--text);color:rgba(255,255,255,.6);padding:28px 5%;text-align:center;font-size:13px}
-footer a{color:rgba(255,255,255,.7)}
-footer a:hover{color:#fff}
+:root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#B4650A;--gold-light:#FFF3E4;--green:#1B8A4B;--green-light:#EAF7EE;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--white);line-height:1.6}
+a{text-decoration:none;color:inherit}
+.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:-.15em}
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center}
+.logo{font-weight:800;font-size:20px;color:var(--text);letter-spacing:-.01em}
+.logo em{font-style:normal;color:var(--blue)}
+.navlinks{display:none;gap:26px;margin-left:44px;font-size:14px;font-weight:500;color:var(--muted)}
+.navlinks a:hover{color:var(--text)}
+@media(min-width:900px){.navlinks{display:flex}}
+.navcta{margin-left:auto;display:flex;gap:10px;align-items:center}
+.btn{padding:9px 18px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn-ghost{background:transparent;color:var(--text)}.btn-ghost:hover{background:var(--bg)}
+.btn-line{background:transparent;color:var(--text);border-color:var(--border)}.btn-line:hover{border-color:#B8BCC4}
+.btn-ink{background:var(--text);color:#fff}.btn-ink:hover{background:#000}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 6px 16px rgba(30,79,214,.22)}.btn-blue:hover{background:var(--blue-dark)}
+
+.hero{padding:64px 5% 56px;text-align:center;background:var(--bg);border-bottom:1px solid var(--border)}
+.hero h1{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.02em;margin-bottom:14px}
+.hero p{font-size:16px;color:var(--muted);max-width:520px;margin:0 auto}
+
+section{padding:64px 5%}
+.section-header{text-align:center;margin-bottom:40px}
+.section-header h2{font-size:clamp(22px,2.8vw,30px);font-weight:800;letter-spacing:-.02em;margin-bottom:10px}
+.section-header p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;display:block}
+
+.audience-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:44px;flex-wrap:wrap}
+.audience-tab{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--border);padding:10px 20px;border-radius:99px;font-size:14px;font-weight:700;color:var(--muted)}
+.audience-tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;max-width:1040px;margin:0 auto 64px}
+.step-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:26px 22px;position:relative}
+.step-card .step-icon{width:40px;height:40px;border-radius:10px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.step-num{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:.04em}
+.step-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-card p{font-size:13.5px;color:var(--muted);line-height:1.6}
+
+.pro-steps .step-card .step-icon{background:var(--gold-light);color:var(--gold)}
+.pro-steps .step-num{color:var(--gold)}
+
+.detail-box{max-width:900px;margin:0 auto 64px;background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:32px}
+.detail-box h3{font-size:18px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.detail-box h3 .ic{color:var(--blue)}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.detail-item{display:flex;gap:12px}
+.detail-item .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px}
+.detail-item strong{display:block;font-size:14px;margin-bottom:3px}
+.detail-item span{font-size:13px;color:var(--muted);line-height:1.55}
+
+.faq-wrap{max-width:760px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0}
+.faq-item summary{font-size:15.5px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary .plus{color:var(--blue);font-size:20px;font-weight:400;flex-shrink:0;transition:transform .2s}
+.faq-item[open] summary .plus{transform:rotate(45deg)}
+.faq-item p{font-size:14px;color:var(--muted);margin-top:12px;line-height:1.65;max-width:640px}
+
+.cta-section{background:var(--text);padding:64px 5%;text-align:center}
+.cta-section h2{font-size:clamp(24px,3vw,32px);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:12px}
+.cta-section p{font-size:15px;color:rgba(255,255,255,.6);margin-bottom:28px}
+.cta-section .btn-blue{padding:13px 26px;font-size:15px}
+.cta-section .link{color:rgba(255,255,255,.7);font-size:13.5px;margin-top:16px;display:inline-block}
+.cta-section .link:hover{color:#fff}
+
+footer{background:var(--text);color:rgba(255,255,255,.6);padding:44px 5% 26px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:22px;margin-bottom:36px}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr 1fr}}
+.footer-brand .logo{color:#fff}
+.footer-brand p{font-size:13px;line-height:1.7;max-width:260px;margin-top:12px;color:rgba(255,255,255,.5)}
+.footer-col h4{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em}
+.footer-col a{display:block;font-size:13px;margin-bottom:9px;color:rgba(255,255,255,.5)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:rgba(255,255,255,.4)}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
 <nav>
-<a href="index.html" class="logo">Pro<span>liga</span></a>
+<a href="index.html" class="logo">Pro<em>liga</em></a>
+<div class="navlinks">
+<a href="como-funciona.html" style="color:var(--blue)"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Como Funciona</a>
+<a href="porque-escolher.html"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg> Porquê a Proliga</a>
+<a href="pricing.html"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Preços</a>
+</div>
+<div class="navcta">
+<a href="auth.html?tab=login" class="btn btn-ghost">Entrar</a>
+<a href="auth.html?tab=register" class="btn btn-ink">Registar</a>
+</div>
 </nav>
-<div class="legal-hero">
+
+<div class="hero">
 <h1>Como funciona a Proliga</h1>
-<p>Simples para quem procura, simples para quem presta o serviço.</p>
-</div>
-<div class="legal-body">
-<h2>👤 Para clientes</h2>
-<div class="steps">
-<div class="step-card"><div class="step-num">1</div><strong>Pesquisa</strong><p>Procura por categoria ou palavra-chave, filtra por zona e preço.</p></div>
-<div class="step-card"><div class="step-num">2</div><strong>Compara</strong><p>Vê perfis, avaliações reais e preços de cada profissional.</p></div>
-<div class="step-card"><div class="step-num">3</div><strong>Contacta</strong><p>Envia uma mensagem diretamente através do perfil, sem custos.</p></div>
-<div class="step-card"><div class="step-num">4</div><strong>Contrata</strong><p>Combina os detalhes com o profissional e avalia depois do serviço.</p></div>
+<p>Simples para quem procura um profissional, simples para quem presta o serviço. Sem letras pequenas.</p>
 </div>
 
-<h2>🛠️ Para profissionais</h2>
-<div class="steps">
-<div class="step-card"><div class="step-num">1</div><strong>Cria o perfil</strong><p>Regista-te grátis e apresenta os teus serviços e preços.</p></div>
-<div class="step-card"><div class="step-num">2</div><strong>Recebe contactos</strong><p>Clientes encontram-te na pesquisa e enviam mensagens diretas.</p></div>
-<div class="step-card"><div class="step-num">3</div><strong>Fecha negócio</strong><p>Combinas tudo diretamente com o cliente, sem intermediários.</p></div>
-<div class="step-card"><div class="step-num">4</div><strong>Cresce</strong><p>Sobe para Pro ou Premium para mais visibilidade e destaque nas pesquisas.</p></div>
+<section>
+<div class="section-header">
+<span class="eyebrow">Para clientes</span>
+<h2>Encontra e contrata em 4 passos</h2>
+<p>Do momento em que percebes que precisas de ajuda até teres o trabalho feito</p>
+</div>
+<div class="steps-grid">
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+<span class="step-num">Passo 1</span>
+<h3>Pesquisa</h3>
+<p>Procura por categoria ou palavra-chave (ex: "eletricista"), filtra por distrito e vê quem está disponível perto de ti.</p>
+</div>
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div>
+<span class="step-num">Passo 2</span>
+<h3>Compara</h3>
+<p>Vê perfis completos: fotos de trabalhos anteriores, avaliações reais de outros clientes e preços indicativos.</p>
+</div>
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div>
+<span class="step-num">Passo 3</span>
+<h3>Contacta</h3>
+<p>Envia uma mensagem diretamente pelo chat da Proliga. Sem custos, sem teres de partilhar o teu número antes de estares confortável.</p>
+</div>
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+<span class="step-num">Passo 4</span>
+<h3>Contrata</h3>
+<p>Combina detalhes, preço e datas diretamente com o profissional. Depois do trabalho feito, deixa a tua avaliação.</p>
+</div>
 </div>
 
-<div class="cta-box">
-<h3>Pronto para começar?</h3>
-<p>Cria a tua conta em poucos minutos — é grátis.</p>
-<a href="auth.html?tab=register" class="btn btn-gold">Criar conta grátis →</a>
+<div class="detail-box">
+<h3><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg>Ou publica o que precisas, sem procurar</h3>
+<div class="detail-grid">
+<div class="detail-item"><span class="dot"></span><div><strong>Cria um pedido</strong><span>Descreve o serviço, a zona e o orçamento que tens em mente.</span></div></div>
+<div class="detail-item"><span class="dot"></span><div><strong>Profissionais respondem</strong><span>Quem estiver disponível e interessado contacta-te diretamente.</span></div></div>
+<div class="detail-item"><span class="dot"></span><div><strong>Escolhe com quem falar</strong><span>Compara as respostas e decide com quem avançar.</span></div></div>
 </div>
 </div>
+
+<div class="section-header">
+<span class="eyebrow">Para profissionais</span>
+<h2>Recebe clientes em 4 passos</h2>
+<p>Cria o teu perfil e começa a aparecer nas pesquisas hoje mesmo</p>
+</div>
+<div class="steps-grid pro-steps">
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+<span class="step-num">Passo 1</span>
+<h3>Cria o perfil</h3>
+<p>Regista-te grátis, adiciona a tua bio, especialidades, zona de atuação e fotos de trabalhos anteriores.</p>
+</div>
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+<span class="step-num">Passo 2</span>
+<h3>Verificação</h3>
+<p>A nossa equipa revê o teu perfil em até 24h. O selo Verificado dá mais confiança a quem te contacta.</p>
+</div>
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div>
+<span class="step-num">Passo 3</span>
+<h3>Recebe contactos</h3>
+<p>Clientes encontram-te na pesquisa ou nos pedidos publicados, e enviam-te mensagem direta.</p>
+</div>
+<div class="step-card">
+<div class="step-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div>
+<span class="step-num">Passo 4</span>
+<h3>Cresce</h3>
+<p>Fecha negócios, acumula avaliações reais, e considera o plano Pro ou Premium para mais visibilidade.</p>
+</div>
+</div>
+</section>
+
+<section style="background:var(--bg)">
+<div class="section-header">
+<span class="eyebrow">Dúvidas frequentes</span>
+<h2>Perguntas frequentes</h2>
+<p>O que a maioria das pessoas pergunta antes de começar</p>
+</div>
+<div class="faq-wrap">
+<details class="faq-item" open>
+<summary>A Proliga cobra alguma comissão?</summary>
+<p>Não sobre trabalhos fechados. Os profissionais têm um plano gratuito para sempre com perfil público e mensagens ilimitadas; planos pagos (Pro/Premium) existem apenas para quem quer mais visibilidade nas pesquisas.</p>
+</details>
+<details class="faq-item">
+<summary>Como são verificados os profissionais?</summary>
+<p>A nossa equipa revê manualmente cada perfil novo — dados de contacto, categoria de serviço e consistência da informação — antes de o marcar como "Verificado". Perfis suspeitos ou incompletos não são aprovados.</p>
+</details>
+<details class="faq-item">
+<summary>O que acontece se eu não ficar satisfeito com o serviço?</summary>
+<p>A Proliga é a plataforma de contacto — o acordo do trabalho é entre ti e o profissional. Recomendamos combinar por escrito no chat o que foi acordado, e podes sempre deixar uma avaliação honesta para ajudar outros clientes.</p>
+</details>
+<details class="faq-item">
+<summary>Preciso de pagar para contactar um profissional?</summary>
+<p>Não. Criar conta, procurar profissionais e enviar mensagens é sempre gratuito para clientes.</p>
+</details>
+<details class="faq-item">
+<summary>Posso publicar um pedido e receber várias propostas?</summary>
+<p>Sim. Ao publicar um pedido em <a href="pedidos.html" style="color:var(--blue);font-weight:600">Pedidos</a>, qualquer profissional interessado pode contactar-te — tu escolhes com quem avançar.</p>
+</details>
+<details class="faq-item">
+<summary>A Proliga está disponível em todo o país?</summary>
+<p>Sim, cobrimos todos os distritos de Portugal Continental, além dos Açores e da Madeira.</p>
+</details>
+</div>
+</section>
+
+<section class="cta-section">
+<h2>Ainda tens dúvidas?</h2>
+<p>Explica-nos exatamente o que precisas ou fala connosco diretamente</p>
+<a href="pedidos.html" class="btn btn-blue">Publicar um pedido</a>
+<br/>
+<a href="contacto.html" class="link">Ou contacta-nos diretamente →</a>
+</section>
+
 <footer>
-<p>© 2026 Proliga · <a href="termos.html">Termos</a> · <a href="privacidade.html">Privacidade</a> · <a href="cookies.html">Cookies</a> · <a href="rgpd.html">RGPD</a> · <a href="index.html">Voltar ao início</a></p>
+<div class="footer-grid">
+<div class="footer-brand">
+<a href="index.html" class="logo">Pro<em>liga</em></a>
+<p>O marketplace de serviços profissionais em Portugal. Conectamos clientes a profissionais de confiança.</p>
+<p style="margin-top:12px;font-size:12px"><a href="mailto:geral@proliga.pt" style="color:rgba(255,255,255,.5)">geral@proliga.pt</a></p>
+</div>
+<div class="footer-col"><h4>Categorias</h4><a href="categoria.html?cat=Eletricistas">Eletricistas</a><a href="categoria.html?cat=Canalizadores">Canalizadores</a><a href="categoria.html?cat=Pintores">Pintores</a><a href="categoria.html">Ver todas →</a></div>
+<div class="footer-col"><h4>Empresa</h4><a href="sobre.html">Sobre nós</a><a href="como-funciona.html">Como funciona</a><a href="porque-escolher.html">Porquê a Proliga</a><a href="pricing.html">Planos e Preços</a><a href="contacto.html">Contacto</a></div>
+<div class="footer-col"><h4>Legal</h4><a href="termos.html">Termos de Serviço</a><a href="privacidade.html">Política de Privacidade</a><a href="cookies.html">Política de Cookies</a><a href="rgpd.html">RGPD</a></div>
+</div>
+<div class="footer-bottom">
+<span>© 2026 Proliga · Portugal · Todos os direitos reservados</span>
+<span>Feito com cuidado para profissionais locais</span>
+</div>
 </footer>
+
 </body>
 </html>
