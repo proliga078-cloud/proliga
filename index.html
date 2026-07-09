@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Proliga – Marketplace de Profissionais no Porto e Maia</title>
-  <meta name="description" content="Encontra e contrata profissionais verificados no Porto e na Maia. Eletricistas, canalizadores, pintores, jardineiros, designers e muito mais. Grátis para começar."/>
-  <meta name="keywords" content="profissionais porto, eletricista porto, canalizador porto, pintor porto, profissionais maia, marketplace serviços porto maia, contratar profissional"/>
+  <title>Proliga – Marketplace de Profissionais em Portugal</title>
+  <meta name="description" content="Encontra e contrata profissionais verificados em Portugal. Eletricistas, canalizadores, pintores, jardineiros, designers e muito mais. Grátis para começar."/>
+  <meta name="keywords" content="profissionais portugal, eletricista, canalizador, pintor, marketplace serviços portugal, contratar profissional"/>
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://proliga-app.netlify.app"/>
-  <meta property="og:title" content="Proliga – Marketplace de Profissionais no Porto e Maia"/>
-  <meta property="og:description" content="O único marketplace local 100% dedicado ao Porto e à Maia. Profissionais verificados, avaliações reais, sem comissões."/>
+  <meta property="og:title" content="Proliga – Marketplace de Profissionais em Portugal"/>
+  <meta property="og:description" content="O marketplace de profissionais verificados em Portugal. Avaliações reais, contacto direto."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://proliga-app.netlify.app"/>
   <meta property="og:locale" content="pt_PT"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Proliga – Profissionais no Porto e Maia"/>
-  <meta name="twitter:description" content="Contrata profissionais verificados perto de ti. 16 categorias, Porto & Maia."/>
+  <meta name="twitter:title" content="Proliga – Profissionais em Portugal"/>
+  <meta name="twitter:description" content="Contrata profissionais verificados perto de ti. 16 categorias, em todo o país."/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -208,15 +208,33 @@
 </nav>
 
 <div class="hero">
-  <div class="hero-badge">📍 Porto &amp; Maia · Profissionais Verificados</div>
+  <div class="hero-badge">🇵🇹 Portugal · Profissionais Verificados</div>
   <h1>Encontra o <span>Profissional Certo</span><br/>Perto de Ti</h1>
-  <p>O marketplace local de serviços no Porto e na Maia. Compara orçamentos, lê avaliações reais e contrata em minutos.</p>
+  <p>O marketplace de serviços profissionais em Portugal. Compara orçamentos, lê avaliações reais e contrata em minutos.</p>
   <div class="hero-search">
     <input type="text" id="hero-input" placeholder="Que serviço precisas? Ex: eletricista, pintor..."/>
     <select id="hero-loc">
-      <option value="">Toda a área</option>
+      <option value="">Todo o país</option>
+      <option value="Aveiro">Aveiro</option>
+      <option value="Beja">Beja</option>
+      <option value="Braga">Braga</option>
+      <option value="Bragança">Bragança</option>
+      <option value="Castelo Branco">Castelo Branco</option>
+      <option value="Coimbra">Coimbra</option>
+      <option value="Évora">Évora</option>
+      <option value="Faro">Faro</option>
+      <option value="Guarda">Guarda</option>
+      <option value="Leiria">Leiria</option>
+      <option value="Lisboa">Lisboa</option>
+      <option value="Portalegre">Portalegre</option>
       <option value="Porto">Porto</option>
-      <option value="Maia">Maia</option>
+      <option value="Santarém">Santarém</option>
+      <option value="Setúbal">Setúbal</option>
+      <option value="Viana do Castelo">Viana do Castelo</option>
+      <option value="Vila Real">Vila Real</option>
+      <option value="Viseu">Viseu</option>
+      <option value="Açores">Açores</option>
+      <option value="Madeira">Madeira</option>
     </select>
     <button onclick="doSearch()">Procurar</button>
   </div>
@@ -233,14 +251,12 @@
     <div class="hero-stat"><strong id="stat-pros">...</strong><span>Profissionais</span></div>
     <div class="hero-stat"><strong id="stat-reviews">...</strong><span>Avaliações</span></div>
     <div class="hero-stat"><strong>16</strong><span>Categorias</span></div>
-    <div class="hero-stat"><strong>Porto &amp; Maia</strong><span>Cobertura</span></div>
+    <div class="hero-stat"><strong>Portugal</strong><span>Cobertura Nacional</span></div>
   </div>
 </div>
 
 <div class="loc-banner">
-  <div class="loc-chip">📍 <strong>Porto</strong> · Centro, Boavista, Foz, Paranhos, Campanhã, Cedofeita</div>
-  <div style="width:1px;height:20px;background:var(--blue);opacity:.3"></div>
-  <div class="loc-chip">📍 <strong>Maia</strong> · Castêlo da Maia, Águas Santas, Moreira, Vermoim, Folgosa</div>
+  <div class="loc-chip">🇵🇹 <strong>Portugal</strong> · Todos os distritos, do Minho ao Algarve, incluindo ilhas</div>
 </div>
 
 <section>
@@ -304,7 +320,7 @@
     <div class="step-card">
       <div class="step-num">1</div>
       <h3>Procura o Serviço</h3>
-      <p>Usa a pesquisa ou navega pelas categorias para encontrar o profissional certo na tua zona do Porto ou Maia.</p>
+      <p>Usa a pesquisa ou navega pelas categorias para encontrar o profissional certo na tua zona.</p>
     </div>
     <div class="step-card">
       <div class="step-num">2</div>
@@ -322,13 +338,13 @@
 <section class="why-section">
   <div class="section-header">
     <h2>Porquê a <span style="color:var(--blue)">Proliga</span>?</h2>
-    <p>O único marketplace exclusivamente dedicado ao Porto e à Maia</p>
+    <p>O marketplace de confiança para encontrar profissionais em Portugal</p>
   </div>
   <div class="why-grid">
-    <div class="why-card"><div class="why-icon">🎯</div><div><h3>100% Local</h3><p>Apenas profissionais do Porto e da Maia. Chega de encontrar alguém do outro lado do país sem conhecer a zona.</p></div></div>
+    <div class="why-card"><div class="why-icon">🎯</div><div><h3>100% Português</h3><p>Profissionais verificados em todo o país. Encontra alguém perto de ti, esteja onde estiveres.</p></div></div>
     <div class="why-card"><div class="why-icon">✅</div><div><h3>Todos Verificados</h3><p>Cada perfil é revisto antes de ser publicado. Zero perfis falsos, abandonados ou desatualizados.</p></div></div>
     <div class="why-card"><div class="why-icon">💬</div><div><h3>Contacto Direto</h3><p>Fala diretamente com o profissional. Sem formulários intermináveis, sem call centers, sem intermediários.</p></div></div>
-    <div class="why-card"><div class="why-icon">💰</div><div><h3>Sem Comissões</h3><p>Não cobramos nada por cada trabalho fechado. O profissional fica com 100% do que cobra. Sempre.</p></div></div>
+    <div class="why-card"><div class="why-icon">📢</div><div><h3>Pedidos à Medida</h3><p>Publica o que precisas e deixa os profissionais virem até ti. Sem teres de procurar um a um.</p></div></div>
     <div class="why-card"><div class="why-icon">⭐</div><div><h3>Avaliações Reais</h3><p>Só clientes que efetivamente contrataram podem avaliar. Nada de reviews compradas ou falsas.</p></div></div>
     <div class="why-card"><div class="why-icon">🚀</div><div><h3>Grátis para Começar</h3><p>Profissional ou cliente, cria a tua conta sem pagar nada. Upgradia apenas quando precisares de mais.</p></div></div>
   </div>
@@ -343,9 +359,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>100% Porto &amp; Maia</td><td class="hl yes">✅</td><td class="no">❌</td><td class="no">❌</td></tr>
+        <tr><td>Cobertura nacional</td><td class="hl yes">✅</td><td class="yes">✅</td><td class="yes">✅</td></tr>
         <tr><td>Perfis verificados</td><td class="hl yes">✅</td><td class="no">❌</td><td class="partial">⚠️ Parcial</td></tr>
-        <tr><td>Sem comissão por trabalho</td><td class="hl yes">✅</td><td class="partial">⚠️</td><td class="no">❌</td></tr>
+        <tr><td>Pedidos de clientes</td><td class="hl yes">✅</td><td class="yes">✅</td><td class="no">❌</td></tr>
         <tr><td>Avaliações verificadas</td><td class="hl yes">✅</td><td class="no">❌</td><td class="yes">✅</td></tr>
         <tr><td>Portfólio visual</td><td class="hl yes">✅</td><td class="no">❌</td><td class="partial">⚠️ Limitado</td></tr>
         <tr><td>Plano 100% gratuito</td><td class="hl yes">✅</td><td class="yes">✅</td><td class="no">❌</td></tr>
@@ -369,26 +385,24 @@
 
 <section class="loc-section">
   <div class="section-header">
-    <h2>Servimos o Porto e a Maia</h2>
-    <p>Profissionais locais, a minutos de ti</p>
+    <h2>Já disponível em todo o Portugal</h2>
+    <p>De Norte a Sul, incluindo Açores e Madeira</p>
   </div>
   <div class="loc-grid">
     <div class="loc-card" onclick="location.href='categoria.html?loc=Porto'">
-      <h3>🏙️ Porto</h3>
-      <p>Centenas de profissionais qualificados em todas as zonas da cidade do Porto.</p>
-      <div class="loc-zones">
-        <span class="loc-zone">Centro</span><span class="loc-zone">Boavista</span><span class="loc-zone">Foz do Douro</span>
-        <span class="loc-zone">Paranhos</span><span class="loc-zone">Campanhã</span><span class="loc-zone">Cedofeita</span>
-        <span class="loc-zone">Bonfim</span><span class="loc-zone">Massarelos</span>
-      </div>
+      <h3>🏙️ Norte</h3>
+      <p>Porto, Braga, Viana do Castelo, Vila Real, Bragança.</p>
+      <div class="loc-zones"><span class="loc-zone">Porto</span><span class="loc-zone">Braga</span><span class="loc-zone">Viana do Castelo</span><span class="loc-zone">Vila Real</span><span class="loc-zone">Bragança</span></div>
     </div>
-    <div class="loc-card" onclick="location.href='categoria.html?loc=Maia'">
-      <h3>🌆 Maia</h3>
-      <p>Profissionais de confiança em todos os concelhos e freguesias da Maia.</p>
-      <div class="loc-zones">
-        <span class="loc-zone">Castêlo da Maia</span><span class="loc-zone">Águas Santas</span><span class="loc-zone">Moreira</span>
-        <span class="loc-zone">Vermoim</span><span class="loc-zone">Folgosa</span><span class="loc-zone">Gemunde</span><span class="loc-zone">Nogueira</span>
-      </div>
+    <div class="loc-card" onclick="location.href='categoria.html?loc=Lisboa'">
+      <h3>🏛️ Centro &amp; Lisboa</h3>
+      <p>Lisboa, Coimbra, Aveiro, Leiria, Santarém, Castelo Branco, Viseu, Guarda.</p>
+      <div class="loc-zones"><span class="loc-zone">Lisboa</span><span class="loc-zone">Coimbra</span><span class="loc-zone">Aveiro</span><span class="loc-zone">Leiria</span><span class="loc-zone">Santarém</span></div>
+    </div>
+    <div class="loc-card" onclick="location.href='categoria.html?loc=Faro'">
+      <h3>🌊 Sul &amp; Ilhas</h3>
+      <p>Faro, Setúbal, Évora, Beja, Portalegre, Açores, Madeira.</p>
+      <div class="loc-zones"><span class="loc-zone">Faro</span><span class="loc-zone">Setúbal</span><span class="loc-zone">Évora</span><span class="loc-zone">Açores</span><span class="loc-zone">Madeira</span></div>
     </div>
   </div>
 </section>
@@ -419,7 +433,7 @@
     </div>
     <div class="t-card">
       <div class="t-stars">★★★★★</div>
-      <p class="t-text">"Sou eletricista há 12 anos e nunca tive tanta visibilidade. A Proliga deu-me 20 novos clientes no primeiro mês, sem pagar comissões a ninguém."</p>
+      <p class="t-text">"Sou eletricista há 12 anos e nunca tive tanta visibilidade. A Proliga deu-me clientes novos logo no primeiro mês, com perfil totalmente gratuito."</p>
       <div class="t-author">
         <div class="t-avatar">JS</div>
         <div><div class="t-name">João Silva</div><div class="t-role">Eletricista · Maia</div></div>
@@ -427,7 +441,7 @@
     </div>
     <div class="t-card">
       <div class="t-stars">★★★★★</div>
-      <p class="t-text">"Finalmente uma alternativa ao Fixando que não cobra por cada lead. O perfil é gratuito, o contacto é direto. É o que os profissionais do Porto precisavam."</p>
+      <p class="t-text">"Finalmente uma alternativa ao Fixando que não cobra por cada lead. O perfil é gratuito, o contacto é direto. É o que os profissionais em Portugal precisavam."</p>
       <div class="t-author">
         <div class="t-avatar">MC</div>
         <div><div class="t-name">Miguel Cardoso</div><div class="t-role">Canalizador · Porto, Boavista</div></div>
@@ -460,7 +474,7 @@
 <div class="step-card" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px)">
 <div class="step-num" style="background:var(--gold);color:#fff">4</div>
 <h3 style="color:#fff">Recebe clientes</h3>
-<p style="color:rgba(255,255,255,.65)">Os clientes encontram-te, enviam mensagem direta e tu fazes o orçamento. Sem intermediários, sem comissões.</p>
+<p style="color:rgba(255,255,255,.65)">Os clientes encontram-te, enviam mensagem direta e tu fazes o orçamento. Sem intermediários.</p>
 </div>
 </div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:1020px;margin:0 auto 40px">
@@ -468,10 +482,10 @@
 <span style="font-size:28px">🆓</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Plano Grátis para sempre</div><div style="color:rgba(255,255,255,.6);font-size:13px">Perfil público, mensagens ilimitadas. Sem expiração.</div></div>
 </div>
 <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
-<span style="font-size:28px">🚫</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Zero comissões</div><div style="color:rgba(255,255,255,.6);font-size:13px">Cobras €500? Recebes €500. Nunca cobramos por trabalho fechado.</div></div>
+<span style="font-size:28px">💬</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Chat direto na plataforma</div><div style="color:rgba(255,255,255,.6);font-size:13px">Fala com o cliente sem sair do site. Sem WhatsApp, sem trocas de número.</div></div>
 </div>
 <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
-<span style="font-size:28px">📍</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Clientes locais</div><div style="color:rgba(255,255,255,.6);font-size:13px">Só clientes do Porto e Maia. Sem deslocações desnecessárias.</div></div>
+<span style="font-size:28px">📍</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Clientes em todo o país</div><div style="color:rgba(255,255,255,.6);font-size:13px">Aparece nas pesquisas da tua cidade e região.</div></div>
 </div>
 <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px;display:flex;gap:14px;align-items:flex-start">
 <span style="font-size:28px">⭐</span><div><div style="color:#fff;font-weight:700;font-size:14px;margin-bottom:4px">Avaliações que ficam</div><div style="color:rgba(255,255,255,.6);font-size:13px">Cada bom trabalho constrói a tua reputação. O teu histórico é teu.</div></div>
@@ -485,7 +499,7 @@
 
 <section class="cta-section">
   <h2>És Profissional? <span style="color:var(--blue)">Junta-te à Proliga</span></h2>
-  <p>Cria o teu perfil gratuito e começa a receber clientes hoje. Sem comissões, sem surpresas.</p>
+  <p>Cria o teu perfil gratuito e começa a receber clientes hoje. Sem letras pequenas.</p>
   <div class="cta-btns">
     <a href="auth.html?tab=register" class="btn btn-solid btn-lg">Criar perfil grátis →</a>
     <a href="pricing.html" class="btn btn-outline btn-lg">Ver planos</a>
@@ -496,7 +510,7 @@
 <div class="footer-grid">
 <div class="footer-brand">
 <a href="index.html" class="logo" style="color:rgba(255,255,255,.9)">Pro<span>liga</span></a>
-<p>O marketplace local de serviços profissionais no Porto e na Maia. Conectamos clientes a profissionais de confiança.</p>
+<p>O marketplace de serviços profissionais em Portugal. Conectamos clientes a profissionais de confiança.</p>
 <p style="margin-top:12px;font-size:12px">📧 <a href="mailto:geral@proliga.pt" style="color:rgba(255,255,255,.6)">geral@proliga.pt</a></p>
 </div>
 <div class="footer-col">
@@ -510,11 +524,11 @@
 </div>
 <div class="footer-col">
 <h4>Localizações</h4>
+<a href="categoria.html?loc=Lisboa">Lisboa</a>
 <a href="categoria.html?loc=Porto">Porto</a>
-<a href="categoria.html?loc=Maia">Maia</a>
-<a href="categoria.html?loc=Porto&zona=Boavista">Boavista</a>
-<a href="categoria.html?loc=Porto&zona=Foz do Douro">Foz do Douro</a>
-<a href="categoria.html?loc=Maia&zona=Cast%C3%AAlo da Maia">Castêlo da Maia</a>
+<a href="categoria.html?loc=Braga">Braga</a>
+<a href="categoria.html?loc=Coimbra">Coimbra</a>
+<a href="categoria.html?loc=Faro">Faro</a>
 </div>
 <div class="footer-col">
 <h4>Empresa</h4>
@@ -533,7 +547,7 @@
 </div>
 </div>
 <div class="footer-bottom">
-<span>© 2026 Proliga · Porto &amp; Maia · Todos os direitos reservados</span>
+<span>© 2026 Proliga · Portugal · Todos os direitos reservados</span>
 <span>Feito com ❤️ para profissionais locais</span>
 </div>
 </footer>
@@ -606,7 +620,7 @@ async function loadFeatured(){
         <div class="pro-card-name">${pro.name}</div>
         <div class="pro-card-cat"><span class="plan-dot ${pro.plan||'free'}"></span>${pro.category||'Profissional'}</div>
         <div class="pro-rating"><span class="stars">${stars}</span><span style="font-weight:700;margin-left:2px">${avg}</span><span style="color:var(--muted)">&nbsp;${count}</span></div>
-        <div class="pro-loc">📍 ${pro.location||'Porto / Maia'}</div>
+        <div class="pro-loc">📍 ${pro.location||'Portugal'}</div>
         <div class="pro-price">${price}</div>
         <div style="margin-top:8px">${verif}</div>
       </div>
