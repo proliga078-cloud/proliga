@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Profissionais – Proliga | Porto &amp; Maia</title>
-  <meta name="description" content="Encontra profissionais verificados no Porto e na Maia. Filtra por categoria, zona e avaliação. Contacto direto, sem intermediários."/>
+  <title>Profissionais – Proliga | Portugal</title>
+  <meta name="description" content="Encontra profissionais verificados em Portugal. Filtra por categoria, distrito e avaliação. Contacto direto, sem intermediários."/>
   <meta name="robots" content="index, follow"/>
-  <meta property="og:title" content="Profissionais no Porto e Maia – Proliga"/>
-  <meta property="og:description" content="16 categorias de profissionais verificados. Eletricistas, pintores, jardineiros e muito mais no Porto e na Maia."/>
+  <meta property="og:title" content="Profissionais em Portugal – Proliga"/>
+  <meta property="og:description" content="16 categorias de profissionais verificados em todo o país. Eletricistas, pintores, jardineiros e muito mais."/>
   <meta property="og:type" content="website"/>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -149,7 +149,7 @@
     <span id="breadcrumb-cat">Todos os Profissionais</span>
   </div>
   <h1 id="page-title">Profissionais</h1>
-  <p id="page-desc">Porto &amp; Maia · Todos verificados e avaliados</p>
+  <p id="page-desc">Portugal · Todos verificados e avaliados</p>
   <div class="cat-chips" id="cat-chips">
     <span class="cat-chip" data-cat="" onclick="setCat('')">Todos</span>
     <span class="cat-chip" data-cat="Eletricistas" onclick="setCat('Eletricistas')">⚡ Eletricistas</span>
@@ -187,20 +187,7 @@
       <span style="font-weight:700;font-size:16px">Filtros</span>
       <button onclick="closeSidebar()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">×</button>
     </div>
-    <div class="filter-card">
-      <div class="filter-title">Localização</div>
-      <div class="filter-group">
-        <label class="filter-label"><input type="radio" name="loc" value="" onchange="filters.loc='';loadPros()"> <span>Toda a área</span></label>
-        <label class="filter-label"><input type="radio" name="loc" value="Porto" onchange="filters.loc='Porto';loadPros()"> <span>Porto</span></label>
-        <label class="filter-label"><input type="radio" name="loc" value="Maia" onchange="filters.loc='Maia';loadPros()"> <span>Maia</span></label>
-      </div>
-      <div id="zona-group" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--bg)">
-        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">ZONA</div>
-        <div id="zona-options"></div>
-      </div>
-    </div>
-
-    <div class="filter-card">
+    <div class="filter-card">\n<div class="filter-title">Distrito</div>\n<div class="filter-group">\n<select class="range-input" id="f-loc-select" style="width:100%" onchange="filters.loc=this.value;loadPros()">\n<option value="">Todo o país</option>\n<option value="Aveiro">Aveiro</option>\n<option value="Beja">Beja</option>\n<option value="Braga">Braga</option>\n<option value="Bragança">Bragança</option>\n<option value="Castelo Branco">Castelo Branco</option>\n<option value="Coimbra">Coimbra</option>\n<option value="Évora">Évora</option>\n<option value="Faro">Faro</option>\n<option value="Guarda">Guarda</option>\n<option value="Leiria">Leiria</option>\n<option value="Lisboa">Lisboa</option>\n<option value="Portalegre">Portalegre</option>\n<option value="Porto">Porto</option>\n<option value="Santarém">Santarém</option>\n<option value="Setúbal">Setúbal</option>\n<option value="Viana do Castelo">Viana do Castelo</option>\n<option value="Vila Real">Vila Real</option>\n<option value="Viseu">Viseu</option>\n<option value="Açores">Açores</option>\n<option value="Madeira">Madeira</option>\n</select>\n</div>\n</div>\n\n<div class="filter-card">
       <div class="filter-title">Plano / Destaque</div>
       <label class="filter-label"><input type="checkbox" id="f-premium" onchange="loadPros()"> <span>👑 Premium</span></label>
       <label class="filter-label"><input type="checkbox" id="f-pro" onchange="loadPros()"> <span>🚀 Pro</span></label>
@@ -257,9 +244,6 @@ const filters={
   minRating:0,page:1,perPage:12
 }
 
-const PORTO_ZONES=['Centro','Boavista','Foz do Douro','Paranhos','Campanhã','Cedofeita','Bonfim','Massarelos','Aldoar','Nevogilde']
-const MAIA_ZONES=['Castêlo da Maia','Águas Santas','Moreira','Vermoim','Folgosa','Gemunde','Nogueira','Pedrouços','Silva Escura']
-
 async function init(){
   const{data:{session}}=await db.auth.getSession()
   if(session){
@@ -276,9 +260,8 @@ async function init(){
   })
   // Set loc radio
   if(filters.loc){
-    const r=document.querySelector(`input[name="loc"][value="${filters.loc}"]`)
-    if(r)r.checked=true
-    showZones(filters.loc)
+    const sel=document.getElementById('f-loc-select')
+    if(sel)sel.value=filters.loc
   }
   updateHeader()
   loadPros()
@@ -290,7 +273,7 @@ function updateHeader(){
   document.getElementById('page-title').textContent=title
   document.getElementById('breadcrumb-cat').textContent=title
   document.title=`${title} – Proliga`
-  let desc='Porto &amp; Maia · Todos verificados e avaliados'
+  let desc='Portugal · Todos verificados e avaliados'
   if(loc)desc=`${loc} · Todos verificados e avaliados`
   document.getElementById('page-desc').innerHTML=desc
 }
@@ -299,18 +282,6 @@ function setCat(cat){
   filters.cat=cat;filters.page=1
   document.querySelectorAll('.cat-chip').forEach(c=>c.classList.toggle('active',c.dataset.cat===cat))
   updateHeader();loadPros()
-}
-
-function showZones(loc){
-  const zones=loc==='Porto'?PORTO_ZONES:loc==='Maia'?MAIA_ZONES:[]
-  const grp=document.getElementById('zona-group')
-  if(!zones.length){grp.style.display='none';return}
-  grp.style.display='block'
-  document.getElementById('zona-options').innerHTML=zones.map(z=>`
-    <label class="filter-label">
-      <input type="radio" name="zona" value="${z}" ${filters.zona===z?'checked':''} onchange="filters.zona='${z}';loadPros()">
-      <span>${z}</span>
-    </label>`).join('')+`<label class="filter-label"><input type="radio" name="zona" value="" ${!filters.zona?'checked':''} onchange="filters.zona='';loadPros()"><span>Toda a ${loc}</span></label>`
 }
 
 function applySearch(){
@@ -454,23 +425,17 @@ function closeSidebar(){
 }
 function clearFilters(){
   filters.cat='';filters.loc='';filters.zona='';filters.q='';filters.minRating=0;filters.page=1
-  document.querySelectorAll('input[name="loc"]')[0].checked=true
+  document.getElementById('f-loc-select').value=''
   document.querySelectorAll('input[name="rating"]')[0].checked=true
   document.getElementById('f-premium').checked=false
   document.getElementById('f-pro').checked=false
   document.getElementById('f-verified').checked=false
   document.getElementById('price-min').value=''
   document.getElementById('price-max').value=''
-  document.getElementById('zona-group').style.display='none'
   document.getElementById('nav-q').value=''
   document.querySelectorAll('.cat-chip').forEach(c=>c.classList.toggle('active',c.dataset.cat===''))
   updateHeader();loadPros()
 }
-
-// Watch loc radio changes to show zones
-document.querySelectorAll('input[name="loc"]').forEach(r=>{
-  r.addEventListener('change',()=>showZones(r.value))
-})
 
 init()
 </script>
