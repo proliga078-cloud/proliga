@@ -28,6 +28,8 @@
     .logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px;white-space:nowrap}.logo span{color:var(--gold)}
     .nav-search{flex:1;max-width:480px;position:relative;display:none}
     @media(min-width:768px){.nav-search{display:block}}
+    .nav-links{display:none!important}
+    @media(min-width:1080px){.nav-links{display:flex!important}}
     .nav-search input{width:100%;padding:9px 16px 9px 40px;border:1.5px solid var(--border);border-radius:99px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
     .nav-search input:focus{border-color:var(--blue)}
     .nav-search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
@@ -194,7 +196,11 @@
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" placeholder="Ex: eletricista, pintor, designer..." onkeydown="if(event.key==='Enter')doSearch(this.value)"/>
   </div>
-  <a href="pedidos.html" class="btn btn-ghost" style="white-space:nowrap">📢 Pedidos</a>
+  <div class="nav-links" style="display:flex;gap:6px">
+<a href="como-funciona.html" class="btn btn-ghost" style="white-space:nowrap">Como Funciona</a>
+<a href="pricing.html" class="btn btn-ghost" style="white-space:nowrap">Preços</a>
+<a href="pedidos.html" class="btn btn-ghost" style="white-space:nowrap">📢 Pedidos</a>
+</div>
 <div class="nav-right">
     <div id="nav-guest" style="display:flex;gap:8px">
       <a href="auth.html?tab=login" class="btn btn-ghost">Entrar</a>
