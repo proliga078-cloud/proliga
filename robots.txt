@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /dashboard.html
+Disallow: /messages.html
+Disallow: /auth.html
+
+Sitemap: https://proliga-app.netlify.app/sitemap.xml
