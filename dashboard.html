@@ -137,7 +137,7 @@
     <div class="nav-item" data-page="profile" onclick="showPage('profile')"><span class="icon">👤</span> O Meu Perfil</div>
     <div class="nav-item" data-page="services" onclick="showPage('services')"><span class="icon">🛠️</span> Serviços</div>
     <div class="nav-item" data-page="portfolio" onclick="showPage('portfolio')"><span class="icon">📸</span> Portfólio</div>
-    <div class="nav-item" onclick="location.href='messages.html'"><span class="icon">💬</span> Chat</div>
+    <div class="nav-item" onclick="location.href='messages.html'"><span class="icon">💬</span> Chat <span id="chat-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
 <div class="nav-item" data-page="myrequests" onclick="showPage('myrequests')"><span class="icon">📢</span> Os Meus Pedidos</div>
 <div class="nav-item" data-page="messages" onclick="showPage('messages')"><span class="icon">📩</span> Contactos (Formulário) <span id="msg-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
     <div class="nav-item" data-page="reviews" onclick="showPage('reviews')"><span class="icon">⭐</span> Avaliações</div>
@@ -466,6 +466,7 @@ async function init(){
       loadMessages()
       loadReviews()
       loadServices()
+      loadChatUnread()
     }
     checkUpgrade()
   } catch(e) {
@@ -733,6 +734,16 @@ function showPage(name){
   if(name==='messages')loadMessages()
   if(name==='reviews')loadReviews()
   if(name==='myrequests')loadMyRequests()
+}
+
+async function loadChatUnread(){
+  const{data:convos}=await db.from('conversations').select('id').or('client_id.eq.'+profileId+',professional_id.eq.'+profileId)
+  const badge=document.getElementById('chat-badge')
+  if(!convos||!convos.length){badge.style.display='none';return}
+  const ids=convos.map(c=>c.id)
+  const{count}=await db.from('messages').select('*',{count:'exact',head:true}).in('conversation_id',ids).eq('read',false).neq('sender_id',profileId)
+  if(count>0){badge.textContent=count;badge.style.display='inline-block'}
+  else badge.style.display='none'
 }
 
 // MEUS PEDIDOS
