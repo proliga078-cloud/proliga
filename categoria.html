@@ -371,7 +371,7 @@ async function loadPros(){
   }
 
   const total=count||filtered.length
-  document.getElementById('results-count').innerHTML=`<strong>${total}</strong> profissional${total!==1?'is':''} encontrado${total!==1?'s':''}`
+  document.getElementById('results-count').innerHTML=`<strong>${total}</strong> ${total!==1?'profissionais encontrados':'profissional encontrado'}`
 
   container.innerHTML=`<div class="pros-grid">${filtered.map(pro=>{
     const r=rMap[pro.id];const avg=r?(r.s/r.c).toFixed(1):null;const n=r?Math.round(r.s/r.c):0
@@ -386,7 +386,7 @@ async function loadPros(){
       <div class="pro-card-cover" style="${covStyle}">${planBadge}<div class="pro-avatar">${avatar}</div></div>
       <div class="pro-card-body">
         <div class="pro-card-name">${pro.name} ${verif}</div>
-        <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Porto/Maia'}</div>
+        <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
         <div class="pro-rating"><span class="stars">${stars}</span>&nbsp;<strong>${avg||'Novo'}</strong>&nbsp;<span style="color:var(--muted)">${r?`(${r.c})`:'sem avaliações'}</span></div>
         ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
         <div class="pro-footer">
