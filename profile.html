@@ -221,8 +221,13 @@
         <div class="card-title">✍️ Deixar Avaliação</div>
         <div class="msg error" id="rev-error"></div>
         <div class="msg success" id="rev-success"></div>
-        <div class="form-group"><label>O teu nome *</label><input id="rev-name" type="text" placeholder="João Silva"/></div>
-        <div class="form-group"><label>Email *</label><input id="rev-email" type="email" placeholder="joao@email.com"/></div>
+        <div id="rev-loggedout" style="display:none;font-size:13px;color:var(--muted);line-height:1.6">
+          Só podes avaliar profissionais com quem já falaste no chat. <a href="auth.html?tab=login" style="color:var(--blue);font-weight:600">Inicia sessão</a> para deixares a tua avaliação.
+        </div>
+        <div id="rev-noconvo" style="display:none;font-size:13px;color:var(--muted);line-height:1.6">
+          Só podes avaliar profissionais com quem já tiveste uma conversa. <a href="#" onclick="startConversation();return false" style="color:var(--blue);font-weight:600">Envia uma mensagem primeiro</a>.
+        </div>
+        <div id="rev-form-fields">
         <div class="form-group">
           <label>Classificação *</label>
           <div class="star-select">
@@ -233,8 +238,9 @@
             <button class="star-btn" data-v="5" onclick="setStar(5)">★</button>
           </div>
         </div>
-        <div class="form-group"><label>Comentário (opcional)</label><textarea id="rev-comment" placeholder="Conta a tua experiência..."></textarea></div>
-        <button class="btn-submit" id="rev-btn" onclick="submitReview()">Publicar avaliação</button>
+        <div class="form-group"><label>Comentário</label><textarea id="rev-comment" placeholder="Como correu o serviço?"></textarea></div>
+        <button class="btn btn-primary" id="rev-btn" onclick="submitReview()">Publicar avaliação</button>
+        </div>
       </div>
     </div>
   </div>
@@ -338,6 +344,7 @@ function renderHeader(pro){
 }
 
 async function loadReviews(){
+  checkReviewEligibility()
   const{data}=await db.from('reviews').select('*').eq('professional_id',proId).order('created_at',{ascending:false})
   const reviews=data||[]
   if(reviews.length>0){
@@ -455,19 +462,33 @@ function setStar(v){
 }
 
 async function submitReview(){
-  const name=document.getElementById('rev-name').value.trim()
-  const email=document.getElementById('rev-email').value.trim()
   const comment=document.getElementById('rev-comment').value.trim()
   const btn=document.getElementById('rev-btn')
-  if(!name||!email)return showMsg('rev-error','Preenche nome e email.')
+  const{data:{session}}=await db.auth.getSession()
+  if(!session)return showMsg('rev-error','Precisas de iniciar sessão para avaliar.')
   if(!currentRating)return showMsg('rev-error','Escolhe uma classificação.')
   btn.disabled=true;btn.textContent='A publicar...'
-  const{error}=await db.from('reviews').insert({professional_id:proId,reviewer_name:name,reviewer_email:email,rating:currentRating,comment})
-  if(error){showMsg('rev-error','Erro ao publicar. Tenta de novo.');btn.disabled=false;btn.textContent='Publicar avaliação';return}
-  showMsg('rev-success','Avaliação publicada! Obrigado.','success')
-  document.getElementById('rev-name').value='';document.getElementById('rev-email').value='';document.getElementById('rev-comment').value='';setStar(0)
+  const{error}=await db.from('reviews').insert({professional_id:proId,client_id:session.user.id,rating:currentRating,comment})
   btn.disabled=false;btn.textContent='Publicar avaliação'
+  if(error){
+    showMsg('rev-error','Só podes avaliar profissionais com quem já falaste no chat.')
+    return
+  }
+  showMsg('rev-success','Avaliação publicada! Obrigado.','success')
+  document.getElementById('rev-comment').value='';setStar(0)
   setTimeout(loadReviews,800)
+}
+
+async function checkReviewEligibility(){
+  const{data:{session}}=await db.auth.getSession()
+  const loggedout=document.getElementById('rev-loggedout')
+  const noconvo=document.getElementById('rev-noconvo')
+  const fields=document.getElementById('rev-form-fields')
+  if(!session){loggedout.style.display='block';noconvo.style.display='none';fields.style.display='none';return}
+  if(session.user.id===proId){loggedout.style.display='none';noconvo.style.display='none';fields.style.display='none';return}
+  const{data:convo}=await db.from('conversations').select('id').or('and(client_id.eq.'+session.user.id+',professional_id.eq.'+proId+'),and(professional_id.eq.'+session.user.id+',client_id.eq.'+proId+')').limit(1).maybeSingle()
+  if(!convo){loggedout.style.display='none';noconvo.style.display='block';fields.style.display='none';return}
+  loggedout.style.display='none';noconvo.style.display='none';fields.style.display='block'
 }
 
 async function startConversation(){
