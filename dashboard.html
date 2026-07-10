@@ -425,6 +425,15 @@ reader.readAsDataURL(file);
 async function uploadPortfolioPhoto(input){
 const file = input.files[0];
 if(!file) return;
+const plan=(profileData&&profileData.plan)||'free'
+const portLimits={free:0,pro:10,premium:Infinity}
+const portMax=portLimits[plan]!==undefined?portLimits[plan]:0
+const{count:portCount}=await db.from('portfolio_items').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
+if(portCount>=portMax){
+showAlert('port-error', portMax===0?'O plano Grátis não inclui fotos de portfólio. Faz upgrade para o Pro.':('Atingiste o limite de '+portMax+' fotos do plano '+plan.toUpperCase()+'.'),'error')
+input.value=''
+return
+}
 if(file.size > 10 * 1024 * 1024){ showAlert('port-error','Foto demasiado grande. Máx 10MB.','error'); return; }
 const preview = document.getElementById('port-upload-preview');
 preview.innerHTML = '<div style="font-size:13px;color:var(--muted)">⏳ A carregar...</div>';
@@ -624,6 +633,11 @@ async function loadServices(){
 
 async function addService(){
   if(!profileId){showAlert('srv-error','Erro: perfil não carregado. Recarrega a página.','error');return}
+  const plan=(profileData&&profileData.plan)||'free'
+  const svcLimits={free:2,pro:10,premium:Infinity}
+  const svcMax=svcLimits[plan]!==undefined?svcLimits[plan]:2
+  const{count:svcCount}=await db.from('services').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
+  if(svcCount>=svcMax){showAlert('srv-error','Atingiste o limite de '+svcMax+' serviços do plano '+plan.toUpperCase()+'. Faz upgrade para adicionares mais.','error');return}
   const title=document.getElementById('srv-title').value.trim()
   if(!title){showAlert('srv-error','O nome do serviço é obrigatório.','error');return}
   const{error}=await db.from('services').insert({
