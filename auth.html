@@ -1,284 +1,361 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Proliga – Entrar / Registar</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
-    nav {
-      background: #fff; border-bottom: 1px solid #ECECE9;
-      padding: 0 24px; height: 64px;
-      display: flex; align-items: center;
-    }
-    .logo { font-size: 22px; font-weight: 800; color: #1E4FD6; text-decoration: none; }
-    .logo span { color: #B4650A; }
-    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,.08);
-      width: 100%; max-width: 460px;
-      overflow: hidden;
-    }
-    .tabs { display: flex; border-bottom: 2px solid #ECECE9; }
-    .tab {
-      flex: 1; padding: 18px; text-align: center;
-      font-weight: 600; font-size: 15px;
-      cursor: pointer; color: #94a3b8;
-      border: none; background: none;
-      font-family: inherit; transition: all .2s;
-    }
-    .tab.active { color: #1E4FD6; border-bottom: 2px solid #1E4FD6; margin-bottom: -2px; }
-    .form-body { padding: 32px; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
-    input, select {
-      width: 100%; padding: 12px 14px;
-      border: 1.5px solid #ECECE9;
-      border-radius: 8px;
-      font-size: 14px; font-family: inherit;
-      color: #1e293b; outline: none;
-      transition: border-color .2s;
-    }
-    input:focus, select:focus { border-color: #1E4FD6; }
-    .btn-submit {
-      width: 100%; padding: 14px;
-      background: #1E4FD6; color: #fff;
-      border: none; border-radius: 8px;
-      font-size: 15px; font-weight: 700;
-      cursor: pointer; font-family: inherit;
-      transition: background .2s; margin-top: 8px;
-    }
-    .btn-submit:hover { background: #1e40af; }
-    .btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
-    .msg { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
-    .msg.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; display: block; }
-    .msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; display: block; }
-    .msg.hidden { display: none; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Proliga – Entrar / Registar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+nav {
+background: #fff; border-bottom: 1px solid #ECECE9;
+padding: 0 24px; height: 64px;
+display: flex; align-items: center;
+}
+.logo { font-size: 22px; font-weight: 800; color: #1E4FD6; text-decoration: none; }
+.logo span { color: #B4650A; }
+main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+.card {
+background: #fff;
+border-radius: 16px;
+box-shadow: 0 4px 24px rgba(0,0,0,.08);
+width: 100%; max-width: 460px;
+overflow: hidden;
+}
+.tabs { display: flex; border-bottom: 2px solid #ECECE9; }
+.tab {
+flex: 1; padding: 18px; text-align: center;
+font-weight: 600; font-size: 15px;
+cursor: pointer; color: #94a3b8;
+border: none; background: none;
+font-family: inherit; transition: all .2s;
+}
+.tab.active { color: #1E4FD6; border-bottom: 2px solid #1E4FD6; margin-bottom: -2px; }
+.form-body { padding: 32px; }
+.form-group { margin-bottom: 20px; }
+label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+input, select {
+width: 100%; padding: 12px 14px;
+border: 1.5px solid #ECECE9;
+border-radius: 8px;
+font-size: 14px; font-family: inherit;
+color: #1e293b; outline: none;
+transition: border-color .2s;
+}
+input:focus, select:focus { border-color: #1E4FD6; }
+.btn-submit {
+width: 100%; padding: 14px;
+background: #1E4FD6; color: #fff;
+border: none; border-radius: 8px;
+font-size: 15px; font-weight: 700;
+cursor: pointer; font-family: inherit;
+transition: background .2s; margin-top: 8px;
+}
+.btn-submit:hover { background: #1e40af; }
+.btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
+.msg { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: none; }
+.msg.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; display: block; }
+.msg.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; display: block; }
+.msg.hidden { display: none; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.hint { font-size: 12px; color: #94a3b8; margin-top: 6px }
+.card-title { font-size: 17px; font-weight: 800; margin-bottom: 6px }
+.card-sub { font-size: 13px; color: #64748b; margin-bottom: 22px; line-height: 1.5 }
+</style>
 </head>
 <body>
 <nav>
-  <a href="index.html" class="logo">Pro<span>liga</span></a>
+<a href="index.html" class="logo">Pro<span>liga</span></a>
 </nav>
 <main>
-  <div class="card">
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('login')" id="tab-login">Entrar</button>
-      <button class="tab" onclick="showTab('register')" id="tab-register">Registar</button>
-    </div>
+<div class="card">
 
-    <!-- LOGIN -->
-    <div id="form-login" class="form-body">
-      <div class="msg hidden" id="login-msg"></div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="login-email" placeholder="o-teu@email.com" autocomplete="email" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
-      </div>
-      <button class="btn-submit" id="login-btn" onclick="doLogin()">Entrar na conta</button>
+<div id="tabs-wrap">
+<div class="tabs">
+<button class="tab active" onclick="showTab('login')" id="tab-login">Entrar</button>
+<button class="tab" onclick="showTab('register')" id="tab-register">Registar</button>
+</div>
+
+<!-- LOGIN -->
+<div id="form-login" class="form-body">
+<div class="msg hidden" id="login-msg"></div>
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="login-email" placeholder="o-teu@email.com" autocomplete="email" />
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+</div>
+<button class="btn-submit" id="login-btn" onclick="doLogin()">Entrar na conta</button>
 <div style="text-align:center;margin-top:14px">
 <a href="#" onclick="doResetPassword(event)" style="font-size:13px;color:#1E4FD6;text-decoration:none">Esqueci a palavra-passe</a>
 </div>
-    </div>
+</div>
 
-    <!-- REGISTER -->
-    <div id="form-register" class="form-body" style="display:none">
-      <div class="msg hidden" id="reg-msg"></div>
-      <div class="form-group">
-        <label>Nome completo</label>
-        <input type="text" id="reg-name" placeholder="João Silva" autocomplete="name" />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="reg-email" placeholder="o-teu@email.com" autocomplete="email" />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
-      </div>
-      <button class="btn-submit" id="reg-btn" onclick="doRegister()">Criar conta</button>
-    </div>
-  </div>
+<!-- REGISTER -->
+<div id="form-register" class="form-body" style="display:none">
+<div class="msg hidden" id="reg-msg"></div>
+<div class="form-group">
+<label>Nome completo</label>
+<input type="text" id="reg-name" placeholder="João Silva" autocomplete="name" />
+</div>
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="reg-email" placeholder="o-teu@email.com" autocomplete="email" />
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+</div>
+<div class="form-group">
+<label>Confirmar password</label>
+<input type="password" id="reg-password2" placeholder="Repete a password" autocomplete="new-password" />
+<div class="hint" id="reg-match-hint"></div>
+</div>
+<button class="btn-submit" id="reg-btn" onclick="doRegister()">Criar conta</button>
+</div>
+</div>
+
+<!-- RECOVERY: define nova password (aberto a partir do link de email) -->
+<div id="form-recovery" class="form-body" style="display:none">
+<div class="card-title">🔑 Define uma nova password</div>
+<div class="card-sub">Vieste do link de recuperação enviado por email. Escolhe a tua nova password abaixo.</div>
+<div class="msg hidden" id="recovery-msg"></div>
+<div class="form-group">
+<label>Nova password</label>
+<input type="password" id="recovery-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+</div>
+<div class="form-group">
+<label>Confirmar nova password</label>
+<input type="password" id="recovery-password2" placeholder="Repete a password" autocomplete="new-password" />
+<div class="hint" id="recovery-match-hint"></div>
+</div>
+<button class="btn-submit" id="recovery-btn" onclick="doUpdatePassword()">Guardar nova password</button>
+</div>
+
+</div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
-  const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+const SUPABASE_URL = 'https://cdwinidhtfxfxowflize.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 
-  // If already logged in, redirect to dashboard
-  db.auth.getSession().then(({ data }) => {
-    if (data.session) location.href = 'dashboard.html'
-  })
+let inRecovery = false
 
-  // Check if coming from ?tab=register
-  const params = new URLSearchParams(location.search)
-  if (params.get('tab') === 'register') showTab('register')
+// Detect password recovery flow (user clicked the reset link in their email)
+db.auth.onAuthStateChange((event, session) => {
+if (event === 'PASSWORD_RECOVERY') {
+inRecovery = true
+document.getElementById('tabs-wrap').style.display = 'none'
+document.getElementById('form-recovery').style.display = 'block'
+}
+})
 
-  function showTab(tab) {
-    document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none'
-    document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none'
-    document.getElementById('tab-login').classList.toggle('active', tab === 'login')
-    document.getElementById('tab-register').classList.toggle('active', tab === 'register')
-  }
+// If already logged in (and not in the middle of a recovery flow), redirect to dashboard
+db.auth.getSession().then(({ data }) => {
+if (data.session && !inRecovery && !location.hash.includes('type=recovery')) location.href = 'dashboard.html'
+})
 
-  function showMsg(id, text, type) {
-    const el = document.getElementById(id)
-    el.textContent = text
-    el.className = 'msg ' + (text ? type : 'hidden')
-  }
+// Check if coming from ?tab=register
+const params = new URLSearchParams(location.search)
+if (params.get('tab') === 'register') showTab('register')
 
-  async function doLogin() {
-    const email = document.getElementById('login-email').value.trim()
-    const password = document.getElementById('login-password').value
-    const btn = document.getElementById('login-btn')
+function showTab(tab) {
+document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none'
+document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none'
+document.getElementById('tab-login').classList.toggle('active', tab === 'login')
+document.getElementById('tab-register').classList.toggle('active', tab === 'register')
+}
 
-    showMsg('login-msg', '', 'hidden')
-    if (!email || !password) return showMsg('login-msg', 'Preenche o email e a password.', 'error')
+function showMsg(id, text, type) {
+const el = document.getElementById(id)
+el.textContent = text
+el.className = 'msg ' + (text ? type : 'hidden')
+}
 
-    btn.disabled = true
-    btn.textContent = 'A entrar...'
+async function doLogin() {
+const email = document.getElementById('login-email').value.trim()
+const password = document.getElementById('login-password').value
+const btn = document.getElementById('login-btn')
 
-    try {
-      const { data, error } = await db.auth.signInWithPassword({ email, password })
+showMsg('login-msg', '', 'hidden')
+if (!email || !password) return showMsg('login-msg', 'Preenche o email e a password.', 'error')
 
-      if (error) {
-        showMsg('login-msg', 'Email ou password incorretos.', 'error')
-        btn.disabled = false
-        btn.textContent = 'Entrar na conta'
-        return
-      }
+btn.disabled = true
+btn.textContent = 'A entrar...'
 
-      // Check if admin
-      if (data.user.email === 'davidscampos14@gmail.com') {
-        showMsg('login-msg', 'Bem-vindo, admin! A redirecionar...', 'success')
-        setTimeout(() => location.href = 'admin.html', 800)
-        return
-      }
+try {
+const { data, error } = await db.auth.signInWithPassword({ email, password })
 
-      showMsg('login-msg', 'Bem-vindo! A redirecionar...', 'success')
-      setTimeout(() => location.href = 'dashboard.html', 800)
-    } catch (e) {
-      showMsg('login-msg', 'Erro de ligação. Tenta novamente.', 'error')
-      btn.disabled = false
-      btn.textContent = 'Entrar na conta'
-    }
-  }
+if (error) {
+showMsg('login-msg', 'Email ou password incorretos.', 'error')
+btn.disabled = false
+btn.textContent = 'Entrar na conta'
+return
+}
 
-  async function doRegister() {
-    const name = document.getElementById('reg-name').value.trim()
-    const email = document.getElementById('reg-email').value.trim()
-    const password = document.getElementById('reg-password').value
-    const btn = document.getElementById('reg-btn')
+if (data.user.email === 'davidscampos14@gmail.com') {
+showMsg('login-msg', 'Bem-vindo, admin! A redirecionar...', 'success')
+setTimeout(() => location.href = 'admin.html', 800)
+return
+}
 
-    showMsg('reg-msg', '', 'hidden')
+showMsg('login-msg', 'Bem-vindo! A redirecionar...', 'success')
+setTimeout(() => location.href = 'dashboard.html', 800)
+} catch (e) {
+showMsg('login-msg', 'Erro de ligação. Tenta novamente.', 'error')
+btn.disabled = false
+btn.textContent = 'Entrar na conta'
+}
+}
 
-    if (!name || !email || !password) return showMsg('reg-msg', 'Preenche todos os campos.', 'error')
-    if (password.length < 6) return showMsg('reg-msg', 'A password deve ter pelo menos 6 caracteres.', 'error')
-    if (!email.includes('@')) return showMsg('reg-msg', 'Introduz um email válido.', 'error')
+// Live match feedback for register password confirmation
+function checkRegMatch(){
+const p1=document.getElementById('reg-password').value
+const p2=document.getElementById('reg-password2').value
+const hint=document.getElementById('reg-match-hint')
+if(!p2){hint.textContent='';return true}
+if(p1===p2){hint.textContent='✓ As passwords coincidem';hint.style.color='#166534';return true}
+hint.textContent='✗ As passwords não coincidem';hint.style.color='#b91c1c';return false
+}
+document.addEventListener('DOMContentLoaded',()=>{
+document.getElementById('reg-password').addEventListener('input',checkRegMatch)
+document.getElementById('reg-password2').addEventListener('input',checkRegMatch)
+document.getElementById('recovery-password').addEventListener('input',checkRecoveryMatch)
+document.getElementById('recovery-password2').addEventListener('input',checkRecoveryMatch)
+})
 
-    btn.disabled = true
-    btn.textContent = 'A criar conta...'
+async function doRegister() {
+const name = document.getElementById('reg-name').value.trim()
+const email = document.getElementById('reg-email').value.trim()
+const password = document.getElementById('reg-password').value
+const password2 = document.getElementById('reg-password2').value
+const btn = document.getElementById('reg-btn')
 
-    try {
-      // Step 1: Create auth user
-      const { data: signUpData, error: signUpError } = await db.auth.signUp({ email, password })
+showMsg('reg-msg', '', 'hidden')
 
-      if (signUpError) {
-        const errMsg = (signUpError.message || '').toLowerCase()
-        let msg = 'Erro ao criar conta. Tenta novamente.'
-        if (errMsg.includes('already') || errMsg.includes('registered') || errMsg.includes('exists')) {
-          msg = 'Este email já está registado. Tenta fazer login.'
-        } else if (errMsg.includes('invalid') || errMsg.includes('email')) {
-          msg = 'Email inválido. Verifica o endereço introduzido.'
-        } else if (errMsg.includes('password') || errMsg.includes('weak')) {
-          msg = 'Password demasiado fraca. Usa pelo menos 6 caracteres.'
-        }
-        showMsg('reg-msg', msg, 'error')
-        btn.disabled = false
-        btn.textContent = 'Criar conta'
-        return
-      }
+if (!name || !email || !password || !password2) return showMsg('reg-msg', 'Preenche todos os campos.', 'error')
+if (password.length < 6) return showMsg('reg-msg', 'A password deve ter pelo menos 6 caracteres.', 'error')
+if (password !== password2) return showMsg('reg-msg', 'As passwords não coincidem.', 'error')
+if (!email.includes('@')) return showMsg('reg-msg', 'Introduz um email válido.', 'error')
 
-      const userId = signUpData.user?.id
-      if (!userId) {
-        // Supabase sometimes returns no error but also no user if email is already taken
-        showMsg('reg-msg', 'Este email já está registado. Tenta fazer login.', 'error')
-        btn.disabled = false
-        btn.textContent = 'Criar conta'
-        return
-      }
+btn.disabled = true
+btn.textContent = 'A criar conta...'
 
-      // Step 2: If we have a session, insert profile immediately
-      if (signUpData.session) {
-        await insertProfile(userId, name, email)
-        showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
-        setTimeout(() => location.href = 'dashboard.html', 800)
-        return
-      }
+try {
+const { data: signUpData, error: signUpError } = await db.auth.signUp({ email, password })
 
-      // Step 3: No session yet — try signing in immediately (email auto-confirmed via trigger)
-      const { data: signInData, error: signInError } = await db.auth.signInWithPassword({ email, password })
+if (signUpError) {
+const errMsg = (signUpError.message || '').toLowerCase()
+let msg = 'Erro ao criar conta. Tenta novamente.'
+if (errMsg.includes('already') || errMsg.includes('registered') || errMsg.includes('exists')) {
+msg = 'Este email já está registado. Tenta fazer login.'
+} else if (errMsg.includes('invalid') || errMsg.includes('email')) {
+msg = 'Email inválido. Verifica o endereço introduzido.'
+} else if (errMsg.includes('password') || errMsg.includes('weak')) {
+msg = 'Password demasiado fraca. Usa pelo menos 6 caracteres.'
+}
+showMsg('reg-msg', msg, 'error')
+btn.disabled = false
+btn.textContent = 'Criar conta'
+return
+}
 
-      if (!signInError && signInData?.session) {
-        await insertProfile(signInData.user.id, name, email)
-        showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
-        setTimeout(() => location.href = 'dashboard.html', 800)
-        return
-      }
+const userId = signUpData.user?.id
+if (!userId) {
+showMsg('reg-msg', 'Este email já está registado. Tenta fazer login.', 'error')
+btn.disabled = false
+btn.textContent = 'Criar conta'
+return
+}
 
-      // Step 4: Fallback — created but needs email confirmation
-      showMsg('reg-msg', '✅ Conta criada! Verifica o email ' + email + ' e clica no link de confirmação. Depois faz login aqui.', 'success')
-      btn.disabled = false
-      btn.textContent = 'Criar conta'
+if (signUpData.session) {
+await insertProfile(userId, name, email)
+showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
+setTimeout(() => location.href = 'dashboard.html', 800)
+return
+}
 
-    } catch (e) {
-      showMsg('reg-msg', 'Erro de ligação. Tenta novamente.', 'error')
-      btn.disabled = false
-      btn.textContent = 'Criar conta'
-    }
-  }
+const { data: signInData, error: signInError } = await db.auth.signInWithPassword({ email, password })
 
-  async function insertProfile(userId, name, email) {
-    // Try to insert profile — if it fails we'll let dashboard.html handle it on next login
-    await db.from('profiles').upsert({
-      id: userId,
-      user_id: userId,
-      name: name,
-      email: email,
-      plan: 'free',
-      approved: true,
-      location: '',
-      category: '',
-      phone: '',
-      bio: ''
-    }, { onConflict: 'user_id' })
-  }
+if (!signInError && signInData?.session) {
+await insertProfile(signInData.user.id, name, email)
+showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
+setTimeout(() => location.href = 'dashboard.html', 800)
+return
+}
 
-  async function doResetPassword(e) {
-  e.preventDefault()
-  const email = document.getElementById('login-email').value.trim()
-  if (!email) { showMsg('login-msg', 'Escreve o teu email acima primeiro.', 'error'); return }
-  const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/auth.html' })
-  if (error) { showMsg('login-msg', 'Erro ao enviar email de recuperação.', 'error') }
-  else { showMsg('login-msg', 'Email de recuperação enviado para ' + email + '!', 'success') }
+showMsg('reg-msg', '✅ Conta criada! Verifica o email ' + email + ' e clica no link de confirmação. Depois faz login aqui.', 'success')
+btn.disabled = false
+btn.textContent = 'Criar conta'
+
+} catch (e) {
+showMsg('reg-msg', 'Erro de ligação. Tenta novamente.', 'error')
+btn.disabled = false
+btn.textContent = 'Criar conta'
+}
+}
+
+async function insertProfile(userId, name, email) {
+await db.from('profiles').upsert({
+id: userId,
+user_id: userId,
+name: name,
+email: email,
+plan: 'free',
+approved: true,
+location: '',
+category: '',
+phone: '',
+bio: ''
+}, { onConflict: 'user_id' })
+}
+
+async function doResetPassword(e) {
+e.preventDefault()
+const email = document.getElementById('login-email').value.trim()
+if (!email) { showMsg('login-msg', 'Escreve o teu email acima primeiro.', 'error'); return }
+const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/auth.html' })
+if (error) { showMsg('login-msg', 'Erro ao enviar email de recuperação.', 'error') }
+else { showMsg('login-msg', 'Email de recuperação enviado para ' + email + '! Abre o email e clica no link para definires a nova password.', 'success') }
+}
+
+function checkRecoveryMatch(){
+const p1=document.getElementById('recovery-password').value
+const p2=document.getElementById('recovery-password2').value
+const hint=document.getElementById('recovery-match-hint')
+if(!p2){hint.textContent='';return true}
+if(p1===p2){hint.textContent='✓ As passwords coincidem';hint.style.color='#166534';return true}
+hint.textContent='✗ As passwords não coincidem';hint.style.color='#b91c1c';return false
+}
+
+async function doUpdatePassword(){
+const p1=document.getElementById('recovery-password').value
+const p2=document.getElementById('recovery-password2').value
+const btn=document.getElementById('recovery-btn')
+showMsg('recovery-msg','','hidden')
+if(!p1||!p2)return showMsg('recovery-msg','Preenche os dois campos.','error')
+if(p1.length<6)return showMsg('recovery-msg','A password deve ter pelo menos 6 caracteres.','error')
+if(p1!==p2)return showMsg('recovery-msg','As passwords não coincidem.','error')
+btn.disabled=true;btn.textContent='A guardar...'
+const{error}=await db.auth.updateUser({password:p1})
+btn.disabled=false;btn.textContent='Guardar nova password'
+if(error){showMsg('recovery-msg','Erro ao atualizar a password. Tenta pedir um novo link de recuperação.','error');return}
+showMsg('recovery-msg','Password atualizada! A redirecionar...','success')
+setTimeout(()=>location.href='dashboard.html',1000)
 }
 
 // Enter key support
-  document.addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return
-    if (document.getElementById('form-login').style.display !== 'none') doLogin()
-    else doRegister()
-  })
+document.addEventListener('keydown', e => {
+if (e.key !== 'Enter') return
+if (document.getElementById('form-recovery').style.display !== 'none') doUpdatePassword()
+else if (document.getElementById('form-login').style.display !== 'none') doLogin()
+else doRegister()
+})
 </script>
 </body>
 </html>
