@@ -548,7 +548,7 @@ const count=r?('('+r.c+')'):'sem avaliações'
 const price=pMap[pro.id]?('A partir de <strong>€'+pMap[pro.id]+'</strong>'):'<strong>Orçamento grátis</strong>'
 const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
 const avatar=pro.photo_url?('<img src="'+pro.photo_url+'" alt="'+pro.name+'"/>'):initials
-const verif=(pro.verified||pro.plan!=='free')?'<div class="verif"><svg class="ic" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M20 6 9 17l-5-5"/></svg>Verificado</div>':''
+const verif=pro.verified?'<div class="verif"><svg class="ic" viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M20 6 9 17l-5-5"/></svg>Verificado</div>':''
 return '<a class="pro-card" href="profile.html?id='+pro.id+'">'+
 '<div class="pro-top"><div class="pro-avatar">'+avatar+'</div><div><div class="pro-name">'+pro.name+'</div><div class="pro-cat">'+(pro.category||'Profissional')+'</div></div></div>'+
 '<div class="pro-rating"><span class="stars">'+stars+'</span><strong>'+avg+'</strong><span style="color:var(--muted-2)">'+count+'</span></div>'+
