@@ -293,12 +293,8 @@ section{padding:52px 4%}
 </div>
 </div>
 <div class="card-panel">
-<div class="panel-head"><span class="t">Pedidos recentes</span><span class="live"><span class="d"></span>Ao vivo</span></div>
-<div id="hero-requests">
-<a href="pedidos.html" class="req-card"><div class="av" style="background:#1E4FD6"><svg class="ic" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></div><div class="body"><div class="l">Preciso de um eletricista</div><div class="s">Lisboa · publicado há 2h</div></div><div class="badge2">Aberto</div></a>
-<a href="pedidos.html" class="req-card"><div class="av" style="background:#B4650A"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2C9 6 6 9.5 6 13a6 6 0 0 0 12 0c0-3.5-3-7-6-11z"/></svg></div><div class="body"><div class="l">Canalizador urgente</div><div class="s">Porto · publicado há 4h</div></div><div class="badge3">3 propostas</div></a>
-<a href="pedidos.html" class="req-card" style="margin-bottom:0"><div class="av" style="background:#1B8A4B"><svg class="ic" viewBox="0 0 24 24"><path d="M18 3a2 2 0 0 1 2 2c0 2-3 3-3 6h-4c0-3-3-4-3-6a2 2 0 0 1 2-2z"/><path d="M13 11v4a2 2 0 0 1-2 2H9l-2 5"/></svg></div><div class="body"><div class="l">Pintura de apartamento</div><div class="s">Braga · publicado há 1d</div></div><div class="badge2">Aberto</div></a>
-</div>
+<div class="panel-head"><span class="t">Pedidos recentes</span><span class="live" id="hero-live-badge" style="display:none"><span class="d"></span>Ao vivo</span></div>
+<div id="hero-requests"><div style="text-align:center;padding:30px 10px"><div class="spinner"></div></div></div>
 </div>
 </div>
 </div>
@@ -412,14 +408,15 @@ section{padding:52px 4%}
 
 <section>
 <div class="section-header">
-<span class="eyebrow">Testemunhos</span>
-<h2>O que dizem de nós</h2>
-<p>Profissionais e clientes que já confiam na Proliga</p>
+<span class="eyebrow">A começar agora</span>
+<h2>Ainda estamos no início</h2>
+<p>Preferimos ser honestos: a Proliga é uma plataforma nova. Aqui está uma avaliação real de um cliente real.</p>
 </div>
-<div class="testimonials-grid">
-<div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">Em menos de 2 horas tinha 3 orçamentos de eletricistas da minha zona. Contratei o João e ficou um trabalho impecável. Nunca mais uso o OLX.</p><div class="t-author"><div class="t-avatar">AF</div><div><div class="t-name">Ana Ferreira</div><div class="t-role">Cliente · Porto</div></div></div></div>
-<div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">Sou eletricista há 12 anos e nunca tive tanta visibilidade. A Proliga deu-me clientes novos logo no primeiro mês, com perfil totalmente gratuito.</p><div class="t-author"><div class="t-avatar">JS</div><div><div class="t-name">João Silva</div><div class="t-role">Eletricista · Maia</div></div></div></div>
-<div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">Finalmente uma alternativa ao Fixando que não cobra por cada lead. O perfil é gratuito, o contacto é direto. É o que os profissionais em Portugal precisavam.</p><div class="t-author"><div class="t-avatar">MC</div><div><div class="t-name">Miguel Cardoso</div><div class="t-role">Canalizador · Porto</div></div></div></div>
+<div class="testimonials-grid" style="max-width:480px">
+<div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"Muito atenciosa e muito simpática, explica muito bem."</p><div class="t-author"><div class="t-avatar">DC</div><div><div class="t-name">David Campos</div><div class="t-role">Cliente · avaliou Paula Campos, Limpeza</div></div></div></div>
+</div>
+<div style="text-align:center;margin-top:28px">
+<a href="auth.html?tab=register" style="color:var(--blue);font-weight:700;font-size:14px">Sê um dos primeiros profissionais verificados →</a>
 </div>
 </section>
 
@@ -491,6 +488,30 @@ document.getElementById('nav-avatar').textContent=name.split(' ').map(n=>n[0]).s
 }
 loadStats()
 loadFeatured()
+loadHeroRequests()
+}
+
+function timeAgo(iso){
+const diff=(Date.now()-new Date(iso).getTime())/1000
+if(diff<3600)return Math.max(1,Math.floor(diff/60))+'m'
+if(diff<86400)return Math.floor(diff/3600)+'h'
+if(diff<604800)return Math.floor(diff/86400)+'d'
+return new Date(iso).toLocaleDateString('pt-PT')
+}
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
+
+async function loadHeroRequests(){
+const{data}=await db.from('requests').select('title,category,location,created_at').eq('status','open').order('created_at',{ascending:false}).limit(3)
+const el=document.getElementById('hero-requests')
+if(!data||!data.length){
+el.innerHTML='<div style="text-align:center;padding:26px 10px;color:var(--muted-2);font-size:13px">Ainda não há pedidos publicados.<br><a href="pedidos.html" style="color:var(--blue);font-weight:600">Sê o primeiro a publicar →</a></div>'
+return
+}
+document.getElementById('hero-live-badge').style.display='flex'
+const colors=['#1E4FD6','#B4650A','#1B8A4B']
+el.innerHTML=data.map((r,i)=>{
+return '<a href="pedidos.html" class="req-card"'+(i===data.length-1?' style="margin-bottom:0"':'')+'><div class="av" style="background:'+colors[i%3]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg></div><div class="body"><div class="l">'+escapeHtml(r.title)+'</div><div class="s">'+escapeHtml(r.location||'Portugal')+' · '+timeAgo(r.created_at)+'</div></div></a>'
+}).join('')
 }
 
 async function loadStats(){
