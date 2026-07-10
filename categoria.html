@@ -380,7 +380,7 @@ async function loadPros(){
     const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
     const covStyle=pro.plan==='premium'?'background:linear-gradient(135deg,#92400e,var(--gold))':pro.plan==='pro'?'background:linear-gradient(135deg,#4c1d95,#7c3aed)':''
     const planBadge=pro.plan==='premium'?'<span class="plan-badge badge-premium">👑 Premium</span>':pro.plan==='pro'?'<span class="plan-badge badge-pro">🚀 Pro</span>':''
-    const verif=(pro.verified||pro.plan!=='free')?'<span class="verif">✅</span>':''
+    const verif=(pro.verified)?'<span class="verif">✅</span>':''
     const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<strong>Orçamento grátis</strong>'
     return`<a class="pro-card" href="profile.html?id=${pro.id}">
       <div class="pro-card-cover" style="${covStyle}">${planBadge}<div class="pro-avatar">${avatar}</div></div>
