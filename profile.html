@@ -321,7 +321,7 @@ function renderHeader(pro){
   const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
   if(pro.cover_url)document.getElementById('cover').style.backgroundImage=`url('${pro.cover_url}')`
   const planBadge=pro.plan==='premium'?`<span class="plan-badge-wrap badge-premium">👑 Premium</span>`:pro.plan==='pro'?`<span class="plan-badge-wrap badge-pro">🚀 Pro</span>`:''
-  const verif=(pro.verified||pro.plan!=='free')?'<span class="verif-badge">✅ Verificado</span>':''
+  const verif=pro.verified?'<span class="verif-badge">✅ Verificado</span>':''
   document.getElementById('profile-header').innerHTML=`
     <div class="avatar-wrap"><div class="avatar">${avatar}</div>${planBadge}</div>
     <div class="profile-info">
