@@ -300,6 +300,7 @@ function renderPros(pros){
         ${approved
           ?`<button class="btn btn-unapprove" onclick="toggleApprove('${p.id}',false)">⏸ Suspender</button>`
           :`<button class="btn btn-approve" onclick="toggleApprove('${p.id}',true)">✅ Aprovar</button>`}
+        ${p.verified?`<button class="btn btn-unapprove" onclick="toggleVerified('${p.id}',false)">✔️ Verificado</button>`:`<button class="btn btn-approve" onclick="toggleVerified('${p.id}',true)">☆ Verificar</button>`}
         <button class="btn btn-delete" onclick="deletePro('${p.id}','${(p.name||'').replace(/'/g,"\\'")}')">🗑</button>
       </div></td></tr>`
   }).join('')
@@ -319,6 +320,10 @@ async function toggleApprove(id,approved){
   await db.from('profiles').update({approved}).eq('id',id);loadProfiles()
 }
 
+async function toggleVerified(id,verified){
+  await db.from('profiles').update({verified}).eq('id',id);loadProfiles()
+}
+
 async function deletePro(id,name){
   if(!confirm(`Eliminar "${name}"? Esta acção é irreversível.`))return
   await db.from('profiles').delete().eq('id',id)
@@ -328,7 +333,7 @@ async function deletePro(id,name){
 // MESSAGES
 async function loadMessages(){
   const[{data:msgs},{data:pros}]=await Promise.all([
-    db.from('messages').select('*').order('created_at',{ascending:false}),
+    db.from('messages_legacy_contact_form').select('*').order('created_at',{ascending:false}),
     db.from('profiles').select('id,name')
   ])
   const pm={};(pros||[]).forEach(p=>pm[p.id]=p.name)
