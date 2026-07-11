@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://proliga-app.netlify.app/</loc><lastmod>2026-07-10</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-<url><loc>https://proliga-app.netlify.app/categoria.html</loc><lastmod>2026-07-10</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
-<url><loc>https://proliga-app.netlify.app/pedidos.html</loc><lastmod>2026-07-10</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
-<url><loc>https://proliga-app.netlify.app/como-funciona.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://proliga-app.netlify.app/porque-escolher.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://proliga-app.netlify.app/pricing.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-<url><loc>https://proliga-app.netlify.app/sobre.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-<url><loc>https://proliga-app.netlify.app/contacto.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-<url><loc>https://proliga-app.netlify.app/termos.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
-<url><loc>https://proliga-app.netlify.app/privacidade.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
-<url><loc>https://proliga-app.netlify.app/cookies.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
-<url><loc>https://proliga-app.netlify.app/rgpd.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+<url><loc>https://proliga.pt/</loc><lastmod>2026-07-10</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+<url><loc>https://proliga.pt/categoria.html</loc><lastmod>2026-07-10</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+<url><loc>https://proliga.pt/pedidos.html</loc><lastmod>2026-07-10</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+<url><loc>https://proliga.pt/como-funciona.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://proliga.pt/porque-escolher.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://proliga.pt/pricing.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+<url><loc>https://proliga.pt/sobre.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+<url><loc>https://proliga.pt/contacto.html</loc><lastmod>2026-07-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+<url><loc>https://proliga.pt/termos.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+<url><loc>https://proliga.pt/privacidade.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+<url><loc>https://proliga.pt/cookies.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+<url><loc>https://proliga.pt/rgpd.html</loc><lastmod>2026-07-10</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>
