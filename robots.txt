@@ -5,4 +5,4 @@ Disallow: /dashboard.html
 Disallow: /messages.html
 Disallow: /auth.html
 
-Sitemap: https://proliga-app.netlify.app/sitemap.xml
+Sitemap: https://proliga.pt/sitemap.xml
