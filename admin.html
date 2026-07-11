@@ -24,8 +24,8 @@
     .login-title{font-size:20px;font-weight:800;margin-bottom:20px}
     .form-group{margin-bottom:16px}
     label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
-    input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
-    input:focus{border-color:var(--blue)}
+    input,textarea,select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
+    input:focus,textarea:focus,select:focus{border-color:var(--blue)}
     .btn-login{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:4px}
     .btn-login:hover{background:var(--blue-dark)}
     .btn-login:disabled{background:#93c5fd;cursor:not-allowed}
@@ -70,16 +70,18 @@
     .btn-unapprove{background:#fef9c3;color:#854d0e}.btn-unapprove:hover{background:#fef08a}
     .btn-delete{background:#fef2f2;color:var(--red);border:1px solid #fecaca}.btn-delete:hover{background:#fee2e2}
     .btn-view{background:var(--blue-light);color:var(--blue)}.btn-view:hover{background:#bfdbfe}
+    .btn-edit{background:#f3e8ff;color:#6b21a8}.btn-edit:hover{background:#e9d5ff}
     .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;display:inline-block}
     .badge-approved{background:#dcfce7;color:#166534}
     .badge-pending{background:#fef9c3;color:#854d0e}
     .badge-premium{background:var(--gold);color:#fff}
     .badge-pro{background:#7c3aed;color:#fff}
     .badge-free{background:var(--border);color:var(--muted)}
+    .badge-demo{background:#fee2e2;color:#991b1b;margin-left:6px}
     .pro-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--blue);overflow:hidden;flex-shrink:0}
     .pro-avatar img{width:100%;height:100%;object-fit:cover}
     .td-flex{display:flex;align-items:center;gap:10px}
-    .td-name{font-weight:600}
+    .td-name{font-weight:600;display:flex;align-items:center;flex-wrap:wrap}
     .td-sub{font-size:11px;color:var(--muted)}
     .search-box{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;width:220px}
     .search-box:focus{border-color:var(--blue)}
@@ -89,6 +91,31 @@
     .overview-grids{display:grid;grid-template-columns:1fr 1fr;gap:20px}
     @media(max-width:900px){.overview-grids{grid-template-columns:1fr}}
     @media(max-width:768px){.admin-body{padding:16px}.stats-grid{grid-template-columns:repeat(2,1fr)}.table-wrap{overflow-x:auto}table{min-width:580px}}
+
+    /* CONVERSATIONS */
+    .conv-list{display:flex;flex-direction:column;gap:10px}
+    .conv-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .15s}
+    .conv-card:hover{border-color:var(--blue)}
+    .conv-card.open{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+    .conv-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+    .conv-title{font-size:13.5px;font-weight:700}
+    .conv-date{font-size:11px;color:var(--muted)}
+    .conv-last{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .conv-thread{margin-top:14px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;display:none}
+    .conv-thread.active{display:block}
+    .msg-bubble{max-width:70%;padding:9px 13px;border-radius:12px;font-size:13px;margin-bottom:8px;line-height:1.5}
+    .msg-pro{background:var(--blue-light);color:var(--text);margin-right:auto}
+    .msg-client{background:var(--bg);border:1px solid var(--border);color:var(--text);margin-left:auto}
+    .msg-meta{font-size:10.5px;color:var(--muted-2,#8A8F99);margin-bottom:2px}
+
+    /* MODAL */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(20,24,31,.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+    .modal-bg.active{display:flex}
+    .modal-box{background:#fff;border-radius:16px;padding:26px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto}
+    .modal-title{font-size:17px;font-weight:800;margin-bottom:18px}
+    .modal-actions{display:flex;gap:10px;margin-top:20px}
+    .btn-save{flex:1;padding:11px;background:var(--blue);color:#fff;border:none;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+    .btn-cancel{flex:1;padding:11px;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
   </style>
 </head>
 <body>
@@ -125,9 +152,11 @@
   <div class="admin-tabs">
     <div class="atab active" onclick="showAdminPage('overview')">📊 Visão Geral</div>
     <div class="atab" onclick="showAdminPage('profiles')">👤 Profissionais</div>
-    <div class="atab" onclick="showAdminPage('messages')">💬 Mensagens</div>
+    <div class="atab" onclick="showAdminPage('conversations')">🗨️ Conversas</div>
+    <div class="atab" onclick="showAdminPage('messages')">📋 Contactos (Formulário)</div>
     <div class="atab" onclick="showAdminPage('reviews')">⭐ Avaliações</div>
     <div class="atab" onclick="showAdminPage('services')">🛠️ Serviços</div>
+    <div class="atab" onclick="showAdminPage('portfolio')">🖼️ Portfólio</div>
   </div>
   <div class="admin-body">
 
@@ -135,7 +164,7 @@
     <div id="page-overview" class="page-section active">
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon">👤</div><div><div class="stat-val" id="s-pros">—</div><div class="stat-lbl">Profissionais</div></div></div>
-        <div class="stat-card"><div class="stat-icon">💬</div><div><div class="stat-val" id="s-msgs">—</div><div class="stat-lbl">Mensagens</div></div></div>
+        <div class="stat-card"><div class="stat-icon">🗨️</div><div><div class="stat-val" id="s-conv">—</div><div class="stat-lbl">Conversas</div></div></div>
         <div class="stat-card"><div class="stat-icon">⭐</div><div><div class="stat-val" id="s-revs">—</div><div class="stat-lbl">Avaliações</div></div></div>
         <div class="stat-card"><div class="stat-icon">🛠️</div><div><div class="stat-val" id="s-srvs">—</div><div class="stat-lbl">Serviços</div></div></div>
       </div>
@@ -146,9 +175,9 @@
           <tbody id="recent-pros"></tbody></table>
         </div>
         <div class="table-wrap">
-          <div class="table-head"><div class="table-title">💬 Últimas Mensagens</div></div>
-          <table><thead><tr><th>De</th><th>Assunto</th><th>Data</th></tr></thead>
-          <tbody id="recent-msgs-tbl"></tbody></table>
+          <div class="table-head"><div class="table-title">🗨️ Últimas Conversas</div></div>
+          <table><thead><tr><th>Última mensagem</th><th>Quando</th></tr></thead>
+          <tbody id="recent-conv-tbl"></tbody></table>
         </div>
       </div>
     </div>
@@ -167,10 +196,18 @@
       </div>
     </div>
 
-    <!-- MESSAGES -->
+    <!-- CONVERSATIONS (real chat) -->
+    <div id="page-conversations" class="page-section">
+      <div class="table-wrap" style="padding:20px">
+        <div class="table-title" style="margin-bottom:14px">🗨️ Conversas entre profissionais e clientes <span style="font-weight:400;color:var(--muted);font-size:13px">— visível apenas para administradores</span></div>
+        <div class="conv-list" id="conv-list"></div>
+      </div>
+    </div>
+
+    <!-- LEGACY CONTACT FORM MESSAGES -->
     <div id="page-messages" class="page-section">
       <div class="table-wrap">
-        <div class="table-head"><div class="table-title">💬 Todas as Mensagens</div></div>
+        <div class="table-head"><div class="table-title">📋 Mensagens do formulário de contacto</div></div>
         <table>
           <thead><tr><th>De</th><th>Para</th><th>Assunto</th><th>Mensagem</th><th>Data</th><th>Lida</th></tr></thead>
           <tbody id="msgs-tbody"></tbody>
@@ -200,6 +237,50 @@
       </div>
     </div>
 
+    <!-- PORTFOLIO -->
+    <div id="page-portfolio" class="page-section">
+      <div class="table-wrap">
+        <div class="table-head"><div class="table-title">🖼️ Todos os itens de portfólio</div></div>
+        <table>
+          <thead><tr><th>Foto</th><th>Legenda</th><th>Profissional</th><th>Data</th><th>Ações</th></tr></thead>
+          <tbody id="port-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar profissional</div>
+    <div class="form-group"><label>Nome</label><input id="ed-name"/></div>
+    <div class="form-group"><label>Categoria</label><input id="ed-category"/></div>
+    <div class="form-group"><label>Localização</label><input id="ed-location"/></div>
+    <div class="form-group"><label>Plano</label>
+      <select id="ed-plan"><option value="free">free</option><option value="pro">pro</option><option value="premium">premium</option></select>
+    </div>
+    <div class="form-group"><label>Bio</label><textarea id="ed-bio" rows="4"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveProfileEdit()">Guardar alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT SERVICE MODAL -->
+<div class="modal-bg" id="edit-service-modal">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar serviço</div>
+    <div class="form-group"><label>Título</label><input id="es-title"/></div>
+    <div class="form-group"><label>Descrição</label><textarea id="es-desc" rows="3"></textarea></div>
+    <div class="form-group"><label>Preço desde (€)</label><input id="es-from" type="number"/></div>
+    <div class="form-group"><label>Preço até (€)</label><input id="es-to" type="number"/></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeEditServiceModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveServiceEdit()">Guardar alterações</button>
+    </div>
   </div>
 </div>
 
@@ -210,6 +291,8 @@ const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const ADMIN_EMAIL='davidscampos10@gmail.com'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 let allPros=[]
+let editingProId=null
+let editingServiceId=null
 
 async function init(){
   try{
@@ -231,9 +314,8 @@ async function adminLogin(){
   btn.disabled=true;btn.textContent='A verificar...'
   const{data,error}=await db.auth.signInWithPassword({email,password:pass})
   if(error){showLoginError('Credenciais inválidas.');btn.disabled=false;btn.textContent='Entrar no painel';return}
-  // verificar is_admin na DB
-    const{data:prof2}=await db.from('profiles').select('is_admin').eq('user_id',data.user.id).single()
-    if(data.user.email!==ADMIN_EMAIL&&prof2?.is_admin!==true){
+  const{data:prof2}=await db.from('profiles').select('is_admin').eq('user_id',data.user.id).single()
+  if(data.user.email!==ADMIN_EMAIL&&prof2?.is_admin!==true){
     await db.auth.signOut()
     showLoginError('Acesso negado. Esta conta não tem permissões de administrador.')
     btn.disabled=false;btn.textContent='Entrar no painel';return
@@ -253,28 +335,29 @@ function showAdmin(user){
 
 async function adminSignOut(){await db.auth.signOut();location.reload()}
 
+function demoBadge(p){return p&&p.is_demo?'<span class="badge badge-demo">🧪 DEMO</span>':''}
+
 // OVERVIEW
 async function loadOverview(){
-  const[{count:pc},{count:mc},{count:rc},{count:sc}]=await Promise.all([
+  const[{count:pc},{count:cc},{count:rc},{count:sc}]=await Promise.all([
     db.from('profiles').select('*',{count:'exact',head:true}),
-    db.from('messages').select('*',{count:'exact',head:true}),
+    db.from('conversations').select('*',{count:'exact',head:true}),
     db.from('reviews').select('*',{count:'exact',head:true}),
     db.from('services').select('*',{count:'exact',head:true})
   ])
   document.getElementById('s-pros').textContent=pc||0
-  document.getElementById('s-msgs').textContent=mc||0
+  document.getElementById('s-conv').textContent=cc||0
   document.getElementById('s-revs').textContent=rc||0
   document.getElementById('s-srvs').textContent=sc||0
-  const{data:pros}=await db.from('profiles').select('name,category,plan').order('created_at',{ascending:false}).limit(5)
+  const{data:pros}=await db.from('profiles').select('name,category,plan,is_demo').order('created_at',{ascending:false}).limit(5)
   document.getElementById('recent-pros').innerHTML=(pros||[]).map(p=>`
-    <tr><td><div class="td-name">${p.name||'—'}</div></td>
+    <tr><td><div class="td-name">${p.name||'—'}${demoBadge(p)}</div></td>
     <td>${p.category||'—'}</td>
     <td><span class="badge badge-${p.plan||'free'}">${p.plan||'free'}</span></td></tr>`).join('')||'<tr class="empty-row"><td colspan="3">Sem registos</td></tr>'
-  const{data:msgs}=await db.from('messages').select('sender_name,subject,created_at').order('created_at',{ascending:false}).limit(5)
-  document.getElementById('recent-msgs-tbl').innerHTML=(msgs||[]).map(m=>`
-    <tr><td>${m.sender_name}</td>
-    <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.subject}</td>
-    <td>${new Date(m.created_at).toLocaleDateString('pt-PT')}</td></tr>`).join('')||'<tr class="empty-row"><td colspan="3">Sem mensagens</td></tr>'
+  const{data:convs}=await db.from('conversations').select('last_message,last_message_at').order('last_message_at',{ascending:false}).limit(5)
+  document.getElementById('recent-conv-tbl').innerHTML=(convs||[]).map(c=>`
+    <tr><td class="msg-preview">${c.last_message||'(sem mensagens)'}</td>
+    <td>${c.last_message_at?new Date(c.last_message_at).toLocaleDateString('pt-PT'):'—'}</td></tr>`).join('')||'<tr class="empty-row"><td colspan="2">Sem conversas</td></tr>'
 }
 
 // PROFILES
@@ -292,12 +375,13 @@ function renderPros(pros){
     const av=p.photo_url?`<img src="${p.photo_url}" alt=""/>`:((p.name||'?').split(' ').map(n=>n[0]).slice(0,2).join(''))
     return`<tr>
       <td><div class="td-flex"><div class="pro-avatar">${av}</div>
-        <div><div class="td-name">${p.name||'—'}</div><div class="td-sub">${p.phone||''}</div></div></div></td>
+        <div><div class="td-name">${p.name||'—'}${demoBadge(p)}</div><div class="td-sub">${p.phone||''}</div></div></div></td>
       <td>${p.category||'—'}</td>
       <td>${p.location||'—'}</td>
       <td><span class="badge badge-${p.plan||'free'}">${p.plan||'free'}</span></td>
       <td><span class="badge ${approved?'badge-approved':'badge-pending'}">${approved?'Ativo':'Pendente'}</span></td>
       <td><div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-edit" onclick="openEditModal('${p.id}')">✏️ Editar</button>
         <button class="btn btn-approve" onclick="toggleAdmin('${p.id}',!p.is_admin)" title="${p.is_admin?'Remover admin':'Tornar admin'}">${p.is_admin?'👑':'⬆️'}</button>
 <button class="btn btn-view" onclick="window.open('profile.html?id=${p.id}','_blank')">👁 Ver</button>
         ${approved
@@ -315,8 +399,8 @@ function filterPros(q){
 }
 
 async function toggleAdmin(id,isAdmin){
-await db.from('profiles').update({is_admin:isAdmin}).eq('id',id)
-loadProfiles()
+  await db.from('profiles').update({is_admin:isAdmin}).eq('id',id)
+  loadProfiles()
 }
 
 async function toggleApprove(id,approved){
@@ -333,7 +417,76 @@ async function deletePro(id,name){
   allPros=allPros.filter(p=>p.id!==id);renderPros(allPros);loadOverview()
 }
 
-// MESSAGES
+// EDIT PROFILE MODAL
+function openEditModal(id){
+  const p=allPros.find(x=>x.id===id)
+  if(!p)return
+  editingProId=id
+  document.getElementById('ed-name').value=p.name||''
+  document.getElementById('ed-category').value=p.category||''
+  document.getElementById('ed-location').value=p.location||''
+  document.getElementById('ed-plan').value=p.plan||'free'
+  document.getElementById('ed-bio').value=p.bio||''
+  document.getElementById('edit-modal').classList.add('active')
+}
+function closeEditModal(){document.getElementById('edit-modal').classList.remove('active');editingProId=null}
+async function saveProfileEdit(){
+  if(!editingProId)return
+  const updates={
+    name:document.getElementById('ed-name').value.trim(),
+    category:document.getElementById('ed-category').value.trim(),
+    location:document.getElementById('ed-location').value.trim(),
+    plan:document.getElementById('ed-plan').value,
+    bio:document.getElementById('ed-bio').value.trim()
+  }
+  const{error}=await db.from('profiles').update(updates).eq('id',editingProId)
+  if(error){alert('Erro ao guardar: '+error.message);return}
+  closeEditModal();loadProfiles();loadOverview()
+}
+
+// CONVERSATIONS (real chat between professionals and clients)
+async function loadConversations(){
+  const list=document.getElementById('conv-list')
+  list.innerHTML='<div style="padding:20px;color:var(--muted)">A carregar...</div>'
+  const{data:convs,error}=await db.from('conversations').select('*').order('last_message_at',{ascending:false})
+  if(error){list.innerHTML=`<div style="padding:20px;color:var(--red)">Erro a carregar conversas: ${error.message}</div>`;return}
+  if(!convs||!convs.length){list.innerHTML='<div style="padding:20px;color:var(--muted)">Ainda não há conversas na plataforma.</div>';return}
+  const proIds=[...new Set(convs.map(c=>c.professional_id).filter(Boolean))]
+  const{data:pros}=await db.from('profiles').select('id,name').in('id',proIds.length?proIds:['00000000-0000-0000-0000-000000000000'])
+  const pm={};(pros||[]).forEach(p=>pm[p.id]=p.name)
+  list.innerHTML=convs.map(c=>{
+    const proName=pm[c.professional_id]||'Profissional'
+    return`<div class="conv-card" id="conv-${c.id}" onclick="toggleThread('${c.id}','${c.professional_id}')">
+      <div class="conv-top"><div class="conv-title">${proName} ↔ cliente</div><div class="conv-date">${c.last_message_at?new Date(c.last_message_at).toLocaleString('pt-PT'):''}</div></div>
+      <div class="conv-last">${(c.last_message||'(sem mensagens)').replace(/</g,'&lt;')}</div>
+      <div class="conv-thread" id="thread-${c.id}"></div>
+    </div>`
+  }).join('')
+}
+
+async function toggleThread(convId,proId){
+  const card=document.getElementById(`conv-${convId}`)
+  const thread=document.getElementById(`thread-${convId}`)
+  const isOpen=thread.classList.contains('active')
+  document.querySelectorAll('.conv-thread.active').forEach(t=>t.classList.remove('active'))
+  document.querySelectorAll('.conv-card.open').forEach(c=>c.classList.remove('open'))
+  if(isOpen)return
+  card.classList.add('open')
+  thread.classList.add('active')
+  thread.innerHTML='<div style="color:var(--muted);font-size:12px">A carregar mensagens...</div>'
+  const{data:msgs,error}=await db.from('messages').select('*').eq('conversation_id',convId).order('created_at',{ascending:true})
+  if(error){thread.innerHTML=`<div style="color:var(--red);font-size:12px">Erro: ${error.message}</div>`;return}
+  if(!msgs||!msgs.length){thread.innerHTML='<div style="color:var(--muted);font-size:12px">Sem mensagens nesta conversa.</div>';return}
+  thread.innerHTML=msgs.map(m=>{
+    const isPro=m.sender_id===proId
+    return`<div class="msg-bubble ${isPro?'msg-pro':'msg-client'}">
+      <div class="msg-meta">${isPro?'Profissional':'Cliente'} · ${m.created_at?new Date(m.created_at).toLocaleString('pt-PT'):''}</div>
+      ${(m.content||'').replace(/</g,'&lt;')}
+    </div>`
+  }).join('')
+}
+
+// LEGACY CONTACT FORM MESSAGES
 async function loadMessages(){
   const[{data:msgs},{data:pros}]=await Promise.all([
     db.from('messages_legacy_contact_form').select('*').order('created_at',{ascending:false}),
@@ -377,11 +530,13 @@ async function deleteReview(id){
 }
 
 // SERVICES
+let allServices=[]
 async function loadServices(){
   const[{data:srvs},{data:pros}]=await Promise.all([
     db.from('services').select('*').order('created_at',{ascending:false}),
     db.from('profiles').select('id,name')
   ])
+  allServices=srvs||[]
   const pm={};(pros||[]).forEach(p=>pm[p.id]=p.name)
   const tbody=document.getElementById('srvs-tbody')
   if(!srvs||!srvs.length){tbody.innerHTML='<tr class="empty-row"><td colspan="5">Sem serviços</td></tr>';return}
@@ -391,7 +546,34 @@ async function loadServices(){
       <td>${pm[s.professional_id]||'—'}</td>
       <td>${s.price_from?`€${s.price_from}${s.price_to?'–€'+s.price_to:''} / ${s.price_unit||'hora'}`:'—'}</td>
       <td>${new Date(s.created_at).toLocaleDateString('pt-PT')}</td>
-      <td><button class="btn btn-delete" onclick="deleteService('${s.id}')">🗑</button></td></tr>`).join('')
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-edit" onclick="openEditServiceModal('${s.id}')">✏️</button>
+        <button class="btn btn-delete" onclick="deleteService('${s.id}')">🗑</button>
+      </div></td></tr>`).join('')
+}
+
+function openEditServiceModal(id){
+  const s=allServices.find(x=>x.id===id)
+  if(!s)return
+  editingServiceId=id
+  document.getElementById('es-title').value=s.title||''
+  document.getElementById('es-desc').value=s.description||''
+  document.getElementById('es-from').value=s.price_from||''
+  document.getElementById('es-to').value=s.price_to||''
+  document.getElementById('edit-service-modal').classList.add('active')
+}
+function closeEditServiceModal(){document.getElementById('edit-service-modal').classList.remove('active');editingServiceId=null}
+async function saveServiceEdit(){
+  if(!editingServiceId)return
+  const updates={
+    title:document.getElementById('es-title').value.trim(),
+    description:document.getElementById('es-desc').value.trim(),
+    price_from:document.getElementById('es-from').value?Number(document.getElementById('es-from').value):null,
+    price_to:document.getElementById('es-to').value?Number(document.getElementById('es-to').value):null
+  }
+  const{error}=await db.from('services').update(updates).eq('id',editingServiceId)
+  if(error){alert('Erro ao guardar: '+error.message);return}
+  closeEditServiceModal();loadServices()
 }
 
 async function deleteService(id){
@@ -399,15 +581,40 @@ async function deleteService(id){
   await db.from('services').delete().eq('id',id);loadServices()
 }
 
+// PORTFOLIO
+async function loadPortfolio(){
+  const[{data:items},{data:pros}]=await Promise.all([
+    db.from('portfolio_items').select('*').order('created_at',{ascending:false}),
+    db.from('profiles').select('id,name')
+  ])
+  const pm={};(pros||[]).forEach(p=>pm[p.id]=p.name)
+  const tbody=document.getElementById('port-tbody')
+  if(!items||!items.length){tbody.innerHTML='<tr class="empty-row"><td colspan="5">Sem itens de portfólio</td></tr>';return}
+  tbody.innerHTML=items.map(it=>`
+    <tr>
+      <td><img src="${it.photo_url}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:8px"/></td>
+      <td class="msg-preview">${it.caption||'—'}</td>
+      <td>${pm[it.professional_id]||'—'}</td>
+      <td>${it.created_at?new Date(it.created_at).toLocaleDateString('pt-PT'):'—'}</td>
+      <td><button class="btn btn-delete" onclick="deletePortfolioItem('${it.id}')">🗑</button></td></tr>`).join('')
+}
+
+async function deletePortfolioItem(id){
+  if(!confirm('Eliminar este item do portfólio?'))return
+  await db.from('portfolio_items').delete().eq('id',id);loadPortfolio()
+}
+
 // NAVIGATION
 function showAdminPage(name){
   document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'))
   document.getElementById(`page-${name}`).classList.add('active')
-  const names=['overview','profiles','messages','reviews','services']
+  const names=['overview','profiles','conversations','messages','reviews','services','portfolio']
   document.querySelectorAll('.atab').forEach((t,i)=>t.classList.toggle('active',names[i]===name))
+  if(name==='conversations')loadConversations()
   if(name==='messages')loadMessages()
   if(name==='reviews')loadReviews()
   if(name==='services')loadServices()
+  if(name==='portfolio')loadPortfolio()
 }
 
 init()
