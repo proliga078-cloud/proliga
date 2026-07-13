@@ -219,15 +219,17 @@ section{padding:72px 5%}
 .faq-item.open .faq-a{max-height:200px}
 .faq-a p{font-size:13.5px;color:var(--muted);line-height:1.6;padding:0 4px 18px}
 
-footer{background:var(--ink);color:rgba(255,255,255,.6);padding:50px 5% 26px}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:22px;margin-bottom:40px}
-@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr 1fr}}
+footer{background:var(--ink);color:rgba(255,255,255,.6);padding:44px 5% 24px}
+.footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:24px}
 .footer-brand .logo{color:#fff}
-.footer-brand p{font-size:13px;line-height:1.7;max-width:260px;margin-top:12px;color:rgba(255,255,255,.5)}
-.footer-col h4{font-size:11.5px;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em}
-.footer-col a{display:block;font-size:13px;margin-bottom:9px;color:rgba(255,255,255,.5)}
+.footer-brand p{font-size:13px;line-height:1.7;max-width:260px;margin-top:10px;color:rgba(255,255,255,.5)}
+.footer-links{display:flex;gap:40px;flex-wrap:wrap}
+.footer-col{display:flex;flex-direction:column;gap:10px}
+.footer-col a{font-size:13px;color:rgba(255,255,255,.5)}
 .footer-col a:hover{color:#fff}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:rgba(255,255,255,.4)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:12px;color:rgba(255,255,255,.4)}
+.footer-bottom a{color:rgba(255,255,255,.4)}
+.footer-bottom a:hover{color:#fff}
 
 .spinner{width:26px;height:26px;border:2.5px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -242,13 +244,14 @@ footer{background:var(--ink);color:rgba(255,255,255,.6);padding:50px 5% 26px}
 .why-grid{grid-template-columns:1fr}
 section{padding:52px 4%}
 .steps-grid{grid-template-columns:1fr}
-.footer-grid{grid-template-columns:1fr 1fr}
+.footer-top{flex-direction:column}
+.footer-links{gap:28px}
 }
 @media(max-width:480px){
 .cat-grid{grid-template-columns:repeat(2,1fr);gap:10px}
 .trust-grid{grid-template-columns:repeat(2,1fr)}
 .loc-grid{grid-template-columns:1fr}
-.footer-grid{grid-template-columns:1fr}
+.footer-links{flex-direction:column;gap:16px}
 }
 </style>
 </head>
@@ -439,20 +442,28 @@ section{padding:52px 4%}
 </section>
 
 <footer>
-<div class="footer-grid">
+<div class="footer-top">
 <div class="footer-brand">
 <a href="index.html" class="logo">Pro<em>liga</em></a>
 <p>O marketplace de serviços profissionais em Portugal. Conectamos clientes a profissionais de confiança.</p>
-<p style="margin-top:12px;font-size:12px"><a href="mailto:proliga.pt@gmail.com" style="color:rgba(255,255,255,.5)">proliga.pt@gmail.com</a></p>
 </div>
-<div class="footer-col"><h4>Categorias</h4><a href="eletricistas.html">Eletricistas</a><a href="canalizadores.html">Canalizadores</a><a href="limpeza.html">Limpeza</a><a href="pintores.html">Pintores</a><a href="categoria.html">Ver todas →</a></div>
-<div class="footer-col"><h4>Localizações</h4><a href="categoria.html?loc=Lisboa">Lisboa</a><a href="categoria.html?loc=Porto">Porto</a><a href="categoria.html?loc=Braga">Braga</a><a href="categoria.html?loc=Coimbra">Coimbra</a><a href="categoria.html?loc=Faro">Faro</a></div>
-<div class="footer-col"><h4>Empresa</h4><a href="sobre.html">Sobre nós</a><a href="como-funciona.html">Como funciona</a><a href="porque-escolher.html">Porquê a Proliga</a><a href="pricing.html">Planos e Preços</a><a href="contacto.html">Contacto</a><a href="auth.html?tab=register">Registar profissional</a></div>
-<div class="footer-col"><h4>Legal</h4><a href="termos.html">Termos de Serviço</a><a href="privacidade.html">Política de Privacidade</a><a href="cookies.html">Política de Cookies</a><a href="rgpd.html">RGPD</a></div>
+<div class="footer-links">
+<div class="footer-col">
+<a href="como-funciona.html">Como funciona</a>
+<a href="porque-escolher.html">Porquê a Proliga</a>
+<a href="pricing.html">Preços</a>
+<a href="contacto.html">Contacto</a>
+</div>
+<div class="footer-col">
+<a href="categoria.html">Todas as categorias</a>
+<a href="auth.html?tab=register">Registar profissional</a>
+<a href="mailto:proliga.pt@gmail.com">proliga.pt@gmail.com</a>
+</div>
+</div>
 </div>
 <div class="footer-bottom">
-<span>© 2026 Proliga · Portugal · Todos os direitos reservados</span>
-<span>Feito com cuidado para profissionais locais</span>
+<span>© 2026 Proliga · Portugal</span>
+<span><a href="termos.html">Termos</a> · <a href="privacidade.html">Privacidade</a> · <a href="cookies.html">Cookies</a> · <a href="rgpd.html">RGPD</a></span>
 </div>
 </footer>
 
