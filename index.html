@@ -304,9 +304,9 @@ section{padding:52px 4%}
 
 <div class="stats">
 <div class="stat"><div class="ici"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><strong>100%</strong><span>Perfis verificados</span></div>
-<div class="stat"><div class="ici"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><strong>4.8</strong><span>Avaliação média</span></div>
-<div class="stat"><div class="ici"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><strong>24h</strong><span>Resposta média</span></div>
-<div class="stat"><div class="ici"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><strong>18</strong><span>Distritos ativos</span></div>
+<div class="stat"><div class="ici"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><strong id="stat-rating-top">Novo</strong><span>Avaliação média</span></div>
+<div class="stat"><div class="ici"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><strong>24h</strong><span>Objetivo de resposta</span></div>
+<div class="stat"><div class="ici"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><strong>18</strong><span>Distritos cobertos</span></div>
 </div>
 
 <section>
@@ -402,18 +402,21 @@ section{padding:52px 4%}
 <section class="trust-section">
 <div class="trust-grid">
 <div class="trust-item"><strong id="t-pros">200+</strong><p>Profissionais registados</p></div>
-<div class="trust-item"><strong>100%</strong><p>Perfis verificados</p></div>
-<div class="trust-item"><strong>4.8</strong><p>Avaliação média</p></div>
-<div class="trust-item"><strong>24h</strong><p>Resposta média</p></div>
+<div class="trust-item"><strong>100%</strong><p>Perfis verificados à mão</p></div>
 <div class="trust-item"><strong>RGPD</strong><p>Dados seguros</p></div>
 </div>
 </section>
 
 <section>
 <div class="section-header">
-<span class="eyebrow">A começar agora</span>
-<h2>Ainda estamos no início</h2>
-<p>Preferimos ser honestos: a Proliga é uma plataforma nova. Aqui está uma avaliação real de um cliente real.</p>
+<span class="eyebrow">Confiança</span>
+<h2>Como garantimos que podes confiar</h2>
+<p>Estamos a começar — e é exatamente por isso que cada perfil aqui foi mesmo revisto à mão, um a um.</p>
+</div>
+<div class="why-grid" style="margin-bottom:40px">
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div><div><h3>Verificação manual</h3><p>Nenhum perfil fica visível sem passar por uma revisão feita por uma pessoa, não um algoritmo.</p></div></div>
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><div><h3>Só avalia quem contratou</h3><p>As avaliações só podem vir de clientes reais que usaram o serviço — nada de reviews compradas.</p></div></div>
+<div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div><div><h3>Zero intermediários</h3><p>Falas diretamente com o profissional. A Proliga não fica no meio da conversa nem do preço.</p></div></div>
 </div>
 <div class="testimonials-grid" style="max-width:480px">
 <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"Muito atenciosa e muito simpática, explica muito bem."</p><div class="t-author"><div class="t-avatar">DC</div><div><div class="t-name">David Campos</div><div class="t-role">Cliente · avaliou Paula Campos, Limpeza</div></div></div></div>
@@ -519,11 +522,15 @@ return '<a href="pedidos.html" class="req-card"'+(i===data.length-1?' style="mar
 
 async function loadStats(){
 try{
-const[{count:pc},{count:rc}]=await Promise.all([
+const[{count:pc},{data:revs}]=await Promise.all([
 db.from('profiles').select('*',{count:'exact',head:true}),
-db.from('reviews').select('*',{count:'exact',head:true})
+db.from('reviews').select('rating')
 ])
 if(pc!=null){document.getElementById('t-pros').textContent=pc+'+';document.getElementById('stat-pros-inline').textContent=pc+'+'}
+if(revs&&revs.length){
+const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
+document.getElementById('stat-rating-top').textContent=avg
+}
 }catch(e){}
 }
 

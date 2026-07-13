@@ -36,14 +36,21 @@
     .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
     .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
-    .page-header{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:40px 5%;color:#fff}
-    .page-header h1{font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:8px}
-    .page-header .intro{font-size:14.5px;color:rgba(255,255,255,.85);margin-bottom:18px;max-width:680px;line-height:1.6}
+    .page-header{background:linear-gradient(135deg,#dc2626,#f87171);padding:36px 5% 28px;color:#fff}
+    .page-header h1{font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:14px}
+    .cat-icon-badge{width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;backdrop-filter:blur(4px)}
+    .page-header .intro{font-size:14.5px;color:rgba(255,255,255,.85);margin-bottom:14px;max-width:680px;line-height:1.6}
     .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.7);margin-bottom:16px}
     .breadcrumb a{color:rgba(255,255,255,.85)}.breadcrumb a:hover{color:#fff}
+    .trust-pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+    .trust-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.92);font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px}
+    .stats-row{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:18px;padding:14px 18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:14px;max-width:fit-content}
+    .stats-row .stat-item{text-align:left}
+    .stats-row .stat-item strong{display:block;font-size:19px;font-weight:800;line-height:1.1}
+    .stats-row .stat-item span{font-size:11px;color:rgba(255,255,255,.75)}
     .cat-chips{display:flex;flex-wrap:wrap;gap:8px}
     .cat-chip{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;cursor:pointer;transition:all .2s;display:inline-block}
-    .cat-chip:hover,.cat-chip.active{background:rgba(255,255,255,.9);color:var(--blue)}
+    .cat-chip:hover,.cat-chip.active{background:rgba(255,255,255,.9);color:#dc2626}
 
     .page-body{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:28px 5%;max-width:1400px;margin:0 auto}
     .mobile-filter-btn{display:none;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text);margin-bottom:16px}
@@ -85,9 +92,13 @@
     .sort-select:focus{border-color:var(--blue)}
 
     .pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-    .pro-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
-    .pro-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-3px);border-color:var(--blue)}
-    .pro-card-cover{height:88px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));position:relative}
+    .pro-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block;opacity:0;animation:cardIn .45s ease forwards}
+    .pro-card:nth-child(1){animation-delay:.02s}.pro-card:nth-child(2){animation-delay:.07s}.pro-card:nth-child(3){animation-delay:.12s}
+    .pro-card:nth-child(4){animation-delay:.17s}.pro-card:nth-child(5){animation-delay:.22s}.pro-card:nth-child(6){animation-delay:.27s}
+    .pro-card:nth-child(n+7){animation-delay:.32s}
+    @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .pro-card:hover{box-shadow:0 10px 28px rgba(0,0,0,.12);transform:translateY(-4px);border-color:#dc2626}
+    .pro-card-cover{height:88px;background:linear-gradient(135deg,#dc2626,#f87171);position:relative}
     .pro-avatar{width:64px;height:64px;border-radius:50%;border:3px solid #fff;background:var(--blue);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;position:absolute;bottom:-22px;left:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.15)}
     .pro-avatar img{width:100%;height:100%;object-fit:cover}
     .plan-badge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
@@ -122,9 +133,28 @@
 
     .faq-section{max-width:1400px;margin:0 auto;padding:8px 5% 60px}
     .faq-section h2{font-size:20px;font-weight:800;margin-bottom:16px}
-    .faq-item{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px}
-    .faq-q{font-size:14.5px;font-weight:700;margin-bottom:6px}
-    .faq-a{font-size:13.5px;color:var(--muted);line-height:1.6}
+    .faq-item{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:4px 18px;margin-bottom:12px;transition:border-color .2s}
+    .faq-item.open{border-color:#dc2626}
+    .faq-q{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14.5px;font-weight:700;padding:14px 0;cursor:pointer;font-family:inherit;color:var(--text)}
+    .faq-chevron{transition:transform .2s;color:#dc2626;font-size:18px;flex-shrink:0}
+    .faq-item.open .faq-chevron{transform:rotate(90deg)}
+    .faq-a{font-size:13.5px;color:var(--muted);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease;padding-bottom:0}
+    .faq-item.open .faq-a{max-height:240px;padding-bottom:16px}
+
+    .mini-how{max-width:1400px;margin:0 auto;padding:8px 5% 8px}
+    .mini-how h2{font-size:18px;font-weight:800;margin-bottom:14px}
+    .mini-how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+    .mini-how-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;transition:all .2s}
+    .mini-how-card:hover{border-color:#dc2626;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .mini-how-num{width:26px;height:26px;border-radius:50%;background:#dc2626;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+    .mini-how-card h3{font-size:13.5px;font-weight:700;margin-bottom:4px}
+    .mini-how-card p{font-size:12.5px;color:var(--muted);line-height:1.5}
+
+    .sidebar-cta{background:linear-gradient(135deg,#dc2626,#f87171);border-radius:16px;padding:20px;margin-bottom:16px;color:#fff}
+    .sidebar-cta h3{font-size:14.5px;font-weight:800;margin-bottom:6px}
+    .sidebar-cta p{font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.5;margin-bottom:12px}
+    .sidebar-cta a{display:block;text-align:center;background:rgba(255,255,255,.95);color:#dc2626;font-weight:700;font-size:13px;padding:9px;border-radius:8px;transition:background .2s}
+    .sidebar-cta a:hover{background:#fff}
 
     footer{background:var(--text);color:rgba(255,255,255,.6);padding:40px 5% 24px;font-size:13px}
     footer a{color:rgba(255,255,255,.6)}
@@ -161,8 +191,18 @@
     <span>›</span>
     <span>Personal Trainers</span>
   </div>
-  <h1>💪 Personal Trainers em Portugal</h1>
+  <h1><span class="cat-icon-badge">💪</span> Personal Trainers em Portugal</h1>
   <p class="intro">Encontra personal trainers verificados para treino personalizado, planos de fitness e acompanhamento físico. Compara perfis, avaliações e preços, e contacta diretamente — sem intermediários.</p>
+  <div class="trust-pillrow">
+    <span class="trust-pill">✅ Perfis verificados</span>
+    <span class="trust-pill">💬 Contacto direto</span>
+    <span class="trust-pill">🚫 Sem custos escondidos</span>
+  </div>
+  <div class="stats-row" id="cat-stats-row" style="display:none">
+    <div class="stat-item"><strong id="stat-count">–</strong><span>Profissionais</span></div>
+    <div class="stat-item"><strong id="stat-rating">–</strong><span>Avaliação média</span></div>
+    <div class="stat-item"><strong>24h</strong><span>Resposta habitual</span></div>
+  </div>
   <div class="cat-chips" id="cat-chips">
     <a href="categoria.html" class="cat-chip">Todos</a>
     <a href="eletricistas.html" class="cat-chip">⚡ Eletricistas</a>
@@ -197,6 +237,11 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;display:none" class="sidebar-close-row">
       <span style="font-weight:700;font-size:16px">Filtros</span>
       <button onclick="closeSidebar()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted)">×</button>
+    </div>
+    <div class="sidebar-cta">
+      <h3>Não encontraste quem procuras?</h3>
+      <p>Publica um pedido em personal trainers e deixa os profissionais virem até ti.</p>
+      <a href="pedidos.html">📢 Publicar pedido</a>
     </div>
     <div class="filter-card">
 <div class="filter-title">Distrito</div>
@@ -268,15 +313,24 @@
   </main>
 </div>
 
+<section class="mini-how">
+  <h2>Como contratar personal trainers na Proliga</h2>
+  <div class="mini-how-grid">
+    <div class="mini-how-card"><div class="mini-how-num">1</div><h3>Filtra por zona</h3><p>Escolhe o distrito e o orçamento que fazem sentido para ti.</p></div>
+    <div class="mini-how-card"><div class="mini-how-num">2</div><h3>Compara perfis</h3><p>Vê avaliações reais, portfólio e preços antes de decidir.</p></div>
+    <div class="mini-how-card"><div class="mini-how-num">3</div><h3>Contacta direto</h3><p>Fala com o profissional pela plataforma, sem intermediários.</p></div>
+  </div>
+</section>
+
 <section class="faq-section">
   <h2>Perguntas frequentes sobre personal trainers</h2>
   
-    <div class="faq-item">
-      <div class="faq-q">O personal trainer desloca-se a casa ou treina em ginásio?</div>
+    <div class="faq-item open">
+      <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">O personal trainer desloca-se a casa ou treina em ginásio?<span class="faq-chevron">›</span></button>
       <div class="faq-a">Varia por profissional — muitos oferecem ambas as opções, incluindo treino ao ar livre. Consulta o perfil para detalhes.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Preciso de experiência prévia para começar?</div>
+      <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">Preciso de experiência prévia para começar?<span class="faq-chevron">›</span></button>
       <div class="faq-a">Não, a maioria dos personal trainers adapta o plano ao teu nível, seja principiante ou avançado.</div>
     </div>
 </section>
@@ -316,6 +370,27 @@ async function init(){
     if(sel)sel.value=filters.loc
   }
   loadPros()
+  loadCatStats()
+}
+
+async function loadCatStats(){
+  try{
+    const{data:pros,count}=await db.from('profiles').select('id',{count:'exact'}).ilike('category',`%${filters.cat}%`)
+    if(!pros)return
+    const row=document.getElementById('cat-stats-row')
+    document.getElementById('stat-count').textContent=(count||pros.length)
+    if(pros.length){
+      const ids=pros.map(p=>p.id)
+      const{data:revs}=await db.from('reviews').select('rating').in('professional_id',ids)
+      if(revs&&revs.length){
+        const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
+        document.getElementById('stat-rating').textContent=avg+' ★'
+      } else {
+        document.getElementById('stat-rating').textContent='Novo'
+      }
+    }
+    row.style.display='flex'
+  }catch(e){}
 }
 
 function applySearch(){
