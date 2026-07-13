@@ -82,6 +82,15 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-
 h1{font-size:clamp(32px,4vw,48px);font-weight:800;line-height:1.1;letter-spacing:-.025em;margin-bottom:16px}
 h1 em{font-style:normal;color:var(--blue)}
 .hero p{font-size:16.5px;color:var(--muted);line-height:1.65;margin-bottom:24px;max-width:440px}
+.hero-search{display:flex;background:#fff;border:1.5px solid var(--border);border-radius:14px;box-shadow:0 8px 24px rgba(20,24,31,.08);max-width:480px;margin-bottom:24px;overflow:hidden}
+.hs-field{flex:1;display:flex;align-items:center;gap:8px;padding:12px 14px;border-right:1px solid var(--border);min-width:0}
+.hs-field:nth-child(2){border-right:none}
+.hs-field svg{color:var(--muted-2);flex-shrink:0}
+.hs-field input{border:none;outline:none;font-family:inherit;font-size:13px;width:100%;color:var(--ink);background:transparent}
+.hs-field input::placeholder{color:var(--muted-2)}
+.hs-btn{background:var(--blue);color:#fff;border:none;padding:0 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.hs-btn:hover{background:#1740B0}
+@media(max-width:520px){.hero-search{flex-direction:column;max-width:100%}.hs-field{border-right:none;border-bottom:1px solid var(--border)}.hs-field:nth-child(2){border-bottom:none}.hs-btn{padding:12px}}
 .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
 .pill{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);color:#37404D;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:99px}
 .pill .ic{color:var(--blue);font-size:14px}
@@ -272,6 +281,11 @@ section{padding:52px 4%}
 <div class="hero-badge"><span class="pulse"></span>Portugal · Perfis verificados</div>
 <h1>O profissional <em>certo</em>, sem procurar às cegas</h1>
 <p>Compara orçamentos, lê avaliações reais e contrata com confiança — em qualquer distrito do país.</p>
+<div class="hero-search">
+<div class="hs-field"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="hs-q" placeholder="O que precisas? Ex: eletricista" onkeydown="if(event.key==='Enter')heroSearch()"/></div>
+<div class="hs-field"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><input type="text" id="hs-loc" placeholder="Onde? Ex: Porto" onkeydown="if(event.key==='Enter')heroSearch()"/></div>
+<button class="hs-btn" onclick="heroSearch()">Procurar</button>
+</div>
 <div class="pillrow">
 <span class="pill"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Sem custos escondidos</span>
 <span class="pill"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Perfis verificados</span>
@@ -541,6 +555,15 @@ return '<a href="profile.html?id='+p.id+'" class="other-pro-row"><div class="av"
 }
 
 function doSearch(){location.href='categoria.html'}
+
+function heroSearch(){
+const q=document.getElementById('hs-q').value.trim()
+const loc=document.getElementById('hs-loc').value.trim()
+const p=new URLSearchParams()
+if(q)p.set('q',q)
+if(loc)p.set('loc',loc)
+location.href='categoria.html'+(p.toString()?('?'+p.toString()):'')
+}
 
 init()
 </script>
