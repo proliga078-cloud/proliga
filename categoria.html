@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Profissionais – Proliga | Portugal</title>
-  <meta name="description" content="Encontra profissionais verificados em Portugal. Filtra por categoria, distrito e avaliação. Contacto direto, sem intermediários."/>
+  <title>Profissionais – Proliga | Porto &amp; Braga</title>
+  <meta name="description" content="Encontra profissionais verificados no Porto e em Braga. Filtra por categoria, distrito e avaliação. Contacto direto, sem intermediários."/>
   <meta name="robots" content="index, follow"/>
-  <meta property="og:title" content="Profissionais em Portugal – Proliga"/>
-  <meta property="og:description" content="16 categorias de profissionais verificados em todo o país. Eletricistas, pintores, jardineiros e muito mais."/>
+  <meta property="og:title" content="Profissionais no Porto e em Braga – Proliga"/>
+  <meta property="og:description" content="16 categorias de profissionais verificados no Porto e em Braga. Eletricistas, pintores, jardineiros e muito mais."/>
   <meta property="og:type" content="website"/>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -154,7 +154,7 @@
     <span id="breadcrumb-cat">Todos os Profissionais</span>
   </div>
   <h1 id="page-title">Profissionais</h1>
-  <p id="page-desc">Portugal · Todos verificados e avaliados</p>
+  <p id="page-desc">Porto &amp; Braga · Todos verificados e avaliados</p>
   <div class="cat-chips" id="cat-chips">
     <span class="cat-chip" data-cat="" onclick="setCat('')">Todos</span>
     <span class="cat-chip" data-cat="Eletricistas" onclick="setCat('Eletricistas')">⚡ Eletricistas</span>
@@ -278,7 +278,7 @@ function updateHeader(){
   document.getElementById('page-title').textContent=title
   document.getElementById('breadcrumb-cat').textContent=title
   document.title=`${title} – Proliga`
-  let desc='Portugal · Todos verificados e avaliados'
+  let desc='Porto & Braga · Todos verificados e avaliados'
   if(loc)desc=`${loc} · Todos verificados e avaliados`
   document.getElementById('page-desc').innerHTML=desc
 }
