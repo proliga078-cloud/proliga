@@ -140,6 +140,52 @@
     .job-card .jc-actions{display:flex;gap:6px;flex-wrap:wrap}
     .kanban-empty{color:var(--muted);font-size:12px;text-align:center;padding:16px 0}
     @media(max-width:768px){.kanban-col{min-width:220px}}
+
+    /* INSIGHTS */
+    .insights-list{display:flex;flex-direction:column;gap:8px}
+    .insight-card{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border);font-size:13px;line-height:1.45}
+    .insight-card.warn{background:#fff8ec;border-color:#f6e2b8}
+    .insight-card.good{background:#eefaf1;border-color:#c9ecd4}
+    .insight-card .ic-icon{flex-shrink:0;width:18px;height:18px;margin-top:1px}
+    .insight-card b{font-weight:700}
+
+    /* CHARTS */
+    .charts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+    .chart-card canvas{max-height:180px}
+    @media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
+
+    /* CALENDAR */
+    .cal-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .cal-title{font-weight:700;font-size:15px;flex:1;text-align:center;text-transform:capitalize}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+    .cal-dow{margin-bottom:6px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;text-align:center}
+    .cal-day{position:relative;aspect-ratio:1;border-radius:9px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12.5px;cursor:pointer;border:1px solid transparent;transition:all .15s}
+    .cal-day:hover{border-color:var(--blue)}
+    .cal-day.other-month{opacity:.35}
+    .cal-day.today{border-color:var(--blue);font-weight:700}
+    .cal-day.selected{background:var(--blue);color:#fff}
+    .cal-day .cal-dot{width:5px;height:5px;border-radius:99px;background:var(--blue);margin-top:3px}
+    .cal-day.selected .cal-dot{background:#fff}
+    .cal-day.empty{visibility:hidden}
+    .live-dot{width:8px;height:8px;border-radius:99px;background:#22c55e;box-shadow:0 0 0 rgba(34,197,94,.5);animation:live-pulse 2s infinite}
+    @keyframes live-pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+
+    /* AI CHAT */
+    #ai-chat-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(30,79,214,.35);cursor:pointer;z-index:200;border:none}
+    #ai-chat-fab svg{width:24px;height:24px;stroke:#fff}
+    #ai-chat-panel{position:fixed;bottom:92px;right:24px;width:340px;max-width:calc(100vw - 32px);height:460px;max-height:calc(100vh - 140px);background:var(--white);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.18);display:none;flex-direction:column;overflow:hidden;z-index:200;border:1px solid var(--border)}
+    #ai-chat-panel.open{display:flex}
+    .ai-chat-head{padding:14px 16px;background:var(--blue);color:#fff;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+    .ai-chat-head span.sub{display:block;font-weight:400;font-size:11.5px;opacity:.85;margin-top:2px}
+    .ai-chat-close{cursor:pointer;background:none;border:none;color:#fff;font-size:18px;line-height:1}
+    .ai-chat-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+    .ai-msg{max-width:85%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.45}
+    .ai-msg.user{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:3px}
+    .ai-msg.bot{align-self:flex-start;background:var(--white);border:1px solid var(--border);border-bottom-left-radius:3px}
+    .ai-chat-foot{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
+    .ai-chat-foot input{flex:1;border:1px solid var(--border);border-radius:99px;padding:9px 14px;font-size:13px}
+    .ai-chat-foot button{background:var(--blue);color:#fff;border:none;border-radius:99px;width:36px;height:36px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .ai-chat-foot button:disabled{opacity:.5;cursor:default}
   </style>
 </head>
 <body>
@@ -199,6 +245,27 @@
       <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div><div class="s-value" id="stat-earnings">—</div><div class="s-label">Faturação este mês</div></div>
     </div>
     <div id="upgrade-banner-wrap"></div>
+
+    <div class="form-section" id="ai-insights-section">
+      <div class="form-title"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px"><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg>Insights</div>
+      <div id="ai-insights" class="insights-list"><div class="empty">A analisar os teus dados…</div></div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="form-section chart-card">
+        <div class="form-title">Visualizações do perfil (30 dias)</div>
+        <canvas id="chart-views" height="160"></canvas>
+      </div>
+      <div class="form-section chart-card">
+        <div class="form-title">Faturação mensal</div>
+        <canvas id="chart-earnings" height="160"></canvas>
+      </div>
+      <div class="form-section chart-card">
+        <div class="form-title">Trabalhos por estado</div>
+        <canvas id="chart-status" height="160"></canvas>
+      </div>
+    </div>
+
     <div class="form-section">
       <div class="form-title">Mensagens Recentes</div>
       <div id="recent-msgs"></div>
@@ -237,7 +304,19 @@
     </div>
     <div id="trabalhos-agenda" style="display:none">
       <div class="form-section">
-        <div class="form-title">Próximos Agendamentos</div>
+        <div class="cal-header">
+          <button class="btn btn-outline btn-sm" onclick="calShiftMonth(-1)">←</button>
+          <div class="cal-title" id="cal-title"></div>
+          <button class="btn btn-outline btn-sm" onclick="calShiftMonth(1)">→</button>
+          <span class="live-dot" id="live-dot" title="Atualização em tempo real"></span>
+        </div>
+        <div class="cal-grid cal-dow">
+          <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+      <div class="form-section">
+        <div class="form-title" id="agenda-day-title">Próximos Agendamentos</div>
         <div id="agenda-list" class="item-list"></div>
       </div>
     </div>
@@ -435,12 +514,35 @@
 
 </div>
 
+<!-- AI ASSISTANT -->
+<button id="ai-chat-fab" onclick="toggleAiChat()" title="Assistente Proliga IA">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/><path d="M8 13v1a4 4 0 0 0 8 0v-1M12 18v3M9 21h6"/></svg>
+</button>
+<div id="ai-chat-panel">
+  <div class="ai-chat-head">
+    <div>Assistente Proliga<span class="sub">Pergunta-me sobre o teu negócio</span></div>
+    <button class="ai-chat-close" onclick="toggleAiChat()">✕</button>
+  </div>
+  <div class="ai-chat-body" id="ai-chat-body">
+    <div class="ai-msg bot">Olá! Posso ajudar-te a perceber como vai o teu negócio no Proliga — pergunta-me algo como "como está o meu mês?" ou "o que devo fazer a seguir?".</div>
+  </div>
+  <div class="ai-chat-foot">
+    <input id="ai-chat-input" type="text" placeholder="Escreve a tua pergunta…" onkeydown="if(event.key==='Enter')sendAiChat()"/>
+    <button id="ai-chat-send" onclick="sendAiChat()"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 let user=null,profileData=null,profileId=null
+let servicesCount=0,jobsChannel=null
+let chartViews=null,chartEarnings=null,chartStatus=null
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calSelected=null
+let aiChatOpen=false
 
 
 // Upload foto de perfil para Supabase Storage
@@ -529,6 +631,7 @@ async function init(){
       loadServices()
       loadChatUnread()
       loadJobs()
+      subscribeJobsRealtime()
     }
     checkUpgrade()
   } catch(e) {
@@ -615,18 +718,31 @@ async function loadStats(){
     db.from('reviews').select('rating').eq('professional_id',profileId),
     db.from('services').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
   ])
-  document.getElementById('stat-views').textContent='—'
+  servicesCount=sc||0
   document.getElementById('stat-msgs').textContent=mc||0
   document.getElementById('stat-services').textContent=sc||0
   if(revs&&revs.length){
     const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
     document.getElementById('stat-avg').textContent=avg
   } else document.getElementById('stat-avg').textContent='—'
+
+  // Visualizações do perfil (últimos 30 dias) + gráfico
+  const d30=new Date();d30.setDate(d30.getDate()-29);d30.setHours(0,0,0,0)
+  const{data:views}=await db.from('profile_views').select('viewed_at').eq('profile_id',profileId).gte('viewed_at',d30.toISOString().slice(0,10))
+  document.getElementById('stat-views').textContent=views?views.length:0
+  renderViewsChart(views||[])
+
   // Faturação este mês
   const monthStart=new Date();monthStart.setDate(1);monthStart.setHours(0,0,0,0)
   const{data:paidJobs}=await db.from('jobs').select('paid_amount').eq('professional_id',profileId).eq('status','pago').gte('paid_at',monthStart.toISOString())
   const total=(paidJobs||[]).reduce((s,j)=>s+(Number(j.paid_amount)||0),0)
   document.getElementById('stat-earnings').textContent=total>0?('€'+total.toFixed(0)):'€0'
+
+  // Faturação últimos 6 meses (gráfico)
+  const d6=new Date();d6.setMonth(d6.getMonth()-5);d6.setDate(1);d6.setHours(0,0,0,0)
+  const{data:paid6}=await db.from('jobs').select('paid_amount,paid_at').eq('professional_id',profileId).eq('status','pago').gte('paid_at',d6.toISOString())
+  renderEarningsChart(paid6||[])
+
   // Badge
   const{count:unread}=await db.from('messages_legacy_contact_form').select('*',{count:'exact',head:true}).eq('professional_id',profileId).eq('read',false)
   if(unread>0){
@@ -634,6 +750,133 @@ async function loadStats(){
     badge.style.display='inline'
     badge.textContent=unread
   }
+  renderInsights()
+}
+
+function renderViewsChart(views){
+  const ctx=document.getElementById('chart-views')
+  if(!ctx||typeof Chart==='undefined')return
+  const days=[],counts={}
+  for(let i=29;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i)
+    const key=d.toISOString().slice(0,10)
+    days.push(key);counts[key]=0
+  }
+  views.forEach(v=>{if(counts[v.viewed_at]!==undefined)counts[v.viewed_at]++})
+  const labels=days.map(d=>{const dt=new Date(d+'T00:00:00');return dt.getDate()+'/'+(dt.getMonth()+1)})
+  const data=days.map(d=>counts[d])
+  if(chartViews)chartViews.destroy()
+  chartViews=new Chart(ctx,{
+    type:'line',
+    data:{labels,datasets:[{data,borderColor:'#1E4FD6',backgroundColor:'rgba(30,79,214,.08)',fill:true,tension:.3,pointRadius:0,borderWidth:2}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{ticks:{maxTicksLimit:6,font:{size:10}},grid:{display:false}},y:{beginAtZero:true,ticks:{precision:0,font:{size:10}}}}}
+  })
+}
+
+function renderEarningsChart(paidJobs){
+  const ctx=document.getElementById('chart-earnings')
+  if(!ctx||typeof Chart==='undefined')return
+  const months=[]
+  for(let i=5;i>=0;i--){
+    const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i)
+    months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleDateString('pt-PT',{month:'short'})})
+  }
+  const totals={}
+  months.forEach(m=>totals[m.key]=0)
+  paidJobs.forEach(j=>{
+    if(!j.paid_at)return
+    const d=new Date(j.paid_at)
+    const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')
+    if(totals[key]!==undefined)totals[key]+=Number(j.paid_amount)||0
+  })
+  if(chartEarnings)chartEarnings.destroy()
+  chartEarnings=new Chart(ctx,{
+    type:'bar',
+    data:{labels:months.map(m=>m.label),datasets:[{data:months.map(m=>totals[m.key]),backgroundColor:'#1E4FD6',borderRadius:6,maxBarThickness:28}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{beginAtZero:true,ticks:{callback:v=>'€'+v,font:{size:10}}}}}
+  })
+}
+
+function renderStatusChart(jobs){
+  const ctx=document.getElementById('chart-status')
+  if(!ctx||typeof Chart==='undefined')return
+  const counts={}
+  jobs.forEach(j=>{counts[j.status]=(counts[j.status]||0)+1})
+  let labels=Object.keys(counts).map(k=>JOB_STATUS_LABELS[k]||k)
+  let data=Object.values(counts)
+  let colors=['#1E4FD6','#F59E0B','#22c55e','#a855f7','#ef4444','#06b6d4','#64748b','#94a3b8']
+  if(!data.length){labels=['Sem trabalhos'];data=[1];colors=['#e5e7eb']}
+  if(chartStatus)chartStatus.destroy()
+  chartStatus=new Chart(ctx,{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0}]},
+    options:{plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:8}}},cutout:'62%'}
+  })
+}
+
+function renderInsights(){
+  const el=document.getElementById('ai-insights')
+  if(!el||!profileData)return
+  const tips=[]
+  const now=new Date()
+
+  const missing=[]
+  if(!profileData.photo_url)missing.push('foto de perfil')
+  if(!profileData.bio)missing.push('biografia')
+  if(missing.length)tips.push({type:'warn',icon:'alert',text:`O teu perfil está incompleto (falta ${missing.join(' e ')}). Perfis completos recebem mais contactos.`})
+
+  if(servicesCount===0)tips.push({type:'warn',icon:'alert',text:'Ainda não publicaste nenhum serviço. Adiciona pelo menos um em "Serviços" para apareceres nas pesquisas.'})
+
+  const stale=allJobs.filter(j=>['novo','negociacao'].includes(j.status)&&(now-new Date(j.created_at))/86400000>3)
+  if(stale.length)tips.push({type:'warn',icon:'clock',text:`Tens ${stale.length} trabalho${stale.length>1?'s':''} por avançar há mais de 3 dias. Responder rápido aumenta as hipóteses de fechar negócio.`})
+
+  const waiting=allJobs.filter(j=>j.status==='orcamento_enviado'&&j.quote_sent_at&&(now-new Date(j.quote_sent_at))/86400000>5)
+  if(waiting.length)tips.push({type:'warn',icon:'clock',text:`Tens ${waiting.length} orçamento${waiting.length>1?'s':''} enviado${waiting.length>1?'s':''} há mais de 5 dias sem resposta. Considera fazer um follow-up.`})
+
+  const weekEnd=new Date(now);weekEnd.setDate(weekEnd.getDate()+7)
+  const thisWeek=allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado'&&new Date(j.scheduled_at)>=now&&new Date(j.scheduled_at)<=weekEnd)
+  if(thisWeek.length)tips.push({type:'good',icon:'calendar',text:`Tens ${thisWeek.length} trabalho${thisWeek.length>1?'s':''} agendado${thisWeek.length>1?'s':''} para os próximos 7 dias.`})
+
+  const paid=allJobs.filter(j=>j.status==='pago'&&j.paid_amount)
+  if(paid.length){
+    const avgTicket=paid.reduce((s,j)=>s+Number(j.paid_amount),0)/paid.length
+    tips.push({type:'good',icon:'trend',text:`O teu ticket médio é de €${avgTicket.toFixed(0)}, com base em ${paid.length} trabalho${paid.length>1?'s':''} pago${paid.length>1?'s':''}.`})
+  }
+
+  const completed=allJobs.filter(j=>j.completed_at)
+  if(completed.length>=3){
+    const dowCount=[0,0,0,0,0,0,0]
+    completed.forEach(j=>dowCount[new Date(j.completed_at).getDay()]++)
+    const maxIdx=dowCount.indexOf(Math.max(...dowCount))
+    const dowNames=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado']
+    tips.push({type:'good',icon:'chart',text:`A maior parte dos teus trabalhos concluídos caem à ${dowNames[maxIdx]}.`})
+  }
+
+  if(!tips.length)tips.push({type:'good',icon:'check',text:'Tudo em dia! Sem alertas de momento — continua o bom trabalho.'})
+
+  el.innerHTML=tips.map(t=>`<div class="insight-card ${t.type}">${insightIcon(t.icon)}<div>${t.text}</div></div>`).join('')
+}
+
+function insightIcon(name){
+  const paths={
+    alert:'<path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>',
+    clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+    calendar:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    trend:'<path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>',
+    chart:'<path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/>',
+    check:'<path d="M20 6 9 17l-5-5"/>'
+  }
+  return `<svg class="ic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths[name]||paths.check}</svg>`
+}
+
+function subscribeJobsRealtime(){
+  if(jobsChannel)return
+  jobsChannel=db.channel('jobs-changes-'+profileId)
+    .on('postgres_changes',{event:'*',schema:'public',table:'jobs',filter:'professional_id=eq.'+profileId},()=>{
+      loadJobs()
+      loadStats()
+    })
+    .subscribe()
 }
 
 async function loadRecentMsgs(){
@@ -835,7 +1078,9 @@ async function loadJobs(){
   const{data}=await db.from('jobs').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
   allJobs=data||[]
   renderPipeline()
-  renderAgenda()
+  renderCalendar()
+  renderStatusChart(allJobs)
+  renderInsights()
 }
 
 function switchTrabalhosTab(tab){
@@ -878,21 +1123,82 @@ function renderPipeline(){
   }).join('')
 }
 
+function jobAgendaItemHtml(j){
+  const d=new Date(j.scheduled_at)
+  const dateStr=d.toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'short'})
+  const timeStr=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
+  return `<div class="list-item">
+    <div class="list-item-body">
+      <div class="list-item-title">${j.title}</div>
+      <div class="list-item-sub">${j.client_name||'Cliente'} · ${dateStr}, ${timeStr} · <span style="color:var(--blue);font-weight:600">${JOB_STATUS_LABELS[j.status]}</span></div>
+    </div>
+  </div>`
+}
+
 function renderAgenda(){
   const el=document.getElementById('agenda-list')
+  if(!el)return
   const upcoming=allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado').sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at))
   if(!upcoming.length){el.innerHTML='<div class="empty">Sem trabalhos agendados. Define uma data num trabalho no Pipeline.</div>';return}
-  el.innerHTML=upcoming.map(j=>{
+  el.innerHTML=upcoming.map(jobAgendaItemHtml).join('')
+}
+
+function calShiftMonth(delta){
+  calMonth+=delta
+  if(calMonth<0){calMonth=11;calYear--}
+  if(calMonth>11){calMonth=0;calYear++}
+  calSelected=null
+  renderCalendar()
+}
+
+function calSelectDay(day){
+  calSelected=calSelected===day?null:day
+  renderCalendar()
+}
+
+function renderCalendar(){
+  const grid=document.getElementById('cal-grid')
+  const title=document.getElementById('cal-title')
+  if(!grid||!title)return
+  const first=new Date(calYear,calMonth,1)
+  const startDow=first.getDay()
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate()
+  title.textContent=first.toLocaleDateString('pt-PT',{month:'long',year:'numeric'})
+
+  const jobsByDay={}
+  allJobs.forEach(j=>{
+    if(!j.scheduled_at||j.status==='cancelado')return
     const d=new Date(j.scheduled_at)
-    const dateStr=d.toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'short'})
-    const timeStr=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
-    return `<div class="list-item">
-      <div class="list-item-body">
-        <div class="list-item-title">${j.title}</div>
-        <div class="list-item-sub">${j.client_name||'Cliente'} · ${dateStr}, ${timeStr} · <span style="color:var(--blue);font-weight:600">${JOB_STATUS_LABELS[j.status]}</span></div>
-      </div>
-    </div>`
-  }).join('')
+    if(d.getFullYear()===calYear&&d.getMonth()===calMonth){
+      (jobsByDay[d.getDate()]=jobsByDay[d.getDate()]||[]).push(j)
+    }
+  })
+
+  const todayStr=new Date().toDateString()
+  let html=''
+  for(let i=0;i<startDow;i++)html+='<div class="cal-day empty"></div>'
+  for(let day=1;day<=daysInMonth;day++){
+    const isToday=new Date(calYear,calMonth,day).toDateString()===todayStr
+    const isSelected=calSelected===day
+    const hasJobs=jobsByDay[day]&&jobsByDay[day].length
+    html+=`<div class="cal-day${isToday?' today':''}${isSelected?' selected':''}" onclick="calSelectDay(${day})">${day}${hasJobs?'<div class="cal-dot"></div>':''}</div>`
+  }
+  grid.innerHTML=html
+  renderAgendaDayOrUpcoming(jobsByDay)
+}
+
+function renderAgendaDayOrUpcoming(jobsByDay){
+  const titleEl=document.getElementById('agenda-day-title')
+  const el=document.getElementById('agenda-list')
+  if(!titleEl||!el)return
+  if(calSelected&&jobsByDay[calSelected]&&jobsByDay[calSelected].length){
+    const dateLabel=new Date(calYear,calMonth,calSelected).toLocaleDateString('pt-PT',{weekday:'long',day:'2-digit',month:'long'})
+    titleEl.textContent=`Trabalhos em ${dateLabel}`
+    el.innerHTML=jobsByDay[calSelected].map(jobAgendaItemHtml).join('')
+    return
+  }
+  titleEl.textContent='Próximos Agendamentos'
+  renderAgenda()
 }
 
 async function addJob(){
@@ -991,6 +1297,52 @@ async function deleteMyRequest(id){
 function viewPublicProfile(){
   if(!profileId){alert('Guarda o teu perfil primeiro para ver o perfil público.');return}
   window.open('profile.html?id='+profileId,'_blank')
+}
+
+// ASSISTENTE DE IA
+function toggleAiChat(){
+  aiChatOpen=!aiChatOpen
+  document.getElementById('ai-chat-panel').classList.toggle('open',aiChatOpen)
+  if(aiChatOpen)document.getElementById('ai-chat-input').focus()
+}
+
+function escapeHtml(s){
+  const d=document.createElement('div')
+  d.textContent=s
+  return d.innerHTML
+}
+
+async function sendAiChat(){
+  const input=document.getElementById('ai-chat-input')
+  const q=input.value.trim()
+  if(!q)return
+  const body=document.getElementById('ai-chat-body')
+  body.insertAdjacentHTML('beforeend',`<div class="ai-msg user">${escapeHtml(q)}</div>`)
+  input.value=''
+  const sendBtn=document.getElementById('ai-chat-send')
+  sendBtn.disabled=true
+  const typingId='typing-'+Date.now()
+  body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot" id="${typingId}">…</div>`)
+  body.scrollTop=body.scrollHeight
+  try{
+    const{data,error}=await db.functions.invoke('ai-assistant',{body:{question:q}})
+    const typingEl=document.getElementById(typingId)
+    if(typingEl)typingEl.remove()
+    if(error||!data||data.error){
+      const msg=data&&data.error==='not_configured'
+        ?'O assistente de IA ainda não foi ativado. Fala com o administrador do Proliga.'
+        :'Não consegui responder agora. Tenta novamente daqui a pouco.'
+      body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${msg}</div>`)
+    } else {
+      body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${escapeHtml(data.answer||'').replace(/\n/g,'<br>')}</div>`)
+    }
+  }catch(e){
+    const typingEl=document.getElementById(typingId)
+    if(typingEl)typingEl.remove()
+    body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">Erro de ligação. Tenta novamente.</div>`)
+  }
+  sendBtn.disabled=false
+  body.scrollTop=body.scrollHeight
 }
 
 function showAlert(id,msg,type='success'){

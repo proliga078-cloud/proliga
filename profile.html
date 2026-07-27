@@ -315,6 +315,7 @@ async function init(){
   loadReviews()
   loadPortfolio()
   renderSidebar(pro)
+  if(!session||session.user.id!==pro.id)logProfileView(pro.id)
   // WA share
   document.getElementById('wa-share').href=`https://wa.me/?text=Confere%20o%20perfil%20de%20${encodeURIComponent(pro.name)}%20na%20Proliga%3A%20${encodeURIComponent(location.href)}`
 }
@@ -343,6 +344,16 @@ function renderHeader(pro){
       ${pro.website?`<a href="${pro.website}" target="_blank" class="btn btn-outline">🌐 Website</a>`:''}
       <button class="btn btn-ghost" style="font-size:13px" onclick="showTab('avaliacoes');document.querySelector('#tab-avaliacoes').scrollIntoView({behavior:'smooth'})">✍️ Avaliar</button>
     </div>`
+}
+
+function logProfileView(id){
+  try{
+    const key='pv_'+id
+    const today=new Date().toISOString().slice(0,10)
+    if(localStorage.getItem(key)===today)return
+    localStorage.setItem(key,today)
+    db.from('profile_views').insert({profile_id:id}).then(()=>{})
+  }catch(e){}
 }
 
 async function loadReviews(){

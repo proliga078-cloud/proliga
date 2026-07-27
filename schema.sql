@@ -224,6 +224,59 @@ CREATE POLICY "portfolio_storage_select" ON storage.objects FOR SELECT USING (bu
 -- update_conversation_last_message() -> mantém conversations.last_message sincronizado
 
 -- ============================================================
+-- JOBS — pipeline de trabalhos do profissional (dashboard "Trabalhos")
+-- Cobre todo o ciclo: novo contacto -> orçamento -> agendado -> concluído -> pago.
+-- ============================================================
+CREATE TABLE jobs (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  professional_id uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  client_id uuid REFERENCES profiles(id) ON DELETE SET NULL,
+  conversation_id uuid REFERENCES conversations(id) ON DELETE SET NULL,
+  title text NOT NULL,
+  client_name text,
+  status text NOT NULL DEFAULT 'novo' CHECK (status IN ('novo','negociacao','orcamento_enviado','aceite','agendado','concluido','pago','cancelado')),
+  quote_amount numeric,
+  quote_sent_at timestamptz,
+  quote_accepted_at timestamptz,
+  scheduled_at timestamptz,
+  scheduled_notes text,
+  completed_at timestamptz,
+  paid_at timestamptz,
+  paid_amount numeric,
+  notes text,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+-- RLS: profissional dono (auth.uid() = professional_id) pode ver/criar/editar/apagar os seus;
+-- cliente associado (auth.uid() = client_id) também pode ver; admin vê/edita/apaga tudo via is_admin().
+-- Tabela adicionada à publicação supabase_realtime para o dashboard atualizar Pipeline/Agenda/
+-- estatísticas em tempo real sem refresh (ver dashboard.html: subscribeJobsRealtime()).
+
+-- ============================================================
+-- PROFILE_VIEWS — registo diário de visualizações de perfil (para o gráfico "Visualizações")
+-- ============================================================
+CREATE TABLE profile_views (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  profile_id uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  viewed_at date NOT NULL DEFAULT current_date,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+-- Qualquer visitante (incl. anónimo) pode inserir uma linha ao abrir profile.html
+-- (throttled a 1x/dia/perfil por localStorage no browser — não é um limite de segurança,
+-- só evita inflacionar o contador em recarregamentos). Só o dono do perfil (ou admin) pode
+-- ler o histórico. O próprio profissional a ver o seu perfil não gera uma view.
+
+-- ============================================================
+-- EDGE FUNCTION: ai-assistant
+-- Chat de IA no dashboard. Recebe {question}, usa o JWT do profissional para ler
+-- (via RLS, sem service role) os seus próprios jobs/serviços/avaliações, monta um
+-- resumo e chama a API da Anthropic (modelo claude-haiku) para responder em pt-PT.
+-- Requer a secret ANTHROPIC_API_KEY configurada no projeto Supabase
+-- (Project Settings -> Edge Functions -> Secrets). Sem a chave, devolve
+-- {error:'not_configured'} e o dashboard mostra uma mensagem amigável em vez de falhar.
+-- ============================================================
+
+-- ============================================================
 -- NOTA DE SEGURANÇA (advisors do Supabase, por corrigir num próximo passo):
 -- - Definir search_path fixo nas funções SECURITY DEFINER acima.
 -- - Ativar "Leaked Password Protection" nas definições de Auth.
