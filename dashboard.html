@@ -124,6 +124,22 @@
     .tab-bar{display:flex;gap:4px;margin-bottom:20px;background:var(--bg);border-radius:10px;padding:4px}
     .tab{padding:9px 16px;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s}
     .tab.active{background:var(--white);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+    /* KANBAN */
+    .kanban-board{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px}
+    .kanban-col{background:var(--bg);border-radius:12px;padding:12px;min-width:250px;flex:1}
+    .kanban-col-title{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+    .kanban-col-count{background:var(--white);border:1px solid var(--border);border-radius:99px;padding:1px 8px;font-size:11px}
+    .kanban-cards{display:flex;flex-direction:column;gap:8px;min-height:40px}
+    .job-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px}
+    .job-card .jc-title{font-weight:700;font-size:13.5px;margin-bottom:3px}
+    .job-card .jc-client{color:var(--muted);font-size:12px;margin-bottom:8px}
+    .job-card .jc-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+    .job-card .jc-tag{font-size:11px;font-weight:600;padding:2px 7px;border-radius:99px;background:var(--blue-light);color:var(--blue)}
+    .job-card select{font-size:12px;padding:6px 8px;margin-bottom:6px}
+    .job-card .jc-actions{display:flex;gap:6px;flex-wrap:wrap}
+    .kanban-empty{color:var(--muted);font-size:12px;text-align:center;padding:16px 0}
+    @media(max-width:768px){.kanban-col{min-width:220px}}
   </style>
 </head>
 <body>
@@ -140,6 +156,7 @@
   </div>
   <nav class="sidebar-nav">
     <div class="nav-item active" data-page="overview" onclick="showPage('overview')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span> Resumo</div>
+    <div class="nav-item" data-page="trabalhos" onclick="showPage('trabalhos')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span> Trabalhos</div>
     <div class="nav-item" data-page="profile" onclick="showPage('profile')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span> O Meu Perfil</div>
     <div class="nav-item" data-page="services" onclick="showPage('services')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></span> Serviços</div>
     <div class="nav-item" data-page="portfolio" onclick="showPage('portfolio')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h5l1 1.5H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg></span> Portfólio</div>
@@ -160,6 +177,7 @@
 <div class="mobile-nav">
   <div class="mobile-nav-items">
     <div class="mob-item active" onclick="showPage('overview')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>Resumo</div>
+    <div class="mob-item" onclick="showPage('trabalhos')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Trabalhos</div>
     <div class="mob-item" onclick="showPage('profile')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span>Perfil</div>
     <div class="mob-item" onclick="showPage('services')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></span>Serviços</div>
     <div class="mob-item" onclick="location.href='messages.html'"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></span>Chat</div>
@@ -178,6 +196,7 @@
       <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div><div class="s-value" id="stat-msgs">—</div><div class="s-label">Conversas com clientes</div></div>
       <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><div class="s-value" id="stat-avg">—</div><div class="s-label">Avaliação média</div></div>
       <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div><div class="s-value" id="stat-services">—</div><div class="s-label">Serviços publicados</div></div>
+      <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div><div class="s-value" id="stat-earnings">—</div><div class="s-label">Faturação este mês</div></div>
     </div>
     <div id="upgrade-banner-wrap"></div>
     <div class="form-section">
@@ -188,6 +207,39 @@
     <div class="form-section">
       <div class="form-title">Últimas Avaliações</div>
       <div id="recent-reviews"></div>
+    </div>
+  </div>
+
+  <!-- TRABALHOS -->
+  <div id="page-trabalhos" class="page-section">
+    <div class="page-title">Trabalhos</div>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:560px">Organiza os teus trabalhos desde o primeiro contacto até seres pago — orçamentos, agendamentos e faturação num só sítio.</p>
+    <div class="alert success" id="job-success"></div>
+    <div class="alert error" id="job-error"></div>
+
+    <div class="form-section" id="job-form-section">
+      <div class="form-title">Novo Trabalho</div>
+      <div class="form-grid">
+        <div class="form-group full"><label>Título *</label><input id="job-title" type="text" placeholder="Ex: Instalação elétrica - Cozinha"/></div>
+        <div class="form-group"><label>Cliente</label><input id="job-client" type="text" placeholder="Nome do cliente"/></div>
+        <div class="form-group"><label>Valor do orçamento (€)</label><input id="job-amount" type="number" min="0" placeholder="Ex: 150"/></div>
+      </div>
+      <button class="btn btn-primary" onclick="addJob()">Adicionar trabalho</button>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab active" id="tab-pipeline" onclick="switchTrabalhosTab('pipeline')">Pipeline</div>
+      <div class="tab" id="tab-agenda" onclick="switchTrabalhosTab('agenda')">Agenda</div>
+    </div>
+
+    <div id="trabalhos-pipeline">
+      <div class="kanban-board" id="kanban-board"></div>
+    </div>
+    <div id="trabalhos-agenda" style="display:none">
+      <div class="form-section">
+        <div class="form-title">Próximos Agendamentos</div>
+        <div id="agenda-list" class="item-list"></div>
+      </div>
     </div>
   </div>
 
@@ -476,6 +528,7 @@ async function init(){
       loadReviews()
       loadServices()
       loadChatUnread()
+      loadJobs()
     }
     checkUpgrade()
   } catch(e) {
@@ -569,6 +622,11 @@ async function loadStats(){
     const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
     document.getElementById('stat-avg').textContent=avg
   } else document.getElementById('stat-avg').textContent='—'
+  // Faturação este mês
+  const monthStart=new Date();monthStart.setDate(1);monthStart.setHours(0,0,0,0)
+  const{data:paidJobs}=await db.from('jobs').select('paid_amount').eq('professional_id',profileId).eq('status','pago').gte('paid_at',monthStart.toISOString())
+  const total=(paidJobs||[]).reduce((s,j)=>s+(Number(j.paid_amount)||0),0)
+  document.getElementById('stat-earnings').textContent=total>0?('€'+total.toFixed(0)):'€0'
   // Badge
   const{count:unread}=await db.from('messages_legacy_contact_form').select('*',{count:'exact',head:true}).eq('professional_id',profileId).eq('read',false)
   if(unread>0){
@@ -752,13 +810,127 @@ function showPage(name){
   document.getElementById(`page-${name}`).classList.add('active')
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.classList.toggle('active',n.dataset.page===name))
   document.querySelectorAll('.mob-item').forEach((m,i)=>{
-    const pages=['overview','profile','services','messages','portfolio']
+    const pages=['overview','trabalhos','profile','services','messages','portfolio']
     m.classList.toggle('active',pages[i]===name)
   })
   if(name==='services')loadServices()
   if(name==='messages')loadMessages()
   if(name==='reviews')loadReviews()
   if(name==='myrequests')loadMyRequests()
+  if(name==='trabalhos')loadJobs()
+}
+
+// TRABALHOS (PIPELINE + AGENDA)
+let allJobs=[]
+const JOB_STATUS_LABELS={novo:'Novo',negociacao:'Negociação',orcamento_enviado:'Orçamento Enviado',aceite:'Aceite',agendado:'Agendado',concluido:'Concluído',pago:'Pago',cancelado:'Cancelado'}
+const KANBAN_COLUMNS=[
+  {key:'novo',label:'Novo',statuses:['novo','negociacao']},
+  {key:'orcamento_enviado',label:'Orçamento',statuses:['orcamento_enviado','aceite']},
+  {key:'agendado',label:'Agendado',statuses:['agendado']},
+  {key:'concluido',label:'Concluído',statuses:['concluido']},
+  {key:'pago',label:'Pago',statuses:['pago']}
+]
+
+async function loadJobs(){
+  const{data}=await db.from('jobs').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
+  allJobs=data||[]
+  renderPipeline()
+  renderAgenda()
+}
+
+function switchTrabalhosTab(tab){
+  document.getElementById('tab-pipeline').classList.toggle('active',tab==='pipeline')
+  document.getElementById('tab-agenda').classList.toggle('active',tab==='agenda')
+  document.getElementById('trabalhos-pipeline').style.display=tab==='pipeline'?'block':'none'
+  document.getElementById('trabalhos-agenda').style.display=tab==='agenda'?'block':'none'
+}
+
+function toLocalDT(iso){
+  if(!iso)return ''
+  const d=new Date(iso)
+  const pad=n=>String(n).padStart(2,'0')
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+function jobCardHtml(j){
+  const statusOpts=Object.keys(JOB_STATUS_LABELS).map(k=>`<option value="${k}" ${k===j.status?'selected':''}>${JOB_STATUS_LABELS[k]}</option>`).join('')
+  return `<div class="job-card" data-id="${j.id}">
+    <div class="jc-title">${j.title}</div>
+    <div class="jc-client">${j.client_name||'Cliente'}</div>
+    <input type="number" min="0" placeholder="Valor (€)" value="${j.quote_amount??''}" style="width:100%;margin-bottom:6px" onchange="updateJobField('${j.id}','quote_amount',this.value?parseFloat(this.value):null)"/>
+    <input type="datetime-local" value="${toLocalDT(j.scheduled_at)}" style="width:100%;margin-bottom:6px" onchange="updateJobField('${j.id}','scheduled_at',this.value?new Date(this.value).toISOString():null)"/>
+    <select onchange="updateJobStatus('${j.id}',this.value)">${statusOpts}</select>
+    <div class="jc-actions" style="margin-top:8px">
+      <button class="btn btn-danger btn-sm" onclick="deleteJob('${j.id}')"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg></button>
+    </div>
+  </div>`
+}
+
+function renderPipeline(){
+  const board=document.getElementById('kanban-board')
+  const active=allJobs.filter(j=>j.status!=='cancelado')
+  board.innerHTML=KANBAN_COLUMNS.map(col=>{
+    const items=active.filter(j=>col.statuses.includes(j.status))
+    return `<div class="kanban-col">
+      <div class="kanban-col-title">${col.label}<span class="kanban-col-count">${items.length}</span></div>
+      <div class="kanban-cards">${items.length?items.map(jobCardHtml).join(''):'<div class="kanban-empty">Sem trabalhos</div>'}</div>
+    </div>`
+  }).join('')
+}
+
+function renderAgenda(){
+  const el=document.getElementById('agenda-list')
+  const upcoming=allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado').sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at))
+  if(!upcoming.length){el.innerHTML='<div class="empty">Sem trabalhos agendados. Define uma data num trabalho no Pipeline.</div>';return}
+  el.innerHTML=upcoming.map(j=>{
+    const d=new Date(j.scheduled_at)
+    const dateStr=d.toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'short'})
+    const timeStr=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
+    return `<div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${j.title}</div>
+        <div class="list-item-sub">${j.client_name||'Cliente'} · ${dateStr}, ${timeStr} · <span style="color:var(--blue);font-weight:600">${JOB_STATUS_LABELS[j.status]}</span></div>
+      </div>
+    </div>`
+  }).join('')
+}
+
+async function addJob(){
+  const title=document.getElementById('job-title').value.trim()
+  if(!title){showAlert('job-error','Indica um título para o trabalho.','error');return}
+  const client_name=document.getElementById('job-client').value.trim()||null
+  const amountVal=document.getElementById('job-amount').value
+  const quote_amount=amountVal?parseFloat(amountVal):null
+  const{error}=await db.from('jobs').insert({professional_id:profileId,title,client_name,quote_amount,status:'novo'})
+  if(error){showAlert('job-error','Erro ao adicionar: '+error.message,'error');return}
+  document.getElementById('job-title').value=''
+  document.getElementById('job-client').value=''
+  document.getElementById('job-amount').value=''
+  showAlert('job-success','Trabalho adicionado!')
+  loadJobs()
+}
+
+async function updateJobField(id,field,value){
+  await db.from('jobs').update({[field]:value}).eq('id',id)
+  loadJobs()
+}
+
+async function updateJobStatus(id,status){
+  const updates={status}
+  if(status==='concluido')updates.completed_at=new Date().toISOString()
+  if(status==='pago'){
+    updates.paid_at=new Date().toISOString()
+    const job=allJobs.find(j=>j.id===id)
+    if(job&&!job.paid_amount)updates.paid_amount=job.quote_amount||null
+  }
+  await db.from('jobs').update(updates).eq('id',id)
+  loadJobs()
+}
+
+async function deleteJob(id){
+  if(!confirm('Remover este trabalho?'))return
+  await db.from('jobs').delete().eq('id',id)
+  loadJobs()
 }
 
 async function loadChatUnread(){
