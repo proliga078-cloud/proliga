@@ -1348,6 +1348,22 @@ function answerLocally(question){
   const q=normalizeText(question)
   const has=(...words)=>words.some(w=>q.includes(w))
 
+  // Resumo geral do mês / negócio (pergunta ampla — combina os principais números)
+  if(has('como esta','como vai','resumo','o meu mes','este mes','meu negocio')){
+    const monthStart=new Date();monthStart.setDate(1);monthStart.setHours(0,0,0,0)
+    const now=new Date();const weekEnd=new Date(now);weekEnd.setDate(weekEnd.getDate()+7)
+    const paidThisMonth=allJobs.filter(j=>j.status==='pago'&&j.paid_at&&new Date(j.paid_at)>=monthStart)
+    const total=paidThisMonth.reduce((s,j)=>s+(Number(j.paid_amount)||0),0)
+    const active=allJobs.filter(j=>j.status!=='cancelado')
+    const thisWeek=allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado'&&new Date(j.scheduled_at)>=now&&new Date(j.scheduled_at)<=weekEnd)
+    const parts=[]
+    parts.push(total>0?`Faturaste €${total.toFixed(0)} este mês (${paidThisMonth.length} trabalho${paidThisMonth.length>1?'s':''} pago${paidThisMonth.length>1?'s':''}).`:'Ainda não faturaste nada este mês.')
+    parts.push(active.length?`Tens ${active.length} trabalho${active.length>1?'s':''} ativo${active.length>1?'s':''} no Pipeline.`:'Não tens trabalhos ativos no Pipeline de momento.')
+    parts.push(thisWeek.length?`${thisWeek.length} deles agendado${thisWeek.length>1?'s':''} para os próximos 7 dias.`:'Sem nada agendado para os próximos 7 dias.')
+    if(reviewsCount)parts.push(`Avaliação média: ${reviewsAvg} (${reviewsCount} avaliações).`)
+    return parts.join(' ')
+  }
+
   // Faturação / ganhos
   if(has('faturei','faturacao','faturação','ganhei','recebi','dinheiro','quanto fiz','rendimento')){
     const monthStart=new Date();monthStart.setDate(1);monthStart.setHours(0,0,0,0)
