@@ -169,6 +169,14 @@
     .cal-day.empty{visibility:hidden}
     .live-dot{width:8px;height:8px;border-radius:99px;background:#22c55e;box-shadow:0 0 0 rgba(34,197,94,.5);animation:live-pulse 2s infinite}
     @keyframes live-pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+    .quick-add-row{display:flex;gap:8px;flex-wrap:wrap}
+    .quick-add-row input[type=text]{flex:1;min-width:180px}
+    .quick-add-row input[type=time]{width:110px}
+    @media(max-width:480px){.quick-add-row input[type=text],.quick-add-row input[type=time]{width:100%}}
+
+    /* NAV GROUPING */
+    .nav-label{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:16px 12px 6px;opacity:.75}
+    .nav-label:first-child{margin-top:4px}
 
     /* AI CHAT */
     #ai-chat-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(30,79,214,.35);cursor:pointer;z-index:200;border:none}
@@ -201,13 +209,19 @@
     </div>
   </div>
   <nav class="sidebar-nav">
+    <div class="nav-label">Principal</div>
     <div class="nav-item active" data-page="overview" onclick="showPage('overview')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span> Resumo</div>
     <div class="nav-item" data-page="trabalhos" onclick="showPage('trabalhos')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span> Trabalhos</div>
+    <div class="nav-item" data-page="agenda" onclick="showPage('agenda')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span> Agenda</div>
+
+    <div class="nav-label">Negócio</div>
     <div class="nav-item" data-page="profile" onclick="showPage('profile')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span> O Meu Perfil</div>
     <div class="nav-item" data-page="services" onclick="showPage('services')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></span> Serviços</div>
     <div class="nav-item" data-page="portfolio" onclick="showPage('portfolio')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h5l1 1.5H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg></span> Portfólio</div>
+
+    <div class="nav-label">Comunicação</div>
     <div class="nav-item" onclick="location.href='messages.html'"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></span> Chat <span id="chat-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
-<div class="nav-item" data-page="myrequests" onclick="showPage('myrequests')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg></span> Os Meus Pedidos</div>
+    <div class="nav-item" data-page="myrequests" onclick="showPage('myrequests')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg></span> Os Meus Pedidos</div>
     <div class="nav-item" data-page="reviews" onclick="showPage('reviews')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></span> Avaliações</div>
     <div class="nav-divider"></div>
     <div class="nav-item" onclick="location.href='pricing.html'"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span> Atualizar Plano</div>
@@ -224,10 +238,9 @@
   <div class="mobile-nav-items">
     <div class="mob-item active" onclick="showPage('overview')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>Resumo</div>
     <div class="mob-item" onclick="showPage('trabalhos')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Trabalhos</div>
+    <div class="mob-item" onclick="showPage('agenda')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>Agenda</div>
     <div class="mob-item" onclick="showPage('profile')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span>Perfil</div>
-    <div class="mob-item" onclick="showPage('services')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></span>Serviços</div>
     <div class="mob-item" onclick="location.href='messages.html'"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></span>Chat</div>
-    <div class="mob-item" onclick="showPage('portfolio')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h1.5l1-1.5h5l1 1.5H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg></span>Portfolio</div>
   </div>
 </div>
 
@@ -280,7 +293,7 @@
   <!-- TRABALHOS -->
   <div id="page-trabalhos" class="page-section">
     <div class="page-title">Trabalhos</div>
-    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:560px">Organiza os teus trabalhos desde o primeiro contacto até seres pago — orçamentos, agendamentos e faturação num só sítio.</p>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:560px">Organiza os teus trabalhos desde o primeiro contacto até seres pago — orçamentos e faturação num só sítio. Para agendar datas, usa a página <a href="#" onclick="showPage('agenda');return false" style="color:var(--blue);font-weight:600">Agenda</a>.</p>
     <div class="alert success" id="job-success"></div>
     <div class="alert error" id="job-error"></div>
 
@@ -294,31 +307,41 @@
       <button class="btn btn-primary" onclick="addJob()">Adicionar trabalho</button>
     </div>
 
-    <div class="tab-bar">
-      <div class="tab active" id="tab-pipeline" onclick="switchTrabalhosTab('pipeline')">Pipeline</div>
-      <div class="tab" id="tab-agenda" onclick="switchTrabalhosTab('agenda')">Agenda</div>
+    <div class="kanban-board" id="kanban-board"></div>
+  </div>
+
+  <!-- AGENDA -->
+  <div id="page-agenda" class="page-section">
+    <div class="page-title">Agenda</div>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:560px">O teu calendário de trabalhos. Clica num dia para veres o que tens marcado ou para adicionares algo diretamente — não precisas de passar pelo Pipeline.</p>
+    <div class="alert success" id="qa-success"></div>
+    <div class="alert error" id="qa-error"></div>
+
+    <div class="form-section">
+      <div class="cal-header">
+        <button class="btn btn-outline btn-sm" onclick="calShiftMonth(-1)">←</button>
+        <div class="cal-title" id="cal-title"></div>
+        <button class="btn btn-outline btn-sm" onclick="calShiftMonth(1)">→</button>
+        <span class="live-dot" id="live-dot" title="Atualização em tempo real"></span>
+      </div>
+      <div class="cal-grid cal-dow">
+        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
     </div>
 
-    <div id="trabalhos-pipeline">
-      <div class="kanban-board" id="kanban-board"></div>
+    <div class="form-section" id="quick-add-section" style="display:none">
+      <div class="form-title" id="quick-add-title">Adicionar a este dia</div>
+      <div class="quick-add-row">
+        <input id="qa-title" type="text" placeholder="Título (ex: Reunião com cliente)"/>
+        <input id="qa-time" type="time" value="09:00"/>
+        <button class="btn btn-primary btn-sm" onclick="quickAddToDay()">Adicionar</button>
+      </div>
     </div>
-    <div id="trabalhos-agenda" style="display:none">
-      <div class="form-section">
-        <div class="cal-header">
-          <button class="btn btn-outline btn-sm" onclick="calShiftMonth(-1)">←</button>
-          <div class="cal-title" id="cal-title"></div>
-          <button class="btn btn-outline btn-sm" onclick="calShiftMonth(1)">→</button>
-          <span class="live-dot" id="live-dot" title="Atualização em tempo real"></span>
-        </div>
-        <div class="cal-grid cal-dow">
-          <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-      </div>
-      <div class="form-section">
-        <div class="form-title" id="agenda-day-title">Próximos Agendamentos</div>
-        <div id="agenda-list" class="item-list"></div>
-      </div>
+
+    <div class="form-section">
+      <div class="form-title" id="agenda-day-title">Próximos Agendamentos</div>
+      <div id="agenda-list" class="item-list"></div>
     </div>
   </div>
 
@@ -1055,7 +1078,7 @@ function showPage(name){
   document.getElementById(`page-${name}`).classList.add('active')
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.classList.toggle('active',n.dataset.page===name))
   document.querySelectorAll('.mob-item').forEach((m,i)=>{
-    const pages=['overview','trabalhos','profile','services','messages','portfolio']
+    const pages=['overview','trabalhos','agenda','profile','messages']
     m.classList.toggle('active',pages[i]===name)
   })
   if(name==='services')loadServices()
@@ -1063,6 +1086,7 @@ function showPage(name){
   if(name==='reviews')loadReviews()
   if(name==='myrequests')loadMyRequests()
   if(name==='trabalhos')loadJobs()
+  if(name==='agenda')renderCalendar()
 }
 
 // TRABALHOS (PIPELINE + AGENDA)
@@ -1083,13 +1107,6 @@ async function loadJobs(){
   renderCalendar()
   renderStatusChart(allJobs)
   renderInsights()
-}
-
-function switchTrabalhosTab(tab){
-  document.getElementById('tab-pipeline').classList.toggle('active',tab==='pipeline')
-  document.getElementById('tab-agenda').classList.toggle('active',tab==='agenda')
-  document.getElementById('trabalhos-pipeline').style.display=tab==='pipeline'?'block':'none'
-  document.getElementById('trabalhos-agenda').style.display=tab==='agenda'?'block':'none'
 }
 
 function toLocalDT(iso){
@@ -1192,15 +1209,43 @@ function renderCalendar(){
 function renderAgendaDayOrUpcoming(jobsByDay){
   const titleEl=document.getElementById('agenda-day-title')
   const el=document.getElementById('agenda-list')
+  const qaSection=document.getElementById('quick-add-section')
+  const qaTitle=document.getElementById('quick-add-title')
   if(!titleEl||!el)return
-  if(calSelected&&jobsByDay[calSelected]&&jobsByDay[calSelected].length){
+
+  if(calSelected){
     const dateLabel=new Date(calYear,calMonth,calSelected).toLocaleDateString('pt-PT',{weekday:'long',day:'2-digit',month:'long'})
-    titleEl.textContent=`Trabalhos em ${dateLabel}`
-    el.innerHTML=jobsByDay[calSelected].map(jobAgendaItemHtml).join('')
+    if(qaSection){qaSection.style.display='block';qaTitle.textContent=`Adicionar a ${dateLabel}`}
+    const dayJobs=jobsByDay[calSelected]
+    if(dayJobs&&dayJobs.length){
+      titleEl.textContent=`Trabalhos em ${dateLabel}`
+      el.innerHTML=dayJobs.map(jobAgendaItemHtml).join('')
+    } else {
+      titleEl.textContent=`Trabalhos em ${dateLabel}`
+      el.innerHTML='<div class="empty">Nada marcado neste dia ainda. Usa o formulário acima para adicionar.</div>'
+    }
     return
   }
+
+  if(qaSection)qaSection.style.display='none'
   titleEl.textContent='Próximos Agendamentos'
   renderAgenda()
+}
+
+async function quickAddToDay(){
+  if(!calSelected||!profileId)return
+  const titleInput=document.getElementById('qa-title')
+  const timeInput=document.getElementById('qa-time')
+  const title=titleInput.value.trim()
+  if(!title){showAlert('qa-error','Indica um título para o que queres marcar.','error');return}
+  const time=timeInput.value||'09:00'
+  const[h,m]=time.split(':').map(Number)
+  const dt=new Date(calYear,calMonth,calSelected,h||0,m||0,0,0)
+  const{error}=await db.from('jobs').insert({professional_id:profileId,title,status:'agendado',scheduled_at:dt.toISOString()})
+  if(error){showAlert('qa-error','Erro ao adicionar: '+error.message,'error');return}
+  titleInput.value=''
+  showAlert('qa-success','Adicionado à agenda!')
+  loadJobs()
 }
 
 async function addJob(){
