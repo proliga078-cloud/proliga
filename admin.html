@@ -363,7 +363,15 @@ async function loadOverview(){
 // PROFILES
 async function loadProfiles(){
   const{data}=await db.from('profiles').select('*').order('created_at',{ascending:false})
-  allPros=data||[];renderPros(allPros)
+  allPros=data||[]
+  const ids=allPros.map(p=>p.id)
+  if(ids.length){
+    const{data:priv}=await db.from('profile_private').select('profile_id,phone').in('profile_id',ids)
+    const phoneMap={}
+    ;(priv||[]).forEach(r=>phoneMap[r.profile_id]=r.phone)
+    allPros.forEach(p=>p.phone=phoneMap[p.id]||'')
+  }
+  renderPros(allPros)
 }
 
 function renderPros(pros){

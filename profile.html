@@ -340,7 +340,6 @@ function renderHeader(pro){
       <div class="profile-stats" id="profile-stats"></div>
     </div>
     <div class="profile-actions">
-      ${pro.phone?`<a href="tel:${pro.phone}" class="btn btn-gold">📞 ${pro.phone}</a>`:''}
       ${pro.website?`<a href="${pro.website}" target="_blank" class="btn btn-outline">🌐 Website</a>`:''}
       <button class="btn btn-ghost" style="font-size:13px" onclick="showTab('avaliacoes');document.querySelector('#tab-avaliacoes').scrollIntoView({behavior:'smooth'})">✍️ Avaliar</button>
     </div>`
@@ -437,7 +436,6 @@ async function loadPortfolio(){
 function renderSidebar(pro){
   const items=[]
   if(pro.location)items.push(`<div class="info-row"><span class="info-icon">📍</span>${pro.location}</div>`)
-  if(pro.phone)items.push(`<div class="info-row"><span class="info-icon">📞</span><a href="tel:${pro.phone}" style="color:var(--blue)">${pro.phone}</a></div>`)
   if(pro.website)items.push(`<div class="info-row"><span class="info-icon">🌐</span><a href="${pro.website}" target="_blank" style="color:var(--blue)">Website</a></div>`)
   const joined=new Date(pro.created_at).toLocaleDateString('pt-PT',{month:'long',year:'numeric'})
   items.push(`<div class="info-row"><span class="info-icon">📅</span>Membro desde ${joined}</div>`)

@@ -461,7 +461,7 @@ async function init(){
     if(!session){location.href='auth.html';return}
     user=session.user
     const{data:pro}=await db.from('profiles').select('*').eq('user_id',user.id).single()
-    if(pro){profileData=pro;profileId=pro.id;fillProfileForm(pro)}
+    if(pro){profileData=pro;profileId=pro.id;await loadPrivatePhone();fillProfileForm(profileData)}
     else await createProfile()
     updateSidebar()
     if(profileId){
@@ -484,16 +484,16 @@ async function createProfile(){
   // Use upsert so duplicate user_id never causes a crash
   const{data,error}=await db.from('profiles').upsert({
     id:user.id,user_id:user.id,name,email:user.email,
-    plan:'free',approved:true,location:'',category:'',phone:'',bio:''
+    plan:'free',approved:true,location:'',category:'',bio:''
   },{onConflict:'user_id'}).select().single()
   if(error){
     console.error('createProfile upsert error:',error)
     // Fallback: try to fetch any existing row for this user
     const{data:existing}=await db.from('profiles').select('*').eq('user_id',user.id).maybeSingle()
-    if(existing){profileData=existing;profileId=existing.id;fillProfileForm(existing)}
+    if(existing){profileData=existing;profileId=existing.id;await loadPrivatePhone();fillProfileForm(profileData)}
     return
   }
-  if(data){profileData=data;profileId=data.id;fillProfileForm(data)}
+  if(data){profileData=data;profileId=data.id;await loadPrivatePhone();fillProfileForm(profileData)}
 }
 
 function updateSidebar(){
@@ -505,6 +505,12 @@ function updateSidebar(){
   const av=document.getElementById('sb-avatar')
   if(profileData?.photo_url)av.innerHTML=`<img src="${profileData.photo_url}" alt="${name}"/>`
   else av.textContent=initials
+}
+
+async function loadPrivatePhone(){
+  if(!profileId)return
+  const{data}=await db.from('profile_private').select('phone').eq('profile_id',profileId).maybeSingle()
+  profileData={...profileData,phone:data?.phone||''}
 }
 
 function fillProfileForm(pro){
@@ -528,9 +534,9 @@ async function saveProfile(){
 const _city=document.getElementById('p-city').value.trim()
 const location=_district?(_city?_district+' – '+_city:_district):''
   if(!name||!category||!location){showAlert('profile-error','Preenche nome, categoria e localização.','error');return}
+  const phoneVal=document.getElementById('p-phone').value.trim()||null
   const updates={
     name,category,location,
-    phone:document.getElementById('p-phone').value.trim()||null,
     website:document.getElementById('p-website').value.trim()||null,
     photo_url:document.getElementById('p-photo').value.trim()||null,
     bio:document.getElementById('p-bio').value.trim()||null,
@@ -538,7 +544,9 @@ const location=_district?(_city?_district+' – '+_city:_district):''
   }
   const{error}=await db.from('profiles').update(updates).eq('id',profileId)
   if(error){showAlert('profile-error','Erro ao guardar: '+error.message);return}
-  profileData={...profileData,...updates}
+  const{error:phoneErr}=await db.from('profile_private').upsert({profile_id:profileId,phone:phoneVal,updated_at:new Date().toISOString()},{onConflict:'profile_id'})
+  if(phoneErr){showAlert('profile-error','Perfil guardado, mas o telefone não foi atualizado: '+phoneErr.message);return}
+  profileData={...profileData,...updates,phone:phoneVal}
   updateSidebar()
   showAlert('profile-success','Perfil guardado com sucesso!')
 }
