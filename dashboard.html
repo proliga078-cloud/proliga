@@ -1875,12 +1875,15 @@ function openReferModal(jobId){
 function closeReferModal(){document.getElementById('refer-modal-overlay').classList.remove('open')}
 
 let refSearchResults=[]
+let refSearchToken=0
 async function searchReferralPros(){
+  const myToken=++refSearchToken
   const q=document.getElementById('ref-search').value.trim()
   let query=db.from('profiles').select('id,name,category,location,photo_url').neq('id',profileId).eq('approved',true).eq('suspended',false).eq('is_demo',false).limit(8)
   if(q)query=query.or(`name.ilike.%${q}%,category.ilike.%${q}%,location.ilike.%${q}%`)
   else if(profileData?.category)query=query.eq('category',profileData.category)
   const{data}=await query
+  if(myToken!==refSearchToken)return
   refSearchResults=data||[]
   const el=document.getElementById('ref-results')
   if(!refSearchResults.length){el.innerHTML='<div class="empty" style="padding:10px 0">Nenhum profissional encontrado.</div>';return}
