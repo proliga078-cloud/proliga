@@ -15,8 +15,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#B4650A;--green:#1B8A4B;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
-    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
+    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#B4650A;--green:#1B8A4B;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff;--cream:#FAF8F4}
+    body{font-family:'Inter',sans-serif;color:var(--text);background:var(--cream)}
     a{text-decoration:none;color:inherit}
     nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
     .logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
@@ -27,56 +27,67 @@
     .btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
     .nav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
     .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-3px}
 
-    /* COVER */
-    .cover{height:240px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));background-size:cover;background-position:center;position:relative}
+    /* COVER (só aparece se o profissional tiver definido uma foto de capa) */
+    .cover{height:0;border-radius:0 0 24px 24px;background-size:cover;background-position:center;position:relative;overflow:hidden}
     .cover-overlay{position:absolute;inset:0;background:rgba(0,0,0,.15)}
+    body.has-cover .cover{height:190px}
+    body.has-cover .profile-header{margin-top:-46px}
+    .profile-wrap{padding-top:22px}
+    body.has-cover .profile-wrap{padding-top:0}
 
     /* PROFILE LAYOUT */
-    .profile-wrap{max-width:1100px;margin:0 auto;padding:0 24px}
-    .profile-header{background:var(--white);border-radius:20px;margin-top:-60px;position:relative;z-index:2;padding:28px 32px 24px;box-shadow:0 4px 20px rgba(0,0,0,.08);display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+    .profile-wrap{max-width:1100px;margin:0 auto;padding-left:24px;padding-right:24px}
+    .profile-header{background:var(--white);border-radius:20px;position:relative;z-index:2;padding:26px 30px;box-shadow:0 2px 10px rgba(20,24,31,.05);display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
     .avatar-wrap{flex-shrink:0;position:relative}
-    .avatar{width:110px;height:110px;border-radius:50%;border:4px solid #fff;background:var(--blue);color:#fff;font-size:36px;font-weight:800;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+    .avatar{width:96px;height:96px;border-radius:22px;border:3px solid #fff;background:linear-gradient(135deg,var(--blue-light),#B9CBF7);color:var(--blue);font-size:30px;font-weight:800;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 8px 20px rgba(30,79,214,.15)}
     .avatar img{width:100%;height:100%;object-fit:cover}
-    .plan-badge-wrap{position:absolute;bottom:4px;right:-4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px}
+    .plan-badge-wrap{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,.15)}
     .badge-premium{background:var(--gold);color:#fff}
     .badge-pro{background:#7c3aed;color:#fff}
-    .profile-info{flex:1;min-width:200px}
-    .profile-name{font-size:26px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .verif-badge{background:#dcfce7;color:var(--green);font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px}
+    .profile-info{flex:1;min-width:220px}
+    .profile-name{font-size:24px;font-weight:700;letter-spacing:-0.3px;margin-bottom:8px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+    .verif-badge{display:inline-flex;align-items:center;gap:4px;background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;box-shadow:0 3px 8px rgba(30,79,214,.25)}
     .profile-cat{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-    .cat-pill{background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px}
-    .loc-text{font-size:14px;color:var(--muted)}
-    .rating-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-    .stars{color:var(--gold);font-size:18px}
-    .rating-score{font-size:18px;font-weight:700}
-    .rating-count{font-size:13px;color:var(--muted)}
-    .profile-bio{font-size:15px;color:#475569;line-height:1.7}
-    .profile-stats{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--bg)}
-    .pstat{text-align:center;min-width:60px}
-    .pstat strong{display:block;font-size:18px;font-weight:800;color:var(--text)}
-    .pstat span{font-size:11px;color:var(--muted)}
-    .profile-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:160px}
+    .cat-pill{background:linear-gradient(135deg,var(--blue),#3D6BEF);color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px}
+    .loc-text{font-size:13px;color:var(--muted);font-weight:600;display:inline-flex;align-items:center;gap:4px}
+    .rating-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .stars{color:var(--gold);font-size:16px;letter-spacing:1px}
+    .rating-score{font-size:16px;font-weight:700}
+    .rating-count{font-size:12.5px;color:var(--muted);font-weight:600}
+    .profile-bio{font-size:13.5px;color:var(--muted);line-height:1.65;max-width:520px}
+    .profile-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0;min-width:170px}
+    .profile-actions .btn-solid{padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 8px 18px rgba(30,79,214,.28)}
+
+    /* TRUST BAR */
+    .trust-bar{max-width:1100px;margin:14px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media(max-width:700px){.trust-bar{grid-template-columns:repeat(2,1fr)}}
+    .tstat{background:var(--white);border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 10px rgba(20,24,31,.05)}
+    .tstat .ic{color:var(--muted);width:16px;height:16px}
+    .tstat strong{display:block;font-size:18px;font-weight:800;color:var(--text);margin-top:6px}
+    .tstat span{font-size:10.5px;color:var(--muted);font-weight:600}
 
     /* MAIN CONTENT */
-    .content-grid{max-width:1100px;margin:24px auto;padding:0 24px;display:grid;grid-template-columns:1fr 320px;gap:24px}
+    .content-grid{max-width:1100px;margin:20px auto;padding:0 24px;display:grid;grid-template-columns:1fr 320px;gap:20px}
     @media(max-width:900px){.content-grid{grid-template-columns:1fr}}
     @media(max-width:600px){
-      .profile-wrap{padding:0 16px}
+      .profile-wrap{padding-left:16px;padding-right:16px}
+      .trust-bar{padding:0 16px}
       .content-grid{padding:0 16px;margin:16px auto}
       .tabs{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
-      .cover-photo{height:140px}
       nav{padding:0 4%}
     }
 
     /* TABS */
-    .tabs{display:flex;gap:0;margin-bottom:24px;background:var(--white);border-radius:12px;padding:4px;border:1px solid var(--border)}
-    .tab{flex:1;padding:10px;text-align:center;font-size:14px;font-weight:600;border-radius:9px;cursor:pointer;transition:all .2s;color:var(--muted)}
+    .tabs{display:flex;gap:0;margin-bottom:20px;background:var(--white);border-radius:12px;padding:4px;box-shadow:0 2px 10px rgba(20,24,31,.05)}
+    .tab{flex:1;padding:10px;text-align:center;font-size:13.5px;font-weight:600;border-radius:9px;cursor:pointer;transition:all .2s;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
     .tab.active{background:var(--blue);color:#fff}
 
     /* CARDS */
-    .card{background:var(--white);border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-    .card-title{font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--bg)}
+    .card{background:var(--white);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 2px 10px rgba(20,24,31,.05)}
+    .card-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:7px}
+    .card-title .ic{color:var(--blue);width:16px;height:16px}
 
     /* PACKAGES (Fiverr-style) */
     .packages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
@@ -100,21 +111,27 @@
     .service-price{font-size:14px;font-weight:700;color:var(--blue)}
 
     /* PORTFOLIO */
-    .portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-    .portfolio-img{aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;position:relative}
+    .portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+    .portfolio-mosaic{display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:280px;margin-bottom:10px}
+    .portfolio-mosaic .portfolio-img:first-child{grid-row:span 2}
+    @media(max-width:600px){.portfolio-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:auto;height:auto}.portfolio-mosaic .portfolio-img:first-child{grid-row:span 1;grid-column:span 2;aspect-ratio:16/9}}
+    .portfolio-img{aspect-ratio:1;border-radius:14px;overflow:hidden;cursor:pointer;position:relative;background:var(--blue-light)}
+    .portfolio-mosaic .portfolio-img{aspect-ratio:auto}
     .portfolio-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
     .portfolio-img:hover img{transform:scale(1.06)}
     .portfolio-img .cap{position:absolute;inset:0;background:rgba(0,0,0,.5);color:#fff;font-size:12px;padding:8px;display:none;align-items:flex-end}
     .portfolio-img:hover .cap{display:flex}
 
     /* REVIEWS */
-    .review-item{padding:16px 0;border-bottom:1px solid var(--bg)}
-    .review-item:last-child{border-bottom:none}
-    .review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;flex-wrap:wrap;gap:6px}
-    .review-name{font-size:14px;font-weight:700}
-    .review-meta{font-size:12px;color:var(--muted)}
-    .review-stars{color:var(--gold);font-size:14px}
-    .review-text{font-size:14px;color:#475569;line-height:1.6}
+    .reviews-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:600px){.reviews-grid{grid-template-columns:1fr}}
+    .review-item{background:var(--bg);border-radius:14px;padding:15px}
+    .review-header{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+    .review-avatar{width:30px;height:30px;border-radius:50%;background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .review-name{font-size:12.5px;font-weight:700}
+    .review-meta{font-size:11px;color:var(--muted)}
+    .review-stars{color:var(--gold);font-size:12px;letter-spacing:1px}
+    .review-text{font-size:12.5px;color:var(--muted);line-height:1.55}
     .review-form .form-group{margin-bottom:14px}
     label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
     input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
@@ -131,20 +148,21 @@
     .msg.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
 
     /* SIDEBAR */
-    .contact-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:16px;padding:24px;color:#fff;margin-bottom:16px}
-    .contact-card h3{font-size:16px;font-weight:700;margin-bottom:16px}
+    .contact-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:18px;padding:24px;color:#fff;margin-bottom:16px;box-shadow:0 10px 26px rgba(30,79,214,.22)}
+    .contact-card h3{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
     .contact-card input,.contact-card textarea{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#fff}
     .contact-card input::placeholder,.contact-card textarea::placeholder{color:rgba(255,255,255,.5)}
     .contact-card label{color:rgba(255,255,255,.8)}
     .contact-card input:focus,.contact-card textarea:focus{border-color:rgba(255,255,255,.6)}
-    .btn-contact{width:100%;padding:13px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:4px}
+    .btn-contact{width:100%;padding:13px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:7px}
     .btn-contact:hover{background:#d97706}
     .btn-contact:disabled{background:rgba(245,158,11,.5);cursor:not-allowed}
-    .info-card{background:var(--white);border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid var(--border)}
+    .info-card{background:var(--white);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 2px 10px rgba(20,24,31,.05)}
     .info-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
-    .info-row{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;border-bottom:1px solid var(--bg)}
+    .info-row{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13.5px;border-bottom:1px solid var(--bg)}
     .info-row:last-child{border-bottom:none}
-    .info-icon{font-size:18px;width:26px;text-align:center}
+    .info-icon{width:30px;height:30px;border-radius:9px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .info-icon .ic{width:15px;height:15px}
 
     /* LIGHTBOX */
     #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:999;align-items:center;justify-content:center}
@@ -183,23 +201,25 @@
   </div>
 </div>
 
+<div class="trust-bar" id="trust-bar" style="display:none"></div>
+
 <div class="content-grid" id="content-grid" style="display:none">
   <!-- LEFT -->
   <div>
     <div class="tabs">
-      <div class="tab active" onclick="showTab('servicos')">🛠️ Serviços</div>
-      <div class="tab" onclick="showTab('portfolio')">📸 Portfólio</div>
-      <div class="tab" onclick="showTab('avaliacoes')">⭐ Avaliações</div>
+      <div class="tab active" onclick="showTab('servicos')"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Serviços</div>
+      <div class="tab" onclick="showTab('portfolio')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg> Portfólio</div>
+      <div class="tab" onclick="showTab('avaliacoes')"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Avaliações</div>
     </div>
 
     <!-- SERVICES TAB -->
     <div id="tab-servicos">
       <div class="card" id="packages-card" style="display:none">
-        <div class="card-title">📦 Pacotes de Serviço</div>
+        <div class="card-title"><svg class="ic" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg> Pacotes de Serviço</div>
         <div class="packages-grid" id="packages-grid"></div>
       </div>
       <div class="card">
-        <div class="card-title">🛠️ Serviços Oferecidos</div>
+        <div class="card-title"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Serviços Oferecidos</div>
         <div id="services-list"><div class="loading"><div class="spinner"></div></div></div>
       </div>
     </div>
@@ -207,7 +227,7 @@
     <!-- PORTFOLIO TAB -->
     <div id="tab-portfolio" style="display:none">
       <div class="card">
-        <div class="card-title">📸 Portfólio de Trabalhos</div>
+        <div class="card-title"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg> Portfólio de Trabalhos</div>
         <div class="portfolio-grid" id="portfolio-grid">
           <div class="loading"><div class="spinner"></div></div>
         </div>
@@ -217,11 +237,11 @@
     <!-- REVIEWS TAB -->
     <div id="tab-avaliacoes" style="display:none">
       <div class="card">
-        <div class="card-title" id="reviews-title">⭐ Avaliações</div>
+        <div class="card-title" id="reviews-title"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Avaliações</div>
         <div id="reviews-list"><div class="loading"><div class="spinner"></div></div></div>
       </div>
       <div class="card review-form">
-        <div class="card-title">✍️ Deixar Avaliação</div>
+        <div class="card-title"><svg class="ic" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg> Deixar Avaliação</div>
         <div class="msg error" id="rev-error"></div>
         <div class="msg success" id="rev-success"></div>
         <div id="rev-loggedout" style="display:none;font-size:13px;color:var(--muted);line-height:1.6">
@@ -251,10 +271,10 @@
   <!-- SIDEBAR -->
   <div>
     <div class="contact-card">
-      <h3>💬 Fala com o Profissional</h3>
+      <h3><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Fala com o Profissional</h3>
       <p style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:16px">Envia uma mensagem diretamente pela Proliga. Sem sair do site, sem partilhar contactos externos.</p>
       <div class="msg error" id="msg-error"></div>
-      <button class="btn-contact" id="msg-btn" onclick="startConversation()">💬 Enviar mensagem</button>
+      <button class="btn-contact" id="msg-btn" onclick="startConversation()"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Enviar mensagem</button>
     </div>
 
     <div class="info-card">
@@ -270,8 +290,8 @@
     <div class="info-card">
       <div class="info-title">Partilhar</div>
       <div style="display:flex;gap:8px">
-        <button onclick="navigator.clipboard.writeText(location.href);showToast('Link copiado!')" class="btn btn-outline" style="flex:1;font-size:12px;padding:8px">📋 Copiar link</button>
-        <a id="wa-share" href="#" target="_blank" class="btn btn-solid" style="flex:1;font-size:12px;padding:8px;justify-content:center">💬 WhatsApp</a>
+        <button onclick="navigator.clipboard.writeText(location.href);showToast('Link copiado!')" class="btn btn-outline" style="flex:1;font-size:12px;padding:8px;display:flex;align-items:center;justify-content:center;gap:5px"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar link</button>
+        <a id="wa-share" href="#" target="_blank" class="btn btn-solid" style="flex:1;font-size:12px;padding:8px;justify-content:center;display:flex;align-items:center;gap:5px"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> WhatsApp</a>
       </div>
     </div>
   </div>
@@ -323,26 +343,25 @@ async function init(){
 function renderHeader(pro){
   const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
   const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
-  if(pro.cover_url)document.getElementById('cover').style.backgroundImage=`url('${pro.cover_url}')`
-  const planBadge=pro.plan==='premium'?`<span class="plan-badge-wrap badge-premium">👑 Premium</span>`:pro.plan==='pro'?`<span class="plan-badge-wrap badge-pro">🚀 Pro</span>`:''
-  const verif=pro.verified?'<span class="verif-badge">✅ Verificado</span>':''
+  if(pro.cover_url){document.getElementById('cover').style.backgroundImage=`url('${pro.cover_url}')`;document.body.classList.add('has-cover')}
+  const planBadge=pro.plan==='premium'?`<span class="plan-badge-wrap badge-premium"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:12px;height:12px"><path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10z"/></svg> Premium</span>`:pro.plan==='pro'?`<span class="plan-badge-wrap badge-pro"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg> Pro</span>`:''
+  const verif=pro.verified?'<span class="verif-badge"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px;color:#fff"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Verificado</span>':''
   document.getElementById('profile-header').innerHTML=`
     <div class="avatar-wrap"><div class="avatar">${avatar}</div>${planBadge}</div>
     <div class="profile-info">
       <div class="profile-name">${pro.name} ${verif}</div>
       <div class="profile-cat">
         <span class="cat-pill">${pro.category||'Profissional'}</span>
-        <span class="loc-text">📍 ${pro.location||'Portugal'}</span>
+        <span class="loc-text"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${pro.location||'Portugal'}</span>
       </div>
       <div class="rating-row" id="rating-row">
         <div class="spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div>
       </div>
       ${pro.bio?`<div class="profile-bio">${pro.bio}</div>`:''}
-      <div class="profile-stats" id="profile-stats"></div>
     </div>
     <div class="profile-actions">
-      ${pro.website?`<a href="${pro.website}" target="_blank" class="btn btn-outline">🌐 Website</a>`:''}
-      <button class="btn btn-ghost" style="font-size:13px" onclick="showTab('avaliacoes');document.querySelector('#tab-avaliacoes').scrollIntoView({behavior:'smooth'})">✍️ Avaliar</button>
+      ${pro.website?`<a href="${pro.website}" target="_blank" class="btn btn-outline"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>`:''}
+      <button class="btn btn-ghost" style="font-size:13px" onclick="showTab('avaliacoes');document.querySelector('#tab-avaliacoes').scrollIntoView({behavior:'smooth'})"><svg class="ic" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg> Avaliar</button>
     </div>`
 }
 
@@ -366,30 +385,40 @@ async function loadReviews(){
     document.getElementById('rating-row').innerHTML=`<span class="stars">${'★'.repeat(n)+'☆'.repeat(5-n)}</span><span class="rating-score">${avg}</span><span class="rating-count">(${reviews.length} avaliações)</span>`
   } else document.getElementById('rating-row').innerHTML=`<span style="font-size:14px;color:var(--muted)">Sem avaliações ainda</span>`
 
-  document.getElementById('reviews-title').textContent=`⭐ Avaliações (${reviews.length})`
+  document.getElementById('reviews-title').innerHTML=`<svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Avaliações (${reviews.length})`
 
-  // Stats
-  const avgNum=reviews.length?(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1):0
-  document.getElementById('profile-stats').innerHTML=`
-    <div class="pstat"><strong>${avgNum||'—'}</strong><span>Avaliação</span></div>
-    <div class="pstat"><strong>${reviews.length}</strong><span>Reviews</span></div>
-    <div class="pstat"><strong>${proData.plan==='premium'?'Premium':proData.plan==='pro'?'Pro':'Grátis'}</strong><span>Plano</span></div>`
+  // Trust bar (real, publicly-derivable data only)
+  const avgNum=reviews.length?(reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1):null
+  const{count:portfolioCount}=await db.from('portfolio_items').select('*',{count:'exact',head:true}).eq('professional_id',proId)
+  const joinedYear=new Date(proData.created_at).getFullYear()
+  const tIc={star:'<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+    review:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    photo:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
+    calendar:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'}
+  document.getElementById('trust-bar').style.display='grid'
+  document.getElementById('trust-bar').innerHTML=`
+    <div class="tstat"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="color:var(--gold)">${tIc.star}</svg><strong>${avgNum||'—'}</strong><span>Avaliação média</span></div>
+    <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--blue)">${tIc.review}</svg><strong>${reviews.length}</strong><span>Avaliações</span></div>
+    <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--green)">${tIc.photo}</svg><strong>${portfolioCount||0}</strong><span>Fotos no portfólio</span></div>
+    <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--gold)">${tIc.calendar}</svg><strong>${joinedYear}</strong><span>Membro desde</span></div>`
 
   if(!reviews.length){
     document.getElementById('reviews-list').innerHTML=`<p style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Sem avaliações ainda. Sê o primeiro!</p>`
     return
   }
-  document.getElementById('reviews-list').innerHTML=reviews.map(r=>{
+  document.getElementById('reviews-list').innerHTML=`<div class="reviews-grid">${reviews.map(r=>{
     const stars='★'.repeat(r.rating)+'☆'.repeat(5-r.rating)
     const date=new Date(r.created_at).toLocaleDateString('pt-PT')
+    const initials=(r.reviewer_name||'?').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
     return`<div class="review-item">
       <div class="review-header">
-        <div><div class="review-name">${r.reviewer_name}</div><div class="review-stars">${stars}</div></div>
-        <div class="review-meta">${date}</div>
+        <div class="review-avatar">${initials}</div>
+        <div style="flex:1"><div class="review-name">${r.reviewer_name}</div><div class="review-meta">${date}</div></div>
+        <div class="review-stars">${stars}</div>
       </div>
       ${r.comment?`<div class="review-text">${r.comment}</div>`:''}
     </div>`
-  }).join('')
+  }).join('')}</div>`
 }
 
 async function loadServices(){
@@ -416,7 +445,7 @@ async function loadServices(){
         <button class="btn btn-outline" style="width:100%" onclick="document.querySelector('.contact-card').scrollIntoView({behavior:'smooth'})">Contratar</button>
       </div>
       <div class="package-card recommended">
-        <div class="rec-badge">⭐ Mais Popular</div>
+        <div class="rec-badge"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:12px;height:12px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Mais Popular</div>
         <h4>Standard</h4>
         <div class="package-price">€${standard.price_from||'—'}<span>/hora</span></div>
         <div class="package-desc">${standard.description||standard.title}</div>
@@ -437,24 +466,36 @@ async function loadPortfolio(){
   const{data}=await db.from('portfolio_items').select('*').eq('professional_id',proId).order('created_at',{ascending:false})
   const grid=document.getElementById('portfolio-grid')
   if(!data||!data.length){grid.innerHTML=`<p style="color:var(--muted);font-size:14px;padding:20px">Sem fotos de portfólio ainda.</p>`;return}
-  grid.innerHTML=data.map(item=>`
-    <div class="portfolio-img" onclick="openLightbox('${item.photo_url}','${(item.caption||'').replace(/'/g,'&apos;')}')">
-      <img src="${item.photo_url}" alt="${item.caption||'Trabalho'}" loading="lazy"/>
-      <div class="cap">${item.caption||''}</div>
-    </div>`).join('')
+  const item=i=>`<div class="portfolio-img" onclick="openLightbox('${i.photo_url}','${(i.caption||'').replace(/'/g,'&apos;')}')">
+      <img src="${i.photo_url}" alt="${i.caption||'Trabalho'}" loading="lazy"/>
+      <div class="cap">${i.caption||''}</div>
+    </div>`
+  if(data.length>=5){
+    grid.className='portfolio-mosaic'
+    grid.innerHTML=data.slice(0,5).map(item).join('')
+    if(data.length>5)grid.insertAdjacentHTML('afterend',`<div class="portfolio-grid">${data.slice(5).map(item).join('')}</div>`)
+  }else{
+    grid.className='portfolio-grid'
+    grid.innerHTML=data.map(item).join('')
+  }
 }
 
 function renderSidebar(pro){
   const items=[]
-  if(pro.location)items.push(`<div class="info-row"><span class="info-icon">📍</span>${pro.location}</div>`)
-  if(pro.website)items.push(`<div class="info-row"><span class="info-icon">🌐</span><a href="${pro.website}" target="_blank" style="color:var(--blue)">Website</a></div>`)
+  const svgLoc='<svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+  const svgWeb='<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>'
+  const svgCal='<svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'
+  if(pro.location)items.push(`<div class="info-row"><span class="info-icon">${svgLoc}</span>${pro.location}</div>`)
+  if(pro.website)items.push(`<div class="info-row"><span class="info-icon">${svgWeb}</span><a href="${pro.website}" target="_blank" style="color:var(--blue)">Website</a></div>`)
   const joined=new Date(pro.created_at).toLocaleDateString('pt-PT',{month:'long',year:'numeric'})
-  items.push(`<div class="info-row"><span class="info-icon">📅</span>Membro desde ${joined}</div>`)
+  items.push(`<div class="info-row"><span class="info-icon">${svgCal}</span>Membro desde ${joined}</div>`)
   document.getElementById('info-items').innerHTML=items.join('')
   if(pro.plan&&pro.plan!=='free'){
     document.getElementById('plan-card').style.display='block'
-    const icon=pro.plan==='premium'?'👑':'🚀',label=pro.plan==='premium'?'Premium':'Pro',color=pro.plan==='premium'?'var(--gold)':'#7c3aed'
-    document.getElementById('plan-info').innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:8px;background:${color}22;border-radius:10px"><span style="font-size:24px">${icon}</span><div><div style="font-weight:700;color:${color}">${label}</div><div style="font-size:12px;color:var(--muted)">Profissional verificado</div></div></div>`
+    const svgPremium='<svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:22px;height:22px"><path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10z"/></svg>'
+    const svgPro='<svg class="ic" viewBox="0 0 24 24" style="width:22px;height:22px"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>'
+    const icon=pro.plan==='premium'?svgPremium:svgPro,label=pro.plan==='premium'?'Premium':'Pro',color=pro.plan==='premium'?'var(--gold)':'#7c3aed'
+    document.getElementById('plan-info').innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:8px;background:${color}22;border-radius:10px;color:${color}">${icon}<div><div style="font-weight:700;color:${color}">${label}</div><div style="font-size:12px;color:var(--muted)">Profissional verificado</div></div></div>`
   }
 }
 

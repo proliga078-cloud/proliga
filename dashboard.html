@@ -29,7 +29,8 @@
     .sidebar-nav{flex:1;padding:6px 12px}
     .nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;border-radius:9px;margin-bottom:1px}
     .nav-item:hover{background:var(--bg);color:var(--text)}
-    .nav-item.active{background:var(--blue-light);color:var(--blue)}
+    .nav-item.active{background:linear-gradient(135deg,#1E4FD6,#3D6BEF);color:#fff;box-shadow:0 4px 10px rgba(30,79,214,.25)}
+    .nav-item.active .icon{color:#fff}
     .nav-item .icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
     .nav-item .icon .ic{width:18px;height:18px}
     .nav-divider{margin:8px 12px 6px;padding-top:10px;border-top:1px solid var(--border)}
@@ -51,12 +52,24 @@
     .page-title{font-size:22px;font-weight:800;margin-bottom:24px;display:flex;align-items:center;gap:10px}
 
     /* STATS CARDS */
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px}
-    .stat-card{background:var(--white);border-radius:14px;padding:20px;border:1px solid var(--border)}
-    .stat-card .s-icon{width:38px;height:38px;border-radius:10px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-    .stat-card .s-icon .ic{width:19px;height:19px}
-    .stat-card .s-value{font-size:26px;font-weight:800;color:var(--text);margin-bottom:2px}
-    .stat-card .s-label{font-size:13px;color:var(--muted)}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+    .stat-card{border-radius:16px;padding:16px;border:none;position:relative;overflow:hidden}
+    .stat-card .s-decor{position:absolute;right:-14px;top:-14px;width:60px;height:60px;border-radius:50%}
+    .stat-card .s-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;position:relative}
+    .stat-card .s-icon .ic{width:16px;height:16px;stroke:#fff}
+    .stat-card .s-value{font-size:22px;font-weight:800;margin-bottom:2px;position:relative}
+    .stat-card .s-label{font-size:11.5px;font-weight:600;position:relative}
+    .stat-card.c-blue{background:#EAF1FE}.stat-card.c-blue .s-decor{background:rgba(30,79,214,.08)}.stat-card.c-blue .s-icon{background:#1E4FD6}.stat-card.c-blue .s-value{color:#0C2E7A}.stat-card.c-blue .s-label{color:#3B5BA8}
+    .stat-card.c-green{background:#E7F5EE}.stat-card.c-green .s-decor{background:rgba(27,138,75,.08)}.stat-card.c-green .s-icon{background:#1B8A4B}.stat-card.c-green .s-value{color:#0F5C33}.stat-card.c-green .s-label{color:#2C7A50}
+    .stat-card.c-amber{background:#FCF1E3}.stat-card.c-amber .s-decor{background:rgba(180,101,10,.08)}.stat-card.c-amber .s-icon{background:#B4650A}.stat-card.c-amber .s-value{color:#7A4507}.stat-card.c-amber .s-label{color:#96590C}
+    .stat-card.c-purple{background:#F1ECFB}.stat-card.c-purple .s-decor{background:rgba(110,60,200,.08)}.stat-card.c-purple .s-icon{background:#6E3CC8}.stat-card.c-purple .s-value{color:#442478}.stat-card.c-purple .s-label{color:#5B3399}
+    .stat-card.c-coral{background:#FBEAE6}.stat-card.c-coral .s-decor{background:rgba(216,87,58,.08)}.stat-card.c-coral .s-icon{background:#D8573A}.stat-card.c-coral .s-value{color:#7A2C1A}.stat-card.c-coral .s-label{color:#9C4128}
+
+    .hero-greet{background:linear-gradient(120deg,#1E4FD6,#4A6FE5 60%,#6F8CF0);border-radius:18px;padding:22px 26px;margin-bottom:20px;position:relative;overflow:hidden}
+    .hero-greet::before{content:'';position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08)}
+    .hero-greet::after{content:'';position:absolute;right:50px;bottom:-55px;width:95px;height:95px;border-radius:50%;background:rgba(255,255,255,.07)}
+    .hero-greet .hg-title{position:relative;font-size:22px;font-weight:700;color:#fff}
+    .hero-greet .hg-sub{position:relative;font-size:12.5px;color:#DCE5FB;margin-top:4px}
 
     /* FORMS */
     .form-section{background:var(--white);border-radius:16px;padding:24px;margin-bottom:20px;border:1px solid var(--border)}
@@ -143,14 +156,18 @@
 
     /* INSIGHTS */
     .insights-list{display:flex;flex-direction:column;gap:8px}
-    .insight-card{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border);font-size:13px;line-height:1.45}
-    .insight-card.warn{background:#fff8ec;border-color:#f6e2b8}
-    .insight-card.good{background:#eefaf1;border-color:#c9ecd4}
-    .insight-card .ic-icon{flex-shrink:0;width:18px;height:18px;margin-top:1px}
+    .insight-card{display:flex;gap:12px;align-items:flex-start;padding:13px 14px 13px 16px;border-radius:12px;background:var(--white);border:1px solid var(--border);font-size:13px;line-height:1.5;position:relative}
+    .insight-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px}
+    .insight-card.warn::before{background:#B4650A}
+    .insight-card.good::before{background:#1B8A4B}
+    .insight-card .ic-badge{flex-shrink:0;width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+    .insight-card.warn .ic-badge{background:#FCF1E3;color:#B4650A}
+    .insight-card.good .ic-badge{background:#E7F5EE;color:#1B8A4B}
+    .insight-card .ic-icon{width:15px;height:15px}
     .insight-card b{font-weight:700}
 
     /* CHARTS */
-    .charts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+    .charts-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:20px}
     .chart-card canvas{max-height:180px}
     @media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
 
@@ -249,13 +266,13 @@
 
   <!-- OVERVIEW -->
   <div id="page-overview" class="page-section active">
-    <div class="page-title">Resumo</div>
+    <div class="hero-greet"><div class="hg-title" id="greet-title">Olá!</div><div class="hg-sub">Aqui está o resumo do teu negócio hoje</div></div>
     <div class="stats-grid" id="stats-grid">
-      <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="s-value" id="stat-views">—</div><div class="s-label">Visualizações do perfil</div></div>
-      <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div><div class="s-value" id="stat-msgs">—</div><div class="s-label">Conversas com clientes</div></div>
-      <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><div class="s-value" id="stat-avg">—</div><div class="s-label">Avaliação média</div></div>
-      <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div><div class="s-value" id="stat-services">—</div><div class="s-label">Serviços publicados</div></div>
-      <div class="stat-card"><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div><div class="s-value" id="stat-earnings">—</div><div class="s-label">Faturação este mês</div></div>
+      <div class="stat-card c-blue"><div class="s-decor"></div><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="s-value" id="stat-views">—</div><div class="s-label">Visualizações do perfil</div></div>
+      <div class="stat-card c-green"><div class="s-decor"></div><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div><div class="s-value" id="stat-msgs">—</div><div class="s-label">Conversas com clientes</div></div>
+      <div class="stat-card c-amber"><div class="s-decor"></div><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><div class="s-value" id="stat-avg">—</div><div class="s-label">Avaliação média</div></div>
+      <div class="stat-card c-purple"><div class="s-decor"></div><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div><div class="s-value" id="stat-services">—</div><div class="s-label">Serviços publicados</div></div>
+      <div class="stat-card c-coral"><div class="s-decor"></div><div class="s-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div><div class="s-value" id="stat-earnings">—</div><div class="s-label">Faturação este mês</div></div>
     </div>
     <div id="upgrade-banner-wrap"></div>
 
@@ -266,16 +283,20 @@
 
     <div class="charts-grid">
       <div class="form-section chart-card">
-        <div class="form-title">Visualizações do perfil (30 dias)</div>
-        <canvas id="chart-views" height="160"></canvas>
+        <div class="form-title">Faturação mensal</div>
+        <canvas id="chart-earnings" height="140"></canvas>
+      </div>
+      <div class="form-section">
+        <div class="form-title">Próximo na Agenda</div>
+        <div id="mini-agenda"></div>
       </div>
       <div class="form-section chart-card">
-        <div class="form-title">Faturação mensal</div>
-        <canvas id="chart-earnings" height="160"></canvas>
+        <div class="form-title">Visualizações do perfil (30 dias)</div>
+        <canvas id="chart-views" height="140"></canvas>
       </div>
       <div class="form-section chart-card">
         <div class="form-title">Trabalhos por estado</div>
-        <canvas id="chart-status" height="160"></canvas>
+        <canvas id="chart-status" height="140"></canvas>
       </div>
     </div>
 
@@ -688,6 +709,8 @@ function updateSidebar(){
   const av=document.getElementById('sb-avatar')
   if(profileData?.photo_url)av.innerHTML=`<img src="${profileData.photo_url}" alt="${name}"/>`
   else av.textContent=initials
+  const greetEl=document.getElementById('greet-title')
+  if(greetEl)greetEl.textContent=`Olá, ${name.split(' ')[0]}`
 }
 
 async function loadPrivatePhone(){
@@ -879,7 +902,7 @@ function renderInsights(){
 
   if(!tips.length)tips.push({type:'good',icon:'check',text:'Tudo em dia! Sem alertas de momento — continua o bom trabalho.'})
 
-  el.innerHTML=tips.map(t=>`<div class="insight-card ${t.type}">${insightIcon(t.icon)}<div>${t.text}</div></div>`).join('')
+  el.innerHTML=tips.map(t=>`<div class="insight-card ${t.type}"><div class="ic-badge">${insightIcon(t.icon)}</div><div>${t.text}</div></div>`).join('')
 }
 
 function insightIcon(name){
@@ -892,6 +915,23 @@ function insightIcon(name){
     check:'<path d="M20 6 9 17l-5-5"/>'
   }
   return `<svg class="ic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths[name]||paths.check}</svg>`
+}
+
+function renderMiniAgenda(){
+  const el=document.getElementById('mini-agenda')
+  if(!el)return
+  const now=new Date()
+  const upcoming=allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado'&&new Date(j.scheduled_at)>=now).sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at)).slice(0,3)
+  if(!upcoming.length){el.innerHTML='<div class="empty" style="padding:6px 0;font-size:12.5px">Sem nada agendado. <a href="#" onclick="showPage(\'agenda\');return false" style="color:var(--blue);font-weight:600">Ir à Agenda →</a></div>';return}
+  el.innerHTML=upcoming.map(j=>{
+    const d=new Date(j.scheduled_at)
+    const dateStr=d.toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'short'})
+    const timeStr=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
+    return `<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px">
+      <div style="width:30px;height:30px;border-radius:9px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
+      <div style="min-width:0"><div style="font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${j.title}</div><div style="font-size:11px;color:var(--muted)">${dateStr}, ${timeStr}</div></div>
+    </div>`
+  }).join('')
 }
 
 function subscribeJobsRealtime(){
@@ -1107,6 +1147,7 @@ async function loadJobs(){
   renderCalendar()
   renderStatusChart(allJobs)
   renderInsights()
+  renderMiniAgenda()
 }
 
 function toLocalDT(iso){
