@@ -160,6 +160,29 @@
     footer a{color:rgba(255,255,255,.6)}
     footer a:hover{color:#fff}
   </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Reparações Tech",
+  "provider": {
+    "@type": "Organization",
+    "name": "Proliga",
+    "url": "https://proliga.pt"
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Porto"
+    },
+    {
+      "@type": "City",
+      "name": "Braga"
+    }
+  ],
+  "url": "https://proliga.pt/reparacoes-tech.html"
+}
+</script>
 </head>
 <body>
 
@@ -338,7 +361,7 @@
 <footer>
   <div style="max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
     <span>© 2026 Proliga · Portugal</span>
-    <span><a href="categoria.html">Ver todas as categorias</a> · <a href="index.html">Página inicial</a> · <a href="contacto.html">Contacto</a></span>
+    <span><a href="categoria.html">Ver todas as categorias</a> · <a href="index.html">Página inicial</a> · <a href="contacto.html">Contacto</a> · <a href="termos.html">Termos</a> · <a href="privacidade.html">Privacidade</a> · <a href="cookies.html">Cookies</a> · <a href="rgpd.html">RGPD</a></span>
   </div>
 </footer>
 
@@ -375,7 +398,7 @@ async function init(){
 
 async function loadCatStats(){
   try{
-    const{data:pros,count}=await db.from('profiles').select('id',{count:'exact'}).ilike('category',`%${filters.cat}%`)
+    const{data:pros,count}=await db.from('profiles').select('id',{count:'exact'}).eq('is_demo',false).ilike('category',`%${filters.cat}%`)
     if(!pros)return
     const row=document.getElementById('cat-stats-row')
     document.getElementById('stat-count').textContent=(count||pros.length)
@@ -401,7 +424,7 @@ async function loadPros(){
   const container=document.getElementById('pros-container')
   container.innerHTML=`<div class="loading-grid">${Array(6).fill(`<div class="skeleton"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:80%"></div></div></div>`).join('')}</div>`
 
-  let q=db.from('profiles').select('id,name,category,location,plan,photo_url,bio,verified,created_at',{count:'exact'})
+  let q=db.from('profiles').select('id,name,category,location,plan,photo_url,bio,verified,created_at',{count:'exact'}).eq('is_demo',false)
   q=q.ilike('category',`%${filters.cat}%`)
   if(filters.loc)q=q.ilike('location',`%${filters.loc}%`)
   if(document.getElementById('f-verified')?.checked)q=q.eq('verified',true)
