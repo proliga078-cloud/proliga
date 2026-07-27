@@ -22,7 +22,7 @@
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Os jardineiros fazem manutenção regular ou só serviços pontuais?", "acceptedAnswer": {"@type": "Answer", "text": "Depende do profissional — muitos oferecem contratos de manutenção mensal e também serviços únicos como poda ou limpeza de terreno."}}, {"@type": "Question", "name": "Quanto custa a manutenção mensal de um jardim?", "acceptedAnswer": {"@type": "Answer", "text": "Varia com o tamanho do jardim e a frequência das visitas. Pede orçamento personalizado diretamente ao profissional."}}]}</script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#B4650A;--green:#1B8A4B;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
+    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--green:#1A8649;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
     body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
     a{text-decoration:none;color:inherit}
     nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
@@ -38,7 +38,7 @@
     .btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
     .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
-    .page-header{background:linear-gradient(135deg,#1B8A4B,#34d399);padding:36px 5% 28px;color:#fff}
+    .page-header{background:linear-gradient(135deg,#1A8649,#34d399);padding:36px 5% 28px;color:#fff}
     .page-header h1{font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:14px}
     .cat-icon-badge{width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;backdrop-filter:blur(4px)}
     .page-header .intro{font-size:14.5px;color:rgba(255,255,255,.85);margin-bottom:14px;max-width:680px;line-height:1.6}
@@ -52,7 +52,7 @@
     .stats-row .stat-item span{font-size:11px;color:rgba(255,255,255,.75)}
     .cat-chips{display:flex;flex-wrap:wrap;gap:8px}
     .cat-chip{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;cursor:pointer;transition:all .2s;display:inline-block}
-    .cat-chip:hover,.cat-chip.active{background:rgba(255,255,255,.9);color:#1B8A4B}
+    .cat-chip:hover,.cat-chip.active{background:rgba(255,255,255,.9);color:#1A8649}
 
     .page-body{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:28px 5%;max-width:1400px;margin:0 auto}
     .mobile-filter-btn{display:none;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text);margin-bottom:16px}
@@ -99,8 +99,8 @@
     .pro-card:nth-child(4){animation-delay:.17s}.pro-card:nth-child(5){animation-delay:.22s}.pro-card:nth-child(6){animation-delay:.27s}
     .pro-card:nth-child(n+7){animation-delay:.32s}
     @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .pro-card:hover{box-shadow:0 10px 28px rgba(0,0,0,.12);transform:translateY(-4px);border-color:#1B8A4B}
-    .pro-card-cover{height:88px;background:linear-gradient(135deg,#1B8A4B,#34d399);position:relative}
+    .pro-card:hover{box-shadow:0 10px 28px rgba(0,0,0,.12);transform:translateY(-4px);border-color:#1A8649}
+    .pro-card-cover{height:88px;background:linear-gradient(135deg,#1A8649,#34d399);position:relative}
     .pro-avatar{width:64px;height:64px;border-radius:50%;border:3px solid #fff;background:var(--blue);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;position:absolute;bottom:-22px;left:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.15)}
     .pro-avatar img{width:100%;height:100%;object-fit:cover}
     .plan-badge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
@@ -136,9 +136,9 @@
     .faq-section{max-width:1400px;margin:0 auto;padding:8px 5% 60px}
     .faq-section h2{font-size:20px;font-weight:800;margin-bottom:16px}
     .faq-item{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:4px 18px;margin-bottom:12px;transition:border-color .2s}
-    .faq-item.open{border-color:#1B8A4B}
+    .faq-item.open{border-color:#1A8649}
     .faq-q{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14.5px;font-weight:700;padding:14px 0;cursor:pointer;font-family:inherit;color:var(--text)}
-    .faq-chevron{transition:transform .2s;color:#1B8A4B;font-size:18px;flex-shrink:0}
+    .faq-chevron{transition:transform .2s;color:#1A8649;font-size:18px;flex-shrink:0}
     .faq-item.open .faq-chevron{transform:rotate(90deg)}
     .faq-a{font-size:13.5px;color:var(--muted);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease;padding-bottom:0}
     .faq-item.open .faq-a{max-height:240px;padding-bottom:16px}
@@ -147,15 +147,15 @@
     .mini-how h2{font-size:18px;font-weight:800;margin-bottom:14px}
     .mini-how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
     .mini-how-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;transition:all .2s}
-    .mini-how-card:hover{border-color:#1B8A4B;box-shadow:0 6px 18px rgba(0,0,0,.06)}
-    .mini-how-num{width:26px;height:26px;border-radius:50%;background:#1B8A4B;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+    .mini-how-card:hover{border-color:#1A8649;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .mini-how-num{width:26px;height:26px;border-radius:50%;background:#1A8649;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
     .mini-how-card h3{font-size:13.5px;font-weight:700;margin-bottom:4px}
     .mini-how-card p{font-size:12.5px;color:var(--muted);line-height:1.5}
 
-    .sidebar-cta{background:linear-gradient(135deg,#1B8A4B,#34d399);border-radius:16px;padding:20px;margin-bottom:16px;color:#fff}
+    .sidebar-cta{background:linear-gradient(135deg,#1A8649,#34d399);border-radius:16px;padding:20px;margin-bottom:16px;color:#fff}
     .sidebar-cta h3{font-size:14.5px;font-weight:800;margin-bottom:6px}
     .sidebar-cta p{font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.5;margin-bottom:12px}
-    .sidebar-cta a{display:block;text-align:center;background:rgba(255,255,255,.95);color:#1B8A4B;font-weight:700;font-size:13px;padding:9px;border-radius:8px;transition:background .2s}
+    .sidebar-cta a{display:block;text-align:center;background:rgba(255,255,255,.95);color:#1A8649;font-weight:700;font-size:13px;padding:9px;border-radius:8px;transition:background .2s}
     .sidebar-cta a:hover{background:#fff}
 
     footer{background:var(--text);color:rgba(255,255,255,.6);padding:40px 5% 24px;font-size:13px}
@@ -509,7 +509,7 @@ async function loadPros(){
       <div class="pro-card-body">
         <div class="pro-card-name">${pro.name} ${verif}</div>
         <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
-        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1B8A4B;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
+        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1A8649;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
         ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
         <div class="pro-footer">
           <div class="pro-price">${price}</div>

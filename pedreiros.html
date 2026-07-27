@@ -22,7 +22,7 @@
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Um pedreiro trata de pequenas reparações ou só obras grandes?", "acceptedAnswer": {"@type": "Answer", "text": "A maioria aceita ambos os tipos de trabalho — desde reparar uma parede até remodelações completas. Consulta a descrição do perfil."}}, {"@type": "Question", "name": "Como avalio a qualidade de um pedreiro antes de contratar?", "acceptedAnswer": {"@type": "Answer", "text": "Vê o portfólio de trabalhos anteriores e as avaliações de outros clientes na plataforma antes de pedir orçamento."}}]}</script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#B4650A;--green:#1B8A4B;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
+    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--green:#1A8649;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
     body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
     a{text-decoration:none;color:inherit}
     nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
@@ -509,7 +509,7 @@ async function loadPros(){
       <div class="pro-card-body">
         <div class="pro-card-name">${pro.name} ${verif}</div>
         <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
-        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1B8A4B;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
+        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1A8649;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
         ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
         <div class="pro-footer">
           <div class="pro-price">${price}</div>

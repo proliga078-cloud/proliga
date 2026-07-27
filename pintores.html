@@ -22,7 +22,7 @@
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Quanto tempo demora a pintura de uma casa?", "acceptedAnswer": {"@type": "Answer", "text": "Depende da área e do tipo de acabamento. O profissional consegue dar-te uma estimativa concreta depois de ver o espaço ou as fotos."}}, {"@type": "Question", "name": "Os pintores da Proliga fornecem material?", "acceptedAnswer": {"@type": "Answer", "text": "Cada profissional define no orçamento se o material está incluído ou não — confirma sempre este ponto antes de aceitar o serviço."}}]}</script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#B4650A;--green:#1B8A4B;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
+    :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--green:#1A8649;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
     body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
     a{text-decoration:none;color:inherit}
     nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
@@ -509,7 +509,7 @@ async function loadPros(){
       <div class="pro-card-body">
         <div class="pro-card-name">${pro.name} ${verif}</div>
         <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
-        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1B8A4B;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
+        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1A8649;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
         ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
         <div class="pro-footer">
           <div class="pro-price">${price}</div>
