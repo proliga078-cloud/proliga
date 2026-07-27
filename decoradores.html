@@ -484,7 +484,7 @@ async function loadPros(){
       <div class="pro-card-body">
         <div class="pro-card-name">${pro.name} ${verif}</div>
         <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
-        <div class="pro-rating"><span class="stars">${stars}</span>&nbsp;<strong>${avg||'Novo'}</strong>&nbsp;<span style="color:var(--muted)">${r?`(${r.c})`:'sem avaliações'}</span></div>
+        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1B8A4B;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
         ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
         <div class="pro-footer">
           <div class="pro-price">${price}</div>
