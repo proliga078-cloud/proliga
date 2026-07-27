@@ -539,7 +539,7 @@ const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 let user=null,profileData=null,profileId=null
-let servicesCount=0,jobsChannel=null
+let servicesCount=0,jobsChannel=null,msgsCount=0,reviewsCount=0,reviewsAvg=null
 let chartViews=null,chartEarnings=null,chartStatus=null
 let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calSelected=null
 let aiChatOpen=false
@@ -719,12 +719,14 @@ async function loadStats(){
     db.from('services').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
   ])
   servicesCount=sc||0
+  msgsCount=mc||0
+  reviewsCount=rc||0
   document.getElementById('stat-msgs').textContent=mc||0
   document.getElementById('stat-services').textContent=sc||0
   if(revs&&revs.length){
-    const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
-    document.getElementById('stat-avg').textContent=avg
-  } else document.getElementById('stat-avg').textContent='—'
+    reviewsAvg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
+    document.getElementById('stat-avg').textContent=reviewsAvg
+  } else {reviewsAvg=null;document.getElementById('stat-avg').textContent='—'}
 
   // Visualizações do perfil (últimos 30 dias) + gráfico
   const d30=new Date();d30.setDate(d30.getDate()-29);d30.setHours(0,0,0,0)
@@ -1324,25 +1326,127 @@ async function sendAiChat(){
   const typingId='typing-'+Date.now()
   body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot" id="${typingId}">…</div>`)
   body.scrollTop=body.scrollHeight
-  try{
-    const{data,error}=await db.functions.invoke('ai-assistant',{body:{question:q}})
-    const typingEl=document.getElementById(typingId)
-    if(typingEl)typingEl.remove()
-    if(error||!data||data.error){
-      const msg=data&&data.error==='not_configured'
-        ?'O assistente de IA ainda não foi ativado. Fala com o administrador do Proliga.'
-        :'Não consegui responder agora. Tenta novamente daqui a pouco.'
-      body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${msg}</div>`)
-    } else {
-      body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${escapeHtml(data.answer||'').replace(/\n/g,'<br>')}</div>`)
-    }
-  }catch(e){
-    const typingEl=document.getElementById(typingId)
-    if(typingEl)typingEl.remove()
-    body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">Erro de ligação. Tenta novamente.</div>`)
-  }
+
+  // Assistente local, sem custo: responde com regras a partir dos dados já carregados.
+  // (A Edge Function "ai-assistant" com IA real fica disponível para quem quiser ativá-la
+  // mais tarde com uma chave da Anthropic — ver answerWithClaude() abaixo, não usada por defeito.)
+  await new Promise(r=>setTimeout(r,300)) // pequena pausa para parecer natural
+  const typingEl=document.getElementById(typingId)
+  if(typingEl)typingEl.remove()
+  const answer=answerLocally(q)
+  body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${answer.replace(/\n/g,'<br>')}</div>`)
+
   sendBtn.disabled=false
   body.scrollTop=body.scrollHeight
+}
+
+function normalizeText(s){
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+}
+
+function answerLocally(question){
+  const q=normalizeText(question)
+  const has=(...words)=>words.some(w=>q.includes(w))
+
+  // Faturação / ganhos
+  if(has('faturei','faturacao','faturação','ganhei','recebi','dinheiro','quanto fiz','rendimento')){
+    const monthStart=new Date();monthStart.setDate(1);monthStart.setHours(0,0,0,0)
+    const paidThisMonth=allJobs.filter(j=>j.status==='pago'&&j.paid_at&&new Date(j.paid_at)>=monthStart)
+    const total=paidThisMonth.reduce((s,j)=>s+(Number(j.paid_amount)||0),0)
+    if(!paidThisMonth.length)return 'Ainda não marcaste nenhum trabalho como pago este mês. Assim que o fizeres no Pipeline, a faturação aparece aqui e no Resumo.'
+    return `Este mês faturaste €${total.toFixed(0)}, com base em ${paidThisMonth.length} trabalho${paidThisMonth.length>1?'s':''} pago${paidThisMonth.length>1?'s':''}.`
+  }
+
+  // Orçamentos pendentes / por responder
+  if(has('pendente','por responder','parado','orcamento','orçamento','follow-up','followup')){
+    const now=new Date()
+    const stale=allJobs.filter(j=>['novo','negociacao'].includes(j.status)&&(now-new Date(j.created_at))/86400000>3)
+    const waiting=allJobs.filter(j=>j.status==='orcamento_enviado'&&j.quote_sent_at&&(now-new Date(j.quote_sent_at))/86400000>5)
+    if(!stale.length&&!waiting.length)return 'Não tens orçamentos parados de momento — tudo em dia!'
+    const parts=[]
+    if(stale.length)parts.push(`${stale.length} trabalho${stale.length>1?'s':''} por avançar há mais de 3 dias`)
+    if(waiting.length)parts.push(`${waiting.length} orçamento${waiting.length>1?'s':''} enviado${waiting.length>1?'s':''} sem resposta há mais de 5 dias`)
+    return `Tens ${parts.join(' e ')}. Vale a pena dar seguimento no Pipeline.`
+  }
+
+  // Agenda / trabalhos agendados
+  if(has('agenda','agendado','esta semana','proximos dias','próximos dias','calendario','calendário')){
+    const now=new Date();const weekEnd=new Date(now);weekEnd.setDate(weekEnd.getDate()+7)
+    const thisWeek=allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado'&&new Date(j.scheduled_at)>=now&&new Date(j.scheduled_at)<=weekEnd).sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at))
+    if(!thisWeek.length)return 'Não tens trabalhos agendados para os próximos 7 dias. Define uma data num trabalho do Pipeline para aparecer na Agenda.'
+    const list=thisWeek.slice(0,5).map(j=>`• ${j.title} — ${new Date(j.scheduled_at).toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'short'})}`).join('\n')
+    return `Tens ${thisWeek.length} trabalho${thisWeek.length>1?'s':''} agendado${thisWeek.length>1?'s':''} para os próximos 7 dias:\n${list}`
+  }
+
+  // Ticket médio
+  if(has('ticket','medio','médio','preco medio','preço médio','valor medio','valor médio')){
+    const paid=allJobs.filter(j=>j.status==='pago'&&j.paid_amount)
+    if(!paid.length)return 'Ainda não tens trabalhos pagos suficientes para calcular um ticket médio.'
+    const avg=paid.reduce((s,j)=>s+Number(j.paid_amount),0)/paid.length
+    return `O teu ticket médio é de €${avg.toFixed(0)}, com base em ${paid.length} trabalho${paid.length>1?'s':''} pago${paid.length>1?'s':''}.`
+  }
+
+  // Avaliações
+  if(has('avaliacao','avaliação','avaliacoes','avaliações','estrelas','rating','nota')){
+    if(!reviewsCount)return 'Ainda não tens avaliações. Pede aos teus clientes para avaliarem depois de um trabalho concluído.'
+    return `Tens ${reviewsCount} avaliação${reviewsCount>1?'ões':''} com média de ${reviewsAvg} estrelas.`
+  }
+
+  // Perfil / visibilidade
+  if(has('perfil','visibilidade','completo')){
+    const missing=[]
+    if(profileData&&!profileData.photo_url)missing.push('foto de perfil')
+    if(profileData&&!profileData.bio)missing.push('biografia')
+    if(!missing.length)return 'O teu perfil está completo (foto e biografia preenchidas). Bom trabalho!'
+    return `Falta-te ${missing.join(' e ')} no perfil. Perfis completos recebem mais contactos de clientes.`
+  }
+
+  // Conversas / mensagens / clientes
+  if(has('conversa','mensage','cliente','contacto')){
+    return msgsCount
+      ? `Tens ${msgsCount} conversa${msgsCount>1?'s':''} com clientes no Chat.`
+      : 'Ainda não tens conversas com clientes. Publica serviços e completa o perfil para começares a aparecer nas pesquisas.'
+  }
+
+  // Serviços
+  if(has('servico','serviço','servicos','serviços')){
+    return servicesCount
+      ? `Tens ${servicesCount} serviço${servicesCount>1?'s':''} publicado${servicesCount>1?'s':''}.`
+      : 'Ainda não publicaste nenhum serviço. Adiciona pelo menos um em "Serviços" para apareceres nas pesquisas.'
+  }
+
+  // Trabalhos em geral / estado do pipeline
+  if(has('trabalho','trabalhos','pipeline','quantos')){
+    const active=allJobs.filter(j=>j.status!=='cancelado')
+    if(!active.length)return 'Ainda não tens nenhum trabalho registado. Usa "Novo Trabalho" na página Trabalhos para começares a acompanhar tudo.'
+    const counts={}
+    active.forEach(j=>counts[j.status]=(counts[j.status]||0)+1)
+    const parts=Object.entries(counts).map(([k,v])=>`${v} ${JOB_STATUS_LABELS[k]||k}`).join(', ')
+    return `Tens ${active.length} trabalho${active.length>1?'s':''} ativo${active.length>1?'s':''}: ${parts}.`
+  }
+
+  // Sugestões / o que fazer a seguir
+  if(has('sugest','dica','conselho','o que devo','o que fazer','ajuda')){
+    const tipsEl=document.getElementById('ai-insights')
+    const firstTip=tipsEl&&tipsEl.querySelector('.insight-card div:last-child')
+    if(firstTip)return 'A sugestão mais importante agora: '+firstTip.textContent
+    return 'De momento não tenho nenhuma sugestão urgente — continua o bom trabalho! Podes ver mais detalhes no painel de Insights no Resumo.'
+  }
+
+  return 'Não percebi bem a pergunta. Consigo responder sobre: faturação, orçamentos pendentes, agenda, ticket médio, avaliações, perfil, serviços e trabalhos. Tenta perguntar, por exemplo, "como está o meu mês?" ou "tenho trabalhos agendados esta semana?".'
+}
+
+// Chamada opcional à Edge Function com IA real (Claude). Não é usada por defeito —
+// fica aqui pronta caso um dia queiras trocar o assistente local por IA generativa
+// (basta configurar ANTHROPIC_API_KEY no Supabase e chamar esta função em vez de answerLocally).
+async function answerWithClaude(question){
+  const{data,error}=await db.functions.invoke('ai-assistant',{body:{question}})
+  if(error||!data||data.error){
+    return data&&data.error==='not_configured'
+      ?'O assistente de IA com Claude ainda não foi ativado. Configura ANTHROPIC_API_KEY no Supabase.'
+      :'Não consegui responder agora. Tenta novamente daqui a pouco.'
+  }
+  return data.answer||'Não consegui gerar uma resposta.'
 }
 
 function showAlert(id,msg,type='success'){
