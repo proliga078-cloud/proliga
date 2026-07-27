@@ -9,13 +9,17 @@
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://proliga.pt"/>
 <meta property="og:title" content="Proliga – Marketplace de Profissionais no Porto e em Braga"/>
-<meta property="og:description" content="O marketplace de profissionais verificados no Porto e em Braga. Avaliações reais, contacto direto."/>
+<meta property="og:description" content="O marketplace de profissionais verificados manualmente no Porto e em Braga. Sem comissões, contacto direto pela plataforma."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://proliga.pt"/>
 <meta property="og:locale" content="pt_PT"/>
+<meta property="og:image" content="https://proliga.pt/assets/og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="Proliga – Profissionais no Porto e em Braga"/>
-<meta name="twitter:description" content="Contrata profissionais verificados perto de ti. 16 categorias, no Porto e em Braga."/>
+<meta name="twitter:description" content="Contrata profissionais verificados perto de ti. No Porto e em Braga."/>
+<meta name="twitter:image" content="https://proliga.pt/assets/og-image.png"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
@@ -64,6 +68,14 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-
 .navlinks a{display:flex;align-items:center;gap:6px;transition:color .15s}
 .navlinks a:hover{color:var(--ink)}
 @media(min-width:900px){.navlinks{display:flex}}
+.hamburger-btn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;border:1.5px solid var(--border);background:#fff;cursor:pointer;margin-left:10px;flex-shrink:0}
+@media(min-width:900px){.hamburger-btn{display:none}}
+.mobile-nav-panel{display:none;position:fixed;top:68px;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);padding:10px 5% 18px;flex-direction:column;gap:2px;z-index:199;box-shadow:0 12px 28px rgba(0,0,0,.10);max-height:calc(100vh - 68px);overflow-y:auto}
+.mobile-nav-panel.open{display:flex}
+.mobile-nav-panel a{display:flex;align-items:center;gap:10px;padding:13px 10px;border-radius:9px;font-size:15px;font-weight:600;color:var(--ink);text-decoration:none}
+.mobile-nav-panel a:active{background:var(--bg)}
+@media(min-width:900px){.mobile-nav-panel{display:none!important}}
+
 .navcta{margin-left:auto;display:flex;gap:10px;align-items:center}
 .btn{padding:9px 18px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
 .btn-ghost{background:transparent;color:var(--ink)}.btn-ghost:hover{background:var(--bg)}
@@ -90,6 +102,7 @@ h1 em{font-style:normal;color:var(--blue)}
 .hs-field input::placeholder{color:var(--muted-2)}
 .hs-btn{background:var(--blue);color:#fff;border:none;padding:0 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
 .hs-btn:hover{background:#1740B0}
+.hs-btn:disabled{opacity:.7;cursor:not-allowed}
 @media(max-width:520px){.hero-search{flex-direction:column;max-width:100%}.hs-field{border-right:none;border-bottom:1px solid var(--border)}.hs-field:nth-child(2){border-bottom:none}.hs-btn{padding:12px}}
 .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
 .pill{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);color:#37404D;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:99px}
@@ -252,6 +265,9 @@ section{padding:52px 4%}
 .trust-grid{grid-template-columns:repeat(2,1fr)}
 .loc-grid{grid-template-columns:1fr}
 .footer-links{flex-direction:column;gap:16px}
+.cta-row{flex-direction:column}
+.cta-row .btn{width:100%;justify-content:center}
+.dual-cta{grid-template-columns:1fr}
 }
 </style>
 <script type="application/ld+json">
@@ -288,8 +304,12 @@ section{padding:52px 4%}
 <a href="dashboard.html" class="btn btn-line">Dashboard</a>
 <div class="nav-avatar" id="nav-avatar" onclick="location.href='dashboard.html'">?</div>
 </div>
-</div>
+</div><button class="hamburger-btn" aria-label="Abrir menu" onclick="toggleMobileNav()"><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
 </nav>
+<div class="mobile-nav-panel" id="mobile-nav-panel"><a href="como-funciona.html"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Como Funciona</a>
+<a href="porque-escolher.html"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>Porquê a Proliga</a>
+<a href="pricing.html"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Preços</a>
+<a href="pedidos.html"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg>Pedidos</a></div>
 
 <div class="hero">
 <div class="hero-glow"></div>
@@ -301,7 +321,7 @@ section{padding:52px 4%}
 <div class="hero-search">
 <div class="hs-field"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="hs-q" placeholder="O que precisas? Ex: eletricista" onkeydown="if(event.key==='Enter')heroSearch()"/></div>
 <div class="hs-field"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><input type="text" id="hs-loc" placeholder="Onde? Ex: Porto" onkeydown="if(event.key==='Enter')heroSearch()"/></div>
-<button class="hs-btn" onclick="heroSearch()">Procurar</button>
+<button class="hs-btn" id="hs-btn" onclick="heroSearch()">Procurar</button>
 </div>
 <div class="pillrow">
 <span class="pill"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Sem custos escondidos</span>
@@ -583,6 +603,8 @@ return '<a href="profile.html?id='+p.id+'" class="other-pro-row"><div class="av"
 function doSearch(){location.href='categoria.html'}
 
 function heroSearch(){
+const btn=document.getElementById('hs-btn')
+if(btn){btn.disabled=true;btn.textContent='A procurar…'}
 const q=document.getElementById('hs-q').value.trim()
 const loc=document.getElementById('hs-loc').value.trim()
 const p=new URLSearchParams()
@@ -591,6 +613,13 @@ if(loc)p.set('loc',loc)
 location.href='categoria.html'+(p.toString()?('?'+p.toString()):'')
 }
 
+function toggleMobileNav(){
+const p=document.getElementById('mobile-nav-panel')
+if(p)p.classList.toggle('open')
+}
+window.addEventListener('resize',()=>{
+if(window.innerWidth>=900){const p=document.getElementById('mobile-nav-panel');if(p)p.classList.remove('open')}
+})
 init()
 </script>
 
