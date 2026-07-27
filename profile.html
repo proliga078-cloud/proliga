@@ -61,8 +61,9 @@
     .profile-actions .btn-solid{padding:12px 18px;border-radius:12px;font-weight:700;box-shadow:0 8px 18px rgba(30,79,214,.28)}
 
     /* TRUST BAR */
-    .trust-bar{max-width:1100px;margin:14px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .trust-bar{max-width:1100px;margin:14px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
     @media(max-width:700px){.trust-bar{grid-template-columns:repeat(2,1fr)}}
+    .resp-badge{display:inline-flex;align-items:center;gap:5px;background:#E7F5EE;color:var(--green);font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:99px;vertical-align:middle;margin-left:6px}
     .tstat{background:var(--white);border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 10px rgba(20,24,31,.05)}
     .tstat .ic{color:var(--muted);width:16px;height:16px}
     .tstat strong{display:block;font-size:18px;font-weight:800;color:var(--text);margin-top:6px}
@@ -340,16 +341,33 @@ async function init(){
   document.getElementById('wa-share').href=`https://wa.me/?text=Confere%20o%20perfil%20de%20${encodeURIComponent(pro.name)}%20na%20Proliga%3A%20${encodeURIComponent(location.href)}`
 }
 
+// Tempo de resposta — só mostrado com amostra suficiente para ser fiável
+const RESP_MIN_SAMPLE=3
+const RESP_FAST_MINUTES=120
+function hasResponseData(pro){
+  return pro&&pro.avg_response_minutes!=null&&(pro.response_sample_count||0)>=RESP_MIN_SAMPLE
+}
+function formatResponseTime(mins){
+  const m=Number(mins)
+  if(!isFinite(m))return '—'
+  if(m<60)return `${Math.round(m)} min`
+  if(m<1440)return `${(m/60).toFixed(m<600?1:0).replace('.0','')} h`
+  return `${Math.round(m/1440)} dia${Math.round(m/1440)>1?'s':''}`
+}
+
 function renderHeader(pro){
   const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
   const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
   if(pro.cover_url){document.getElementById('cover').style.backgroundImage=`url('${pro.cover_url}')`;document.body.classList.add('has-cover')}
   const planBadge=pro.plan==='premium'?`<span class="plan-badge-wrap badge-premium"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:12px;height:12px"><path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10z"/></svg> Premium</span>`:pro.plan==='pro'?`<span class="plan-badge-wrap badge-pro"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg> Pro</span>`:''
   const verif=pro.verified?'<span class="verif-badge"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px;color:#fff"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> Verificado</span>':''
+  const fastResp=hasResponseData(pro)&&Number(pro.avg_response_minutes)<=RESP_FAST_MINUTES
+    ? `<span class="resp-badge" title="Média real das respostas a mensagens de clientes"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Responde em ${formatResponseTime(pro.avg_response_minutes)}</span>`
+    : ''
   document.getElementById('profile-header').innerHTML=`
     <div class="avatar-wrap"><div class="avatar">${avatar}</div>${planBadge}</div>
     <div class="profile-info">
-      <div class="profile-name">${pro.name} ${verif}</div>
+      <div class="profile-name">${pro.name} ${verif}${fastResp}</div>
       <div class="profile-cat">
         <span class="cat-pill">${pro.category||'Profissional'}</span>
         <span class="loc-text"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${pro.location||'Portugal'}</span>
@@ -394,13 +412,18 @@ async function loadReviews(){
   const tIc={star:'<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
     review:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
     photo:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
-    calendar:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'}
+    calendar:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>'}
+  const respStat=hasResponseData(proData)
+    ? `<div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--green)">${tIc.clock}</svg><strong>${formatResponseTime(proData.avg_response_minutes)}</strong><span>Tempo de resposta</span></div>`
+    : ''
   document.getElementById('trust-bar').style.display='grid'
   document.getElementById('trust-bar').innerHTML=`
     <div class="tstat"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="color:var(--gold)">${tIc.star}</svg><strong>${avgNum||'—'}</strong><span>Avaliação média</span></div>
     <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--blue)">${tIc.review}</svg><strong>${reviews.length}</strong><span>Avaliações</span></div>
     <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--green)">${tIc.photo}</svg><strong>${portfolioCount||0}</strong><span>Fotos no portfólio</span></div>
-    <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--gold)">${tIc.calendar}</svg><strong>${joinedYear}</strong><span>Membro desde</span></div>`
+    <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--gold)">${tIc.calendar}</svg><strong>${joinedYear}</strong><span>Membro desde</span></div>
+    ${respStat}`
 
   if(!reviews.length){
     document.getElementById('reviews-list').innerHTML=`<p style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Sem avaliações ainda. Sê o primeiro!</p>`
