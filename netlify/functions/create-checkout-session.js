@@ -19,15 +19,15 @@ line_items:[{price:priceId,quantity:1}],
 customer_email:email,
 client_reference_id:userId,
 subscription_data:{metadata:{supabase_user_id:userId,plan}},
-// Os precos estao definidos no Stripe como "sem imposto incluido"
-// (tax_behavior=exclusive). O automatic_tax faz o Stripe calcular e
-// acrescentar o IVA por cima, com base na morada do cliente.
-// Enquanto nao existir um cadastro fiscal ativo em Tax > Localizacoes,
-// o Stripe devolve imposto = 0 e o total continua a ser o preco base.
-automatic_tax:{enabled:true},
-// O calculo de imposto precisa da morada do comprador.
+// A Proliga esta no regime de isencao do artigo 53.o do CIVA, por isso
+// nao liquida IVA. O automatic_tax fica DESLIGADO de proposito: o preco
+// mostrado no site e o valor final que o cliente paga.
+// Se um dia o volume de negocios ultrapassar o limiar do art. 53.o,
+// e preciso registar o IVA em Tax > Localizacoes no Stripe e voltar a
+// ligar automatic_tax:{enabled:true} aqui.
+// A morada e o NIF continuam a ser recolhidos porque sao necessarios
+// para emitir a fatura ao profissional.
 billing_address_collection:'required',
-// Permite ao profissional indicar o NIF, necessario para a fatura.
 tax_id_collection:{enabled:true},
 success_url:`${siteUrl}/dashboard.html?checkout=success`,
 cancel_url:`${siteUrl}/pricing.html?checkout=cancel`,
