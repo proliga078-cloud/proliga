@@ -17,68 +17,98 @@ body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);heigh
 a{text-decoration:none;color:inherit}
 button{font-family:inherit}
 
-nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;height:60px;display:flex;align-items:center;gap:16px;flex-shrink:0}
-.logo{font-size:20px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
-.back-link{font-size:13px;font-weight:600;color:var(--muted);margin-left:auto}
-.back-link:hover{color:var(--blue)}
+nav{background:#14181F;padding:0 18px;height:52px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.logo{font-size:17px;font-weight:900;color:#fff;letter-spacing:-.6px}.logo span{color:#EF9F27}
+.nav-sep{font-size:13px;color:rgba(255,255,255,.5);border-left:1px solid rgba(255,255,255,.18);padding-left:12px}
+.back-link{font-size:13px;font-weight:600;color:rgba(255,255,255,.6);margin-left:auto}
+.back-link:hover{color:#fff}
 
 .wrap{flex:1;display:flex;overflow:hidden}
 
 /* CONVERSATION LIST */
 .conv-panel{width:340px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.conv-header{padding:18px 20px;border-bottom:1px solid var(--border);font-size:16px;font-weight:800}
+.conv-header{padding:16px 18px 12px;font-size:17px;font-weight:800;letter-spacing:-.3px}
 .conv-list{flex:1;overflow-y:auto}
-.conv-item{display:flex;gap:12px;padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--bg);transition:background .15s;position:relative}
+.conv-item{display:flex;gap:11px;padding:13px 18px;cursor:pointer;transition:background .15s;position:relative;align-items:center;border-left:2px solid transparent}
 .conv-item:hover{background:var(--bg)}
-.conv-item.active{background:var(--blue-light)}
-.conv-avatar{width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.conv-item.active{background:var(--blue-light);border-left-color:var(--blue)}
+.conv-avatar{width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .conv-avatar img{width:100%;height:100%;object-fit:cover}
 .conv-body{flex:1;min-width:0}
-.conv-name{font-size:14px;font-weight:700;display:flex;justify-content:space-between;gap:6px}
-.conv-time{font-size:11px;color:var(--muted);font-weight:500}
-.conv-preview{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.conv-name{font-size:13.5px;font-weight:700;display:flex;justify-content:space-between;gap:6px;align-items:baseline}
+.conv-time{font-size:11px;color:var(--muted);font-weight:500;flex-shrink:0}
+.conv-item.unread .conv-time{color:var(--blue)}
+.conv-preview{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 .conv-item.unread .conv-preview{color:var(--text);font-weight:600}
-.unread-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);position:absolute;right:16px;top:22px}
+.unread-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0}
 .conv-empty{padding:40px 24px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
 
 /* CHAT PANEL */
 .chat-panel{flex:1;display:flex;flex-direction:column;background:var(--bg);min-width:0}
 .chat-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--muted)}
 .chat-empty .ico{font-size:48px}
-.chat-header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0}
-.chat-header .conv-avatar{width:38px;height:38px;font-size:13px}
-.chat-header-name{font-size:15px;font-weight:700}
+.chat-header{background:var(--white);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;align-items:center;gap:11px;flex-shrink:0}
+.chat-header .conv-avatar{width:34px;height:34px;font-size:12px}
+.chat-header-name{font-size:14.5px;font-weight:700}
 .chat-header-cat{font-size:12px;color:var(--muted)}
-.chat-header a{margin-left:auto;font-size:12px;font-weight:700;color:var(--blue)}
+.ctx-toggle{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--blue);padding:4px;display:none;line-height:0}
+.ctx-toggle svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.chat-messages{flex:1;overflow-y:auto;padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.chat-messages{flex:1;overflow-y:auto;padding:18px 18px;display:flex;flex-direction:column;gap:9px}
+.sys-note{text-align:center;font-size:12px;color:var(--muted);padding:2px 0}
 .bubble-row{display:flex}
 .bubble-row.mine{justify-content:flex-end}
 .bubble-row>div{min-width:0;max-width:70%}
 .bubble{padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal}
 .bubble a{color:inherit;text-decoration:underline}
-.bubble-row.theirs .bubble{background:var(--white);border:1px solid var(--border);border-bottom-left-radius:4px}
-.bubble-row.mine .bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.bubble-row.theirs .bubble{background:var(--white);border:1px solid var(--border);border-bottom-left-radius:5px}
+.bubble-row.mine .bubble{background:var(--blue);color:#fff;border-bottom-right-radius:5px}
 .bubble-time{font-size:10px;color:var(--muted);margin-top:3px;padding:0 4px}
 .bubble-row.mine .bubble-time{text-align:right}
 .day-sep{text-align:center;font-size:11px;color:var(--muted);font-weight:600;margin:10px 0}
 
-.chat-input-bar{background:var(--white);border-top:1px solid var(--border);padding:14px 20px;display:flex;gap:10px;flex-shrink:0}
-.chat-input-bar textarea{flex:1;border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;font-size:14px;font-family:inherit;resize:none;max-height:100px;outline:none}
+.chat-input-bar{background:var(--white);border-top:1px solid var(--border);padding:11px 18px;display:flex;gap:9px;flex-shrink:0;align-items:flex-end}
+.chat-input-bar textarea{flex:1;border:1.5px solid var(--border);border-radius:19px;padding:9px 15px;font-size:14px;font-family:inherit;resize:none;max-height:100px;outline:none;line-height:1.45}
 .chat-input-bar textarea:focus{border-color:var(--blue)}
-.btn-send{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:0 20px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s}
+.btn-send{background:var(--blue);color:#fff;border:none;border-radius:50%;width:38px;height:38px;flex-shrink:0;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;padding:0}
+.btn-send svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .btn-send:hover{background:var(--blue-dark)}
 .btn-send:disabled{background:#93c5fd;cursor:not-allowed}
+
+/* PAINEL DE CONTEXTO */
+.ctx-panel{width:200px;flex-shrink:0;border-left:1px solid var(--border);background:var(--white);padding:18px 15px;overflow-y:auto}
+.ctx-top{display:flex;flex-direction:column;align-items:center;gap:6px;padding-bottom:15px;border-bottom:1px solid var(--border)}
+.ctx-top .conv-avatar{width:52px;height:52px;font-size:17px}
+.ctx-name{font-size:14px;font-weight:700;text-align:center}
+.ctx-sub{font-size:12px;color:var(--muted);text-align:center}
+.ctx-block{padding:15px 0;border-bottom:1px solid var(--border)}
+.ctx-row{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:9px}
+.ctx-row:last-child{margin-bottom:0}
+.ctx-row .k{color:var(--muted);flex-shrink:0}
+.ctx-row .v{text-align:right;font-weight:600}
+.ctx-empty{font-size:12px;color:var(--muted);line-height:1.55}
+.ctx-actions{padding-top:15px;display:flex;flex-direction:column;gap:7px}
+.ctx-btn{display:flex;align-items:center;gap:8px;border:1px solid var(--border);background:var(--white);border-radius:8px;padding:9px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text);text-align:left;transition:border-color .15s}
+.ctx-btn:hover{border-color:var(--blue)}
+.ctx-btn svg{width:15px;height:15px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ctx-backdrop{display:none}
 
 .spinner{width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:30px auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+@media(max-width:1020px){.ctx-panel{display:none}.ctx-toggle{display:block}}
 @media(max-width:760px){
-.conv-panel{width:100%;position:absolute;inset:60px 0 0 0;z-index:5}
+.conv-panel{width:100%;position:absolute;inset:52px 0 0 0;z-index:5}
 .conv-panel.hide-mobile{display:none}
-.chat-panel{position:absolute;inset:60px 0 0 0}
+.chat-panel{position:absolute;inset:52px 0 0 0}
 .chat-panel.hide-mobile{display:none}
 .chat-header .back-btn{display:inline-block!important}
+}
+/* No telemovel o painel vira gaveta por cima da conversa */
+@media(max-width:1020px){
+.ctx-panel.open{display:block;position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-height:76vh;z-index:40;border-left:none;border-top-left-radius:16px;border-top-right-radius:16px;box-shadow:0 -6px 28px rgba(20,24,31,.22);padding:14px 18px 22px}
+.ctx-panel.open::before{content:'';display:block;width:34px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 14px}
+.ctx-backdrop.open{display:block;position:fixed;inset:0;background:rgba(20,24,31,.35);z-index:39}
 }
 .back-btn{display:none;font-size:20px;cursor:pointer;color:var(--muted);margin-right:2px}
 </style>
@@ -87,8 +117,8 @@ nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px
 
 <nav>
 <a href="index.html" class="logo">Pro<span>liga</span></a>
-<span style="font-size:14px;font-weight:700;color:var(--muted)">Mensagens</span>
-<a href="dashboard.html" class="back-link">← Dashboard</a>
+<span class="nav-sep">Mensagens</span>
+<a href="dashboard.html" class="back-link">Dashboard</a>
 </nav>
 
 <div class="wrap">
@@ -110,15 +140,31 @@ nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px
 <div class="chat-header-name" id="ch-name">—</div>
 <div class="chat-header-cat" id="ch-cat"></div>
 </div>
-<a id="ch-profile-link" href="#" target="_blank">Ver perfil</a>
+<button class="ctx-toggle" onclick="toggleCtx()" aria-label="Ver detalhes do cliente"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></button>
 </div>
 <div class="chat-messages" id="chat-messages"></div>
 <div class="chat-input-bar">
 <textarea id="msg-input" placeholder="Escreve uma mensagem..." rows="1"></textarea>
-<button class="btn-send" id="send-btn" onclick="sendMessage()">Enviar</button>
+<button class="btn-send" id="send-btn" onclick="sendMessage()" aria-label="Enviar mensagem"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 </div>
 </div>
 </div>
+
+<div class="ctx-backdrop" id="ctx-backdrop" onclick="toggleCtx()"></div>
+<aside class="ctx-panel" id="ctx-panel" style="display:none">
+  <div class="ctx-top">
+    <div class="conv-avatar" id="ctx-avatar">?</div>
+    <div class="ctx-name" id="ctx-name">—</div>
+    <div class="ctx-sub" id="ctx-sub"></div>
+    <a id="ch-profile-link" href="#" target="_blank" rel="noopener" style="font-size:12px;font-weight:700;color:var(--blue);margin-top:2px">Ver perfil</a>
+  </div>
+  <div class="ctx-block" id="ctx-job"></div>
+  <div class="ctx-actions">
+    <button class="ctx-btn" onclick="ctxGoto('agenda')"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4"/></svg>Marcar visita</button>
+    <button class="ctx-btn" onclick="ctxGoto('orcamento')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>Novo orçamento</button>
+    <button class="ctx-btn" onclick="ctxGoto('referencias')"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9a5 5 0 0 0-5 5v6"/></svg>Referir a colega</button>
+  </div>
+</aside>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -158,7 +204,7 @@ renderConvList()
 return
 }
 const otherIds=[...new Set(data.map(c=>c.professional_id===myId?c.client_id:c.professional_id))]
-const{data:profs}=await db.from('profiles').select('id,name,photo_url,category,email').in('id',otherIds)
+const{data:profs}=await db.from('profiles').select('id,name,photo_url,category,email,slug').in('id',otherIds)
 const profMap={}
 ;(profs||[]).forEach(p=>profMap[p.id]=p)
 conversations=data.map(c=>{
@@ -204,7 +250,7 @@ if(!existing)return
 await loadConversations()
 conv=conversations.find(c=>c.id===existing.id)
 }else{
-const{data:prof}=await db.from('profiles').select('id,name,photo_url,category,email').eq('id',otherId).single()
+const{data:prof}=await db.from('profiles').select('id,name,photo_url,category,email,slug').eq('id',otherId).single()
 conv={...data,other:prof||{id:otherId,name:'Utilizador'}}
 conversations.unshift(conv)
 renderConvList()
@@ -224,13 +270,19 @@ document.getElementById('conv-panel').classList.add('hide-mobile')
 document.getElementById('ch-avatar').innerHTML=conv.other.photo_url?'<img src="'+conv.other.photo_url+'">':initialsOf(conv.other.name)
 document.getElementById('ch-name').textContent=conv.other.name
 document.getElementById('ch-cat').textContent=conv.other.category||''
-document.getElementById('ch-profile-link').href='profile.html?id='+conv.other.id
+const lnk=document.getElementById('ch-profile-link')
+if(lnk)lnk.href=conv.other.slug?('/'+conv.other.slug):('profile.html?id='+conv.other.id)
 renderConvList()
 await loadMessages(id)
 await db.from('messages').update({read:true}).eq('conversation_id',id).neq('sender_id',myId)
+renderCtxHeader()
+loadCtxJob(id)
 }
 
 function backToList(){
+const p=document.getElementById('ctx-panel');const b=document.getElementById('ctx-backdrop')
+if(p){p.classList.remove('open');if(window.innerWidth<=1020)p.style.display='none'}
+if(b)b.classList.remove('open')
 document.getElementById('conv-panel').classList.remove('hide-mobile')
 document.getElementById('chat-panel').classList.add('hide-mobile')
 }
@@ -316,6 +368,82 @@ renderConvList()
 loadConversations()
 }
 }).subscribe()
+}
+
+// ---------- PAINEL DE CONTEXTO ----------
+// Mostra o trabalho associado a esta conversa. A tabela jobs ja tem
+// conversation_id, por isso nao foi preciso mexer na base de dados.
+// As linhas sem dados NAO sao inventadas: aparece um estado vazio honesto.
+
+function toggleCtx(){
+  const p=document.getElementById('ctx-panel')
+  const b=document.getElementById('ctx-backdrop')
+  if(!p)return
+  const abrir=!p.classList.contains('open')
+  p.classList.toggle('open',abrir)
+  b.classList.toggle('open',abrir)
+  if(abrir)p.style.display='block'
+}
+
+function ctxGoto(destino){
+  const nome=activeOther?activeOther.name:''
+  location.href='dashboard.html?page='+destino+'&cliente='+encodeURIComponent(nome)
+}
+
+function eur(v){
+  const n=Number(v)
+  if(!isFinite(n))return '—'
+  return n.toLocaleString('pt-PT',{style:'currency',currency:'EUR',minimumFractionDigits:n%1?2:0})
+}
+
+function dataCurta(iso){
+  if(!iso)return null
+  const d=new Date(iso)
+  if(isNaN(d))return null
+  return d.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'})+' · '+
+         d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
+}
+
+function renderCtxHeader(){
+  const p=document.getElementById('ctx-panel')
+  if(!p||!activeOther)return
+  if(window.innerWidth>1020)p.style.display='block'
+  const av=document.getElementById('ctx-avatar')
+  av.innerHTML=activeOther.photo_url
+    ?'<img src="'+escapeHtml(activeOther.photo_url)+'" alt=""/>'
+    :escapeHtml(initialsOf(activeOther.name))
+  document.getElementById('ctx-name').textContent=activeOther.name||'—'
+  document.getElementById('ctx-sub').textContent=activeOther.category||''
+}
+
+async function loadCtxJob(convId){
+  const alvo=document.getElementById('ctx-job')
+  if(!alvo)return
+  alvo.innerHTML='<div class="ctx-empty">A carregar...</div>'
+  const{data,error}=await db.from('jobs')
+    .select('title,status,quote_amount,quote_sent_at,scheduled_at,paid_amount')
+    .eq('conversation_id',convId)
+    .order('created_at',{ascending:false})
+    .limit(1)
+  const j=(!error&&data&&data.length)?data[0]:null
+
+  if(!j){
+    alvo.innerHTML='<div class="ctx-empty">Ainda não há trabalho associado a esta conversa. '+
+      'Cria um orçamento ou marca uma visita para começares a acompanhar.</div>'
+    return
+  }
+
+  const linhas=[]
+  if(j.title)linhas.push(['Serviço',escapeHtml(j.title),''])
+  if(j.quote_amount!=null)linhas.push(['Orçamento',eur(j.quote_amount),j.quote_sent_at?'':'style="color:var(--muted)"'])
+  else linhas.push(['Orçamento','Por enviar','style="color:var(--gold)"'])
+  const quando=dataCurta(j.scheduled_at)
+  linhas.push(['Agenda',quando||'Sem data',quando?'':'style="color:var(--muted)"'])
+  if(j.paid_amount!=null)linhas.push(['Recebido',eur(j.paid_amount),'style="color:var(--green)"'])
+
+  alvo.innerHTML=linhas.map(function(l){
+    return '<div class="ctx-row"><span class="k">'+l[0]+'</span><span class="v" '+l[2]+'>'+l[1]+'</span></div>'
+  }).join('')
 }
 
 function timeAgo(iso){
