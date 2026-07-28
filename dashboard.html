@@ -322,20 +322,54 @@
     @media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
 
     /* CALENDAR */
-    .cal-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-    .cal-title{font-weight:700;font-size:15px;flex:1;text-align:center;text-transform:capitalize}
-    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-    .cal-dow{margin-bottom:6px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;text-align:center}
-    .cal-day{position:relative;aspect-ratio:1;border-radius:9px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12.5px;cursor:pointer;border:1px solid transparent;transition:all .15s}
-    .cal-day:hover{border-color:var(--blue)}
-    .cal-day.other-month{opacity:.35}
-    .cal-day.today{border-color:var(--blue);font-weight:700}
-    .cal-day.selected{background:var(--blue);color:#fff}
-    .cal-day .cal-dot{width:5px;height:5px;border-radius:99px;background:var(--blue);margin-top:3px}
-    .cal-day.selected .cal-dot{background:#fff}
-    .cal-day.empty{visibility:hidden}
-    .live-dot{width:8px;height:8px;border-radius:99px;background:#22c55e;box-shadow:0 0 0 rgba(34,197,94,.5);animation:live-pulse 2s infinite}
-    @keyframes live-pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+    /* CALENDARIO: grelha do mes, como um calendario de parede.
+       Os trabalhos aparecem escritos dentro do dia, nao como pontos. */
+    .cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+    .cal-title{font-weight:700;font-size:18px;letter-spacing:-.3px;text-transform:capitalize}
+    .cal-mbtn{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--white);border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text);text-transform:capitalize;transition:border-color .15s}
+    .cal-mbtn:hover{border-color:var(--blue)}
+    .cal-mbtn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .cal-hoje{margin-left:auto}
+
+    .cal-dow{display:grid;grid-template-columns:repeat(7,1fr);background:var(--bg);border:1px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0}
+    .cal-dow div{padding:8px 0;text-align:center;font-size:12px;font-weight:600;color:var(--muted-2)}
+    .cal-dow div.fds{color:var(--muted)}
+
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:0 0 10px 10px;overflow:hidden}
+    .cal-day{background:var(--white);min-height:74px;padding:5px 5px 4px;cursor:pointer;text-align:left;border:none;font-family:inherit;transition:background .12s;overflow:hidden}
+    .cal-day:hover{background:var(--bg)}
+    .cal-day.fds{background:var(--bg)}
+    .cal-day.fora{background:var(--bg)}
+    .cal-day.fora .cal-num{color:var(--muted)}
+    .cal-num{font-size:15px;color:var(--muted-2);line-height:1.2}
+    .cal-day.hoje{background:var(--blue-light);box-shadow:inset 0 0 0 2px var(--blue)}
+    .cal-day.hoje .cal-num{color:var(--blue);font-weight:700}
+    .cal-day.escolhido{box-shadow:inset 0 0 0 2px var(--ink)}
+    .cal-ev{font-size:10.5px;border-radius:4px;padding:2px 4px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
+    .cal-ev.v{background:#E1F5EE;color:#0F6E56}
+    .cal-ev.a{background:#E6F1FB;color:#185FA5}
+    .cal-ev.r{background:#FCEBEB;color:#A32D2D}
+    .cal-mais{font-size:10px;color:var(--muted-2);margin-top:2px}
+
+    /* Detalhe do dia: letra grande, para nao obrigar a apertar os olhos */
+    .dia-titulo{font-size:16px;font-weight:700;margin-bottom:4px;text-transform:capitalize}
+    .dia-linha{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--border)}
+    .dia-hora{width:56px;flex-shrink:0;font-size:15px;font-weight:700}
+    .dia-corpo{flex:1;min-width:0}
+    .dia-nome{font-size:14.5px;font-weight:600}
+    .dia-sub{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5}
+    .dia-nota{font-size:12.5px;margin-top:4px}
+    .dia-vazio{padding:18px 0;color:var(--muted);font-size:14px}
+    .dia-add{display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px dashed var(--border);border-radius:10px;padding:13px;font-size:14px;font-weight:600;color:var(--muted-2);cursor:pointer;background:none;font-family:inherit;width:100%;margin-top:12px;transition:all .15s}
+    .dia-add:hover{border-color:var(--blue);color:var(--blue)}
+    .dia-add svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .aviso-choque{display:flex;align-items:center;gap:8px;background:#FCEBEB;color:#A32D2D;border-radius:9px;padding:10px 13px;font-size:13px;margin-bottom:12px}
+    .aviso-choque svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+    @media(max-width:560px){
+      .cal-day{min-height:58px}
+      .cal-ev{font-size:9.5px}
+      .cal-num{font-size:13px}
+    }
     .quick-add-row{display:flex;gap:8px;flex-wrap:wrap}
     .quick-add-row input[type=text]{flex:1;min-width:180px}
     .quick-add-row input[type=time]{width:110px}
@@ -528,30 +562,40 @@
     <div class="alert error" id="qa-error"></div>
 
     <div class="form-section">
-      <div class="cal-header">
-        <button class="btn btn-outline btn-sm" onclick="calShiftMonth(-1)">←</button>
+      <div class="cal-nav">
+        <button class="cal-mbtn" onclick="calShiftMonth(-1)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg><span id="cal-mes-ant"></span></button>
         <div class="cal-title" id="cal-title"></div>
-        <button class="btn btn-outline btn-sm" onclick="calShiftMonth(1)">→</button>
+        <button class="cal-mbtn" onclick="calShiftMonth(1)"><span id="cal-mes-seg"></span><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        <button class="cal-mbtn cal-hoje" onclick="calGoToday()">Hoje</button>
         <span class="live-dot" id="live-dot" title="Atualização em tempo real"></span>
       </div>
-      <div class="cal-grid cal-dow">
-        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+      <div class="cal-dow">
+        <div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div class="fds">Sáb</div><div class="fds">Dom</div>
       </div>
       <div class="cal-grid" id="cal-grid"></div>
     </div>
 
     <div class="form-section" id="quick-add-section" style="display:none">
-      <div class="form-title" id="quick-add-title">Adicionar a este dia</div>
+      <div class="form-title" id="quick-add-title">Marcar trabalho</div>
       <div class="quick-add-row">
-        <input id="qa-title" type="text" placeholder="Título (ex: Reunião com cliente)"/>
+        <input id="qa-title" type="text" placeholder="O que vais fazer (ex: trocar quadro elétrico)"/>
+        <input id="qa-client" type="text" placeholder="Cliente"/>
         <input id="qa-time" type="time" value="09:00"/>
-        <button class="btn btn-primary btn-sm" onclick="quickAddToDay()">Adicionar</button>
+        <select id="qa-dur">
+          <option value="30">30 min</option>
+          <option value="60" selected>1 hora</option>
+          <option value="90">1h30</option>
+          <option value="120">2 horas</option>
+          <option value="240">Meio dia</option>
+          <option value="480">Dia inteiro</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="quickAddToDay()">Marcar</button>
       </div>
     </div>
 
     <div class="form-section">
-      <div class="form-title" id="agenda-day-title">Próximos Agendamentos</div>
-      <div id="agenda-list" class="item-list"></div>
+      <div class="dia-titulo" id="agenda-day-title">Próximos trabalhos</div>
+      <div id="agenda-list"></div>
     </div>
   </div>
 
@@ -1803,24 +1847,33 @@ function renderPipeline(){
   }).join('')
 }
 
-function jobAgendaItemHtml(j){
-  const d=new Date(j.scheduled_at)
-  const dateStr=d.toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'short'})
-  const timeStr=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
-  return `<div class="list-item">
-    <div class="list-item-body">
-      <div class="list-item-title">${j.title}</div>
-      <div class="list-item-sub">${j.client_name||'Cliente'} · ${dateStr}, ${timeStr} · <span style="color:var(--blue);font-weight:600">${JOB_STATUS_LABELS[j.status]}</span></div>
-    </div>
-  </div>`
+const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']
+
+function jobFim(j){
+  return new Date(new Date(j.scheduled_at).getTime()+(j.duration_minutes||60)*60000)
 }
 
-function renderAgenda(){
-  const el=document.getElementById('agenda-list')
-  if(!el)return
-  const upcoming=allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado').sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at))
-  if(!upcoming.length){el.innerHTML='<div class="empty">Sem trabalhos agendados. Define uma data num trabalho no Pipeline.</div>';return}
-  el.innerHTML=upcoming.map(jobAgendaItemHtml).join('')
+function duracaoTexto(min){
+  const m=Number(min)||60
+  if(m<60)return m+' min'
+  const h=Math.floor(m/60), r=m%60
+  if(m>=480)return 'dia inteiro'
+  if(m===240)return 'meio dia'
+  return h+(r?'h'+String(r).padStart(2,'0'):(h===1?' hora':' horas'))
+}
+
+// Dois trabalhos chocam se um comeca antes de o outro acabar.
+function trabalhosQueChocam(lista){
+  const ord=lista.slice().sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at))
+  const maus=new Set()
+  for(let i=0;i<ord.length-1;i++){
+    if(jobFim(ord[i])>new Date(ord[i+1].scheduled_at)){maus.add(ord[i].id);maus.add(ord[i+1].id)}
+  }
+  return maus
+}
+
+function jobsAgendados(){
+  return allJobs.filter(j=>j.scheduled_at&&j.status!=='cancelado')
 }
 
 function calShiftMonth(delta){
@@ -1828,6 +1881,12 @@ function calShiftMonth(delta){
   if(calMonth<0){calMonth=11;calYear--}
   if(calMonth>11){calMonth=0;calYear++}
   calSelected=null
+  renderCalendar()
+}
+
+function calGoToday(){
+  const h=new Date()
+  calYear=h.getFullYear();calMonth=h.getMonth();calSelected=h.getDate()
   renderCalendar()
 }
 
@@ -1840,72 +1899,174 @@ function renderCalendar(){
   const grid=document.getElementById('cal-grid')
   const title=document.getElementById('cal-title')
   if(!grid||!title)return
-  const first=new Date(calYear,calMonth,1)
-  const startDow=first.getDay()
-  const daysInMonth=new Date(calYear,calMonth+1,0).getDate()
-  title.textContent=first.toLocaleDateString('pt-PT',{month:'long',year:'numeric'})
 
-  const jobsByDay={}
-  allJobs.forEach(j=>{
-    if(!j.scheduled_at||j.status==='cancelado')return
+  title.textContent=MESES[calMonth]+' de '+calYear
+  const ant=document.getElementById('cal-mes-ant')
+  const seg=document.getElementById('cal-mes-seg')
+  if(ant)ant.textContent=MESES[(calMonth+11)%12]
+  if(seg)seg.textContent=MESES[(calMonth+1)%12]
+
+  // A semana comeca a segunda, como em Portugal.
+  const primeiro=new Date(calYear,calMonth,1)
+  const desloc=(primeiro.getDay()+6)%7
+  const diasNoMes=new Date(calYear,calMonth+1,0).getDate()
+  const diasMesAnterior=new Date(calYear,calMonth,0).getDate()
+
+  const porDia={}
+  jobsAgendados().forEach(j=>{
     const d=new Date(j.scheduled_at)
     if(d.getFullYear()===calYear&&d.getMonth()===calMonth){
-      (jobsByDay[d.getDate()]=jobsByDay[d.getDate()]||[]).push(j)
+      (porDia[d.getDate()]=porDia[d.getDate()]||[]).push(j)
     }
   })
+  Object.keys(porDia).forEach(k=>porDia[k].sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at)))
 
-  const todayStr=new Date().toDateString()
+  const hoje=new Date()
+  const ehHoje=d=>d===hoje.getDate()&&calMonth===hoje.getMonth()&&calYear===hoje.getFullYear()
+
   let html=''
-  for(let i=0;i<startDow;i++)html+='<div class="cal-day empty"></div>'
-  for(let day=1;day<=daysInMonth;day++){
-    const isToday=new Date(calYear,calMonth,day).toDateString()===todayStr
-    const isSelected=calSelected===day
-    const hasJobs=jobsByDay[day]&&jobsByDay[day].length
-    html+=`<div class="cal-day${isToday?' today':''}${isSelected?' selected':''}" onclick="calSelectDay(${day})">${day}${hasJobs?'<div class="cal-dot"></div>':''}</div>`
+  for(let i=desloc;i>0;i--){
+    html+='<button class="cal-day fora" disabled><div class="cal-num">'+(diasMesAnterior-i+1)+'</div></button>'
   }
+
+  for(let dia=1;dia<=diasNoMes;dia++){
+    const doDia=porDia[dia]||[]
+    const choque=trabalhosQueChocam(doDia)
+    const dow=new Date(calYear,calMonth,dia).getDay()
+    const fds=(dow===0||dow===6)
+    const cls=['cal-day']
+    if(fds)cls.push('fds')
+    if(ehHoje(dia))cls.push('hoje')
+    if(calSelected===dia)cls.push('escolhido')
+
+    let eventos=''
+    doDia.slice(0,2).forEach((j,idx)=>{
+      const d=new Date(j.scheduled_at)
+      const hh=d.getHours()
+      const mm=d.getMinutes()
+      const hora=hh+'h'+(mm?String(mm).padStart(2,'0'):'')
+      const quem=j.client_name||j.title||'Trabalho'
+      const cor=choque.has(j.id)?'r':(idx%2?'a':'v')
+      eventos+='<div class="cal-ev '+cor+'">'+escapeHtml(hora+' '+quem)+'</div>'
+    })
+    if(doDia.length>2)eventos+='<div class="cal-mais">+'+(doDia.length-2)+'</div>'
+
+    html+='<button class="'+cls.join(' ')+'" onclick="calSelectDay('+dia+')">'+
+          '<div class="cal-num">'+dia+'</div>'+eventos+'</button>'
+  }
+
+  const sobra=(7-((desloc+diasNoMes)%7))%7
+  for(let i=1;i<=sobra;i++){
+    html+='<button class="cal-day fora" disabled><div class="cal-num">'+i+'</div></button>'
+  }
+
   grid.innerHTML=html
-  renderAgendaDayOrUpcoming(jobsByDay)
+  renderDiaOuProximos(porDia)
 }
 
-function renderAgendaDayOrUpcoming(jobsByDay){
-  const titleEl=document.getElementById('agenda-day-title')
-  const el=document.getElementById('agenda-list')
-  const qaSection=document.getElementById('quick-add-section')
-  const qaTitle=document.getElementById('quick-add-title')
-  if(!titleEl||!el)return
+function linhaTrabalhoHtml(j,choque){
+  const d=new Date(j.scheduled_at)
+  const hora=d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})
+  const partes=[]
+  if(j.title)partes.push(escapeHtml(j.title))
+  partes.push(duracaoTexto(j.duration_minutes))
+  if(j.quote_amount!=null)partes.push(eur(j.quote_amount))
+  const nota=choque
+    ? '<div class="dia-nota" style="color:#A32D2D">Choca com outro trabalho a esta hora</div>'
+    : ''
+  return '<div class="dia-linha">'+
+    '<div class="dia-hora">'+hora+'</div>'+
+    '<div class="dia-corpo">'+
+      '<div class="dia-nome">'+escapeHtml(j.client_name||j.title||'Trabalho')+'</div>'+
+      '<div class="dia-sub">'+partes.join(' · ')+'</div>'+nota+
+    '</div></div>'
+}
+
+function renderDiaOuProximos(porDia){
+  const titulo=document.getElementById('agenda-day-title')
+  const lista=document.getElementById('agenda-list')
+  const qa=document.getElementById('quick-add-section')
+  const qaT=document.getElementById('quick-add-title')
+  if(!titulo||!lista)return
+
+  const btnAdd='<button class="dia-add" onclick="focarMarcar()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Marcar trabalho neste dia</button>'
 
   if(calSelected){
-    const dateLabel=new Date(calYear,calMonth,calSelected).toLocaleDateString('pt-PT',{weekday:'long',day:'2-digit',month:'long'})
-    if(qaSection){qaSection.style.display='block';qaTitle.textContent=`Adicionar a ${dateLabel}`}
-    const dayJobs=jobsByDay[calSelected]
-    if(dayJobs&&dayJobs.length){
-      titleEl.textContent=`Trabalhos em ${dateLabel}`
-      el.innerHTML=dayJobs.map(jobAgendaItemHtml).join('')
-    } else {
-      titleEl.textContent=`Trabalhos em ${dateLabel}`
-      el.innerHTML='<div class="empty">Nada marcado neste dia ainda. Usa o formulário acima para adicionar.</div>'
+    const data=new Date(calYear,calMonth,calSelected)
+    const etiqueta=data.toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'})
+    titulo.textContent=etiqueta
+    if(qa){qa.style.display='block';qaT.textContent='Marcar em '+etiqueta}
+    const doDia=(porDia&&porDia[calSelected])||[]
+    if(!doDia.length){
+      lista.innerHTML='<div class="dia-vazio">Nada marcado neste dia.</div>'+btnAdd
+      return
     }
+    const choque=trabalhosQueChocam(doDia)
+    const aviso=choque.size?'<div class="aviso-choque"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>Tens trabalhos sobrepostos neste dia</div>':''
+    lista.innerHTML=aviso+doDia.map(j=>linhaTrabalhoHtml(j,choque.has(j.id))).join('')+btnAdd
     return
   }
 
-  if(qaSection)qaSection.style.display='none'
-  titleEl.textContent='Próximos Agendamentos'
-  renderAgenda()
+  if(qa)qa.style.display='none'
+  titulo.textContent='Próximos trabalhos'
+  // So o que ainda esta para vir. Antes isto mostrava o passado tambem.
+  const agora=Date.now()
+  const proximos=jobsAgendados()
+    .filter(j=>jobFim(j).getTime()>=agora)
+    .sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at))
+    .slice(0,8)
+  if(!proximos.length){
+    lista.innerHTML='<div class="dia-vazio">Não tens nada marcado. Escolhe um dia no calendário para marcares.</div>'
+    return
+  }
+  const choque=trabalhosQueChocam(proximos)
+  lista.innerHTML=proximos.map(j=>{
+    const d=new Date(j.scheduled_at)
+    const dia=d.toLocaleDateString('pt-PT',{weekday:'short',day:'numeric',month:'short'})
+    return linhaTrabalhoHtml(j,choque.has(j.id)).replace('<div class="dia-hora">',
+      '<div class="dia-hora" style="width:74px;font-size:13px;line-height:1.35">'+dia+'<br>')
+  }).join('')
 }
+
+function focarMarcar(){
+  const el=document.getElementById('qa-title')
+  if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.focus()}
+}
+
+function renderAgenda(){renderCalendar()}
 
 async function quickAddToDay(){
   if(!calSelected||!profileId)return
   const titleInput=document.getElementById('qa-title')
   const timeInput=document.getElementById('qa-time')
   const title=titleInput.value.trim()
-  if(!title){showAlert('qa-error','Indica um título para o que queres marcar.','error');return}
+  if(!title){showAlert('qa-error','Escreve o que vais fazer.','error');return}
   const time=timeInput.value||'09:00'
   const[h,m]=time.split(':').map(Number)
   const dt=new Date(calYear,calMonth,calSelected,h||0,m||0,0,0)
-  const{error}=await db.from('jobs').insert({professional_id:profileId,title,status:'agendado',scheduled_at:dt.toISOString()})
-  if(error){showAlert('qa-error','Erro ao adicionar: '+error.message,'error');return}
+  const clientEl=document.getElementById('qa-client')
+  const durEl=document.getElementById('qa-dur')
+  const duracao=Number(durEl&&durEl.value)||60
+
+  // Avisar antes de gravar, mas deixar marcar na mesma: as vezes
+  // e mesmo preciso ter duas coisas ao mesmo tempo.
+  const fimNovo=new Date(dt.getTime()+duracao*60000)
+  const choca=jobsAgendados().some(j=>{
+    const i=new Date(j.scheduled_at)
+    return i<fimNovo && jobFim(j)>dt
+  })
+  if(choca&&!confirm('Já tens outro trabalho a esta hora. Queres marcar na mesma?'))return
+
+  const{error}=await db.from('jobs').insert({
+    professional_id:profileId,title,status:'agendado',
+    client_name:(clientEl&&clientEl.value.trim())||null,
+    duration_minutes:duracao,
+    scheduled_at:dt.toISOString()
+  })
+  if(error){showAlert('qa-error','Erro ao marcar: '+error.message,'error');return}
   titleInput.value=''
-  showAlert('qa-success','Adicionado à agenda!')
+  if(clientEl)clientEl.value=''
+  showAlert('qa-success','Trabalho marcado.')
   loadJobs()
 }
 
