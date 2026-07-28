@@ -194,6 +194,16 @@
     .ref-card .rc-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:5px}
     .ref-badge{display:inline-flex;align-items:center;gap:5px;background:#E7F5EE;color:var(--green);font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:99px;flex-shrink:0}
 
+
+    /* SWITCH */
+    .switch{position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0}
+    .switch input{opacity:0;width:0;height:0}
+    .switch .slider{position:absolute;cursor:pointer;inset:0;background:#CBD2DE;transition:.2s;border-radius:99px}
+    .switch .slider:before{content:"";position:absolute;height:20px;width:20px;left:3px;bottom:3px;background:#fff;transition:.2s;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    .switch input:checked + .slider{background:var(--blue)}
+    .switch input:checked + .slider:before{transform:translateX(20px)}
+    .switch input:focus-visible + .slider{outline:2px solid var(--blue);outline-offset:2px}
+
     /* FINANÇAS */
     .fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px}
     .fin-card{background:var(--white);border-radius:14px;padding:18px;border:1px solid var(--border)}
@@ -497,6 +507,21 @@
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
         <div><div style="font-size:14px;font-weight:600">Perfil público</div><div style="font-size:12px;color:var(--muted)">O teu perfil aparece nos resultados de pesquisa após criação</div></div>
         <span style="font-size:13px;color:#16a34a;font-weight:600;display:inline-flex;align-items:center;gap:5px"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M20 6 9 17l-5-5"/></svg>Sempre ativo</span>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-title">Notificações</div>
+      <div class="alert success" id="notif-success"></div>
+      <div class="alert error" id="notif-error"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:14px;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <div style="font-size:14px;font-weight:600">Avisar-me por email de novas mensagens</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5">Recebes um email quando um cliente te escreve, para não perderes contactos. No máximo um aviso por conversa a cada 15 minutos.</div>
+        </div>
+        <label class="switch" for="notif-toggle">
+          <input type="checkbox" id="notif-toggle" onchange="saveNotifyPref()"/>
+          <span class="slider"></span>
+        </label>
       </div>
     </div>
   </div>
@@ -868,6 +893,8 @@ function updateSidebar(){
   const av=document.getElementById('sb-avatar')
   if(profileData?.photo_url)av.innerHTML=`<img src="${profileData.photo_url}" alt="${name}"/>`
   else av.textContent=initials
+  const nt=document.getElementById('notif-toggle')
+  if(nt)nt.checked=profileData?.notify_email!==false
   const greetEl=document.getElementById('greet-title')
   if(greetEl)greetEl.textContent=`Olá, ${name.split(' ')[0]}`
 }
@@ -2105,6 +2132,16 @@ async function loadReferrals(){
       <div style="font-size:11px;color:var(--muted);margin-top:6px">${new Date(r.created_at).toLocaleDateString('pt-PT')}</div>
     </div>`).join('')
   }
+}
+
+
+async function saveNotifyPref(){
+  if(!profileId)return
+  const on=document.getElementById('notif-toggle').checked
+  const{error}=await db.from('profiles').update({notify_email:on}).eq('id',profileId)
+  if(error){showAlert('notif-error','Não foi possível guardar: '+error.message,'error');return}
+  profileData={...profileData,notify_email:on}
+  showAlert('notif-success', on?'Vais receber email quando um cliente te escrever.':'Deixaste de receber avisos por email.')
 }
 
 function showAlert(id,msg,type='success'){
