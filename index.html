@@ -406,14 +406,18 @@ section{padding:52px 4%}
 <div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></div><h3>Sempre grátis para clientes</h3></div>
 <div class="why-card"><div class="why-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></div><h3>Sem comissões por trabalho fechado</h3></div>
 </div>
-<div class="testimonial-mini">
-<div class="t-avatar">DC</div>
+<div class="testimonial-mini" id="testemunho" style="display:none">
+<div class="t-avatar" id="t-avatar">—</div>
 <div>
-<div class="stars">★★★★★</div>
-<p>"Muito atenciosa e muito simpática, explica muito bem."</p>
-<div class="role">David Campos · avaliou Paula Campos, Limpeza</div>
+<div class="stars" id="t-stars"></div>
+<p id="t-texto"></p>
+<div class="role" id="t-autor"></div>
 </div>
 </div>
+<p id="sem-testemunhos" style="text-align:center;font-size:13.5px;color:var(--muted);line-height:1.7;max-width:560px;margin:0 auto">
+Ainda não temos avaliações publicadas — a plataforma é recente e preferimos não inventar nenhuma.
+As primeiras aparecem aqui assim que os clientes as escreverem.
+</p>
 <a href="porque-escolher.html" class="confianca-link">Ver comparação completa com OLX e Fixando →</a>
 </section>
 <section style="background:var(--bg);padding:32px 4%">
@@ -552,6 +556,7 @@ document.getElementById('nav-avatar').textContent=name.split(' ').map(n=>n[0]).s
 }
 loadStats()
 loadFeatured()
+loadTestemunho()
 loadHeroRequests()
 }
 
@@ -595,6 +600,33 @@ ratingEl.textContent=avg
 
 // Link do perfil: usa o endereco proprio do plano Pro quando existe.
 function perfilHref(p){return p&&p.slug?('/'+p.slug):('profile.html?id='+p.id)}
+
+// Mostra uma avaliacao verdadeira, se existir. Enquanto nao existir,
+// a pagina diz isso mesmo em vez de mostrar um testemunho inventado.
+async function loadTestemunho(){
+  const caixa=document.getElementById('testemunho')
+  const vazio=document.getElementById('sem-testemunhos')
+  if(!caixa||!vazio)return
+  try{
+    const{data}=await db.from('reviews')
+      .select('rating,comment,client_id,professional_id')
+      .gte('rating',4).not('comment','is',null)
+      .order('created_at',{ascending:false}).limit(1)
+    if(!data||!data.length)return
+    const r=data[0]
+    if(!r.comment||!r.comment.trim())return
+    const{data:pessoas}=await db.from('profiles').select('id,name,category').in('id',[r.client_id,r.professional_id])
+    const cliente=(pessoas||[]).find(p=>p.id===r.client_id)
+    const pro=(pessoas||[]).find(p=>p.id===r.professional_id)
+    const nomeCliente=(cliente&&cliente.name)||'Cliente'
+    document.getElementById('t-avatar').textContent=nomeCliente.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
+    document.getElementById('t-stars').textContent='★'.repeat(Math.round(r.rating))+'☆'.repeat(5-Math.round(r.rating))
+    document.getElementById('t-texto').textContent='"'+r.comment.trim()+'"'
+    document.getElementById('t-autor').textContent=nomeCliente+(pro?(' · avaliou '+pro.name+(pro.category?', '+pro.category:'')):'')
+    caixa.style.display='flex'
+    vazio.style.display='none'
+  }catch(e){}
+}
 
 async function loadFeatured(){
 const wrap=document.getElementById('spotlight-wrap')

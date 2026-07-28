@@ -320,18 +320,18 @@ if(!title||!category||!location){
 const el=document.getElementById('m-error');el.textContent='Preenche título, categoria e zona.';el.style.display='block';return
 }
 btn.disabled=true;btn.textContent='A publicar...'
-const{error}=await db.from('requests').insert({
+const{data:novo,error}=await db.from('requests').insert({
 client_id:session.user.id,title,category,location,
 description:description||null,
 budget_from:bmin?parseFloat(bmin):null,
 budget_to:bmax?parseFloat(bmax):null
-})
+}).select('id').single()
 btn.disabled=false;btn.textContent='Publicar'
 if(error){
 const el=document.getElementById('m-error');el.textContent='Erro ao publicar: '+error.message;el.style.display='block';return
 }
 const el=document.getElementById('m-success');el.textContent='Pedido publicado com sucesso!';el.style.display='block'
-notifyMatchingProfessionals(category,title,location,bmin,bmax)
+notifyMatchingProfessionals(novo&&novo.id)
 setTimeout(()=>{
 closeModal()
 document.getElementById('m-success').style.display='none'
@@ -343,17 +343,17 @@ loadRequests()
 },1200)
 }
 
-async function notifyMatchingProfessionals(category,title,location,bmin,bmax){
+// Nao lemos emails aqui. Mandamos so o id do pedido; o servidor confirma
+// que o pedido e nosso e descobre os destinatarios sozinho.
+async function notifyMatchingProfessionals(requestId){
+if(!requestId)return
 try{
-const{data:pros}=await db.from('profiles').select('email,name').eq('category',category).not('email','is',null).neq('id',session.user.id).limit(15)
-if(!pros||!pros.length)return
-const budget=bmin?('€'+bmin+(bmax?' – €'+bmax:'+')):''
-pros.forEach(p=>{
-fetch('/.netlify/functions/notify-request',{
+const{data:{session:s}}=await db.auth.getSession()
+if(!s)return
+await fetch('/.netlify/functions/notify-request',{
 method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({to:p.email,toName:p.name,title,category,location,budget,link:'https://proliga-app.netlify.app/pedidos.html'})
-}).catch(()=>{})
+headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.access_token},
+body:JSON.stringify({requestId})
 })
 }catch(e){}
 }

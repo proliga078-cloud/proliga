@@ -204,7 +204,7 @@ renderConvList()
 return
 }
 const otherIds=[...new Set(data.map(c=>c.professional_id===myId?c.client_id:c.professional_id))]
-const{data:profs}=await db.from('profiles').select('id,name,photo_url,category,email,slug').in('id',otherIds)
+const{data:profs}=await db.from('profiles').select('id,name,photo_url,category,slug').in('id',otherIds)
 const profMap={}
 ;(profs||[]).forEach(p=>profMap[p.id]=p)
 conversations=data.map(c=>{
@@ -250,7 +250,7 @@ if(!existing)return
 await loadConversations()
 conv=conversations.find(c=>c.id===existing.id)
 }else{
-const{data:prof}=await db.from('profiles').select('id,name,photo_url,category,email,slug').eq('id',otherId).single()
+const{data:prof}=await db.from('profiles').select('id,name,photo_url,category,slug').eq('id',otherId).single()
 conv={...data,other:prof||{id:otherId,name:'Utilizador'}}
 conversations.unshift(conv)
 renderConvList()
@@ -333,19 +333,19 @@ renderConvList()
 notifyNewMessage(content)
 }
 
-function notifyNewMessage(content){
-if(!activeOther||!activeOther.email)return
-fetch('/.netlify/functions/notify-message',{
+// O email do destinatario nunca sai daqui: o servidor descobre-o sozinho
+// a partir da conversa, depois de confirmar que somos parte dela.
+async function notifyNewMessage(content){
+if(!activeConvId)return
+try{
+const{data:{session}}=await db.auth.getSession()
+if(!session)return
+await fetch('/.netlify/functions/notify-message',{
 method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-to:activeOther.email,
-toName:activeOther.name,
-fromName:myName,
-preview:content,
-link:location.origin+'/messages.html?with='+myId
+headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},
+body:JSON.stringify({conversationId:activeConvId,preview:content})
 })
-}).catch(()=>{})
+}catch(e){}
 }
 
 function subscribeToNewMessages(){
