@@ -314,11 +314,24 @@ const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 const params=new URLSearchParams(location.search)
-const proId=params.get('id')
-let currentRating=0,proData=null
+// O perfil abre por id (?id=uuid) ou pelo link proprio do plano Pro,
+// que o Netlify reescreve de /o-nome-dele para ?u=o-nome-dele
+let proId=params.get('id')
+const proSlug=(params.get('u')||'').toLowerCase().trim()
+let currentRating=0,proData=null,preloadedPro=null
+
+async function resolveSlug(){
+  if(proId&&proId!=='null'&&proId!=='undefined')return true
+  if(!proSlug)return false
+  const{data}=await db.from('profiles').select('*').eq('slug',proSlug).maybeSingle()
+  if(!data)return false
+  preloadedPro=data
+  proId=data.id
+  return true
+}
 
 async function init(){
-  if(!proId||proId==='null'||proId==='undefined'){location.href='index.html';return}
+  if(!await resolveSlug()){location.href='index.html';return}
   const{data:{session}}=await db.auth.getSession()
   if(session){
     document.getElementById('nav-guest').style.display='none'
@@ -326,7 +339,8 @@ async function init(){
     const name=session.user.user_metadata?.name||session.user.email||'U'
     document.getElementById('nav-avatar').textContent=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()
   }
-  const{data:pro,error}=await db.from('profiles').select('*').eq('id',proId).single()
+  const{data:pro,error}=preloadedPro?{data:preloadedPro,error:null}
+    :await db.from('profiles').select('*').eq('id',proId).single()
   if(error||!pro){document.getElementById('profile-header').innerHTML='<p style="color:red;padding:20px">Profissional não encontrado.</p>';return}
   proData=pro
   document.title=`${pro.name} – Proliga`
