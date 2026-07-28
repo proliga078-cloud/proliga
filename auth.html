@@ -62,6 +62,13 @@ transition: background .2s; margin-top: 8px;
 .hint { font-size: 12px; color: #94a3b8; margin-top: 6px }
 .card-title { font-size: 17px; font-weight: 800; margin-bottom: 6px }
 .card-sub { font-size: 13px; color: #64748b; margin-bottom: 22px; line-height: 1.5 }
+
+.pw-wrap{position:relative;display:block}
+.pw-wrap input{width:100%;padding-right:44px}
+.pw-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#94a3b8;padding:6px;border-radius:7px;display:flex;align-items:center}
+.pw-toggle:hover{color:#1E4FD6;background:#f1f5f9}
+.pw-toggle.on{color:#1E4FD6}
+.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 </style>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
@@ -111,12 +118,13 @@ transition: background .2s; margin-top: 8px;
 </div>
 <div class="form-group">
 <label>Password</label>
+<div class="pw-wrap">
 <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+<button type="button" class="pw-toggle" id="reg-pw-toggle" onclick="togglePw('reg-password','reg-pw-toggle')" aria-label="Mostrar password">
+<svg class="ic" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+</button>
 </div>
-<div class="form-group">
-<label>Confirmar password</label>
-<input type="password" id="reg-password2" placeholder="Repete a password" autocomplete="new-password" />
-<div class="hint" id="reg-match-hint"></div>
+<div class="hint">Toca no olho para veres o que escreveste.</div>
 </div>
 <button class="btn-submit" id="reg-btn" onclick="doRegister()">Criar conta</button>
 </div>
@@ -218,17 +226,14 @@ btn.textContent = 'Entrar na conta'
 }
 
 // Live match feedback for register password confirmation
-function checkRegMatch(){
-const p1=document.getElementById('reg-password').value
-const p2=document.getElementById('reg-password2').value
-const hint=document.getElementById('reg-match-hint')
-if(!p2){hint.textContent='';return true}
-if(p1===p2){hint.textContent='✓ As passwords coincidem';hint.style.color='#166534';return true}
-hint.textContent='✗ As passwords não coincidem';hint.style.color='#b91c1c';return false
+function togglePw(inputId,btnId){
+const i=document.getElementById(inputId); const b=document.getElementById(btnId)
+const show=i.type==='password'
+i.type=show?'text':'password'
+b.setAttribute('aria-label',show?'Ocultar password':'Mostrar password')
+b.classList.toggle('on',show)
 }
 document.addEventListener('DOMContentLoaded',()=>{
-document.getElementById('reg-password').addEventListener('input',checkRegMatch)
-document.getElementById('reg-password2').addEventListener('input',checkRegMatch)
 document.getElementById('recovery-password').addEventListener('input',checkRecoveryMatch)
 document.getElementById('recovery-password2').addEventListener('input',checkRecoveryMatch)
 })
@@ -237,14 +242,12 @@ async function doRegister() {
 const name = document.getElementById('reg-name').value.trim()
 const email = document.getElementById('reg-email').value.trim()
 const password = document.getElementById('reg-password').value
-const password2 = document.getElementById('reg-password2').value
 const btn = document.getElementById('reg-btn')
 
 showMsg('reg-msg', '', 'hidden')
 
-if (!name || !email || !password || !password2) return showMsg('reg-msg', 'Preenche todos os campos.', 'error')
+if (!name || !email || !password) return showMsg('reg-msg', 'Preenche todos os campos.', 'error')
 if (password.length < 6) return showMsg('reg-msg', 'A password deve ter pelo menos 6 caracteres.', 'error')
-if (password !== password2) return showMsg('reg-msg', 'As passwords não coincidem.', 'error')
 if (!email.includes('@')) return showMsg('reg-msg', 'Introduz um email válido.', 'error')
 
 btn.disabled = true

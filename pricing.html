@@ -6,6 +6,8 @@
   <title>Planos – Proliga</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
+.ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-3px}
+
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA}
     body{font-family:'Inter',sans-serif;color:var(--text);background:#fff}
@@ -127,8 +129,8 @@
 </nav>
 
 <section class="hero">
-  <h1>Planos simples,<br><span>sem surpresas</span></h1>
-  <p>Começa grátis e faz upgrade quando precisares. Cancela quando quiseres.</p>
+  <h1>Preços fixos.<br><span>Sem comissões.</span></h1>
+  <p>Nunca cobramos sobre o trabalho que fechas. Começa grátis e muda só se precisares.</p>
 </section>
 
 <div class="pricing-wrap">
@@ -141,11 +143,11 @@
   <div class="plans-grid">
     <!-- FREE -->
     <div class="plan-card">
-      <div class="plan-icon">🆓</div>
+      <div class="plan-icon"><svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><path d="M12 22V10"/><path d="M12 10C12 6 9 3 5 3c0 4 3 7 7 7z"/><path d="M12 10c0-3 2.5-5.5 5.5-5.5 0 3-2.5 5.5-5.5 5.5z"/></svg></div>
       <div class="plan-name">Grátis</div>
       <div class="plan-price"><span class="amount">€0</span><span class="per">/sempre</span></div>
       <div class="plan-desc">Para começar a explorar a plataforma sem qualquer compromisso.</div>
-      <a href="auth.html?tab=register" class="plan-cta" style="background:var(--bg);color:var(--text);border:2px solid var(--border)">Começar grátis</a>
+      <a href="auth.html?tab=register" class="plan-cta" style="background:var(--bg);color:var(--text);border:2px solid var(--border)">Começar sem custos</a>
       <ul class="plan-features">
         <li><span class="feat-yes">✓</span> Perfil profissional básico</li>
         <li><span class="feat-yes">✓</span> Até 2 serviços listados</li>
@@ -159,42 +161,42 @@
     </div>
     <!-- PRO -->
     <div class="plan-card popular">
-      <div class="popular-tag">⭐ Mais popular</div>
-      <div class="plan-icon">🚀</div>
+      <div class="popular-tag">Mais popular</div>
+      <div class="plan-icon"><svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
       <div class="plan-name">Pro</div>
       <div class="plan-price" id="pro-price">
         <span class="amount">€9,99</span><span class="per">/mês</span>
       </div>
       <div class="plan-desc">Para profissionais que querem crescer e ter mais credibilidade junto dos clientes.</div>
-      <button class="plan-cta btn-solid" onclick="requestUpgrade('pro')">Obter plano Pro</button>
+      <button class="plan-cta btn-solid" onclick="requestUpgrade('pro')">Mudar para Pro</button>
       <ul class="plan-features">
         <li><span class="feat-yes">✓</span> Perfil profissional completo</li>
         <li><span class="feat-yes">✓</span> Até 10 serviços</li>
         <li><span class="feat-yes">✓</span> Mensagens ilimitadas</li>
         <li><span class="feat-yes">✓</span> Avaliações e estrelas</li>
         <li><span class="feat-yes">✓</span> 10 fotos de portfólio</li>
-        <li><span class="feat-yes">✓</span> Badge verificado ✅</li>
+        <li><span class="feat-yes">✓</span> Selo verificado</li>
         <li class="dim"><span class="feat-no">✕</span> Destaque nas pesquisas</li>
         <li class="dim"><span class="feat-no">✕</span> Suporte prioritário</li>
       </ul>
     </div>
     <!-- PREMIUM -->
     <div class="plan-card">
-      <div class="plan-icon">👑</div>
+      <div class="plan-icon"><svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 22l5-3 5 3-1.2-8.1"/></svg></div>
       <div class="plan-name">Premium</div>
       <div class="plan-price" id="premium-price">
         <span class="amount">€19,99</span><span class="per">/mês</span>
       </div>
       <div class="plan-desc">Para os que querem o máximo de visibilidade e aparecer primeiro nas pesquisas.</div>
-      <button class="plan-cta btn-gold" onclick="requestUpgrade('premium')">Obter plano Premium</button>
+      <button class="plan-cta btn-gold" onclick="requestUpgrade('premium')">Mudar para Premium</button>
       <ul class="plan-features">
         <li><span class="feat-yes">✓</span> Perfil profissional completo</li>
         <li><span class="feat-yes">✓</span> Serviços ilimitados</li>
         <li><span class="feat-yes">✓</span> Mensagens ilimitadas</li>
         <li><span class="feat-yes">✓</span> Avaliações e estrelas</li>
         <li><span class="feat-yes">✓</span> Fotos de portfólio ilimitadas</li>
-        <li><span class="feat-yes">✓</span> Badge verificado ✅</li>
-        <li><span class="feat-yes">✓</span> 🚀 Destaque nas pesquisas</li>
+        <li><span class="feat-yes">✓</span> Selo verificado</li>
+        <li><span class="feat-yes">✓</span> Destaque nas pesquisas</li>
         <li><span class="feat-yes">✓</span> Suporte prioritário</li>
       </ul>
     </div>
@@ -270,8 +272,8 @@
 <!-- UPGRADE MODAL -->
 <div id="upgrade-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:20px;padding:36px;max-width:420px;width:90%;text-align:center">
-    <div style="font-size:48px;margin-bottom:16px" id="modal-icon">🚀</div>
-    <h3 style="font-size:22px;font-weight:800;margin-bottom:8px" id="modal-title">Obter plano Pro</h3>
+    <div style="color:var(--blue);margin-bottom:16px" id="modal-icon"><svg class="ic" viewBox="0 0 24 24" style="width:34px;height:34px"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
+    <h3 style="font-size:22px;font-weight:800;margin-bottom:8px" id="modal-title">Mudar para Pro</h3>
     <p style="color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:24px">Para ativar o teu plano, entra em contacto connosco. A ativação é feita em até 24 horas após confirmação do pagamento.</p>
     <a href="mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga&body=Olá,%20quero%20fazer%20upgrade%20para%20o%20plano%20Pro." id="modal-email-link"
        class="btn btn-solid" style="display:block;padding:14px;font-size:15px;margin-bottom:12px">
@@ -319,11 +321,11 @@ function requestUpgrade(plan){
   const title=document.getElementById('modal-title')
   const link=document.getElementById('modal-email-link')
   if(plan==='pro'){
-    icon.textContent='🚀'
+    icon.innerHTML='<svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>'
     title.textContent='Obter plano Pro'
     link.href=`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20Pro&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20Pro%20(€${isYearly?'86/ano':'9/mês'}).`
   }else{
-    icon.textContent='👑'
+    icon.innerHTML='<svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 22l5-3 5 3-1.2-8.1"/></svg>'
     title.textContent='Obter plano Premium'
     link.href=`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20Premium&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20Premium%20(€${isYearly?'182/ano':'19/mês'}).`
   }
