@@ -317,7 +317,15 @@ const params=new URLSearchParams(location.search)
 // O perfil abre por id (?id=uuid) ou pelo link proprio do plano Pro,
 // que o Netlify reescreve de /o-nome-dele para ?u=o-nome-dele
 let proId=params.get('id')
-const proSlug=(params.get('u')||'').toLowerCase().trim()
+// O Netlify reescreve /o-nome-dele para profile.html?u=... mas isso e interno:
+// o browser mantem o URL original, por isso o ?u= nunca chega ao JavaScript.
+// O slug tem mesmo de sair do caminho.
+function slugFromPath(){
+  const c=location.pathname.replace(/^\/+|\/+$/g,'')
+  if(!c||c.includes('/')||c.includes('.'))return ''
+  return c
+}
+const proSlug=(params.get('u')||slugFromPath()).toLowerCase().trim()
 let currentRating=0,proData=null,preloadedPro=null
 
 async function resolveSlug(){
