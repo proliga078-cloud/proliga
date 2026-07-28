@@ -204,6 +204,21 @@
     .switch input:checked + .slider:before{transform:translateX(20px)}
     .switch input:focus-visible + .slider{outline:2px solid var(--blue);outline-offset:2px}
 
+    .jc-margin{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px}
+    .jc-margin input{margin-bottom:0;font-size:12px;padding:6px 8px}
+    .jc-mb{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;margin-bottom:6px}
+    .jc-mb.bom{background:#E7F5EE;color:#146B3A}
+    .jc-mb.medio{background:#FCF1E3;color:#8A4F08}
+    .jc-mb.mau{background:#FBEAE6;color:#993C1D}
+    .mg-table{width:100%;border-collapse:collapse;font-size:13px}
+    .mg-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:8px 10px;border-bottom:1.5px solid var(--border)}
+    .mg-table td{padding:10px;border-bottom:1px solid var(--bg)}
+    .mg-table tr:last-child td{border-bottom:none}
+    .mg-table .num{text-align:right;font-variant-numeric:tabular-nums}
+    .mg-pct{font-weight:800}
+    .mg-pct.bom{color:#146B3A}.mg-pct.medio{color:#8A4F08}.mg-pct.mau{color:#993C1D}
+    .mg-hint{background:var(--blue-light);border-radius:10px;padding:11px 14px;font-size:12.5px;color:var(--blue-dark);line-height:1.55;margin-bottom:14px}
+
     /* FINANÇAS */
     .fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px}
     .fin-card{background:var(--white);border-radius:14px;padding:18px;border:1px solid var(--border)}
@@ -653,7 +668,14 @@
     <div class="page-title">Finanças</div>
     <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:600px">Uma visão simples do teu trimestre, com base nos trabalhos que marcaste como pagos. Podes exportar tudo em CSV para entregares ao teu contabilista.</p>
 
+    <datalist id="job-types"></datalist>
     <div class="fin-grid" id="fin-cards"></div>
+
+    <div class="form-section">
+      <div class="form-title"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>Margem por Tipo de Trabalho</div>
+      <div class="mg-hint" id="mg-hint" style="display:none"></div>
+      <div class="fin-scroll"><table class="mg-table" id="mg-table"></table></div>
+    </div>
 
     <div class="form-section">
       <div class="form-title">Faturação por Trimestre</div>
@@ -1097,6 +1119,28 @@ function renderInsights(){
     tips.push({type:'good',icon:'clock',text:`Faltam ${3-respN} resposta${3-respN>1?'s':''} a clientes para calcularmos o teu tempo médio e mostrarmos o selo no perfil.`})
   }
 
+  const fechados=allJobs.filter(j=>['concluido','pago'].includes(j.status)&&Number(j.paid_amount??j.quote_amount??0)>0)
+  const comMat=fechados.filter(j=>j.material_cost!=null)
+  if(fechados.length>=2&&comMat.length===0){
+    tips.push({type:'warn',icon:'coin',text:`Tens ${fechados.length} trabalhos fechados mas nenhum com o custo de material preenchido. Sem isso não sabes quanto sobrou — só quanto entrou. Preenche em "Trabalhos".`})
+  }else if(comMat.length>=2){
+    const g={}
+    comMat.forEach(j=>{
+      const k=(j.job_type&&j.job_type.trim())||'Sem tipo'
+      if(!g[k])g[k]={rec:0,mat:0}
+      g[k].rec+=Number(j.paid_amount??j.quote_amount??0)
+      g[k].mat+=Number(j.material_cost??0)
+    })
+    const arr=Object.entries(g).map(([t,v])=>({t,pct:v.rec>0?((v.rec-v.mat)/v.rec)*100:0})).sort((a,b)=>b.pct-a.pct)
+    if(arr.length>=2&&arr[0].pct-arr[arr.length-1].pct>=15){
+      tips.push({type:'good',icon:'coin',text:`Os teus trabalhos de ${arr[0].t} deixam ${arr[0].pct.toFixed(0)}% de margem, contra ${arr[arr.length-1].pct.toFixed(0)}% nos de ${arr[arr.length-1].t}. Vê o detalhe em Finanças.`})
+    }else{
+      const totR=comMat.reduce((a,j)=>a+Number(j.paid_amount??j.quote_amount??0),0)
+      const totM=comMat.reduce((a,j)=>a+Number(j.material_cost??0),0)
+      if(totR>0)tips.push({type:'good',icon:'coin',text:`A tua margem média é de ${(((totR-totM)/totR)*100).toFixed(0)}%, com base em ${comMat.length} trabalhos com material registado.`})
+    }
+  }
+
   if(!tips.length)tips.push({type:'good',icon:'check',text:'Tudo em dia! Sem alertas de momento — continua o bom trabalho.'})
 
   el.innerHTML=tips.map(t=>`<div class="insight-card ${t.type}"><div class="ic-badge">${insightIcon(t.icon)}</div><div>${t.text}</div></div>`).join('')
@@ -1373,6 +1417,11 @@ function jobCardHtml(j){
     <div class="jc-title">${j.title}</div>
     <div class="jc-client">${j.client_name||'Cliente'}</div>
     <input type="number" min="0" placeholder="Valor (€)" value="${j.quote_amount??''}" style="width:100%;margin-bottom:6px" onchange="updateJobField('${j.id}','quote_amount',this.value?parseFloat(this.value):null)"/>
+    <div class="jc-margin">
+      <input type="number" min="0" placeholder="Material (€)" value="${j.material_cost??''}" title="Quanto gastaste em material" onchange="updateJobField('${j.id}','material_cost',this.value?parseFloat(this.value):null)"/>
+      <input type="text" list="job-types" placeholder="Tipo" value="${escapeHtml(j.job_type||'')}" title="Ex: Reparação, Instalação completa" onchange="updateJobField('${j.id}','job_type',this.value.trim()||null)"/>
+    </div>
+    ${marginBadge(j)}
     <input type="datetime-local" value="${toLocalDT(j.scheduled_at)}" style="width:100%;margin-bottom:6px" onchange="updateJobField('${j.id}','scheduled_at',this.value?new Date(this.value).toISOString():null)"/>
     <select onchange="updateJobStatus('${j.id}',this.value)">${statusOpts}</select>
     <div class="jc-actions" style="margin-top:8px">
@@ -1773,6 +1822,81 @@ function financePaidJobs(){
     .sort((a,b)=>b.when-a.when)
 }
 
+function marginPct(j){
+  const rec=Number(j.paid_amount??j.quote_amount??0)
+  const mat=Number(j.material_cost??0)
+  if(!rec||rec<=0)return null
+  if(j.material_cost==null)return null
+  return ((rec-mat)/rec)*100
+}
+function marginClass(p){return p>=60?'bom':p>=35?'medio':'mau'}
+
+function marginBadge(j){
+  const p=marginPct(j)
+  if(p===null)return ''
+  const rec=Number(j.paid_amount??j.quote_amount??0)
+  const lucro=rec-Number(j.material_cost??0)
+  return `<div class="jc-mb ${marginClass(p)}">Margem ${p.toFixed(0)}% · ${eur(lucro)}</div>`
+}
+
+function renderMarginAnalysis(){
+  const tbl=document.getElementById('mg-table')
+  const hint=document.getElementById('mg-hint')
+  if(!tbl)return
+
+  // sugestoes de tipo: os que ja usou + os seus servicos
+  const dl=document.getElementById('job-types')
+  if(dl){
+    const tipos=[...new Set(allJobs.map(j=>j.job_type).filter(Boolean))]
+    dl.innerHTML=tipos.map(t=>`<option value="${escapeHtml(t)}"></option>`).join('')
+  }
+
+  const comDados=allJobs.filter(j=>['concluido','pago'].includes(j.status)&&j.material_cost!=null&&Number(j.paid_amount??j.quote_amount??0)>0)
+
+  if(!comDados.length){
+    hint.style.display='block'
+    hint.innerHTML='Preenche o campo <strong>Material (€)</strong> nos teus trabalhos concluídos para veres quanto sobra em cada um. Sem isso, só sabes o que entrou — não o que ganhaste.'
+    tbl.innerHTML=''
+    return
+  }
+  hint.style.display='none'
+
+  const grupos={}
+  comDados.forEach(j=>{
+    const k=(j.job_type&&j.job_type.trim())||'Sem tipo'
+    if(!grupos[k])grupos[k]={n:0,rec:0,mat:0}
+    grupos[k].n++
+    grupos[k].rec+=Number(j.paid_amount??j.quote_amount??0)
+    grupos[k].mat+=Number(j.material_cost??0)
+  })
+  const linhas=Object.entries(grupos).map(([tipo,g])=>{
+    const lucro=g.rec-g.mat
+    const pct=g.rec>0?(lucro/g.rec)*100:0
+    return {tipo,...g,lucro,pct}
+  }).sort((a,b)=>b.pct-a.pct)
+
+  tbl.innerHTML=`<thead><tr>
+      <th>Tipo</th><th class="num">Trabalhos</th><th class="num">Faturado</th>
+      <th class="num">Material</th><th class="num">Sobrou</th><th class="num">Margem</th>
+    </tr></thead><tbody>${
+    linhas.map(r=>`<tr>
+      <td><strong>${escapeHtml(r.tipo)}</strong></td>
+      <td class="num">${r.n}</td>
+      <td class="num">${eur(r.rec)}</td>
+      <td class="num">${eur(r.mat)}</td>
+      <td class="num"><strong>${eur(r.lucro)}</strong></td>
+      <td class="num mg-pct ${marginClass(r.pct)}">${r.pct.toFixed(0)}%</td>
+    </tr>`).join('')}</tbody>`
+
+  if(linhas.length>=2){
+    const melhor=linhas[0], pior=linhas[linhas.length-1]
+    if(melhor.pct-pior.pct>=15){
+      hint.style.display='block'
+      hint.innerHTML=`Os trabalhos de <strong>${escapeHtml(melhor.tipo)}</strong> deixam-te ${melhor.pct.toFixed(0)}% de margem; os de <strong>${escapeHtml(pior.tipo)}</strong> só ${pior.pct.toFixed(0)}%. Vale a pena pensar se compensa aceitar os segundos ao preço atual.`
+    }
+  }
+}
+
 function renderFinance(){
   const cardsEl=document.getElementById('fin-cards')
   if(!cardsEl)return
@@ -1811,6 +1935,8 @@ function renderFinance(){
       <div class="f-value">${eur(avgTicket)}</div>
       <div class="f-sub">Média de ${paid.length} trabalho${paid.length!==1?'s':''} pago${paid.length!==1?'s':''}</div>
     </div>`
+
+  renderMarginAnalysis()
 
   // Tabela por trimestre
   const byQ={}
