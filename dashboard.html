@@ -815,6 +815,14 @@
 
     <datalist id="job-types"></datalist>
 
+    <div class="form-section" id="fin-lock" style="display:none;text-align:center;padding:34px 24px">
+      <div style="width:52px;height:52px;border-radius:16px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg class="ic" viewBox="0 0 24 24" style="width:25px;height:25px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <div style="font-size:16px;font-weight:800;letter-spacing:-.015em">Contas e margens são do plano Pro</div>
+      <p style="font-size:13px;color:var(--muted);margin:8px auto 16px;max-width:420px;line-height:1.6">Vê quanto sobra em cada trabalho depois do material, a faturação por trimestre e exporta tudo em CSV para o teu contabilista.</p>
+      <button class="btn btn-primary" onclick="location.href='pricing.html'">Ver o plano Pro</button>
+    </div>
+
+    <div id="fin-body">
     <div class="form-section">
       <div class="tc-head"><span>Onde ganhas mais dinheiro</span><span style="font-size:11px;color:var(--muted-2);font-weight:500">margem depois do material</span></div>
       <div class="mg-hint" id="mg-hint" style="display:none"></div>
@@ -832,6 +840,7 @@
       </div>
     </div>
 
+    </div>
     <p style="color:var(--muted);font-size:11.5px;margin-top:-6px">Nota: isto é um resumo de gestão, não uma fatura oficial. Para efeitos fiscais, usa o teu programa de faturação certificado.</p>
   </div>
 
@@ -933,6 +942,23 @@ let aiChatOpen=false
 let quoteJobId=null,quotesCache=[]
 let refJobId=null,refSelectedPro=null
 let marketPriceCache=null
+let planLimits={portfolio_max:3,quotes_per_month:3,finances:false,own_branding:false,custom_link:false}
+async function loadPlanLimits(){
+  const plano=(profileData&&profileData.plan)||'free'
+  const{data}=await db.from('plan_limits').select('*').eq('plan',plano).maybeSingle()
+  if(data)planLimits=data
+  applyPlanGates()
+}
+function applyPlanGates(){
+  const nav=document.querySelector('.nav-item[data-page="financas"]')
+  if(nav)nav.style.display=planLimits.finances?'':'none'
+  const lock=document.getElementById('fin-lock')
+  const body=document.getElementById('fin-body')
+  if(lock&&body){
+    lock.style.display=planLimits.finances?'none':'block'
+    body.style.display=planLimits.finances?'':'none'
+  }
+}
 
 
 // Upload foto de perfil para Supabase Storage
@@ -970,11 +996,10 @@ async function uploadPortfolioPhoto(input){
 const file = input.files[0];
 if(!file) return;
 const plan=(profileData&&profileData.plan)||'free'
-const portLimits={free:0,pro:10,premium:Infinity}
-const portMax=portLimits[plan]!==undefined?portLimits[plan]:0
+const portMax=planLimits.portfolio_max||3
 const{count:portCount}=await db.from('portfolio_items').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
 if(portCount>=portMax){
-showAlert('port-error', portMax===0?'O plano Grátis não inclui fotos de portfólio. Faz upgrade para o Pro.':('Atingiste o limite de '+portMax+' fotos do plano '+plan.toUpperCase()+'.'),'error')
+showAlert('port-error','Atingiste o limite de '+portMax+' fotos do plano grátis. O plano Pro tem portfólio ilimitado.','error')
 input.value=''
 return
 }
@@ -1023,6 +1048,7 @@ async function init(){
       loadJobs()
       loadQuotes()
       loadMarketPricing()
+      loadPlanLimits()
       subscribeJobsRealtime()
     }
     checkUpgrade()
@@ -2264,11 +2290,19 @@ function buildQuotePdf({client,items,subtotal,validDays,notes}){
   }
   doc.setFontSize(8)
   doc.setTextColor(150,150,150)
-  doc.text('Orçamento gerado através da Proliga · proliga.pt',14,287)
+  if(!planLimits.own_branding)doc.text('Orçamento gerado através da Proliga · proliga.pt',14,287)
   return doc
 }
 
 async function generateQuotePdf(){
+  if(planLimits.quotes_per_month!=null){
+    const m0=new Date();m0.setDate(1);m0.setHours(0,0,0,0)
+    const{count}=await db.from('quotes').select('*',{count:'exact',head:true}).eq('professional_id',profileId).gte('created_at',m0.toISOString())
+    if((count||0)>=planLimits.quotes_per_month){
+      showAlert('quote-error','Atingiste os '+planLimits.quotes_per_month+' orçamentos deste mês do plano grátis. O plano Pro tem orçamentos ilimitados e com a tua marca.','error')
+      return
+    }
+  }
   const client=document.getElementById('q-client').value.trim()
   const validDays=parseInt(document.getElementById('q-valid').value)||30
   const notes=document.getElementById('q-notes').value.trim()
