@@ -1,6 +1,8 @@
 const Stripe=require('stripe')
 const stripe=Stripe(process.env.STRIPE_SECRET_KEY)
-const PRICE_MAP={pro_monthly:process.env.STRIPE_PRICE_PRO_MONTHLY,pro_yearly:process.env.STRIPE_PRICE_PRO_YEARLY,premium_monthly:process.env.STRIPE_PRICE_PREMIUM_MONTHLY,premium_yearly:process.env.STRIPE_PRICE_PREMIUM_YEARLY}
+// Apenas o plano Pro esta a venda. O Premium foi descontinuado do site;
+// subscricoes antigas continuam validas mas nao se aceitam novas.
+const PRICE_MAP={pro_monthly:process.env.STRIPE_PRICE_PRO_MONTHLY,pro_yearly:process.env.STRIPE_PRICE_PRO_YEARLY}
 
 exports.handler=async(event)=>{
 if(event.httpMethod!=='POST')return{statusCode:405,body:'Method Not Allowed'}

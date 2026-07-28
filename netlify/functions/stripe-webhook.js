@@ -27,10 +27,12 @@ await supabase.from('profiles').update({plan,stripe_customer_id:session.customer
 }
 }else if(stripeEvent.type==='customer.subscription.updated'){
 const sub=stripeEvent.data.object
-const plan=sub.metadata?.plan
-if(plan&&sub.status==='active'){
-await supabase.from('profiles').update({plan}).eq('stripe_subscription_id',sub.id)
-}
+// Estados que dao direito ao plano pago. Qualquer outro (past_due, unpaid,
+// canceled, incomplete_expired, paused) faz voltar ao gratis.
+const ativo=['active','trialing'].includes(sub.status)
+const plano=ativo?(sub.metadata?.plan||'pro'):'free'
+await supabase.from('profiles').update({plan:plano}).eq('stripe_subscription_id',sub.id)
+console.log('subscription.updated',sub.id,sub.status,'->',plano)
 }else if(stripeEvent.type==='customer.subscription.deleted'){
 const sub=stripeEvent.data.object
 await supabase.from('profiles').update({plan:'free',stripe_subscription_id:null}).eq('stripe_subscription_id',sub.id)
