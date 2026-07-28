@@ -49,6 +49,7 @@
     .plan-price .amount{font-size:52px;font-weight:900;letter-spacing:-2px}
     .plan-price .per{font-size:16px;font-weight:400;color:var(--muted)}
     .plan-price .original{font-size:18px;color:#cbd5e1;text-decoration:line-through;margin-right:6px}
+    .price-vat{font-size:13px;color:var(--muted-2);margin:-2px 0 8px}
     .plan-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px;min-height:48px}
     .plan-cta{display:block;width:100%;padding:14px;border-radius:10px;font-size:15px;font-weight:700;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:all .2s;margin-bottom:28px}
     .plan-features{list-style:none}
@@ -156,6 +157,7 @@
       <div class="plan-icon"><svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div>
       <div class="plan-name">Grátis</div>
       <div class="plan-price"><span class="amount">€0</span><span class="per">/sempre</span></div>
+      <div class="price-vat">Sem custos. Sem cartão de crédito.</div>
       <div class="plan-desc">Tudo o que precisas para <strong>gerir</strong> o teu trabalho.</div>
       <a href="auth.html?tab=register" class="plan-cta" style="background:var(--bg);color:var(--text);border:2px solid var(--border)">Começar sem custos</a>
       <ul class="plan-features">
@@ -175,6 +177,7 @@
       <div class="plan-icon"><svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
       <div class="plan-name">Pro</div>
       <div class="plan-price"><span class="amount" id="price-pro">€12,99</span><span class="per" id="per-pro">/mês</span></div>
+      <div class="price-vat">Valor sem IVA. Acresce IVA à taxa legal em vigor (23%).</div>
       <div class="plan-desc">Para <strong>pareceres uma empresa</strong> junto dos teus clientes — e crescer com a plataforma.</div>
       <a href="#" class="plan-cta btn-solid" onclick="requestUpgrade('pro');return false">Mudar para Pro</a>
 
@@ -203,7 +206,7 @@
     <div class="pl-ico"><svg class="ic" viewBox="0 0 24 24" style="width:17px;height:17px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
     <div>
       <strong>Preço travado para quem entra primeiro.</strong>
-      Quem subscrever este ano mantém os €12,99 enquanto não cancelar, mesmo quando o preço subir.
+      Quem subscrever este ano mantém os €12,99 (sem IVA) enquanto não cancelar, mesmo quando o preço subir.
     </div>
   </div>
 </div>
@@ -320,7 +323,7 @@ function requestUpgrade(plan){
   if(plan==='pro'){
     icon.innerHTML='<svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>'
     title.textContent='Obter plano Pro'
-    link.href=`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20Pro&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20Pro%20(€${isYearly?'86/ano':'12,99/mês'}).`
+    link.href=`mailto:avlistech2@gmail.com?subject=Upgrade%20Proliga%20Pro&body=Olá%2C%20quero%20fazer%20upgrade%20para%20o%20plano%20Pro%20(€${isYearly?'124,70/ano':'12,99/mês'} + IVA).`
   }else{
     icon.innerHTML='<svg class="ic" viewBox="0 0 24 24" style="width:26px;height:26px"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9 7 22l5-3 5 3-1.2-8.1"/></svg>'
     title.textContent='Obter plano Premium'
