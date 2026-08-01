@@ -159,6 +159,7 @@ textarea{resize:vertical;min-height:80px}
 <option value="">Escolhe uma categoria</option>
 <option>Eletricistas</option><option>Canalizadores</option><option>Pintores</option>
 <option>Jardineiros</option><option>Limpeza</option><option>Mudanças</option>
+<option>Pedreiros</option><option>Carpinteiros</option><option>Serralheiros</option><option>Decoradores</option><option>Programadores</option><option>Designers</option><option>Reparações Tech</option><option>Personal Trainers</option><option>Cabeleireiros</option><option>Esteticistas</option>
 <option>Outro</option>
 </select>
 </div>
@@ -208,7 +209,7 @@ const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
 let session=null,allRequests=[]
 
-const CATEGORIES=['Eletricistas','Canalizadores','Pintores','Jardineiros','Limpeza','Mudanças','Outro']
+const CATEGORIES=['Eletricistas','Canalizadores','Pintores','Jardineiros','Limpeza','Mudanças','Pedreiros','Carpinteiros','Serralheiros','Decoradores','Programadores','Designers','Reparações Tech','Personal Trainers','Cabeleireiros','Esteticistas','Outro']
 
 async function init(){
 const catSel=document.getElementById('f-cat')
