@@ -413,6 +413,7 @@
     <div class="nav-label">Principal</div>
     <div class="nav-item active" data-page="overview" onclick="showPage('overview')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span> Resumo</div>
     <div class="nav-item" data-page="trabalhos" onclick="showPage('trabalhos')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span> Trabalhos</div>
+    <div class="nav-item" data-page="clientes" onclick="showPage('clientes')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Clientes</div>
     <div class="nav-item" data-page="agenda" onclick="showPage('agenda')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span> Agenda</div>
 
     <div class="nav-label">Negócio</div>
@@ -495,6 +496,11 @@
       <div id="ai-insights" class="insights-list"><div class="empty">A analisar os teus dados…</div></div>
     </div>
 
+    <div class="form-section" id="followup-section" style="display:none">
+      <div class="form-title">🔔 Precisa de seguimento</div>
+      <div id="followup-list"></div>
+    </div>
+
     <div class="two-cards">
       <div class="form-section">
         <div class="tc-head"><span>Próximo na agenda</span><button class="tc-link" onclick="showPage('agenda')">Ver tudo</button></div>
@@ -552,6 +558,16 @@
       <p style="color:var(--muted);font-size:12.5px;margin:-10px 0 14px">Gera orçamentos em PDF com a tua marca, prontos a enviar ao cliente.</p>
       <div id="quotes-list" class="item-list"></div>
     </div>
+  </div>
+
+  <!-- CLIENTES -->
+  <div id="page-clientes" class="page-section">
+    <div class="page-title">Clientes</div>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:560px">Histórico de trabalhos por cliente, para veres quem volta mais vezes e quanto já faturaste com cada um.</p>
+    <div class="form-section">
+      <input id="client-search" type="text" placeholder="Pesquisar cliente..." oninput="renderClientHistory()" style="margin-bottom:0"/>
+    </div>
+    <div id="clients-list"></div>
   </div>
 
   <!-- AGENDA -->
@@ -664,6 +680,13 @@
         <div class="form-group full"><label>Sobre mim (bio)</label><textarea id="p-bio" placeholder="Descreve a tua experiência, especialidades e o que te diferencia..."></textarea></div>
       </div>
       <button class="btn btn-primary" onclick="saveProfile()">Guardar perfil</button>
+    </div>
+
+    <div class="form-section" id="weekly-schedule-section">
+      <div class="form-title">📅 Disponibilidade semanal</div>
+      <p style="color:var(--muted);font-size:13px;margin:-8px 0 16px;max-width:520px">Marca os dias em que costumas trabalhar. Aparece no teu perfil público para os clientes saberem quando te podem chamar.</p>
+      <div id="weekly-schedule-grid" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      <button class="btn btn-primary" style="margin-top:14px" onclick="saveWeeklySchedule()">Guardar disponibilidade</button>
     </div>
 
     <div class="form-section" id="slug-section">
@@ -924,6 +947,48 @@
       <div class="form-section">
         <div class="tc-head"><span>Trabalhos pagos</span></div>
         <div id="fin-paid"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="tc-head"><span>Despesas gerais</span><span style="font-size:11px;color:var(--muted-2);font-weight:500">combustível, ferramentas, seguro, etc.</span></div>
+      <div class="alert error" id="exp-error"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <input id="exp-desc" type="text" placeholder="Descrição" style="flex:2;min-width:140px"/>
+        <input id="exp-amount" type="number" min="0" placeholder="Valor (€)" style="flex:1;min-width:90px"/>
+        <select id="exp-category" style="flex:1;min-width:110px">
+          <option value="combustivel">Combustível</option>
+          <option value="ferramentas">Ferramentas</option>
+          <option value="seguro">Seguro</option>
+          <option value="material_geral">Material geral</option>
+          <option value="outro" selected>Outro</option>
+        </select>
+        <input id="exp-date" type="date" style="flex:1;min-width:130px"/>
+        <button class="btn btn-outline btn-sm" onclick="addExpense()">Adicionar</button>
+      </div>
+      <div id="expenses-list"></div>
+      <div style="text-align:right;font-size:13px;margin-top:8px;color:var(--muted)">Total do trimestre: <strong id="exp-total" style="color:var(--ink)">€0</strong></div>
+    </div>
+
+    <div class="form-section">
+      <div class="tc-head"><span>Relatório anual</span><span style="font-size:11px;color:var(--muted-2);font-weight:500">resumo simples, não substitui contabilidade</span></div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <select id="report-year" onchange="renderAnnualReport()" style="max-width:120px"></select>
+        <button class="btn btn-outline btn-sm" onclick="exportAnnualCsv()">Exportar CSV</button>
+      </div>
+      <div class="hd-stats" style="background:var(--bg);border-radius:12px;padding:16px 20px">
+        <div class="hd-stat" style="border-left:none;padding-left:0">
+          <div class="hd-lbl" style="color:var(--muted)">Faturado no ano</div>
+          <div class="hd-val" id="report-revenue" style="color:var(--ink)">€0</div>
+        </div>
+        <div class="hd-stat" style="border-left:1px solid var(--border);padding-left:22px">
+          <div class="hd-lbl" style="color:var(--muted)">Despesas no ano</div>
+          <div class="hd-val" id="report-expenses" style="color:var(--ink)">€0</div>
+        </div>
+        <div class="hd-stat" style="border-left:1px solid var(--border);padding-left:22px">
+          <div class="hd-lbl" style="color:var(--muted)">Lucro líquido</div>
+          <div class="hd-val" id="report-profit" style="color:var(--green)">€0</div>
+        </div>
       </div>
     </div>
 
@@ -1198,6 +1263,7 @@ document.getElementById('p-city').value=_loc[1]||''
   document.getElementById('p-photo').value=pro.photo_url||''
   document.getElementById('p-bio').value=pro.bio||''
   // is_active field removed
+  renderWeeklyScheduleGrid()
 }
 
 async function saveProfile(){
@@ -1223,6 +1289,41 @@ const location=_district?(_city?_district+' – '+_city:_district):''
   profileData={...profileData,...updates,phone:phoneVal}
   updateSidebar()
   showAlert('profile-success','Perfil guardado com sucesso!')
+}
+
+// ---------- DISPONIBILIDADE SEMANAL ----------
+const WEEK_DAYS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']
+let weeklyScheduleState={}
+
+function renderWeeklyScheduleGrid(){
+  const el=document.getElementById('weekly-schedule-grid')
+  if(!el)return
+  const saved=profileData?.weekly_schedule||{}
+  weeklyScheduleState={}
+  WEEK_DAYS.forEach((_,i)=>{ weeklyScheduleState[i]=saved[i]!==undefined?!!saved[i]:(i>=1&&i<=5) })
+  paintWeeklyScheduleGrid()
+}
+
+function paintWeeklyScheduleGrid(){
+  const el=document.getElementById('weekly-schedule-grid')
+  if(!el)return
+  el.innerHTML=WEEK_DAYS.map((label,i)=>{
+    const on=weeklyScheduleState[i]
+    return `<button type="button" onclick="toggleWeeklyDay(${i})" style="width:56px;height:56px;border-radius:10px;border:1.5px solid ${on?'var(--blue)':'var(--border)'};background:${on?'var(--blue-light)':'var(--bg)'};color:${on?'var(--blue)':'var(--muted)'};font-weight:700;font-size:13px;cursor:pointer">${label}</button>`
+  }).join('')
+}
+
+function toggleWeeklyDay(i){
+  weeklyScheduleState[i]=!weeklyScheduleState[i]
+  paintWeeklyScheduleGrid()
+}
+
+async function saveWeeklySchedule(){
+  if(!profileId)return
+  const{error}=await db.from('profiles').update({weekly_schedule:weeklyScheduleState}).eq('id',profileId)
+  if(error){showAlert('profile-error','Não foi possível guardar: '+error.message);return}
+  profileData={...profileData,weekly_schedule:weeklyScheduleState}
+  showAlert('profile-success','Disponibilidade semanal guardada!')
 }
 
 // ---------- LINK PROPRIO (plano Pro) ----------
@@ -1381,6 +1482,7 @@ async function loadStats(){
     if(badge){badge.style.display='inline';badge.textContent=unread}
   }
   renderInsights()
+  renderFollowupReminders()
 }
 
 function renderViewsChart(views){
@@ -1469,6 +1571,39 @@ function renderSetup(){
   window.__setupPassos=passos
 }
 function setupGo(i){const p=(window.__setupPassos||[])[i];if(p&&p.go)p.go()}
+
+function renderFollowupReminders(){
+  const sec=document.getElementById('followup-section')
+  const list=document.getElementById('followup-list')
+  if(!sec||!list)return
+  const now=new Date()
+  const needsFollowup=allJobs.filter(j=>{
+    if(j.status!=='orcamento_enviado')return false
+    const base=j.last_followup_at||j.quote_sent_at||j.created_at
+    if(!base)return false
+    return (now-new Date(base))/86400000>=3
+  }).sort((a,b)=>new Date(a.last_followup_at||a.quote_sent_at||a.created_at)-new Date(b.last_followup_at||b.quote_sent_at||b.created_at))
+
+  if(!needsFollowup.length){sec.style.display='none';return}
+  sec.style.display='block'
+  list.innerHTML=needsFollowup.map(j=>{
+    const base=new Date(j.last_followup_at||j.quote_sent_at||j.created_at)
+    const dias=Math.floor((now-base)/86400000)
+    return `<div class="fin-row">
+      <div style="flex:1;min-width:0"><div class="fr-t" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(j.title)}</div>
+      <div class="fr-s">${escapeHtml(j.client_name||'Cliente')} · orçamento parado há ${dias} dia${dias!==1?'s':''}</div></div>
+      <button class="btn btn-outline btn-sm" onclick="markFollowedUp('${j.id}')">Marcar como contactado</button>
+    </div>`
+  }).join('')
+}
+
+async function markFollowedUp(jobId){
+  const{error}=await db.from('jobs').update({last_followup_at:new Date().toISOString()}).eq('id',jobId)
+  if(error){alert('Erro: '+error.message);return}
+  const j=allJobs.find(x=>x.id===jobId)
+  if(j)j.last_followup_at=new Date().toISOString()
+  renderFollowupReminders()
+}
 
 function renderInsights(){
   const el=document.getElementById('ai-insights')
@@ -1782,9 +1917,10 @@ function showPage(name){
   if(name==='reviews')loadReviews()
   if(name==='myrequests')loadMyRequests()
   if(name==='trabalhos'){loadJobs();loadQuotes()}
+  if(name==='clientes')renderClientHistory()
   if(name==='agenda')renderCalendar()
   if(name==='referrals')loadReferrals()
-  if(name==='financas')renderFinance()
+  if(name==='financas'){renderFinance();loadExpenses();populateReportYears();renderAnnualReport()}
 }
 
 // TRABALHOS (PIPELINE + AGENDA)
@@ -1805,6 +1941,7 @@ async function loadJobs(){
   renderCalendar()
   renderStatusChart(allJobs)
   renderInsights()
+  renderFollowupReminders()
   renderMiniAgenda()
   renderFinance()
 }
@@ -1835,6 +1972,35 @@ function jobCardHtml(j){
       <button class="btn btn-danger btn-sm" onclick="deleteJob('${j.id}')"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg></button>
     </div>
   </div>`
+}
+
+function renderClientHistory(){
+  const el=document.getElementById('clients-list')
+  if(!el)return
+  const q=(document.getElementById('client-search')?.value||'').toLowerCase().trim()
+  const groups={}
+  allJobs.forEach(j=>{
+    const key=j.client_id||('n:'+(j.client_name||'Cliente'))
+    if(!groups[key])groups[key]={name:j.client_name||'Cliente',jobs:[],total:0}
+    groups[key].jobs.push(j)
+    if(j.status==='pago')groups[key].total+=Number(j.paid_amount??j.quote_amount??0)
+  })
+  let list=Object.values(groups)
+  if(q)list=list.filter(g=>g.name.toLowerCase().includes(q))
+  list.sort((a,b)=>b.total-a.total||b.jobs.length-a.jobs.length)
+  if(!list.length){el.innerHTML='<div class="form-section"><div class="tc-empty"><p>Sem clientes ainda.</p></div></div>';return}
+  el.innerHTML=list.map(g=>{
+    const repeat=g.jobs.length>1
+    return `<div class="form-section" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-weight:700;font-size:14px">${escapeHtml(g.name)}</div>
+          ${repeat?`<span style="font-size:11px;color:#B4650A;background:#FBEFE0;display:inline-block;padding:1px 8px;border-radius:99px;margin-top:4px">cliente recorrente · ${g.jobs.length}x</span>`:''}
+        </div>
+        <div style="font-size:16px;font-weight:700;color:var(--green)">${eur(g.total)}</div>
+      </div>
+    </div>`
+  }).join('')
 }
 
 function renderPipeline(){
@@ -2477,6 +2643,118 @@ function exportFinanceCsv(){
   const a=document.createElement('a')
   a.href=url
   a.download='Proliga-trabalhos-pagos-'+new Date().toISOString().slice(0,10)+'.csv'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+// ===== DESPESAS GERAIS =====
+let allExpenses=[]
+
+async function loadExpenses(){
+  const{data}=await db.from('business_expenses').select('*').eq('professional_id',profileId).order('expense_date',{ascending:false})
+  allExpenses=data||[]
+  renderExpensesList()
+  renderAnnualReport()
+}
+
+function renderExpensesList(){
+  const el=document.getElementById('expenses-list')
+  if(!el)return
+  const now=new Date(), curQ=quarterOf(now), curY=now.getFullYear()
+  const catLabel={combustivel:'Combustível',ferramentas:'Ferramentas',seguro:'Seguro',material_geral:'Material geral',outro:'Outro'}
+  const doTri=allExpenses.filter(e=>{
+    const d=new Date(e.expense_date)
+    return d.getFullYear()===curY&&quarterOf(d)===curQ
+  })
+  el.innerHTML=allExpenses.length?allExpenses.slice(0,8).map(e=>`
+    <div class="fin-row">
+      <div style="flex:1;min-width:0"><div class="fr-t" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(e.description)}</div>
+      <div class="fr-s">${catLabel[e.category]||e.category} · ${new Date(e.expense_date).toLocaleDateString('pt-PT',{day:'numeric',month:'short',year:'numeric'})}</div></div>
+      <div class="fr-v" style="color:#DC5A5A">-${eur(e.amount)}</div>
+      <button class="btn btn-ghost" style="border:1.5px solid var(--border);padding:4px 8px;font-size:11px;margin-left:8px" onclick="deleteExpense('${e.id}')">✕</button>
+    </div>`).join('')
+    :'<div class="tc-empty"><div class="ico" style="background:var(--bg);color:var(--muted)"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/></svg></div><p>Sem despesas registadas.</p></div>'
+  document.getElementById('exp-total').textContent=eur(doTri.reduce((s,e)=>s+Number(e.amount),0))
+}
+
+async function addExpense(){
+  const desc=document.getElementById('exp-desc').value.trim()
+  const amount=parseFloat(document.getElementById('exp-amount').value)
+  const date=document.getElementById('exp-date').value||new Date().toISOString().slice(0,10)
+  if(!desc){showAlert('exp-error','Indica uma descrição.','error');return}
+  if(!amount||amount<=0){showAlert('exp-error','Indica um valor válido.','error');return}
+  const{error}=await db.from('business_expenses').insert({
+    professional_id:profileId,
+    description:desc,
+    amount,
+    category:document.getElementById('exp-category').value,
+    expense_date:date
+  })
+  if(error){showAlert('exp-error','Erro: '+error.message,'error');return}
+  document.getElementById('exp-desc').value=''
+  document.getElementById('exp-amount').value=''
+  document.getElementById('exp-date').value=''
+  loadExpenses()
+}
+
+async function deleteExpense(id){
+  if(!confirm('Remover esta despesa?'))return
+  await db.from('business_expenses').delete().eq('id',id)
+  loadExpenses()
+}
+
+// ===== RELATÓRIO ANUAL =====
+function populateReportYears(){
+  const sel=document.getElementById('report-year')
+  if(!sel||sel.options.length)return
+  const years=new Set([new Date().getFullYear()])
+  allJobs.forEach(j=>{ if(j.status==='pago'){ const d=new Date(j.paid_at||j.completed_at||j.updated_at||j.created_at); years.add(d.getFullYear()) } })
+  allExpenses.forEach(e=>years.add(new Date(e.expense_date).getFullYear()))
+  const sorted=[...years].sort((a,b)=>b-a)
+  sel.innerHTML=sorted.map(y=>`<option value="${y}">${y}</option>`).join('')
+}
+
+function renderAnnualReport(){
+  const sel=document.getElementById('report-year')
+  const revEl=document.getElementById('report-revenue')
+  if(!sel||!revEl)return
+  if(!sel.options.length)populateReportYears()
+  const year=parseInt(sel.value||new Date().getFullYear(),10)
+  const paid=financePaidJobs().filter(j=>j.when.getFullYear()===year)
+  const revenue=paid.reduce((s,j)=>s+j.amount,0)
+  const matCost=paid.reduce((s,j)=>s+Number(j.material_cost||0),0)
+  const yearExpenses=allExpenses.filter(e=>new Date(e.expense_date).getFullYear()===year)
+  const expTotal=yearExpenses.reduce((s,e)=>s+Number(e.amount),0)
+  const totalExpenses=matCost+expTotal
+  const profit=revenue-totalExpenses
+  revEl.textContent=eur(revenue)
+  document.getElementById('report-expenses').textContent=eur(totalExpenses)
+  const profitEl=document.getElementById('report-profit')
+  profitEl.textContent=eur(profit)
+  profitEl.style.color=profit>=0?'var(--green)':'#DC5A5A'
+}
+
+function exportAnnualCsv(){
+  const sel=document.getElementById('report-year')
+  const year=parseInt(sel?.value||new Date().getFullYear(),10)
+  const paid=financePaidJobs().filter(j=>j.when.getFullYear()===year)
+  const yearExpenses=allExpenses.filter(e=>new Date(e.expense_date).getFullYear()===year)
+  if(!paid.length&&!yearExpenses.length){showAlert('exp-error','Sem dados para exportar em '+year+'.','error');return}
+  const esc=v=>{const s=String(v??'');return /[";\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+  const lines=[['Tipo','Data','Descrição','Valor (EUR)'].map(esc).join(';')]
+  paid.forEach(j=>lines.push(['Receita',j.when.toLocaleDateString('pt-PT'),j.title,j.amount.toFixed(2).replace('.',',')].map(esc).join(';')))
+  yearExpenses.forEach(e=>lines.push(['Despesa',new Date(e.expense_date).toLocaleDateString('pt-PT'),e.description,('-'+Number(e.amount).toFixed(2)).replace('.',',')].map(esc).join(';')))
+  const revenue=paid.reduce((s,j)=>s+j.amount,0)
+  const expTotal=yearExpenses.reduce((s,e)=>s+Number(e.amount),0)+paid.reduce((s,j)=>s+Number(j.material_cost||0),0)
+  lines.push(['','','Lucro líquido '+year,(revenue-expTotal).toFixed(2).replace('.',',')].map(esc).join(';'))
+  const csv='\ufeff'+lines.join('\r\n')
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'})
+  const url=URL.createObjectURL(blob)
+  const a=document.createElement('a')
+  a.href=url
+  a.download='Proliga-relatorio-anual-'+year+'.csv'
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)

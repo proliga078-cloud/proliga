@@ -377,6 +377,17 @@ function formatResponseTime(mins){
   return `${Math.round(m/1440)} dia${Math.round(m/1440)>1?'s':''}`
 }
 
+function renderWeeklyScheduleBadge(pro){
+  const sched=pro.weekly_schedule
+  if(!sched||typeof sched!=='object'||!Object.keys(sched).length)return ''
+  const labels=['D','S','T','Q','Q','S','S']
+  const chips=labels.map((l,i)=>{
+    const on=!!sched[i]
+    return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:700;background:${on?'#EAF7EE':'var(--bg)'};color:${on?'#1A8649':'var(--muted)'}">${l}</span>`
+  }).join('')
+  return `<div style="display:flex;align-items:center;gap:5px;margin-top:8px"><span style="font-size:12px;color:var(--muted);margin-right:4px">Disponibilidade semanal:</span>${chips}</div>`
+}
+
 function renderHeader(pro){
   const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
   const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
@@ -398,6 +409,7 @@ function renderHeader(pro){
         <div class="spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div>
       </div>
       ${pro.bio?`<div class="profile-bio">${pro.bio}</div>`:''}
+      ${renderWeeklyScheduleBadge(pro)}
     </div>
     <div class="profile-actions">
       ${pro.website?`<a href="${pro.website}" target="_blank" class="btn btn-outline"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>`:''}
