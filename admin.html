@@ -307,7 +307,7 @@
     <div class="form-group"><label>Categoria</label><input id="ed-category"/></div>
     <div class="form-group"><label>Localização</label><input id="ed-location"/></div>
     <div class="form-group"><label>Plano</label>
-      <select id="ed-plan"><option value="free">free</option><option value="pro">pro</option><option value="premium">premium</option></select>
+      <select id="ed-plan"><option value="free">Free</option><option value="pro">Pro</option><option value="premium" disabled>Premium (legado — já não é vendido)</option></select>
     </div>
     <div class="form-group"><label>Bio</label><textarea id="ed-bio" rows="4"></textarea></div>
     <div class="modal-actions">
@@ -339,7 +339,8 @@
     <div id="sub-modal-name" style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:16px"></div>
     <div class="form-group">
       <label>Plano</label>
-      <select id="sub-plan"><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option></select>
+      <select id="sub-plan"><option value="free">Free</option><option value="pro">Pro</option><option value="premium" disabled>Premium (legado — já não é vendido)</option></select>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:5px">Só o Pro está à venda atualmente. Premium é um plano legado — só aparece aqui se o profissional já o tiver.</div>
     </div>
     <div class="form-group">
       <label>Validade do plano</label>
@@ -350,6 +351,7 @@
         <button type="button" class="btn btn-view" onclick="extendSub(90)">+90 dias</button>
         <button type="button" class="btn btn-edit" onclick="document.getElementById('sub-expires').value=''">Sem validade</button>
       </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:6px">Ao passar esta data, o plano volta a Free automaticamente (verificação diária às 3h). Não se aplica a subscrições Stripe — essas são geridas pelos pagamentos.</div>
     </div>
     <div class="form-group">
       <label>Créditos</label>
