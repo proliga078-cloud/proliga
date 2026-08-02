@@ -37,7 +37,7 @@ if(banner){
 if(plan==='free'){
 banner.innerHTML='<div class="upgrade-banner"><div><h3>🚀 Aumenta a visibilidade do teu perfil</h3><p>Plano Pro: portfólio, badge verificado, destaque nas pesquisas. A partir de €9,99/mês.</p></div><button class="btn btn-gold" onclick="location.href=\'pricing.html\'">Atualizar plano →</button></div>'
 }else if(plan==='pro'){
-banner.innerHTML='<div class="upgrade-banner" style="background:linear-gradient(135deg,#92400e,#f59e0b)"><div><h3>👑 Vai para Premium</h3><p>Aparece primeiro nas pesquisas e tem destaque máximo na tua categoria.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-solid" onclick="location.href=\'pricing.html\'">Ver Premium →</button><button class="btn btn-outline" style="background:#fff" onclick="manageBilling()">Gerir subscrição</button></div></div>'
+banner.innerHTML='<div class="upgrade-banner" style="background:linear-gradient(135deg,#1740B0,#1E4FD6)"><div><h3>🚀 Estás no plano Pro</h3><p>Portefólio, selo verificado e destaque nas pesquisas — tudo ativo.</p></div><button class="btn btn-outline" style="background:#fff" onclick="manageBilling()">Gerir subscrição</button></div>'
 }else if(plan==='premium'){
 banner.innerHTML='<div class="upgrade-banner" style="background:linear-gradient(135deg,#0f172a,#1d4ed8)"><div><h3>👑 Estás no plano Premium</h3><p>Tens o destaque máximo na Proliga.</p></div><button class="btn btn-outline" style="background:#fff" onclick="manageBilling()">Gerir subscrição</button></div>'
 }
