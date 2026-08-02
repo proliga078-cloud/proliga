@@ -27,7 +27,7 @@
 .cat-icon-badge .ic{width:26px;height:26px}
 
  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
- :root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--green:#1A8649;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
+ :root{--blue:#E8720A;--blue-dark:#C25A06;--blue-light:#FDECDD;--gold:#AF620A;--green:#1A8649;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
  body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
  a{text-decoration:none;color:inherit}
  nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
@@ -45,7 +45,7 @@
 
  .page-header{background:var(--white);padding:14px 5% 0;border-bottom:none}
  .page-header h1{font-size:clamp(17px,2.2vw,21px);font-weight:800;letter-spacing:-.03em;margin:0;display:flex;align-items:center;gap:10px;line-height:1.2;color:var(--ink)}
- .cat-icon-badge{width:30px;height:30px;border-radius:9px;background:#EEF2FC;color:#1E4FD6;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+ .cat-icon-badge{width:30px;height:30px;border-radius:9px;background:#FDECDD;color:#E8720A;display:flex;align-items:center;justify-content:center;flex-shrink:0}
  .cat-icon-badge .ic{width:17px;height:17px}
  .page-header .intro{display:none}
  .breadcrumb{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted-2);margin-bottom:8px}
@@ -187,9 +187,35 @@
  .sidebar.open{display:block!important}
  .sidebar-close-row{display:flex!important}
  .mobile-filter-btn{display:none!important}
- .sidebar-cta{background:linear-gradient(135deg,#1740B0,#1E4FD6)!important}
- .sidebar-cta a{color:#1E4FD6!important}
- .pro-card-cover{background:linear-gradient(135deg,#EEF2FC,#DCE6FA)!important}
+ .sidebar-cta{background:linear-gradient(135deg,#C25A06,#E8720A)!important}
+ .sidebar-cta a{color:#E8720A!important}
+ .pro-card-cover{background:linear-gradient(135deg,#FDECDD,#DCE6FA)!important}
+
+/* === tema navy+laranja: nav === */
+nav{background:#0F1A33}
+nav a.logo{color:#fff}
+nav a.logo em,nav a.logo span{color:#F2A55C}
+.navlinks{color:#9AA6C3}
+.navlinks a:hover{color:#fff}
+.hamburger-btn{background:transparent;border-color:rgba(255,255,255,.25);color:#fff}
+.mobile-nav-panel{background:#fff}
+nav .btn-ghost{color:#fff}
+nav .btn-ghost:hover{background:rgba(255,255,255,.1)}
+nav .btn-line{color:#fff;border-color:rgba(255,255,255,.3)}
+nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
+.btn-ink{background:#E8720A;color:#fff}
+.btn-ink:hover{background:#C25A06}
+
+/* === tema navy+laranja: acento único de categoria === */
+.cat-icon-badge{background:#FDECDD;color:#E8720A}
+.pro-card:hover{border-color:#E8720A}
+.pro-card-cover{background:linear-gradient(135deg,#E8720A,#F2924A)}
+.faq-item.open{border-color:#E8720A}
+.faq-chevron{color:#E8720A}
+.mini-how-card:hover{border-color:#E8720A}
+.mini-how-num{background:#E8720A}
+.sidebar-cta{background:linear-gradient(135deg,#E8720A,#F2924A)}
+.sidebar-cta a{color:#E8720A}
 </style>
 <script type="application/ld+json">
 {

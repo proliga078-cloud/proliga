@@ -37,8 +37,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --ink:#14181F;
-  --blue:#1E4FD6;
-  --blue-light:#EEF2FC;
+  --blue:#E8720A;
+  --blue-light:#FDECDD;
   --green:#1A8649;
   --green-light:#EAF7EE;
   --amber:#AF620A;
@@ -82,12 +82,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-
 .btn-ghost{background:transparent;color:var(--ink)}.btn-ghost:hover{background:var(--bg)}
 .btn-line{background:transparent;color:var(--ink);border-color:var(--border)}.btn-line:hover{border-color:var(--muted-2)}
 .btn-ink{background:var(--ink);color:#fff}.btn-ink:hover{background:#000}
-.btn-blue{background:var(--blue);color:#fff;box-shadow:0 6px 16px rgba(30,79,214,.22)}.btn-blue:hover{background:#1740B0}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 6px 16px rgba(232,114,10,.22)}.btn-blue:hover{background:#C25A06}
 .nav-user{display:none;align-items:center;gap:10px}
 .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
 .hero{position:relative;overflow:hidden;padding:72px 5% 0}
-.hero-glow{position:absolute;top:-180px;right:-10%;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(30,79,214,.08),transparent 70%);pointer-events:none}
+.hero-glow{position:absolute;top:-180px;right:-10%;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(232,114,10,.08),transparent 70%);pointer-events:none}
 .hero-inner{position:relative;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--blue-light);color:var(--blue);font-size:12.5px;font-weight:700;padding:6px 14px 6px 10px;border-radius:99px;margin-bottom:22px}
 .hero-badge .pulse{width:6px;height:6px;border-radius:50%;background:var(--blue);position:relative}
@@ -102,7 +102,7 @@ h1 em{font-style:normal;color:var(--blue)}
 .hs-field input{border:none;outline:none;font-family:inherit;font-size:13px;width:100%;color:var(--ink);background:transparent}
 .hs-field input::placeholder{color:var(--muted-2)}
 .hs-btn{background:var(--blue);color:#fff;border:none;padding:0 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
-.hs-btn:hover{background:#1740B0}
+.hs-btn:hover{background:#C25A06}
 .hs-btn:disabled{opacity:.7;cursor:not-allowed}
 @media(max-width:520px){.hero-search{flex-direction:column;max-width:100%}.hs-field{border-right:none;border-bottom:1px solid var(--border)}.hs-field:nth-child(2){border-bottom:none}.hs-btn{padding:12px}}
 .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
@@ -239,7 +239,7 @@ section{padding:72px 5%}
 .door-chip .ic{width:20px;height:20px}
 .door-client{background:#fff;border:1.5px solid var(--border);box-shadow:0 2px 12px rgba(20,24,31,.05)}
 .door-client p{color:var(--muted)}
-.door-pro{background:var(--blue);color:#fff;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(30,79,214,.24)}
+.door-pro{background:var(--blue);color:#fff;position:relative;overflow:hidden;box-shadow:0 10px 26px rgba(232,114,10,.24)}
 .door-pro::after{content:'';position:absolute;top:-50px;right:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.10)}
 .door-pro>*{position:relative}
 .door-pro p{color:rgba(255,255,255,.84)}
@@ -298,6 +298,35 @@ section{padding:52px 4%}
 .cta-row .btn{width:100%;justify-content:center}
 .dual-cta{grid-template-columns:1fr}
 }
+
+/* === tema navy+laranja: nav === */
+nav{background:#0F1A33}
+nav a.logo{color:#fff}
+nav a.logo em,nav a.logo span{color:#F2A55C}
+.navlinks{color:#9AA6C3}
+.navlinks a:hover{color:#fff}
+.hamburger-btn{background:transparent;border-color:rgba(255,255,255,.25);color:#fff}
+.mobile-nav-panel{background:#fff}
+nav .btn-ghost{color:#fff}
+nav .btn-ghost:hover{background:rgba(255,255,255,.1)}
+nav .btn-line{color:#fff;border-color:rgba(255,255,255,.3)}
+nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
+.btn-ink{background:#E8720A;color:#fff}
+.btn-ink:hover{background:#C25A06}
+
+/* === tema navy+laranja: hero (index) === */
+.hero{background:linear-gradient(150deg,#0B1428,#132348 55%,#0F1A33)}
+.hero-glow{background:radial-gradient(circle,rgba(232,114,10,.12),transparent 70%)}
+.hero-badge{background:rgba(232,114,10,.16);color:#F2A55C}
+.hero h1{color:#fff}
+.hero p{color:#B7C2E0}
+.hero .pill{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);color:#fff}
+.hero .pill .ic{color:#F2A55C}
+.hero .avatars .txt{color:#B7C2E0}
+.hero .avatars strong{color:#fff}
+.hero .card-panel{background:#fff}
+.hero .btn-line{color:#fff;border-color:rgba(255,255,255,.3)}
+.hero .btn-line:hover{border-color:rgba(255,255,255,.6)}
 </style>
 <script type="application/ld+json">
 {
@@ -362,7 +391,7 @@ section{padding:52px 4%}
 <a href="pedidos.html" class="btn btn-line btn-lg">Publicar pedido</a>
 </div>
 <div class="avatars">
-<div class="avatar-stack"><span style="background:#1E4FD6">PC</span><span style="background:#AF620A">DC</span><span style="background:#1A8649">AF</span></div>
+<div class="avatar-stack"><span style="background:#E8720A">PC</span><span style="background:#AF620A">DC</span><span style="background:#1A8649">AF</span></div>
 <div class="txt"><strong id="stat-pros-inline">—</strong> profissionais já a receber pedidos</div>
 </div>
 </div>
@@ -660,7 +689,7 @@ el.innerHTML='<div style="text-align:center;padding:26px 10px;color:var(--muted-
 return
 }
 document.getElementById('hero-live-badge').style.display='flex'
-const colors=['#1E4FD6','#AF620A','#1A8649']
+const colors=['#E8720A','#AF620A','#1A8649']
 el.innerHTML=data.map((r,i)=>{
 return '<a href="pedidos.html" class="req-card"'+(i===data.length-1?' style="margin-bottom:0"':'')+'><div class="av" style="background:'+colors[i%3]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg></div><div class="body"><div class="l">'+escapeHtml(r.title)+'</div><div class="s">'+escapeHtml(r.location||'Portugal')+' · '+timeAgo(r.created_at)+'</div></div></a>'
 }).join('')

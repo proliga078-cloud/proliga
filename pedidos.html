@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--green:#1A8649;--green-light:#EAF6EE;--red:#C0362C;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff;--shadow-sm:0 1px 3px rgba(20,24,31,.05);--shadow-md:0 8px 24px rgba(20,24,31,.09)}
+:root{--blue:#E8720A;--blue-dark:#C25A06;--blue-light:#FDECDD;--gold:#AF620A;--green:#1A8649;--green-light:#EAF6EE;--red:#C0362C;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff;--shadow-sm:0 1px 3px rgba(20,24,31,.05);--shadow-md:0 8px 24px rgba(20,24,31,.09)}
 body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
 a{text-decoration:none;color:inherit}
 nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
@@ -22,7 +22,7 @@ nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px 
 .btn:hover{transform:translateY(-1px)}
 .btn-ghost{background:transparent;color:var(--text)}.btn-ghost:hover{background:var(--bg);transform:none}
 .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
-.btn-solid{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(30,79,214,.25)}.btn-solid:hover{background:var(--blue-dark)}
+.btn-solid{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(232,114,10,.25)}.btn-solid:hover{background:var(--blue-dark)}
 .btn-gold{background:var(--gold);color:#fff;box-shadow:0 2px 8px rgba(175,98,10,.25)}.btn-gold:hover{background:#8f4f08}
 .btn-sm{padding:7px 13px;font-size:12.5px}
 .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -94,6 +94,21 @@ textarea{resize:vertical;min-height:80px}
 .photo-add:hover{border-color:var(--blue);color:var(--blue)}
 
 @media(max-width:600px){nav{padding:0 4%}.hero{padding:40px 5% 32px}.hero h1{font-size:25px}.offer-row2{grid-template-columns:1fr}}
+
+/* === tema navy+laranja: nav === */
+nav{background:#0F1A33}
+nav a.logo{color:#fff}
+nav a.logo em,nav a.logo span{color:#F2A55C}
+.navlinks{color:#9AA6C3}
+.navlinks a:hover{color:#fff}
+.hamburger-btn{background:transparent;border-color:rgba(255,255,255,.25);color:#fff}
+.mobile-nav-panel{background:#fff}
+nav .btn-ghost{color:#fff}
+nav .btn-ghost:hover{background:rgba(255,255,255,.1)}
+nav .btn-line{color:#fff;border-color:rgba(255,255,255,.3)}
+nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
+.btn-ink{background:#E8720A;color:#fff}
+.btn-ink:hover{background:#C25A06}
 </style>
 <meta property="og:title" content="Pedidos de Clientes – Proliga"/>
 <meta property="og:description" content="Vê pedidos recentes de clientes à procura de profissionais no Porto e em Braga."/>
