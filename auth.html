@@ -175,6 +175,7 @@ if (data.session && !inRecovery && !location.hash.includes('type=recovery')) loc
 // Check if coming from ?tab=register
 const params = new URLSearchParams(location.search)
 if (params.get('tab') === 'register') showTab('register')
+const refCode = (params.get('ref') || '').trim().toUpperCase() || null
 
 function showTab(tab) {
 document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none'
@@ -282,6 +283,7 @@ return
 
 if (signUpData.session) {
 await insertProfile(userId, name, email)
+await applyReferral(userId)
 showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
 setTimeout(() => location.href = 'dashboard.html', 800)
 return
@@ -291,6 +293,7 @@ const { data: signInData, error: signInError } = await db.auth.signInWithPasswor
 
 if (!signInError && signInData?.session) {
 await insertProfile(signInData.user.id, name, email)
+await applyReferral(signInData.user.id)
 showMsg('reg-msg', 'Conta criada! A redirecionar...', 'success')
 setTimeout(() => location.href = 'dashboard.html', 800)
 return
@@ -319,6 +322,15 @@ location: '',
 category: '',
 bio: ''
 }, { onConflict: 'user_id' })
+}
+
+async function applyReferral(newUserId) {
+if (!refCode) return
+try {
+const { data: referrer } = await db.from('profiles').select('id').eq('referral_code', refCode).maybeSingle()
+if (!referrer || referrer.id === newUserId) return
+await db.from('signup_referrals').insert({ referrer_id: referrer.id, referred_id: newUserId })
+} catch (e) {}
 }
 
 async function doResetPassword(e) {

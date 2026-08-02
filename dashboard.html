@@ -425,6 +425,7 @@
     <div class="nav-item" data-page="myrequests" onclick="showPage('myrequests')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg></span> Os Meus Pedidos</div>
     <div class="nav-item" data-page="reviews" onclick="showPage('reviews')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></span> Avaliações</div>
     <div class="nav-item" data-page="referrals" onclick="showPage('referrals')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Referências</div>
+    <div class="nav-item" data-page="convidar" onclick="showPage('convidar')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span> Créditos</div>
     <div class="nav-divider"></div>
     <div class="nav-item" onclick="viewPublicProfile()"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></span> Ver Perfil Público</div>
   </nav>
@@ -1010,6 +1011,65 @@
         <button class="btn btn-outline btn-sm" onclick="openReferModal()">+ Recomendar profissional</button>
       </div>
       <div id="referrals-sent" class="item-list"></div>
+    </div>
+  </div>
+
+  <!-- CREDITOS -->
+  <div id="page-convidar" class="page-section">
+    <div class="page-title">Créditos</div>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:560px">Ganha créditos e troca-os por um mês do plano Pro ou por destaque no site. Convida um amigo (10 créditos) e recebe boas avaliações em trabalhos reais (5 a 10 créditos por avaliação).</p>
+
+    <div class="form-section" style="background:var(--bg);border:none;text-align:center;padding:24px">
+      <div style="font-size:13px;color:var(--muted);font-weight:600">Saldo atual</div>
+      <div style="font-size:40px;font-weight:800;color:var(--blue);margin-top:4px" id="credits-balance">0</div>
+    </div>
+
+    <div class="two-cards">
+      <div class="form-section">
+        <div class="tc-head"><span>Convidar amigos</span></div>
+        <p style="font-size:12.5px;color:var(--muted);margin:-6px 0 12px">10 créditos por cada registo através do teu link.</p>
+        <div id="invite-link-box"></div>
+      </div>
+      <div class="form-section">
+        <div class="tc-head"><span>Boas avaliações</span></div>
+        <p style="font-size:12.5px;color:var(--muted);line-height:1.6">Sempre que um cliente com quem tiveste um trabalho pago avalia com 5★ ganhas 10 créditos, com 4★ ganhas 5. Automático, não precisas de fazer nada.</p>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="tc-head"><span>Trocar por Pro</span></div>
+      <p style="font-size:12.5px;color:var(--muted);margin:-6px 0 12px">120 créditos = 1 mês grátis de Pro. Escreve-nos para <a href="mailto:suporte@proliga.pt" style="color:var(--blue)">suporte@proliga.pt</a> a indicar quantos créditos queres usar.</p>
+    </div>
+
+    <div class="form-section">
+      <div class="tc-head"><span>Anunciar no site</span></div>
+      <p style="font-size:12.5px;color:var(--muted);margin:-6px 0 12px">Usa créditos para o teu perfil aparecer num banner na homepage. Podes usar uma foto ou um vídeo curto próprios do anúncio — se não puseres nada, usamos a tua foto de perfil.</p>
+      <div class="alert error" id="ad-error"></div>
+      <div class="alert success" id="ad-success"></div>
+      <div id="ad-active-box" style="margin-bottom:12px"></div>
+
+      <label style="font-size:12.5px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px">Foto ou vídeo do anúncio (opcional)</label>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+        <label for="ad-media-file" style="background:var(--blue-light);color:var(--blue);border:1.5px dashed var(--blue);border-radius:8px;padding:10px 16px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;margin:0">
+          <svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg> Carregar foto ou vídeo
+          <input type="file" id="ad-media-file" accept="image/*,video/mp4,video/webm" style="display:none" onchange="uploadAdMedia(this)"/>
+        </label>
+        <div id="ad-media-preview"></div>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <select id="ad-days" style="max-width:180px">
+          <option value="3">3 dias · 27 créditos</option>
+          <option value="7" selected>7 dias · 60 créditos</option>
+          <option value="14">14 dias · 120 créditos</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="buyAdSlot()">Anunciar agora</button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="tc-head"><span>Pessoas convidadas</span></div>
+      <div id="invited-list"></div>
     </div>
   </div>
 
@@ -1920,6 +1980,7 @@ function showPage(name){
   if(name==='clientes')renderClientHistory()
   if(name==='agenda')renderCalendar()
   if(name==='referrals')loadReferrals()
+  if(name==='convidar')loadInvites()
   if(name==='financas'){renderFinance();loadExpenses();populateReportYears();renderAnnualReport()}
 }
 
@@ -3008,6 +3069,94 @@ async function submitReferral(){
   closeReferModal()
   showAlert('job-success','Recomendação enviada a '+refSelectedPro.name+'!')
   loadReferrals()
+}
+
+let pendingAdMedia={url:null,type:'photo'}
+
+async function loadInvites(){
+  if(!profileId)return
+  const box=document.getElementById('invite-link-box')
+  if(box){
+    let code=profileData?.referral_code
+    if(!code){
+      const{data}=await db.from('profiles').select('referral_code').eq('id',profileId).maybeSingle()
+      code=data?.referral_code
+      if(code)profileData={...profileData,referral_code:code}
+    }
+    if(code){
+      const url=location.origin+'/auth.html?tab=register&ref='+code
+      box.innerHTML=`<input type="text" readonly value="${url}" style="margin-bottom:8px;font-size:12.5px" onclick="this.select()"/>
+        <button class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText('${url}');showAlert('profile-success','Link copiado!')">Copiar link</button>`
+    } else {
+      box.innerHTML='<div class="empty">A gerar o teu link...</div>'
+    }
+  }
+  await refreshCreditsBalance()
+
+  const listEl=document.getElementById('invited-list')
+  if(listEl){
+    const{data}=await db.from('signup_referrals').select('created_at, referred:profiles!signup_referrals_referred_id_fkey(name,photo_url)').eq('referrer_id',profileId).order('created_at',{ascending:false})
+    if(!data||!data.length)listEl.innerHTML='<div class="empty">Ainda não convidaste ninguém.</div>'
+    else listEl.innerHTML=data.map(r=>`<div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${escapeHtml(r.referred?.name||'Novo utilizador')}</div>
+        <div class="list-item-sub">Registou-se em ${new Date(r.created_at).toLocaleDateString('pt-PT')}</div>
+      </div>
+    </div>`).join('')
+  }
+  renderActiveAdSlot()
+}
+
+async function refreshCreditsBalance(){
+  const{data}=await db.from('profiles').select('credits').eq('id',profileId).maybeSingle()
+  const credits=data?.credits||0
+  profileData={...profileData,credits}
+  const el=document.getElementById('credits-balance')
+  if(el)el.textContent=Number(credits).toLocaleString('pt-PT',{maximumFractionDigits:1})
+}
+
+async function renderActiveAdSlot(){
+  const el=document.getElementById('ad-active-box')
+  if(!el)return
+  const{data}=await db.from('ad_slots').select('*').eq('professional_id',profileId).eq('status','ativo').gt('ends_at',new Date().toISOString()).order('ends_at',{ascending:false}).limit(1).maybeSingle()
+  if(!data){el.innerHTML='';return}
+  const fim=new Date(data.ends_at).toLocaleDateString('pt-PT',{day:'numeric',month:'short'})
+  el.innerHTML=`<div style="background:var(--blue-light);color:var(--blue);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600">🔵 Anúncio ativo até ${fim}</div>`
+}
+
+async function uploadAdMedia(input){
+  const file=input.files[0]
+  if(!file)return
+  const isVideo=file.type.startsWith('video/')
+  const maxSize=isVideo?15*1024*1024:5*1024*1024
+  if(file.size>maxSize){showAlert('ad-error','Ficheiro demasiado grande. Máx '+(isVideo?'15MB (vídeo)':'5MB (foto)')+'.','error');return}
+  const preview=document.getElementById('ad-media-preview')
+  preview.innerHTML='<div style="font-size:13px;color:var(--muted)">⏳ A carregar...</div>'
+  try{
+    const ext=file.name.split('.').pop()
+    const path=`ads/${profileId}/${Date.now()}.${ext}`
+    const{error}=await db.storage.from('proliga-media').upload(path,file,{upsert:true,contentType:file.type})
+    if(error)throw error
+    const{data:urlData}=db.storage.from('proliga-media').getPublicUrl(path)
+    pendingAdMedia={url:urlData.publicUrl,type:isVideo?'video':'photo'}
+    preview.innerHTML=isVideo
+      ?`<video src="${urlData.publicUrl}" style="width:120px;height:68px;border-radius:8px;object-fit:cover" muted autoplay loop playsinline></video>`
+      :`<img src="${urlData.publicUrl}" style="width:68px;height:68px;border-radius:8px;object-fit:cover"/>`
+  }catch(e){
+    preview.innerHTML=''
+    showAlert('ad-error','Não foi possível carregar o ficheiro: '+(e.message||e),'error')
+  }
+}
+
+async function buyAdSlot(){
+  const days=parseInt(document.getElementById('ad-days').value,10)
+  const{data,error}=await db.rpc('buy_ad_slot',{dias:days,media_url:pendingAdMedia.url,media_type:pendingAdMedia.type})
+  if(error){showAlert('ad-error',error.message.includes('insuficiente')?'Não tens créditos suficientes para isto.':('Erro: '+error.message),'error');return}
+  showAlert('ad-success','Anúncio ativado!')
+  pendingAdMedia={url:null,type:'photo'}
+  document.getElementById('ad-media-preview').innerHTML=''
+  await refreshCreditsBalance()
+  renderActiveAdSlot()
 }
 
 async function loadReferrals(){
