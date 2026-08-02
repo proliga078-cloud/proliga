@@ -13,41 +13,57 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--green:#1A8649;--red:#C0362C;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff}
+:root{--blue:#1E4FD6;--blue-dark:#1740B0;--blue-light:#EEF2FC;--gold:#AF620A;--green:#1A8649;--green-light:#EAF6EE;--red:#C0362C;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff;--shadow-sm:0 1px 3px rgba(20,24,31,.05);--shadow-md:0 8px 24px rgba(20,24,31,.09)}
 body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg)}
 a{text-decoration:none;color:inherit}
 nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);padding:0 5%;height:68px;display:flex;align-items:center;gap:16px}
 .logo{font-size:22px;font-weight:900;color:var(--blue);letter-spacing:-1px}.logo span{color:var(--gold)}
-.btn{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
-.btn-ghost{background:transparent;color:var(--text)}.btn-ghost:hover{background:var(--bg)}
+.btn{padding:9px 18px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text)}.btn-ghost:hover{background:var(--bg);transform:none}
 .btn-outline{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline:hover{background:var(--blue-light)}
-.btn-solid{background:var(--blue);color:#fff}.btn-solid:hover{background:var(--blue-dark)}
-.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:#d97706}
+.btn-solid{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(30,79,214,.25)}.btn-solid:hover{background:var(--blue-dark)}
+.btn-gold{background:var(--gold);color:#fff;box-shadow:0 2px 8px rgba(175,98,10,.25)}.btn-gold:hover{background:#8f4f08}
+.btn-sm{padding:7px 13px;font-size:12.5px}
 .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
-.hero{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:48px 5% 40px;color:#fff;text-align:center}
-.hero h1{font-size:30px;font-weight:900;letter-spacing:-1px;margin-bottom:10px}
-.hero p{font-size:15px;color:rgba(255,255,255,.85);max-width:560px;margin:0 auto 22px}
+.hero{background:linear-gradient(135deg,#0f1c3f,var(--blue-dark) 60%,var(--blue));padding:56px 5% 46px;color:#fff;text-align:center}
+.hero h1{font-size:32px;font-weight:900;letter-spacing:-1px;margin-bottom:10px}
+.hero p{font-size:15px;color:rgba(255,255,255,.82);max-width:560px;margin:0 auto 24px}
 .hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
-.wrap{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
-.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;background:var(--white);padding:14px;border-radius:14px;border:1px solid var(--border)}
-.filters select,.filters input{padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none}
+.wrap{max-width:1140px;margin:0 auto;padding:28px 24px 60px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;background:var(--white);padding:14px;border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.filters select,.filters input{padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s}
 .filters input{flex:1;min-width:180px}
-.filters select:focus,.filters input:focus{border-color:var(--blue)}
+.filters select:focus,.filters input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-.req-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s}
-.req-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+.req-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .18s,transform .18s;box-shadow:var(--shadow-sm)}
+.req-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.req-cover{height:130px;background-size:cover;background-position:center;position:relative;display:flex;align-items:flex-end;padding:10px 14px}
+.req-cover.placeholder{background:linear-gradient(135deg,var(--blue-light),#F5F0FF);display:flex;align-items:center;justify-content:center;font-size:38px}
+.req-cover-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%)}
+.req-cover-cat{position:relative;z-index:1;background:rgba(255,255,255,.92);color:var(--blue);font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:99px}
+.req-body{padding:16px;display:flex;flex-direction:column;gap:9px;flex:1}
 .req-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.req-title{font-size:16px;font-weight:700;line-height:1.4}
-.req-time{font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0}
-.req-cat{display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;width:fit-content}
-.req-loc{font-size:13px;color:var(--muted)}
+.req-title{font-size:15.5px;font-weight:700;line-height:1.4}
+.req-time{font-size:11px;color:var(--muted);white-space:nowrap;flex-shrink:0;margin-top:2px}
+.req-loc{font-size:12.5px;color:var(--muted)}
 .req-desc{font-size:13px;color:#475569;line-height:1.6;flex:1}
-.req-budget{font-size:14px;font-weight:700;color:var(--green)}
-.req-footer{display:flex;gap:8px;margin-top:4px}
-.req-footer .btn{flex:1;justify-content:center;font-size:13px;padding:9px}
+.req-meta-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.req-budget{font-size:13.5px;font-weight:700;color:var(--green)}
+.req-offers-pill{font-size:11.5px;font-weight:700;color:var(--blue);background:var(--blue-light);padding:3px 9px;border-radius:99px}
+.req-footer{display:flex;gap:8px;margin-top:2px}
+.req-footer .btn{flex:1;justify-content:center;font-size:12.5px;padding:9px}
+.offer-panel{display:none;background:var(--bg);border-top:1px solid var(--border);padding:14px 16px;gap:9px;flex-direction:column}
+.offer-panel.open{display:flex}
+.offer-panel textarea{width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:56px;outline:none}
+.offer-panel textarea:focus{border-color:var(--blue)}
+.offer-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.offer-row2 input{padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.offer-row2 input:focus{border-color:var(--blue)}
+.offer-mine{background:var(--green-light);border-radius:9px;padding:10px 12px;font-size:12.5px;color:#166534;line-height:1.6}
 
 .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
 .empty .ico{font-size:44px;margin-bottom:10px}
@@ -55,15 +71,14 @@ nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px 
 .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* MODAL */
 #modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:999;align-items:center;justify-content:center;padding:20px}
 #modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:18px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:28px}
+.modal{background:var(--white);border-radius:18px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:28px;box-shadow:0 24px 70px rgba(15,23,42,.3)}
 .modal h2{font-size:19px;font-weight:800;margin-bottom:18px}
 .form-group{margin-bottom:14px}
 label{display:block;font-size:13px;font-weight:600;color:#475569;margin-bottom:5px}
-input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s}
-input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
 textarea{resize:vertical;min-height:80px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .modal-actions{display:flex;gap:10px;margin-top:18px}
@@ -71,8 +86,14 @@ textarea{resize:vertical;min-height:80px}
 .msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;display:none}
 .msg.error{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;display:block}
 .msg.success{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;display:block}
+.photo-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.photo-thumb{position:relative;width:64px;height:64px;border-radius:9px;overflow:hidden;border:1px solid var(--border)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-thumb .rm{position:absolute;top:2px;right:2px;background:rgba(15,23,42,.7);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;line-height:1}
+.photo-add{width:64px;height:64px;border-radius:9px;border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--muted);cursor:pointer;flex-shrink:0}
+.photo-add:hover{border-color:var(--blue);color:var(--blue)}
 
-@media(max-width:600px){nav{padding:0 4%}.hero{padding:36px 5% 30px}.hero h1{font-size:24px}}
+@media(max-width:600px){nav{padding:0 4%}.hero{padding:40px 5% 32px}.hero h1{font-size:25px}.offer-row2{grid-template-columns:1fr}}
 </style>
 <meta property="og:title" content="Pedidos de Clientes – Proliga"/>
 <meta property="og:description" content="Vê pedidos recentes de clientes à procura de profissionais no Porto e em Braga."/>
@@ -105,7 +126,7 @@ textarea{resize:vertical;min-height:80px}
 
 <div class="hero">
 <h1>📢 O Que Os Clientes Precisam</h1>
-<p>Vê pedidos reais de pessoas à procura de profissionais no Porto e em Braga — e sê o primeiro a responder.</p>
+<p>Vê pedidos reais de pessoas à procura de profissionais no Porto e em Braga — responde com uma proposta e sê o primeiro a falar com elas.</p>
 <div class="hero-actions">
 <button class="btn btn-gold" onclick="openModal()">➕ Publicar um Pedido</button>
 </div>
@@ -194,6 +215,13 @@ textarea{resize:vertical;min-height:80px}
 <div class="form-group"><label>Orçamento mín. (€)</label><input id="m-bmin" type="number" min="0" placeholder="Ex: 30"/></div>
 <div class="form-group"><label>Orçamento máx. (€)</label><input id="m-bmax" type="number" min="0" placeholder="Ex: 100"/></div>
 </div>
+<div class="form-group">
+<label>Fotos (opcional, até 4)</label>
+<div class="photo-strip" id="m-photo-strip">
+<div class="photo-add" onclick="document.getElementById('m-photo-file').click()">➕</div>
+</div>
+<input type="file" id="m-photo-file" accept="image/*" multiple style="display:none" onchange="handlePhotoSelect(this)"/>
+</div>
 </div>
 <div class="modal-actions">
 <button class="btn btn-ghost" style="border:1.5px solid var(--border)" onclick="closeModal()">Cancelar</button>
@@ -207,9 +235,11 @@ textarea{resize:vertical;min-height:80px}
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
-let session=null,allRequests=[]
+let session=null,allRequests=[],offerCounts={},myOffers={}
+let pendingPhotos=[]
 
 const CATEGORIES=['Eletricistas','Canalizadores','Pintores','Jardineiros','Limpeza','Mudanças','Pedreiros','Carpinteiros','Serralheiros','Decoradores','Programadores','Designers','Reparações Tech','Personal Trainers','Cabeleireiros','Esteticistas','Outro']
+const CAT_ICONS={'Eletricistas':'⚡','Canalizadores':'🔧','Pintores':'🎨','Jardineiros':'🌿','Limpeza':'🧹','Mudanças':'📦','Pedreiros':'🧱','Carpinteiros':'🪚','Serralheiros':'🔩','Decoradores':'🖼️','Programadores':'💻','Designers':'✏️','Reparações Tech':'🔌','Personal Trainers':'🏋️','Cabeleireiros':'💇','Esteticistas':'💅','Outro':'🛠️'}
 
 async function init(){
 const catSel=document.getElementById('f-cat')
@@ -231,8 +261,20 @@ async function loadRequests(){
 const{data,error}=await db.from('requests').select('*,profiles:client_id(name,photo_url)').eq('status','open').order('created_at',{ascending:false})
 if(error){document.getElementById('grid').innerHTML='<div class="empty">Erro ao carregar pedidos.</div>';return}
 allRequests=data||[]
+await loadOfferCounts()
 renderList()
 showHeadStartNotice()
+}
+
+async function loadOfferCounts(){
+offerCounts={};myOffers={}
+if(!allRequests.length)return
+const ids=allRequests.map(r=>r.id)
+const{data}=await db.from('request_offers').select('request_id,professional_id,message,price_from,price_to').in('request_id',ids)
+;(data||[]).forEach(o=>{
+offerCounts[o.request_id]=(offerCounts[o.request_id]||0)+1
+if(session&&o.professional_id===session.user.id)myOffers[o.request_id]=o
+})
 }
 
 // Os pedidos das ultimas 2 horas so aparecem a quem tem plano Pro.
@@ -279,17 +321,87 @@ return
 grid.innerHTML=list.map(r=>{
 const budget=r.budget_from?('€'+r.budget_from+(r.budget_to?' – €'+r.budget_to:'+')):''
 const clientName=r.profiles?.name||'Cliente'
+const cover=(r.photo_urls&&r.photo_urls[0])
+  ?`<div class="req-cover" style="background-image:url('${cover0(r)}')"><div class="req-cover-fade"></div><span class="req-cover-cat">${escapeHtml(r.category)}</span></div>`
+  :`<div class="req-cover placeholder">${CAT_ICONS[r.category]||'🛠️'}</div>`
+const nOffers=offerCounts[r.id]||0
+const isOwner=session&&session.user.id===r.client_id
+const mine=myOffers[r.id]
+let footer=''
+if(isOwner){
+  footer=`<div class="req-footer"><a class="btn btn-outline" href="dashboard.html" style="flex:1;justify-content:center">📋 Ver no dashboard</a></div>`
+}else{
+  footer=`<div class="req-footer">
+    <button class="btn btn-solid" onclick="contactClient('${r.client_id}')">💬 Contactar</button>
+    <button class="btn btn-outline" onclick="toggleOfferPanel('${r.id}')">${mine?'✏️ A minha proposta':'💰 Responder'}</button>
+  </div>
+  <div class="offer-panel" id="offer-panel-${r.id}">
+    ${mine?offerMineHtml(mine):offerFormHtml(r.id)}
+  </div>`
+}
 return `<div class="req-card">
+${cover}
+<div class="req-body">
 <div class="req-top"><div class="req-title">${escapeHtml(r.title)}</div><div class="req-time">${timeAgo(r.created_at)}</div></div>
-<span class="req-cat">${escapeHtml(r.category)}</span>
 <div class="req-loc">📍 ${escapeHtml(r.location)} · por ${escapeHtml(clientName)}</div>
 ${r.description?'<div class="req-desc">'+escapeHtml(r.description)+'</div>':''}
-${budget?'<div class="req-budget">💰 '+budget+'</div>':''}
-<div class="req-footer">
-<button class="btn btn-solid" onclick="contactClient('${r.client_id}')">💬 Contactar</button>
+<div class="req-meta-row">
+${budget?'<div class="req-budget">💰 '+budget+'</div>':'<span></span>'}
+${nOffers?'<div class="req-offers-pill">'+nOffers+' proposta'+(nOffers>1?'s':'')+'</div>':''}
+</div>
+${footer}
 </div>
 </div>`
 }).join('')
+}
+
+function cover0(r){return (r.photo_urls&&r.photo_urls[0])||''}
+
+function offerFormHtml(reqId){
+return `<textarea id="offer-msg-${reqId}" placeholder="Escreve uma breve mensagem (ex: disponibilidade, o que inclui o preço...)"></textarea>
+<div class="offer-row2">
+<input type="number" min="0" id="offer-from-${reqId}" placeholder="Preço de (€)"/>
+<input type="number" min="0" id="offer-to-${reqId}" placeholder="Preço até (€)"/>
+</div>
+<button class="btn btn-gold btn-sm" onclick="sendOffer('${reqId}')">Enviar proposta</button>`
+}
+
+function offerMineHtml(o){
+const preco=o.price_from?('€'+o.price_from+(o.price_to?' – €'+o.price_to:'')):'Sem preço indicado'
+return `<div class="offer-mine"><strong>${preco}</strong><br>${escapeHtml(o.message||'(sem mensagem)')}</div>
+<button class="btn btn-outline btn-sm" onclick="editMyOffer('${o.request_id}')">Editar proposta</button>`
+}
+
+function editMyOffer(reqId){
+const panel=document.getElementById('offer-panel-'+reqId)
+const o=myOffers[reqId]
+panel.innerHTML=offerFormHtml(reqId)
+if(o){
+document.getElementById('offer-msg-'+reqId).value=o.message||''
+document.getElementById('offer-from-'+reqId).value=o.price_from||''
+document.getElementById('offer-to-'+reqId).value=o.price_to||''
+}
+}
+
+function toggleOfferPanel(reqId){
+if(!session){location.href='auth.html?tab=login&redirect=pedidos.html';return}
+const panel=document.getElementById('offer-panel-'+reqId)
+panel.classList.toggle('open')
+}
+
+async function sendOffer(reqId){
+const msg=document.getElementById('offer-msg-'+reqId).value.trim()
+const from=document.getElementById('offer-from-'+reqId).value
+const to=document.getElementById('offer-to-'+reqId).value
+const{error}=await db.from('request_offers').upsert({
+request_id:reqId,professional_id:session.user.id,
+message:msg||null,
+price_from:from?parseFloat(from):null,
+price_to:to?parseFloat(to):null
+},{onConflict:'request_id,professional_id'})
+if(error){alert('Erro ao enviar proposta: '+error.message);return}
+await loadOfferCounts()
+renderList()
 }
 
 function escapeHtml(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
@@ -302,9 +414,36 @@ location.href='messages.html?with='+clientId
 
 function openModal(){
 if(!session){location.href='auth.html?tab=login&redirect=pedidos.html';return}
+pendingPhotos=[]
+renderPhotoStrip()
 document.getElementById('modal-overlay').classList.add('open')
 }
 function closeModal(){document.getElementById('modal-overlay').classList.remove('open')}
+
+function renderPhotoStrip(){
+const strip=document.getElementById('m-photo-strip')
+const thumbs=pendingPhotos.map((url,i)=>`<div class="photo-thumb"><img src="${url}"/><div class="rm" onclick="removePhoto(${i})">✕</div></div>`).join('')
+const addBtn=pendingPhotos.length<4?'<div class="photo-add" onclick="document.getElementById(&quot;m-photo-file&quot;).click()">➕</div>':''
+strip.innerHTML=thumbs+addBtn
+}
+function removePhoto(i){pendingPhotos.splice(i,1);renderPhotoStrip()}
+
+async function handlePhotoSelect(input){
+const files=Array.from(input.files||[]).slice(0,4-pendingPhotos.length)
+input.value=''
+for(const file of files){
+if(file.size>5*1024*1024)continue
+try{
+const ext=file.name.split('.').pop()
+const path=`requests/${session.user.id}/${Date.now()}-${Math.random().toString(36).slice(2,7)}.${ext}`
+const{error}=await db.storage.from('proliga-media').upload(path,file,{contentType:file.type})
+if(error){console.error(error);continue}
+const{data:urlData}=db.storage.from('proliga-media').getPublicUrl(path)
+pendingPhotos.push(urlData.publicUrl)
+}catch(e){console.error(e)}
+}
+renderPhotoStrip()
+}
 
 async function submitRequest(){
 const title=document.getElementById('m-title').value.trim()
@@ -325,7 +464,8 @@ const{data:novo,error}=await db.from('requests').insert({
 client_id:session.user.id,title,category,location,
 description:description||null,
 budget_from:bmin?parseFloat(bmin):null,
-budget_to:bmax?parseFloat(bmax):null
+budget_to:bmax?parseFloat(bmax):null,
+photo_urls:pendingPhotos
 }).select('id').single()
 btn.disabled=false;btn.textContent='Publicar'
 if(error){
@@ -340,6 +480,7 @@ document.getElementById('m-success').style.display='none'
 document.getElementById('m-cat').value=''
 document.getElementById('m-district').value=''
 document.getElementById('m-city').value=''
+pendingPhotos=[]
 loadRequests()
 },1200)
 }
