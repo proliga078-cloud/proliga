@@ -60,6 +60,8 @@ nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px 
 .offer-panel.open{display:flex}
 .offer-panel textarea{width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:56px;outline:none}
 .offer-panel textarea:focus{border-color:var(--blue)}
+.price-hint{display:none;background:var(--blue-light);color:var(--blue);font-size:12px;padding:8px 11px;border-radius:8px;line-height:1.5}
+.price-hint.show{display:block}
 .offer-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .offer-row2 input{padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none}
 .offer-row2 input:focus{border-color:var(--blue)}
@@ -373,12 +375,26 @@ ${footer}
 function cover0(r){return (r.photo_urls&&r.photo_urls[0])||''}
 
 function offerFormHtml(reqId){
-return `<textarea id="offer-msg-${reqId}" placeholder="Escreve uma breve mensagem (ex: disponibilidade, o que inclui o preço...)"></textarea>
+return `<div class="price-hint" id="price-hint-${reqId}"></div>
+<textarea id="offer-msg-${reqId}" placeholder="Escreve uma breve mensagem (ex: disponibilidade, o que inclui o preço...)"></textarea>
 <div class="offer-row2">
 <input type="number" min="0" id="offer-from-${reqId}" placeholder="Preço de (€)"/>
 <input type="number" min="0" id="offer-to-${reqId}" placeholder="Preço até (€)"/>
 </div>
 <button class="btn btn-gold btn-sm" onclick="sendOffer('${reqId}')">Enviar proposta</button>`
+}
+
+const priceSuggestCache={}
+async function loadPriceSuggestion(reqId){
+if(priceSuggestCache[reqId]!==undefined)return
+priceSuggestCache[reqId]=null
+const box=document.getElementById('price-hint-'+reqId)
+if(!box)return
+const{data,error}=await db.rpc('get_price_suggestion',{p_request_id:reqId})
+if(error||!data||!data.n||data.n<3||data.low==null){return}
+priceSuggestCache[reqId]=data
+box.classList.add('show')
+box.innerHTML=`💡 Outros profissionais propuseram entre <strong>€${Number(data.low).toFixed(0)}</strong> e <strong>€${Number(data.high).toFixed(0)}</strong> para pedidos parecidos.`
 }
 
 function offerMineHtml(o){
@@ -396,12 +412,14 @@ document.getElementById('offer-msg-'+reqId).value=o.message||''
 document.getElementById('offer-from-'+reqId).value=o.price_from||''
 document.getElementById('offer-to-'+reqId).value=o.price_to||''
 }
+loadPriceSuggestion(reqId)
 }
 
 function toggleOfferPanel(reqId){
 if(!session){location.href='auth.html?tab=login&redirect=pedidos.html';return}
 const panel=document.getElementById('offer-panel-'+reqId)
 panel.classList.toggle('open')
+if(panel.classList.contains('open'))loadPriceSuggestion(reqId)
 }
 
 async function sendOffer(reqId){

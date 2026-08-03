@@ -438,6 +438,7 @@
     <div class="nav-label">Negócio</div>
     <div class="nav-item" data-page="profile" onclick="showPage('profile')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></span> O Meu Perfil</div>
     <div class="nav-item" data-page="financas" onclick="showPage('financas')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v12M15.5 9.5a2.5 2.5 0 0 0-2.5-2H11a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-2a2.5 2.5 0 0 1-2.5-2"/></svg></span> Finanças</div>
+    <div class="nav-item" data-page="mercado" onclick="showPage('mercado')"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-5 3 3 5-7"/></svg></span> Mercado</div>
 
     <div class="nav-label">Comunicação</div>
     <div class="nav-item" onclick="location.href='messages.html'"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></span> Chat <span id="chat-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;margin-left:auto">0</span></div>
@@ -1021,6 +1022,64 @@
     <p style="color:var(--muted);font-size:11.5px;margin-top:-6px">Nota: isto é um resumo de gestão, não uma fatura oficial. Para efeitos fiscais, usa o teu programa de faturação certificado.</p>
   </div>
 
+  <!-- MERCADO -->
+  <div id="page-mercado" class="page-section">
+
+    <div class="hero-dark">
+      <div class="hd-glow-a"></div><div class="hd-glow-b" style="background:radial-gradient(circle,rgba(30,140,90,.22),transparent 70%)"></div>
+      <div class="hd-inner">
+        <div class="hd-top">
+          <div>
+            <div class="hd-date" id="mkt-cat-label">&nbsp;</div>
+            <div class="hd-title">Painel de Mercado</div>
+          </div>
+        </div>
+        <div class="hd-stats">
+          <div class="hd-stat">
+            <div class="hd-lbl">Pedidos (30 dias)</div>
+            <div class="hd-val" id="mkt-requests">—</div>
+            <div class="hd-sub" id="mkt-requests-sub">&nbsp;</div>
+          </div>
+          <div class="hd-stat">
+            <div class="hd-lbl">Faixa de preço</div>
+            <div class="hd-val" id="mkt-price" style="color:#FAC775">—</div>
+            <div class="hd-sub" id="mkt-price-sub">&nbsp;</div>
+          </div>
+          <div class="hd-stat">
+            <div class="hd-lbl">Dia com mais procura</div>
+            <div class="hd-val" id="mkt-peak" style="color:#4ADE80">—</div>
+            <div class="hd-sub">Últimos 90 dias</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section" id="mkt-lock" style="display:none;text-align:center;padding:34px 24px">
+      <div style="width:52px;height:52px;border-radius:16px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg class="ic" viewBox="0 0 24 24" style="width:25px;height:25px"><path d="M3 3v18h18"/><path d="M7 14l4-5 3 3 5-7"/></svg></div>
+      <div style="font-size:16px;font-weight:800;letter-spacing:-.015em">O Painel de Mercado é do plano Pro</div>
+      <p style="font-size:13px;color:var(--muted);margin:8px auto 16px;max-width:420px;line-height:1.6">Vê quantos pedidos há na tua categoria, a faixa de preço real que outros profissionais estão a propor e como te comparas à média — dados que só a Proliga tem.</p>
+      <button class="btn btn-primary" onclick="location.href='pricing.html'">Ver o plano Pro</button>
+    </div>
+
+    <div id="mkt-body">
+      <div class="two-cards">
+        <div class="form-section">
+          <div class="tc-head"><span>A tua atividade</span><span style="font-size:11px;color:var(--muted-2);font-weight:500">últimos 30 dias</span></div>
+          <div id="mkt-activity"></div>
+        </div>
+        <div class="form-section">
+          <div class="tc-head"><span>Tempo de resposta</span><span style="font-size:11px;color:var(--muted-2);font-weight:500">tu vs. média da categoria</span></div>
+          <div id="mkt-response"></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="tc-head"><span>Como usar isto</span></div>
+        <div id="mkt-tips" style="font-size:13px;color:var(--muted);line-height:1.7"></div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:11.5px;margin-top:-6px">Nota: valores agregados e anónimos, calculados a partir de propostas reais enviadas na Proliga. Não identificam nenhum profissional em concreto.</p>
+  </div>
+
   <!-- REFERRALS -->
   <div id="page-referrals" class="page-section">
     <div class="page-title">Referências</div>
@@ -1189,12 +1248,20 @@ async function loadPlanLimits(){
 function applyPlanGates(){
   const nav=document.querySelector('.nav-item[data-page="financas"]')
   if(nav)nav.style.display=planLimits.finances?'':'none'
+  const navMkt=document.querySelector('.nav-item[data-page="mercado"]')
+  if(navMkt)navMkt.style.display=planLimits.finances?'':'none'
   applySlugGate()
   const lock=document.getElementById('fin-lock')
   const body=document.getElementById('fin-body')
   if(lock&&body){
     lock.style.display=planLimits.finances?'none':'block'
     body.style.display=planLimits.finances?'':'none'
+  }
+  const mktLock=document.getElementById('mkt-lock')
+  const mktBody=document.getElementById('mkt-body')
+  if(mktLock&&mktBody){
+    mktLock.style.display=planLimits.finances?'none':'block'
+    mktBody.style.display=planLimits.finances?'':'none'
   }
 }
 
@@ -2006,6 +2073,7 @@ function showPage(name){
   if(name==='referrals')loadReferrals()
   if(name==='convidar')loadInvites()
   if(name==='financas'){renderFinance();loadExpenses();populateReportYears();renderAnnualReport()}
+  if(name==='mercado'&&planLimits.finances)loadMarketInsights()
 }
 
 // TRABALHOS (PIPELINE + AGENDA)
@@ -3108,6 +3176,59 @@ async function loadMarketPricing(){
     box.innerHTML=`<svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px;flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 6v12M15.5 9.5a2.5 2.5 0 0 0-2.5-2H11a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-2a2.5 2.5 0 0 1-2.5-2"/></svg><span>Profissionais de <strong>${escapeHtml(profileData.category)}</strong> na Proliga cobram, em média, entre <strong>€${lo.toFixed(0)}</strong> e <strong>€${hi.toFixed(0)}</strong>. Usa isto como referência ao definires os teus preços.</span>`
   }
   if(typeof renderInsights==='function')renderInsights()
+}
+
+// ===== PAINEL DE MERCADO (plano Pro) =====
+async function loadMarketInsights(){
+  if(!profileData?.category)return
+  document.getElementById('mkt-cat-label').textContent=profileData.category+(profileData.location?' · '+profileData.location:'')
+  const{data,error}=await db.rpc('get_market_insights',{p_category:profileData.category})
+  if(error||!data){
+    document.getElementById('mkt-requests').textContent='—'
+    return
+  }
+  const d=data
+
+  document.getElementById('mkt-requests').textContent=d.requests_30d??0
+  if(d.requests_prev_30d>0){
+    const delta=Math.round(((d.requests_30d-d.requests_prev_30d)/d.requests_prev_30d)*100)
+    document.getElementById('mkt-requests-sub').textContent=delta>=0?`+${delta}% vs. mês anterior`:`${delta}% vs. mês anterior`
+  }else{
+    document.getElementById('mkt-requests-sub').textContent='publicados na tua categoria'
+  }
+
+  if(d.offers_sample>=3&&d.price_low!=null){
+    document.getElementById('mkt-price').textContent=`€${Number(d.price_low).toFixed(0)}–€${Number(d.price_high).toFixed(0)}`
+    document.getElementById('mkt-price-sub').textContent=`média €${Number(d.price_avg).toFixed(0)} · ${d.offers_sample} propostas`
+  }else{
+    document.getElementById('mkt-price').textContent='—'
+    document.getElementById('mkt-price-sub').textContent='ainda sem dados suficientes'
+  }
+
+  document.getElementById('mkt-peak').textContent=d.peak_dow||'—'
+
+  const actEl=document.getElementById('mkt-activity')
+  actEl.innerHTML=`<div class="fin-row"><div><div class="fr-t">Propostas enviadas</div><div class="fr-s">nos últimos 30 dias</div></div><div class="fr-v">${d.my_offers_30d??0}</div></div>`
+
+  const respEl=document.getElementById('mkt-response')
+  const myR=d.my_response_minutes, catR=d.category_response_minutes
+  if(myR!=null){
+    let cmp=''
+    if(catR!=null){
+      cmp=myR<=catR?`<span style="color:var(--green);font-weight:700">mais rápido</span> que a média`:`<span style="color:var(--amber);font-weight:700">mais lento</span> que a média`
+    }
+    respEl.innerHTML=`<div class="fin-row"><div><div class="fr-t">Tu: ${fmtResponseMins(myR)}</div><div class="fr-s">${catR!=null?`Categoria: ${fmtResponseMins(catR)} · ${cmp}`:'sem média de categoria ainda'}</div></div></div>`
+  }else{
+    respEl.innerHTML='<div class="tc-empty"><p>Ainda não temos dados de resposta suficientes.</p></div>'
+  }
+
+  const tipsEl=document.getElementById('mkt-tips')
+  const tips=[]
+  if(d.offers_sample>=3)tips.push(`Usa a faixa de preço acima como referência ao responderes a pedidos parecidos — já aparece sugerida no ecrã de Pedidos.`)
+  if(d.peak_dow)tips.push(`Garante que a tua disponibilidade está atualizada perto de ${d.peak_dow.toLowerCase()}, o dia com mais pedidos na tua categoria.`)
+  if(myR!=null&&catR!=null&&myR>catR)tips.push(`Responder mais depressa do que a média da categoria aumenta as tuas hipóteses de fechar o trabalho antes da concorrência.`)
+  if(!tips.length)tips.push('Ainda estamos a juntar dados suficientes na tua categoria. Volta a verificar dentro de umas semanas.')
+  tipsEl.innerHTML=tips.map(t=>`<p style="margin-bottom:8px">• ${t}</p>`).join('')
 }
 
 // ===== REDE DE REFERÊNCIA ENTRE PROFISSIONAIS =====
