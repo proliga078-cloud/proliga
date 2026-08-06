@@ -1,4 +1,4 @@
-const CACHE_NAME = 'proliga-v1';
+const CACHE_NAME = 'proliga-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
@@ -44,10 +44,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Stale-while-revalidate: responde do cache logo (se existir) mas
+  // atualiza sempre em segundo plano, para nunca ficar preso a uma versao antiga.
   event.respondWith(
     caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req)
+      const network = fetch(req)
         .then((res) => {
           if (res && res.status === 200 && res.type === 'basic') {
             const copy = res.clone();
@@ -56,6 +57,7 @@ self.addEventListener('fetch', (event) => {
           return res;
         })
         .catch(() => cached);
+      return cached || network;
     })
   );
 });
