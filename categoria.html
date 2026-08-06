@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Profissionais – Proliga | Porto &amp; Braga</title>
-  <meta name="description" content="Encontra profissionais verificados no Porto e em Braga. Filtra por categoria, distrito e avaliação. Contacto direto, sem intermediários."/>
+  <title>Profissionais – Proliga | Norte de Portugal</title>
+  <meta name="description" content="Encontra profissionais verificados em todo o Norte de Portugal. Filtra por categoria, distrito e avaliação. Contacto direto, sem intermediários."/>
   <meta name="robots" content="index, follow"/>
-  <meta property="og:title" content="Profissionais no Porto e em Braga – Proliga"/>
-  <meta property="og:description" content="16 categorias de profissionais verificados no Porto e em Braga. Eletricistas, pintores, jardineiros e muito mais."/>
+  <meta property="og:title" content="Profissionais no Norte de Portugal – Proliga"/>
+  <meta property="og:description" content="16 categorias de profissionais verificados em todo o Norte de Portugal. Eletricistas, pintores, jardineiros e muito mais."/>
   <meta property="og:type" content="website"/>
 
   <meta property="og:image" content="https://proliga.pt/assets/og-image.png"/>
@@ -38,14 +38,15 @@
     .nav-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
     /* PAGE HEADER */
-    .page-header{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:40px 5%;color:#fff}
+    .page-header{background:#0F1A33;padding:40px 5%;color:#fff}
     .page-header h1{font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:8px}
-    .page-header p{font-size:15px;color:rgba(255,255,255,.8);margin-bottom:20px}
-    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.7);margin-bottom:16px}
-    .breadcrumb a{color:rgba(255,255,255,.85)}.breadcrumb a:hover{color:#fff}
+    .page-header p{font-size:15px;color:#9AA6C3;margin-bottom:20px}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:#9AA6C3;margin-bottom:16px}
+    .breadcrumb a{color:#C7CEDE}.breadcrumb a:hover{color:#fff}
     .cat-chips{display:flex;flex-wrap:wrap;gap:8px}
-    .cat-chip{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;cursor:pointer;transition:all .2s}
-    .cat-chip:hover,.cat-chip.active{background:rgba(255,255,255,.9);color:var(--blue)}
+    .cat-chip{background:rgba(255,255,255,.07);color:#C7CEDE;border:1px solid rgba(255,255,255,.14);font-size:12px;font-weight:600;padding:5px 12px;border-radius:99px;cursor:pointer;transition:all .2s}
+    .cat-chip:hover{background:rgba(255,255,255,.14);color:#fff}
+    .cat-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 
     /* LAYOUT */
     .page-body{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:28px 5%;max-width:1400px;margin:0 auto}
@@ -59,7 +60,7 @@
       .sidebar-overlay.open{display:block}
     }
     @media(max-width:600px){
-      .pros-grid{grid-template-columns:1fr!important}
+      .pros-list{gap:12px}
       .page-header{padding:20px 4% 16px}
       .page-body{padding:16px 4%}
       nav{padding:0 4%}
@@ -91,36 +92,35 @@
     .sort-select:focus{border-color:var(--blue)}
 
     /* PROFESSIONAL CARDS */
-    .pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-    .pro-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
-    .pro-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(-2px);border-color:var(--blue)}
-    .pro-card-accent{height:4px;background:var(--border)}
-    .pro-card-accent.is-pro{background:var(--blue)}
-    .pro-card-accent.is-premium{background:var(--gold)}
-    .pro-card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-    .pro-avatar{width:48px;height:48px;border-radius:50%;background:#0F1A33;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+    .pros-list{display:flex;flex-direction:column;gap:14px}
+    .pro-card{background:linear-gradient(180deg,#fff,#FDFBF8);border:1px solid #F0F0EC;border-radius:18px;padding:22px 24px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:all .2s;text-decoration:none;box-shadow:0 2px 4px rgba(15,26,51,.05),0 12px 28px rgba(15,26,51,.06)}
+    .pro-card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(15,26,51,.07),0 16px 34px rgba(15,26,51,.1)}
+    .pro-card.is-pro{border-color:#F5EFE6}
+    .pro-avatar-wrap{position:relative;flex-shrink:0}
+    .pro-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#0F1A33,#24365E);color:#fff;font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 3px 10px rgba(15,26,51,.28);border:3px solid #F1EFE8}
     .pro-avatar img{width:100%;height:100%;object-fit:cover}
-    .pro-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-    .badge-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
-    .badge-premium{background:#FBEAD2;color:#7A4A05}
-    .badge-pro{background:var(--blue-light);color:#96590C}
-    .pro-card-body{padding:16px 16px 16px}
-    .pro-card-name{font-size:14px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .pro-card-cat{font-size:11.5px;color:var(--muted)}
-    .pro-rating{display:flex;align-items:center;gap:4px;font-size:13px;margin-bottom:6px}
-    .stars{color:var(--gold)}
-    .pro-loc{font-size:12px;color:var(--muted);margin-bottom:10px}
-    .pro-bio{font-size:13px;color:#475569;line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .pro-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--bg)}
-    .pro-price{font-size:12px;color:var(--muted)}
-    .pro-price strong{color:var(--blue);font-size:14px}
-    .verif{background:#E1F5EE;color:#085041;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
+    .pro-verified-badge{position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:#1A8649;border:2.5px solid #fff;display:flex;align-items:center;justify-content:center}
+    .pro-card-main{flex:1;min-width:0}
+    .pro-card-name-row{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+    .pro-card-name{font-size:17.5px;font-weight:700;color:#14181F;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .badge-pill{font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+    .badge-premium{background:linear-gradient(135deg,#D9A441,#AF620A);color:#fff;box-shadow:0 2px 6px rgba(175,98,10,.35)}
+    .badge-pro{background:linear-gradient(135deg,#F2A55C,#E8720A);color:#fff;box-shadow:0 2px 6px rgba(232,114,10,.35)}
+    .pro-card-cat{display:flex;align-items:center;gap:6px;font-size:13.5px;color:#5B6270;margin-bottom:4px}
+    .pro-rating{font-size:12.5px;color:#94a3b8}
+    .pro-rating .stars{color:var(--gold)}
+    .pro-bio{font-size:12.5px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .pro-card-side{text-align:right;flex-shrink:0}
+    .pro-price{font-size:13.5px;color:#5B6270;margin-bottom:8px}
+    .pro-price strong,.pro-price.free{color:var(--blue);font-size:14px;font-weight:700}
+    .pro-cta-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#fff;font-weight:700;background:linear-gradient(135deg,#E8720A,#C25A06);padding:9px 16px;border-radius:10px;box-shadow:0 3px 10px rgba(232,114,10,.3)}
+    .verif{display:none}
 
     /* EMPTY / LOADING */
-    .loading-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-    .skeleton{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden}
-    .skeleton-cover{height:4px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
-    .skeleton-body{padding:16px}
+    .loading-grid{display:flex;flex-direction:column;gap:14px}
+    .skeleton{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;padding:22px 24px;display:flex;align-items:center;gap:20px}
+    .skeleton-cover{width:64px;height:64px;border-radius:50%;flex-shrink:0;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+    .skeleton-body{flex:1}
     .skeleton-line{height:12px;border-radius:6px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;margin-bottom:10px}
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
     .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
@@ -178,7 +178,7 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
     <span id="breadcrumb-cat">Todos os Profissionais</span>
   </div>
   <h1 id="page-title">Profissionais</h1>
-  <p id="page-desc">Porto &amp; Braga · Todos verificados manualmente</p>
+  <p id="page-desc">Norte de Portugal · Todos verificados manualmente</p>
   <div class="cat-chips" id="cat-chips">
     <span class="cat-chip" data-cat="" onclick="setCat('')">Todos</span>
     <span class="cat-chip" data-cat="Eletricistas" onclick="setCat('Eletricistas')">⚡ Eletricistas</span>
@@ -302,7 +302,7 @@ function updateHeader(){
   document.getElementById('page-title').textContent=title
   document.getElementById('breadcrumb-cat').textContent=title
   document.title=`${title} – Proliga`
-  let desc='Porto & Braga · Todos verificados manualmente'
+  let desc='Norte de Portugal · Todos verificados manualmente'
   if(loc)desc=`${loc} · Todos verificados manualmente`
   document.getElementById('page-desc').innerHTML=desc
 }
@@ -319,7 +319,7 @@ function applySearch(){
 
 async function loadPros(){
   const container=document.getElementById('pros-container')
-  container.innerHTML=`<div class="loading-grid">${Array(6).fill(`<div class="skeleton"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:80%"></div></div></div>`).join('')}</div>`
+  container.innerHTML=`<div class="loading-grid">${Array(6).fill(`<div class="skeleton"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:60%"></div></div></div>`).join('')}</div>`
 
   // Build query
   let q=db.from('profiles').select('id,name,category,location,plan,photo_url,bio,verified,created_at',{count:'exact'}).eq('is_demo',false)
@@ -344,7 +344,7 @@ async function loadPros(){
   if(error){container.innerHTML=`<p style="color:red;padding:20px">Erro: ${error.message}</p>`;return}
 
   if(!data||!data.length){
-    container.innerHTML=`<div class="pros-grid"><div class="empty-state"><h3>Nenhum profissional encontrado</h3><p>Tenta ajustar os filtros ou procura noutra categoria.</p><a href="categoria.html" class="btn btn-outline">Ver todos os profissionais</a></div></div>`
+    container.innerHTML=`<div class="pros-list"><div class="empty-state"><h3>Nenhum profissional encontrado</h3><p>Tenta ajustar os filtros ou procura noutra categoria.</p><a href="categoria.html" class="btn btn-outline">Ver todos os profissionais</a></div></div>`
     document.getElementById('results-count').textContent='0 resultados'
     document.getElementById('pagination').innerHTML=''
     return
@@ -401,32 +401,32 @@ async function loadPros(){
   const total=count||filtered.length
   document.getElementById('results-count').innerHTML=`<strong>${total}</strong> ${total!==1?'profissionais encontrados':'profissional encontrado'}`
 
-  container.innerHTML=`<div class="pros-grid">${filtered.map(pro=>{
+  container.innerHTML=`<div class="pros-list">${filtered.map(pro=>{
     const r=rMap[pro.id];const avg=r?(r.s/r.c).toFixed(1):null;const n=r?Math.round(r.s/r.c):0
     const stars=r?('★'.repeat(n)+'☆'.repeat(5-n)):'☆☆☆☆☆'
     const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
     const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
-    const accentClass=pro.plan==='premium'?'is-premium':pro.plan==='pro'?'is-pro':''
-    const planPill=pro.plan==='premium'?'<span class="badge-pill badge-premium">Premium</span>':pro.plan==='pro'?'<span class="badge-pill badge-pro">Pro</span>':''
-    const verifPill=pro.verified?'<span class="verif">Verificado</span>':''
-    const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<strong>Orçamento grátis</strong>'
-    return`<a class="pro-card" href="profile.html?id=${pro.id}">
-      <div class="pro-card-accent ${accentClass}"></div>
-      <div class="pro-card-body">
-        <div class="pro-card-head">
-          <div class="pro-avatar">${avatar}</div>
-          <div style="min-width:0">
-            <div class="pro-card-name">${pro.name}</div>
-            <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
-          </div>
+    const cardClass=pro.plan==='pro'||pro.plan==='premium'?'is-pro':''
+    const planPill=pro.plan==='premium'?'<span class="badge-pill badge-premium">★ Premium</span>':pro.plan==='pro'?'<span class="badge-pill badge-pro">★ Pro</span>':''
+    const verifiedBadge=pro.verified?'<span class="pro-verified-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span>':''
+    const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<span class="free">Orçamento grátis</span>'
+    const subline=r?`<span class="pro-rating"><span class="stars">${stars}</span>&nbsp;<strong>${avg}</strong>&nbsp;(${r.c})</span>`:(pro.bio?`<div class="pro-bio">${pro.bio}</div>`:'<span class="pro-rating">✨ Perfil novo</span>')
+    return`<a class="pro-card ${cardClass}" href="profile.html?id=${pro.id}">
+      <div class="pro-avatar-wrap">
+        <div class="pro-avatar">${avatar}</div>
+        ${verifiedBadge}
+      </div>
+      <div class="pro-card-main">
+        <div class="pro-card-name-row">
+          <div class="pro-card-name">${pro.name}</div>
+          ${planPill}
         </div>
-        ${(planPill||verifPill)?`<div class="pro-badges">${planPill}${verifPill}</div>`:''}
-        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:var(--muted)">Perfil novo</span>'}</div>
-        ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
-        <div class="pro-footer">
-          <div class="pro-price">${price}</div>
-          <span style="font-size:12px;color:var(--blue);font-weight:600">Ver perfil →</span>
-        </div>
+        <div class="pro-card-cat"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
+        ${subline}
+      </div>
+      <div class="pro-card-side">
+        <div class="pro-price">${price}</div>
+        <span class="pro-cta-btn">Ver perfil<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
     </a>`
   }).join('')}</div>`
