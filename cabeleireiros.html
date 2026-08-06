@@ -3,12 +3,12 @@
 <head>
  <meta charset="UTF-8"/>
  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
- <title>Cabeleireiros no Porto e em Braga – Encontra e Contrata | Proliga</title>
- <meta name="description" content="Encontra e contrata cabeleireiros verificados no Porto e em Braga. Compara orçamentos, lê avaliações reais e contacta diretamente, sem intermediários."/>
+ <title>Cabeleireiros no Norte de Portugal – Encontra e Contrata | Proliga</title>
+ <meta name="description" content="Encontra e contrata cabeleireiros verificados no Norte de Portugal. Compara orçamentos, lê avaliações reais e contacta diretamente, sem intermediários."/>
  <meta name="robots" content="index, follow"/>
  <link rel="canonical" href="https://proliga.pt/cabeleireiros.html"/>
- <meta property="og:title" content="Cabeleireiros no Porto e em Braga – Proliga"/>
- <meta property="og:description" content="Profissionais de cabeleireiros verificados manualmente no Porto e em Braga. Contacto direto pela plataforma."/>
+ <meta property="og:title" content="Cabeleireiros no Norte de Portugal – Proliga"/>
+ <meta property="og:description" content="Profissionais de cabeleireiros verificados manualmente no Norte de Portugal. Contacto direto pela plataforma."/>
  <meta property="og:type" content="website"/>
 
  <meta property="og:image" content="https://proliga.pt/assets/og-image.png"/>
@@ -70,7 +70,7 @@
  .cat-chip:hover{border-color:var(--blue);color:var(--blue)}
  .cat-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 
- .page-body{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:28px 5%;max-width:1400px;margin:0 auto}
+ .page-body{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;padding:28px 5%;max-width:1400px;margin:0 auto}
  .mobile-filter-btn{display:none;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text);margin-bottom:16px}
  @media(max-width:900px){
  .page-body{grid-template-columns:1fr}
@@ -109,38 +109,37 @@
  .sort-select{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;background:var(--white);cursor:pointer}
  .sort-select:focus{border-color:var(--blue)}
 
- .pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
- .pro-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block;opacity:0;animation:cardIn .45s ease forwards}
- .pro-card:nth-child(1){animation-delay:.02s}.pro-card:nth-child(2){animation-delay:.07s}.pro-card:nth-child(3){animation-delay:.12s}
- .pro-card:nth-child(4){animation-delay:.17s}.pro-card:nth-child(5){animation-delay:.22s}.pro-card:nth-child(6){animation-delay:.27s}
- .pro-card:nth-child(n+7){animation-delay:.32s}
- @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
- .pro-card:hover{box-shadow:0 10px 28px rgba(0,0,0,.12);transform:translateY(-4px);border-color:#be185d}
- .pro-card-cover{height:88px;background:linear-gradient(135deg,#be185d,#fb7185);position:relative}
- .pro-avatar{width:64px;height:64px;border-radius:50%;border:3px solid #fff;background:var(--blue);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;position:absolute;bottom:-22px;left:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+ .pros-list{display:flex;flex-direction:column;gap:14px}
+ .pro-card{background:linear-gradient(180deg,#fff,#FDFBF8);border:1px solid #F0F0EC;border-radius:18px;padding:22px 24px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:all .2s;text-decoration:none;box-shadow:0 2px 4px rgba(15,26,51,.05),0 12px 28px rgba(15,26,51,.06)}
+ .pro-card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(15,26,51,.07),0 16px 34px rgba(15,26,51,.1)}
+ .pro-card.is-pro{border-color:#F5EFE6}
+ .pro-avatar-wrap{position:relative;flex-shrink:0}
+ .pro-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#0F1A33,#24365E);color:#fff;font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 3px 10px rgba(15,26,51,.28);border:3px solid #F1EFE8}
  .pro-avatar img{width:100%;height:100%;object-fit:cover}
- .plan-badge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
- .badge-premium{background:var(--gold);color:#fff}
- .badge-pro{background:#7c3aed;color:#fff}
- .pro-card-body{padding:30px 16px 16px}
- .pro-card-name{font-size:15px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:6px}
- .pro-card-cat{font-size:12px;color:var(--muted);margin-bottom:8px}
- .pro-rating{display:flex;align-items:center;gap:4px;font-size:13px;margin-bottom:6px}
- .stars{color:var(--gold)}
- .pro-loc{font-size:12px;color:var(--muted);margin-bottom:10px}
- .pro-bio{font-size:13px;color:#475569;line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
- .pro-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--bg)}
- .pro-price{font-size:12px;color:var(--muted)}
- .pro-price strong{color:var(--blue);font-size:14px}
- .verif{background:#dcfce7;color:var(--green);font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px}
+ .pro-verified-badge{position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;background:#1A8649;border:2.5px solid #fff;display:flex;align-items:center;justify-content:center}
+ .pro-card-main{flex:1;min-width:0}
+ .pro-card-name-row{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+ .pro-card-name{font-size:17.5px;font-weight:700;color:#14181F;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .badge-pill{font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+ .badge-premium{background:linear-gradient(135deg,#D9A441,#AF620A);color:#fff;box-shadow:0 2px 6px rgba(175,98,10,.35)}
+ .badge-pro{background:linear-gradient(135deg,#F2A55C,#E8720A);color:#fff;box-shadow:0 2px 6px rgba(232,114,10,.35)}
+ .pro-card-cat{display:flex;align-items:center;gap:6px;font-size:13.5px;color:#5B6270;margin-bottom:4px}
+ .pro-rating{font-size:12.5px;color:#94a3b8}
+ .pro-rating .stars{color:var(--gold)}
+ .pro-bio{font-size:12.5px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .pro-card-side{text-align:right;flex-shrink:0}
+ .pro-price{font-size:13.5px;color:#5B6270;margin-bottom:8px}
+ .pro-price strong,.pro-price.free{color:var(--blue);font-size:14px;font-weight:700}
+ .pro-cta-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#fff;font-weight:700;background:linear-gradient(135deg,#E8720A,#C25A06);padding:9px 16px;border-radius:10px;box-shadow:0 3px 10px rgba(232,114,10,.3)}
+ .verif{display:none}
 
- .loading-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
- .skeleton{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden}
- .skeleton-cover{height:88px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
- .skeleton-body{padding:30px 16px 16px}
+ .loading-grid{display:flex;flex-direction:column;gap:14px}
+ .skeleton{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;padding:22px 24px;display:flex;align-items:center;gap:20px}
+ .skeleton-cover{width:64px;height:64px;border-radius:50%;flex-shrink:0;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+ .skeleton-body{flex:1}
  .skeleton-line{height:12px;border-radius:6px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;margin-bottom:10px}
  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
- .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+ .empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
  .empty-state h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px}
  .empty-state p{font-size:14px;margin-bottom:20px}
 
@@ -274,7 +273,7 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
  <span>›</span>
  <span>Cabeleireiros</span>
  </div>
- <h1><span class="cat-icon-badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg></span> Cabeleireiros no Porto e em Braga</h1>
+ <h1><span class="cat-icon-badge"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg></span> Cabeleireiros no Norte de Portugal</h1>
  <p class="intro">Encontra cabeleireiros verificados para cortes, coloração, tratamentos capilares e penteados. Compara perfis, avaliações e preços, e contacta diretamente — sem intermediários.</p>
  <div class="trust-pillrow">
  <span class="trust-pill">Perfis verificados</span>
@@ -384,7 +383,7 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
  </main>
 <div class="catfoot">
  <div class="box">
-  <h2>Cabeleireiros no Porto e em Braga</h2>
+  <h2>Cabeleireiros no Norte de Portugal</h2>
   <p>Encontra cabeleireiros verificados para cortes, coloração, tratamentos capilares e penteados. Compara perfis, avaliações e preços, e contacta diretamente — sem intermediários.</p>
   <div class="cat-chips" id="cat-chips">
  <a href="categoria.html" class="cat-chip">Todos</a>
@@ -497,7 +496,7 @@ function applySearch(){
 
 async function loadPros(){
  const container=document.getElementById('pros-container')
- container.innerHTML=`<div class="loading-grid">${Array(6).fill(`<div class="skeleton"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:80%"></div></div></div>`).join('')}</div>`
+ container.innerHTML=`<div class="loading-grid">${Array(6).fill(`<div class="skeleton"><div class="skeleton-cover"></div><div class="skeleton-body"><div class="skeleton-line" style="width:40%"></div><div class="skeleton-line" style="width:60%"></div></div></div>`).join('')}</div>`
 
  let q=db.from('profiles').select('id,name,category,location,plan,photo_url,bio,verified,created_at,slug',{count:'exact'}).eq('is_demo',false)
  q=q.ilike('category',`%${filters.cat}%`)
@@ -518,7 +517,7 @@ async function loadPros(){
  if(error){container.innerHTML=`<p style="color:red;padding:20px">Erro: ${error.message}</p>`;return}
 
  if(!data||!data.length){
- container.innerHTML=`<div class="pros-grid"><div class="empty-state"><h3>Nenhum profissional encontrado ainda</h3><p>Ainda não há cabeleireiros nesta zona. Experimenta outro distrito ou vê todas as categorias.</p><a href="categoria.html" class="btn btn-outline">Ver todos os profissionais</a></div></div>`
+ container.innerHTML=`<div class="pros-list"><div class="empty-state"><h3>Nenhum profissional encontrado ainda</h3><p>Ainda não há cabeleireiros nesta zona. Experimenta outro distrito ou vê todas as categorias.</p><a href="categoria.html" class="btn btn-outline">Ver todos os profissionais</a></div></div>`
  document.getElementById('results-count').textContent='0 resultados'
  const tb0=document.getElementById('tb-count'); if(tb0)tb0.textContent='0 profissionais'
  document.getElementById('pagination').innerHTML=''
@@ -579,26 +578,32 @@ async function loadPros(){
  document.getElementById('results-count').innerHTML=`<strong>${total}</strong> ${total!==1?'profissionais encontrados':'profissional encontrado'}`
  const tb=document.getElementById('tb-count'); if(tb)tb.textContent=total+(total!==1?' profissionais':' profissional')
 
- container.innerHTML=`<div class="pros-grid">${filtered.map(pro=>{
+ container.innerHTML=`<div class="pros-list">${filtered.map(pro=>{
  const r=rMap[pro.id];const avg=r?(r.s/r.c).toFixed(1):null;const n=r?Math.round(r.s/r.c):0
- const stars=r?('★'.repeat(n)+'☆'.repeat(5-n)):''
+ const stars=r?('★'.repeat(n)+'☆'.repeat(5-n)):'☆☆☆☆☆'
  const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
  const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
- const covStyle=pro.plan==='premium'?'background:linear-gradient(135deg,#92400e,var(--gold))':pro.plan==='pro'?'background:linear-gradient(135deg,#4c1d95,#7c3aed)':''
- const planBadge=pro.plan==='premium'?'<span class="plan-badge badge-premium"><svg class=\"ic\" viewBox=\"0 0 24 24\" fill=\"currentColor\" stroke=\"none\" style=\"width:11px;height:11px\"><path d=\"M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10z\"/></svg> Premium</span>':pro.plan==='pro'?'<span class="plan-badge badge-pro"><svg class=\"ic\" viewBox=\"0 0 24 24\" style=\"width:11px;height:11px\"><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z\"/><path d=\"M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z\"/></svg> Pro</span>':''
- const verif=(pro.verified)?'<span class="verif"><svg class=\"ic\" viewBox=\"0 0 24 24\" style=\"width:12px;height:12px\"><path d=\"M20 6 9 17l-5-5\"/></svg></span>':''
- const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<strong>Orçamento grátis</strong>'
- return`<a class="pro-card" href="${pro.slug?("/"+pro.slug):("profile.html?id="+pro.id)}">
- <div class="pro-card-cover" style="${covStyle}">${planBadge}<div class="pro-avatar">${avatar}</div></div>
- <div class="pro-card-body">
- <div class="pro-card-name">${pro.name} ${verif}</div>
- <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
- <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1A8649;font-weight:600"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-2px"><path d="M20 6 9 17l-5-5"/></svg> Perfil novo · verificado manualmente</span>'}</div>
- ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
- <div class="pro-footer">
- <div class="pro-price">${price}</div>
- <span style="font-size:12px;color:var(--blue);font-weight:600">Ver perfil →</span>
+ const cardClass=pro.plan==='pro'||pro.plan==='premium'?'is-pro':''
+ const planPill=pro.plan==='premium'?'<span class="badge-pill badge-premium">★ Premium</span>':pro.plan==='pro'?'<span class="badge-pill badge-pro">★ Pro</span>':''
+ const verifiedBadge=pro.verified?'<span class="pro-verified-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5"><path d="M20 6 9 17l-5-5"/></svg></span>':''
+ const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<span class="free">Orçamento grátis</span>'
+ const subline=r?`<span class="pro-rating"><span class="stars">${stars}</span>&nbsp;<strong>${avg}</strong>&nbsp;(${r.c})</span>`:(pro.bio?`<div class="pro-bio">${pro.bio}</div>`:'<span class="pro-rating">✨ Perfil novo</span>')
+ return`<a class="pro-card ${cardClass}" href="${pro.slug?("/"+pro.slug):("profile.html?id="+pro.id)}">
+ <div class="pro-avatar-wrap">
+ <div class="pro-avatar">${avatar}</div>
+ ${verifiedBadge}
  </div>
+ <div class="pro-card-main">
+ <div class="pro-card-name-row">
+ <div class="pro-card-name">${pro.name}</div>
+ ${planPill}
+ </div>
+ <div class="pro-card-cat"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
+ ${subline}
+ </div>
+ <div class="pro-card-side">
+ <div class="pro-price">${price}</div>
+ <span class="pro-cta-btn">Ver perfil<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
  </div>
  </a>`
  }).join('')}</div>`
