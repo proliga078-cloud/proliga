@@ -1426,10 +1426,11 @@ let servicesCount=0,jobsChannel=null,msgsCount=0,reviewsCount=0,reviewsAvg=null
 let chartViews=null,chartEarnings=null,chartStatus=null
 let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),calSelected=null
 let aiChatOpen=false
+let pendingAiAction=null
 let quoteJobId=null,quotesCache=[]
 let refJobId=null,refSelectedPro=null
 let marketPriceCache=null
-let planLimits={portfolio_max:3,quotes_per_month:3,finances:false,own_branding:false,custom_link:false}
+let planLimits={portfolio_max:3,quotes_per_month:3,finances:false,own_branding:false,custom_link:false,ai_actions:false}
 async function loadPlanLimits(){
   const plano=(profileData&&profileData.plan)||'free'
   const{data}=await db.from('plan_limits').select('*').eq('plan',plano).maybeSingle()
@@ -3002,10 +3003,111 @@ async function sendAiChat(){
   await new Promise(r=>setTimeout(r,300)) // pequena pausa para parecer natural
   const typingEl=document.getElementById(typingId)
   if(typingEl)typingEl.remove()
-  const answer=answerLocally(q)
-  body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${answer.replace(/\n/g,'<br>')}</div>`)
+
+  const action=tryDetectAction(q)
+  if(action){
+    if(!planLimits||!planLimits.ai_actions){
+      body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">Fazer isto por ti (não só responder) é uma funcionalidade dos planos Pro e Premium. Atualiza o teu plano em Definições para o assistente poder executar ações como esta.</div>`)
+    } else {
+      proposeAiAction(action.label,action.run)
+    }
+  } else {
+    const answer=answerLocally(q)
+    body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${answer.replace(/\n/g,'<br>')}</div>`)
+  }
 
   sendBtn.disabled=false
+  body.scrollTop=body.scrollHeight
+}
+
+// Deteta pedidos de ação (em vez de pergunta) no texto do utilizador.
+// Devolve null se não for uma ação reconhecida, ou {label,run} para propor confirmação.
+function tryDetectAction(question){
+  const q=normalizeText(question)
+  const has=(...words)=>words.some(w=>q.includes(w))
+
+  if(has('ativa o modo ferias','liga o modo ferias','ativar o modo ferias','marca-me como indisponivel','marca me como indisponivel','ativa ferias')){
+    return{
+      label:'Vou ativar o modo férias (indisponível) por 14 dias — podes ajustar a data depois em Perfil. Confirmas?',
+      run:async()=>{
+        const until=new Date(Date.now()+14*86400000).toISOString().slice(0,10)
+        const{error}=await db.from('profiles').update({unavailable_until:until,unavailable_message:null}).eq('id',profileId)
+        if(error)return 'Não consegui ativar o modo férias agora. Tenta pela página de Perfil.'
+        profileData={...profileData,unavailable_until:until,unavailable_message:null}
+        if(typeof fillProfileForm==='function')fillProfileForm(profileData)
+        return `Feito — modo férias ativado até ${new Date(until+'T00:00:00').toLocaleDateString('pt-PT')}.`
+      }
+    }
+  }
+
+  if(has('desativa o modo ferias','desliga o modo ferias','ja estou disponivel','tira-me do modo ferias','cancela o modo ferias')){
+    return{
+      label:'Vou desativar o modo férias — voltas a aparecer como disponível. Confirmas?',
+      run:async()=>{
+        const{error}=await db.from('profiles').update({unavailable_until:null,unavailable_message:null}).eq('id',profileId)
+        if(error)return 'Não consegui desativar o modo férias agora. Tenta pela página de Perfil.'
+        profileData={...profileData,unavailable_until:null,unavailable_message:null}
+        if(typeof fillProfileForm==='function')fillProfileForm(profileData)
+        return 'Feito — já estás marcado como disponível outra vez.'
+      }
+    }
+  }
+
+  const pagoMatch=question.match(/marca[r]?\s+(?:o\s+trabalho\s+)?["']?(.+?)["']?\s+como\s+pago/i)
+  if(pagoMatch){
+    const wanted=normalizeText(pagoMatch[1])
+    const matches=(allJobs||[]).filter(j=>j.status!=='pago'&&normalizeText(j.title||'').includes(wanted))
+    if(!matches.length)return{label:'Não encontrei nenhum trabalho por pagar com esse nome no Pipeline. Confirma o título exato.',run:null}
+    if(matches.length>1){
+      return{
+        label:`Encontrei ${matches.length} trabalhos parecidos com "${pagoMatch[1]}". Sê mais específico (usa o título completo) para eu marcar o certo como pago.`,
+        run:null,
+        noConfirm:true
+      }
+    }
+    const job=matches[0]
+    return{
+      label:`Vou marcar "${job.title}" como pago. Confirmas?`,
+      run:async()=>{
+        await updateJobStatus(job.id,'pago')
+        return `Feito — "${job.title}" está marcado como pago.`
+      }
+    }
+  }
+
+  return null
+}
+
+function proposeAiAction(label,run){
+  const body=document.getElementById('ai-chat-body')
+  if(!run){
+    body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${escapeHtml(label)}</div>`)
+    return
+  }
+  pendingAiAction=run
+  body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${escapeHtml(label)}<div style="margin-top:8px;display:flex;gap:8px"><button class="btn btn-solid" style="padding:6px 14px;font-size:12px" onclick="confirmAiAction()">Confirmar</button><button class="btn btn-outline" style="padding:6px 14px;font-size:12px" onclick="cancelAiAction()">Cancelar</button></div></div>`)
+  body.scrollTop=body.scrollHeight
+}
+
+async function confirmAiAction(){
+  const run=pendingAiAction
+  pendingAiAction=null
+  const body=document.getElementById('ai-chat-body')
+  if(!run)return
+  const typingId='typing-'+Date.now()
+  body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot" id="${typingId}">…</div>`)
+  body.scrollTop=body.scrollHeight
+  const result=await run()
+  const typingEl=document.getElementById(typingId)
+  if(typingEl)typingEl.remove()
+  body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">${result}</div>`)
+  body.scrollTop=body.scrollHeight
+}
+
+function cancelAiAction(){
+  pendingAiAction=null
+  const body=document.getElementById('ai-chat-body')
+  body.insertAdjacentHTML('beforeend',`<div class="ai-msg bot">Ok, não fiz nada.</div>`)
   body.scrollTop=body.scrollHeight
 }
 
