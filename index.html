@@ -29,6 +29,7 @@
 <script src="/assets/pwa.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"A Proliga cobra alguma comissão?","acceptedAnswer":{"@type":"Answer","text":"Não sobre trabalhos fechados. Os profissionais têm um plano gratuito para sempre; os planos pagos existem só para quem quer mais visibilidade."}},
@@ -330,6 +331,9 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
 .hero .card-panel{background:#fff}
 .hero .btn-line{color:#fff;border-color:rgba(255,255,255,.3)}
 .hero .btn-line:hover{border-color:rgba(255,255,255,.6)}
+#map-section .eyebrow{color:#F2A55C}
+#map-section h2{color:#fff}
+#map-section .section-header p{color:rgba(255,255,255,.7)}
 </style>
 <script type="application/ld+json">
 {
@@ -523,6 +527,15 @@ As primeiras aparecem aqui assim que os clientes as escreverem.
 <div class="loc-card"><h3>Braga</h3><p>Cidade e concelhos vizinhos.</p><div class="loc-zones"><span class="loc-zone">Braga</span><span class="loc-zone">Guimarães</span><span class="loc-zone">Barcelos</span><span class="loc-zone">Vila Verde</span></div></div>
 </div>
 </section>
+<section id="map-section" style="background:#0F1A33">
+<div class="section-header">
+<span class="eyebrow">No mapa</span>
+<h2>Onde estão os profissionais</h2>
+<p>Cada marcador é uma zona com profissionais ativos na Proliga. Toca para veres quem está lá.</p>
+</div>
+<div id="pro-map" style="max-width:900px;margin:0 auto;height:360px;border-radius:16px;overflow:hidden;background:#152444"></div>
+<p id="pro-map-empty" style="display:none;text-align:center;color:rgba(255,255,255,.6);font-size:14px;margin-top:16px">Ainda não há profissionais com zona definida para mostrar no mapa.</p>
+</section>
 <section class="trust-section">
 <div class="trust-grid">
 <div class="trust-item"><strong id="t-pros">—</strong><p>Profissionais registados</p></div>
@@ -641,6 +654,7 @@ As primeiras aparecem aqui assim que os clientes as escreverem.
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
@@ -660,6 +674,7 @@ loadFeatured()
 loadTestemunho()
 loadHeroRequests()
 renderPromoAd()
+loadProMap()
 }
 
 const PROMO_HEADLINES={
@@ -750,6 +765,65 @@ const avg=(revs.reduce((s,r)=>s+r.rating,0)/revs.length).toFixed(1)
 ratingEl.textContent=avg
 }
 }catch(e){}
+}
+
+// ---- Mapa de profissionais por zona ----
+const PT_PLACES={
+'Matosinhos':[41.1839,-8.6910],'Gondomar':[41.1425,-8.5321],'Vila Nova de Gaia':[41.1239,-8.6118],
+'Guimarães':[41.4425,-8.2918],'Barcelos':[41.5388,-8.6151],'Vila Verde':[41.6489,-8.4382],
+'Penafiel':[41.2072,-8.2837],'Vila Nova de Famalicão':[41.4084,-8.5187],
+'Porto':[41.1579,-8.6291],'Braga':[41.5454,-8.4265],'Aveiro':[40.6405,-8.6538],'Beja':[38.0150,-7.8632],
+'Bragança':[41.8073,-6.7573],'Castelo Branco':[39.8222,-7.4909],'Coimbra':[40.2033,-8.4103],
+'Évora':[38.5714,-7.9135],'Faro':[37.0194,-7.9304],'Guarda':[40.5364,-7.2683],'Leiria':[39.7436,-8.8071],
+'Lisboa':[38.7223,-9.1393],'Portalegre':[39.2967,-7.4281],'Santarém':[39.2362,-8.6857],
+'Setúbal':[38.5244,-8.8882],'Viana do Castelo':[41.6932,-8.8329],'Vila Real':[41.3006,-7.7441],
+'Viseu':[40.6566,-7.9122],'Açores':[37.7412,-25.6756],'Madeira':[32.6669,-16.9241]
+}
+function normalizeTxt(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function matchPlace(location){
+  const norm=normalizeTxt(location)
+  if(!norm)return null
+  let best=null
+  for(const name in PT_PLACES){
+    if(norm.includes(normalizeTxt(name))){
+      if(!best||name.length>best.length)best=name
+    }
+  }
+  return best
+}
+async function loadProMap(){
+  const mapEl=document.getElementById('pro-map')
+  if(!mapEl||typeof L==='undefined')return
+  try{
+    const{data}=await db.from('profiles').select('location,category').eq('is_demo',false)
+    const counts={}
+    ;(data||[]).forEach(p=>{
+      const place=matchPlace(p.location)
+      if(place)counts[place]=(counts[place]||0)+1
+    })
+    const places=Object.keys(counts)
+    if(!places.length){
+      mapEl.style.display='none'
+      document.getElementById('pro-map-empty').style.display='block'
+      return
+    }
+    const map=L.map('pro-map',{scrollWheelZoom:false}).setView(PT_PLACES[places[0]],7)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      maxZoom:19,subdomains:'abcd'
+    }).addTo(map)
+    const bounds=[]
+    places.forEach(name=>{
+      const coord=PT_PLACES[name]
+      const n=counts[name]
+      const radius=10+Math.min(n,10)*3
+      const marker=L.circleMarker(coord,{radius,color:'#E8720A',fillColor:'#E8720A',fillOpacity:.55,weight:2}).addTo(map)
+      marker.bindTooltip(name+' · '+n+(n===1?' profissional':' profissionais'),{direction:'top'})
+      marker.on('click',()=>{location.href='categoria.html?zona='+encodeURIComponent(name)})
+      bounds.push(coord)
+    })
+    if(bounds.length>1)map.fitBounds(bounds,{padding:[30,30]})
+  }catch(e){}
 }
 
 // Link do perfil: usa o endereco proprio do plano Pro quando existe.
