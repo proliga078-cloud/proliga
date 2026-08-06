@@ -530,6 +530,45 @@ As primeiras aparecem aqui assim que os clientes as escreverem.
 <div class="trust-item"><strong>RGPD</strong><p>Dados seguros</p></div>
 </div>
 </section>
+<section id="pwa-promo-section" style="display:none;background:#0F1A33;padding:56px 4%">
+<div style="max-width:960px;margin:0 auto;display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+<div style="width:64px;height:64px;border-radius:16px;background:#E8720A;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:28px;color:#fff">P</div>
+<div style="flex:1;min-width:240px">
+<h2 style="color:#fff;font-size:24px;margin-bottom:8px">Leva a Proliga contigo</h2>
+<p style="color:rgba(255,255,255,.7);font-size:15px;max-width:480px">Instala a app no telemóvel: acesso mais rápido, funciona com internet fraca e recebes notificações de pedidos e mensagens na hora.</p>
+</div>
+<div style="flex-shrink:0">
+<button id="pwa-promo-btn" style="background:#E8720A;color:#fff;border:none;padding:12px 24px;font-size:14px;font-weight:700;border-radius:10px;cursor:pointer">Instalar app</button>
+<p id="pwa-promo-ios-hint" style="display:none;color:rgba(255,255,255,.6);font-size:12.5px;margin-top:8px;max-width:220px">No iPhone: toca em Partilhar e depois em "Adicionar ao Ecrã Principal".</p>
+</div>
+</div>
+</section>
+<script>
+(function(){
+  var sec = document.getElementById('pwa-promo-section');
+  if(!sec) return;
+  function isIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+  function refresh(){
+    if(window.proligaIsInstalled && window.proligaIsInstalled()){ sec.style.display='none'; return; }
+    if(isIOS()){
+      sec.style.display='block';
+      var btn=document.getElementById('pwa-promo-btn');
+      if(btn) btn.style.display='none';
+      var hint=document.getElementById('pwa-promo-ios-hint');
+      if(hint) hint.style.display='block';
+    } else if(window.proligaCanInstall && window.proligaCanInstall()){
+      sec.style.display='block';
+    }
+  }
+  document.addEventListener('proliga:can-install', refresh);
+  document.addEventListener('proliga:installed', function(){ sec.style.display='none'; });
+  var btn = document.getElementById('pwa-promo-btn');
+  if(btn) btn.addEventListener('click', function(){
+    if(window.proligaInstallApp) window.proligaInstallApp();
+  });
+  refresh();
+})();
+</script>
 <section style="background:var(--bg)">
 <div class="section-header">
 <span class="eyebrow">Começa agora</span>
