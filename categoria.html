@@ -92,17 +92,21 @@
 
     /* PROFESSIONAL CARDS */
     .pros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
-    .pro-card{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
-    .pro-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-3px);border-color:var(--blue)}
-    .pro-card-cover{height:88px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));position:relative}
-    .pro-avatar{width:64px;height:64px;border-radius:50%;border:3px solid #fff;background:var(--blue);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;position:absolute;bottom:-22px;left:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+    .pro-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+    .pro-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(-2px);border-color:var(--blue)}
+    .pro-card-accent{height:4px;background:var(--border)}
+    .pro-card-accent.is-pro{background:var(--blue)}
+    .pro-card-accent.is-premium{background:var(--gold)}
+    .pro-card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+    .pro-avatar{width:48px;height:48px;border-radius:50%;background:#0F1A33;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
     .pro-avatar img{width:100%;height:100%;object-fit:cover}
-    .plan-badge{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
-    .badge-premium{background:var(--gold);color:#fff}
-    .badge-pro{background:#7c3aed;color:#fff}
-    .pro-card-body{padding:30px 16px 16px}
-    .pro-card-name{font-size:15px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:6px}
-    .pro-card-cat{font-size:12px;color:var(--muted);margin-bottom:8px}
+    .pro-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+    .badge-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
+    .badge-premium{background:#FBEAD2;color:#7A4A05}
+    .badge-pro{background:var(--blue-light);color:#96590C}
+    .pro-card-body{padding:16px 16px 16px}
+    .pro-card-name{font-size:14px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pro-card-cat{font-size:11.5px;color:var(--muted)}
     .pro-rating{display:flex;align-items:center;gap:4px;font-size:13px;margin-bottom:6px}
     .stars{color:var(--gold)}
     .pro-loc{font-size:12px;color:var(--muted);margin-bottom:10px}
@@ -110,13 +114,13 @@
     .pro-footer{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--bg)}
     .pro-price{font-size:12px;color:var(--muted)}
     .pro-price strong{color:var(--blue);font-size:14px}
-    .verif{background:#dcfce7;color:var(--green);font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px}
+    .verif{background:#E1F5EE;color:#085041;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
 
     /* EMPTY / LOADING */
     .loading-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
     .skeleton{background:var(--white);border:1.5px solid var(--border);border-radius:16px;overflow:hidden}
-    .skeleton-cover{height:88px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
-    .skeleton-body{padding:30px 16px 16px}
+    .skeleton-cover{height:4px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+    .skeleton-body{padding:16px}
     .skeleton-line{height:12px;border-radius:6px;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;margin-bottom:10px}
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
     .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
@@ -402,16 +406,22 @@ async function loadPros(){
     const stars=r?('★'.repeat(n)+'☆'.repeat(5-n)):'☆☆☆☆☆'
     const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
     const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
-    const covStyle=pro.plan==='premium'?'background:linear-gradient(135deg,#92400e,var(--gold))':pro.plan==='pro'?'background:linear-gradient(135deg,#4c1d95,#7c3aed)':''
-    const planBadge=pro.plan==='premium'?'<span class="plan-badge badge-premium">👑 Premium</span>':pro.plan==='pro'?'<span class="plan-badge badge-pro">🚀 Pro</span>':''
-    const verif=(pro.verified)?'<span class="verif">✅</span>':''
+    const accentClass=pro.plan==='premium'?'is-premium':pro.plan==='pro'?'is-pro':''
+    const planPill=pro.plan==='premium'?'<span class="badge-pill badge-premium">Premium</span>':pro.plan==='pro'?'<span class="badge-pill badge-pro">Pro</span>':''
+    const verifPill=pro.verified?'<span class="verif">Verificado</span>':''
     const price=pMap[pro.id]?`A partir de <strong>€${pMap[pro.id]}</strong>`:'<strong>Orçamento grátis</strong>'
     return`<a class="pro-card" href="profile.html?id=${pro.id}">
-      <div class="pro-card-cover" style="${covStyle}">${planBadge}<div class="pro-avatar">${avatar}</div></div>
+      <div class="pro-card-accent ${accentClass}"></div>
       <div class="pro-card-body">
-        <div class="pro-card-name">${pro.name} ${verif}</div>
-        <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
-        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:#1A8649;font-weight:600">✨ Perfil novo · verificado manualmente</span>'}</div>
+        <div class="pro-card-head">
+          <div class="pro-avatar">${avatar}</div>
+          <div style="min-width:0">
+            <div class="pro-card-name">${pro.name}</div>
+            <div class="pro-card-cat">${pro.category||'Profissional'} · ${pro.location||'Portugal'}</div>
+          </div>
+        </div>
+        ${(planPill||verifPill)?`<div class="pro-badges">${planPill}${verifPill}</div>`:''}
+        <div class="pro-rating">${r?('<span class="stars">'+stars+'</span>&nbsp;<strong>'+avg+'</strong>&nbsp;<span style="color:var(--muted)">('+r.c+')</span>'):'<span style="color:var(--muted)">Perfil novo</span>'}</div>
         ${pro.bio?`<div class="pro-bio">${pro.bio}</div>`:''}
         <div class="pro-footer">
           <div class="pro-price">${price}</div>
