@@ -1549,6 +1549,10 @@ async function init(){
       setTimeout(maybeShowPushBanner, 2000)
     }
     checkUpgrade()
+    if(profileData?.account_type==='client'){
+      document.getElementById('quick-calc-card').style.display='none'
+      showPage('myrequests')
+    }
   } catch(e) {
     console.error('init error:',e)
   }
@@ -1956,6 +1960,7 @@ function renderStatusChart(jobs){
 function renderSetup(){
   const card=document.getElementById('setup-card')
   if(!card||!profileData)return
+  if(profileData.account_type==='client'){card.style.display='none';return}
   const passos=[
     {t:'Criar conta',s:'',ok:true},
     {t:'Escolher categoria e zona',s:'Para apareceres nas pesquisas certas',ok:!!(profileData.category&&profileData.location),go:()=>showPage('profile')},
@@ -3586,6 +3591,7 @@ async function loadMarketPricing(){
 
 // ===== PAINEL DE MERCADO (plano Pro) =====
 async function runQuickCalc(){
+  if(profileData?.account_type==='client')return
   if(!profileData?.category)return
   const btn=document.getElementById('quick-calc-btn')
   btn.disabled=true;btn.textContent='A calcular...'
