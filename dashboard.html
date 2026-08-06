@@ -54,6 +54,18 @@
     .mob-item .icon{font-size:20px;width:20px;height:20px;display:flex;align-items:center;justify-content:center}.mob-item .icon .ic{width:20px;height:20px}
     @media(max-width:768px){.sidebar{display:none}.mobile-nav{display:block}.main-content{padding:20px 16px 80px}}
 
+    /* MOBILE TOPBAR (voltar ao site + mais opções) */
+    .mobile-topbar{display:none;position:sticky;top:0;z-index:99;background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;align-items:center;justify-content:space-between}
+    .mobile-topbar .logo{font-size:18px}
+    .mobile-back-link{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12.5px;font-weight:600}
+    .mobile-menu-btn{background:none;border:1.5px solid var(--border);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);flex-shrink:0}
+    .mobile-menu-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(15,20,30,.45)}
+    .mobile-menu-overlay.open{display:block}
+    .mobile-menu-sheet{position:absolute;top:0;right:0;bottom:0;width:80%;max-width:300px;background:#fff;padding:18px 14px;overflow-y:auto;box-shadow:-10px 0 30px rgba(0,0,0,.18)}
+    .mobile-menu-sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:0 4px}
+    .mobile-menu-close{background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer;padding:4px;line-height:1}
+    @media(max-width:768px){.mobile-topbar{display:flex}}
+
     /* MAIN */
     .main-content{flex:1;padding:32px;overflow-y:auto;max-width:1000px}
     .page-section{display:none}.page-section.active{display:block}
@@ -457,6 +469,34 @@
   </div>
 </nav>
 
+<!-- MOBILE TOPBAR -->
+<div class="mobile-topbar">
+  <a href="index.html" class="mobile-back-link"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Voltar ao site</a>
+  <a href="index.html" class="logo">Pro<span>liga</span></a>
+  <button class="mobile-menu-btn" onclick="toggleMobileMenu(true)" aria-label="Mais opções"><svg class="ic" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+</div>
+
+<!-- MOBILE MENU (opcoes que nao cabem na barra de baixo) -->
+<div class="mobile-menu-overlay" id="mobile-menu-panel" onclick="if(event.target===this)toggleMobileMenu(false)">
+  <div class="mobile-menu-sheet">
+    <div class="mobile-menu-sheet-head">
+      <a href="index.html" class="logo" style="font-size:16px">Pro<span>liga</span></a>
+      <button class="mobile-menu-close" onclick="toggleMobileMenu(false)" aria-label="Fechar">&times;</button>
+    </div>
+    <a href="index.html" class="nav-item"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/></svg></span> Voltar ao site</a>
+    <div class="nav-divider"></div>
+    <div class="nav-item" onclick="showPage('clientes');toggleMobileMenu(false)"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Clientes</div>
+    <div class="nav-item" onclick="showPage('financas');toggleMobileMenu(false)"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v12M15.5 9.5a2.5 2.5 0 0 0-2.5-2H11a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-2a2.5 2.5 0 0 1-2.5-2"/></svg></span> Finanças</div>
+    <div class="nav-item" onclick="showPage('mercado');toggleMobileMenu(false)"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-5 3 3 5-7"/></svg></span> Mercado</div>
+    <div class="nav-item" onclick="showPage('myrequests');toggleMobileMenu(false)"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-7-7 18-3-8-8-3z"/></svg></span> Os Meus Pedidos</div>
+    <div class="nav-item" onclick="showPage('reviews');toggleMobileMenu(false)"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg></span> Avaliações</div>
+    <div class="nav-item" onclick="showPage('referrals');toggleMobileMenu(false)"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Referências</div>
+    <div class="nav-item" onclick="showPage('convidar');toggleMobileMenu(false)"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span> Créditos</div>
+    <div class="nav-divider"></div>
+    <button class="btn-signout" onclick="signOut()">Sair da conta</button>
+  </div>
+</div>
+
 <!-- MOBILE NAV -->
 <div class="mobile-nav">
   <div class="mobile-nav-items">
@@ -467,6 +507,14 @@
     <div class="mob-item" onclick="location.href='messages.html'"><span class="icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4H12l-4.8 2.1 1-4a8.4 8.4 0 1 1 12.8-6.5z"/></svg></span>Chat</div>
   </div>
 </div>
+
+<script>
+function toggleMobileMenu(open){
+  var panel=document.getElementById('mobile-menu-panel');
+  if(!panel)return;
+  panel.classList.toggle('open', open);
+}
+</script>
 
 <!-- MAIN -->
 <div class="main-content">
