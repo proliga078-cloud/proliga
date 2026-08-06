@@ -16,6 +16,7 @@
 <meta name="theme-color" content="#0F1A33"/>
 <script src="/assets/pwa.js" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--blue:#E8720A;--blue-dark:#C25A06;--blue-light:#FDECDD;--gold:#AF620A;--green:#1A8649;--text:#14181F;--muted:#5B6270;--border:#ECECE9;--bg:#F7F8FA;--white:#fff;--cream:#FAF8F4}
@@ -193,6 +194,55 @@ nav .btn-line{color:#fff;border-color:rgba(255,255,255,.3)}
 nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
 .btn-ink{background:#E8720A;color:#fff}
 .btn-ink:hover{background:#C25A06}
+
+/* === PERFIL RICO === */
+.spec-chip{background:var(--blue-light);color:var(--blue-dark);font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:99px}
+.exp-chip{background:#0F1A33;color:#fff;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:99px;display:inline-flex;align-items:center;gap:4px}
+.cert-strip{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.cert-item{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:10px;padding:7px 12px}
+.cert-item .ic{color:var(--blue)}
+.cert-name{font-size:12px;font-weight:700}
+.cert-year{font-size:10.5px;color:var(--muted)}
+.diary-track{position:relative;padding-left:22px}
+.diary-track::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--border)}
+.diary-item{position:relative;margin-bottom:14px}
+.diary-item:last-child{margin-bottom:0}
+.diary-dot{position:absolute;left:-22px;top:14px;width:9px;height:9px;border-radius:50%;background:var(--blue)}
+.diary-card{display:flex;gap:12px;background:var(--bg);border-radius:14px;padding:12px}
+.diary-photo{width:60px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--blue-light)}
+.diary-photo-empty{width:60px;height:60px;border-radius:10px;flex-shrink:0;background:var(--blue-light);display:flex;align-items:center;justify-content:center;color:var(--blue)}
+.diary-text{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.4}
+.diary-meta{font-size:11.5px;color:var(--muted)}
+.case-card{border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px}
+.case-card:last-child{margin-bottom:0}
+.case-imgs{display:grid;grid-template-columns:1fr 1fr}
+.case-imgs img{width:100%;height:140px;object-fit:cover;display:block}
+.case-imgs span{display:block;text-align:center;font-size:10px;font-weight:700;color:#fff;background:rgba(0,0,0,.55);padding:2px 0}
+.case-imgs .cimg-wrap{position:relative}
+.case-body{padding:14px 16px}
+.case-title{font-size:14.5px;font-weight:700;margin-bottom:5px}
+.case-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+.case-duration{font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+.faq-item{border-bottom:1px solid var(--bg)}
+.faq-item:last-child{border-bottom:none}
+.faq-q{padding:14px 0;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-q .chev{transition:transform .2s;flex-shrink:0;color:var(--blue)}
+.faq-item.open .faq-q .chev{transform:rotate(180deg)}
+.faq-a{font-size:12.5px;color:var(--muted);line-height:1.6;padding-bottom:14px;display:none}
+.faq-item.open .faq-a{display:block}
+.badge-tile{background:var(--bg);border-radius:12px;padding:10px 8px;text-align:center}
+.badge-tile .ic{color:var(--blue);width:20px;height:20px}
+.badge-tile span{display:block;font-size:10.5px;font-weight:700;margin-top:5px;line-height:1.3}
+.zone-map{height:130px;border-radius:12px;overflow:hidden;background:#0F1A33;margin-bottom:10px}
+.zone-chips{display:flex;gap:6px;flex-wrap:wrap}
+.zone-chip{background:var(--bg);font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px}
+.avail-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:2px}
+.avail-day{text-align:center}
+.avail-day .lbl{font-size:9.5px;color:var(--muted);margin-bottom:4px;font-weight:700}
+.avail-day .bar{height:24px;border-radius:6px;background:var(--bg)}
+.avail-day.on .bar{background:var(--blue)}
+.info-pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg);font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:99px;margin:0 6px 6px 0}
+.info-pill .ic{width:14px;height:14px;color:var(--blue)}
 </style>
 </head>
 <body>
@@ -229,6 +279,8 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
       <div class="tab active" onclick="showTab('servicos')"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Serviços</div>
       <div class="tab" onclick="showTab('portfolio')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg> Portfólio</div>
       <div class="tab" onclick="showTab('avaliacoes')"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Avaliações</div>
+      <div class="tab" onclick="showTab('diario')"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Diário</div>
+      <div class="tab" onclick="showTab('faq')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg> FAQ</div>
     </div>
 
     <!-- SERVICES TAB -->
@@ -285,6 +337,22 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
         </div>
       </div>
     </div>
+
+    <!-- DIARY TAB -->
+    <div id="tab-diario" style="display:none">
+      <div class="card">
+        <div class="card-title"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Diário de Trabalhos</div>
+        <div id="diary-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
+    <!-- FAQ TAB -->
+    <div id="tab-faq" style="display:none">
+      <div class="card">
+        <div class="card-title"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg> Perguntas Frequentes</div>
+        <div id="faq-list"><div class="loading"><div class="spinner"></div></div></div>
+      </div>
+    </div>
   </div>
 
   <!-- SIDEBAR -->
@@ -296,9 +364,30 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
       <button class="btn-contact" id="msg-btn" onclick="startConversation()"><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Enviar mensagem</button>
     </div>
 
+    <div class="info-card" id="badges-card" style="display:none">
+      <div class="info-title">Conquistas</div>
+      <div id="badges-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+    </div>
+
     <div class="info-card">
       <div class="info-title">Informações</div>
       <div id="info-items"></div>
+    </div>
+
+    <div class="info-card" id="zone-card" style="display:none">
+      <div class="info-title">Zona de Atuação</div>
+      <div class="zone-map" id="zone-map"></div>
+      <div class="zone-chips" id="zone-chips"></div>
+    </div>
+
+    <div class="info-card" id="avail-card" style="display:none">
+      <div class="info-title">Disponibilidade</div>
+      <div class="avail-grid" id="avail-grid"></div>
+    </div>
+
+    <div class="info-card" id="extra-info-card" style="display:none">
+      <div class="info-title">Outras Informações</div>
+      <div id="extra-info-list"></div>
     </div>
 
     <div class="info-card" id="plan-card" style="display:none">
@@ -327,6 +416,7 @@ nav .btn-line:hover{border-color:rgba(255,255,255,.6)}
 <div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;font-weight:600;display:none;z-index:9999"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
 const SUPABASE_URL='https://cdwinidhtfxfxowflize.supabase.co'
 const SUPABASE_KEY='sb_publishable_G1U9iSJLR2JkhD9gvfyY3Q_qaqnMaUk'
@@ -375,7 +465,12 @@ async function init(){
   loadServices()
   loadReviews()
   loadPortfolio()
+  loadDiary()
+  loadFaqs()
   renderSidebar(pro)
+  renderZoneMap(pro)
+  renderAvailGrid(pro)
+  renderExtraInfo(pro)
   if(!session||session.user.id!==pro.id)logProfileView(pro.id)
   // WA share
   document.getElementById('wa-share').href=`https://wa.me/?text=Confere%20o%20perfil%20de%20${encodeURIComponent(pro.name)}%20na%20Proliga%3A%20${encodeURIComponent(location.href)}`
@@ -406,6 +501,15 @@ function renderWeeklyScheduleBadge(pro){
   return `<div style="display:flex;align-items:center;gap:5px;margin-top:8px"><span style="font-size:12px;color:var(--muted);margin-right:4px">Disponibilidade semanal:</span>${chips}</div>`
 }
 
+function renderSpecialties(pro){
+  if(!pro.specialties||!pro.specialties.length)return ''
+  return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${pro.specialties.map(sp=>`<span class="spec-chip">${sp}</span>`).join('')}</div>`
+}
+function renderCertifications(pro){
+  if(!pro.certifications||!pro.certifications.length)return ''
+  const svgCert='<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>'
+  return `<div class="cert-strip">${pro.certifications.map(c=>`<div class="cert-item">${svgCert}<div><div class="cert-name">${c.name||''}</div>${c.year?`<div class="cert-year">${c.year}</div>`:''}</div></div>`).join('')}</div>`
+}
 function renderHeader(pro){
   const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
   const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
@@ -422,12 +526,14 @@ function renderHeader(pro){
       <div class="profile-cat">
         <span class="cat-pill">${pro.category||'Profissional'}</span>
         <span class="loc-text"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${pro.location||'Portugal'}</span>
+        ${pro.experience_years?`<span class="exp-chip"><svg class="ic" viewBox="0 0 24 24" style="width:11px;height:11px;color:#fff"><path d="M12 20v-6M6 20V10M18 20V4"/></svg> ${pro.experience_years} anos de experiência</span>`:''}
       </div>
       <div class="rating-row" id="rating-row">
         <div class="spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div>
       </div>
       ${pro.bio?`<div class="profile-bio">${pro.bio}</div>`:''}
-      ${renderWeeklyScheduleBadge(pro)}
+      ${renderSpecialties(pro)}
+      ${renderCertifications(pro)}
     </div>
     <div class="profile-actions">
       ${pro.website?`<a href="${pro.website}" target="_blank" class="btn btn-outline"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Website</a>`:''}
@@ -469,13 +575,19 @@ async function loadReviews(){
   const respStat=hasResponseData(proData)
     ? `<div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--green)">${tIc.clock}</svg><strong>${formatResponseTime(proData.avg_response_minutes)}</strong><span>Tempo de resposta</span></div>`
     : ''
+  const expStat=proData.experience_years
+    ? `<div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--blue)"><path d="M12 20v-6M6 20V10M18 20V4"/></svg><strong>${proData.experience_years}</strong><span>Anos de experiência</span></div>`
+    : ''
   document.getElementById('trust-bar').style.display='grid'
   document.getElementById('trust-bar').innerHTML=`
     <div class="tstat"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="color:var(--gold)">${tIc.star}</svg><strong>${avgNum||'—'}</strong><span>Avaliação média</span></div>
     <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--blue)">${tIc.review}</svg><strong>${reviews.length}</strong><span>Avaliações</span></div>
     <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--green)">${tIc.photo}</svg><strong>${portfolioCount||0}</strong><span>Fotos no portfólio</span></div>
     <div class="tstat"><svg class="ic" viewBox="0 0 24 24" style="color:var(--gold)">${tIc.calendar}</svg><strong>${joinedYear}</strong><span>Membro desde</span></div>
-    ${respStat}`
+    ${expStat}${respStat}`
+
+  const{count:diaryCount}=await db.from('professional_updates').select('*',{count:'exact',head:true}).eq('professional_id',proId)
+  renderBadges({avgNum,reviewCount:reviews.length,portfolioCount:portfolioCount||0,diaryCount:diaryCount||0,joinedYear})
 
   if(!reviews.length){
     document.getElementById('reviews-list').innerHTML=`<p style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Sem avaliações ainda. Sê o primeiro!</p>`
@@ -538,9 +650,21 @@ async function loadServices(){
 }
 
 async function loadPortfolio(){
-  const{data}=await db.from('portfolio_items').select('*').eq('professional_id',proId).order('created_at',{ascending:false})
+  const{data:all}=await db.from('portfolio_items').select('*').eq('professional_id',proId).order('created_at',{ascending:false})
   const grid=document.getElementById('portfolio-grid')
-  if(!data||!data.length){grid.innerHTML=`<p style="color:var(--muted);font-size:14px;padding:20px">Sem fotos de portfólio ainda.</p>`;return}
+  if(!all||!all.length){grid.innerHTML=`<p style="color:var(--muted);font-size:14px;padding:20px">Sem fotos de portfólio ainda.</p>`;return}
+  const cases=all.filter(i=>i.title)
+  const data=all.filter(i=>!i.title)
+  if(cases.length){
+    const casesHtml=cases.map(c=>{
+      const imgs=c.before_photo_url
+        ? `<div class="case-imgs"><div class="cimg-wrap"><img src="${c.before_photo_url}" alt="Antes"/><span>Antes</span></div><div class="cimg-wrap"><img src="${c.photo_url}" alt="Depois"/><span>Depois</span></div></div>`
+        : `<div class="case-imgs"><img src="${c.photo_url}" alt="${c.title}" style="grid-column:span 2"/></div>`
+      return `<div class="case-card" onclick="openLightbox('${c.photo_url}','${(c.title||'').replace(/'/g,'&apos;')}')">${imgs}<div class="case-body"><div class="case-title">${c.title}</div>${c.description?`<div class="case-desc">${c.description}</div>`:''}${c.duration_label?`<span class="case-duration"><svg class="ic" viewBox="0 0 24 24" style="width:12px;height:12px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> ${c.duration_label}</span>`:''}</div></div>`
+    }).join('')
+    grid.insertAdjacentHTML('beforebegin',`<div id="case-studies">${casesHtml}</div>`)
+  }
+  if(!data.length){grid.innerHTML='';return}
   const item=i=>`<div class="portfolio-img" onclick="openLightbox('${i.photo_url}','${(i.caption||'').replace(/'/g,'&apos;')}')">
       <img src="${i.photo_url}" alt="${i.caption||'Trabalho'}" loading="lazy"/>
       <div class="cap">${i.caption||''}</div>
@@ -574,14 +698,110 @@ function renderSidebar(pro){
   }
 }
 
+
+// === PT_PLACES para zona de atuacao (mesma logica da home) ===
+const PT_PLACES={
+'Matosinhos':[41.1839,-8.6910],'Gondomar':[41.1425,-8.5321],'Vila Nova de Gaia':[41.1239,-8.6118],
+'Guimarães':[41.4425,-8.2918],'Barcelos':[41.5388,-8.6151],'Vila Verde':[41.6489,-8.4382],
+'Penafiel':[41.2072,-8.2837],'Vila Nova de Famalicão':[41.4084,-8.5187],
+'Porto':[41.1579,-8.6291],'Braga':[41.5454,-8.4265],'Aveiro':[40.6405,-8.6538],'Beja':[38.0150,-7.8632],
+'Bragança':[41.8073,-6.7573],'Castelo Branco':[39.8222,-7.4909],'Coimbra':[40.2033,-8.4103],
+'Évora':[38.5714,-7.9135],'Faro':[37.0194,-7.9304],'Guarda':[40.5364,-7.2683],'Leiria':[39.7436,-8.8071],
+'Lisboa':[38.7223,-9.1393],'Portalegre':[39.2967,-7.4281],'Santarém':[39.2362,-8.6857],
+'Setúbal':[38.5244,-8.8882],'Viana do Castelo':[41.6932,-8.8329],'Vila Real':[41.3006,-7.7441],
+'Viseu':[40.6566,-7.9122],'Açores':[37.7412,-25.6756],'Madeira':[32.6669,-16.9241]
+}
+function normalizeTxt(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function matchAllPlaces(location){
+  const norm=normalizeTxt(location)
+  if(!norm)return[]
+  const found=[]
+  for(const name in PT_PLACES){if(norm.includes(normalizeTxt(name)))found.push(name)}
+  return found
+}
+
+function renderBadges({avgNum,reviewCount,portfolioCount,diaryCount,joinedYear}){
+  const tiles=[]
+  const svg=p=>`<svg class="ic" viewBox="0 0 24 24">${p}</svg>`
+  if(avgNum&&avgNum>=4.8&&reviewCount>=5)tiles.push([svg('<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>'),'Avaliação excecional'])
+  if(hasResponseData(proData)&&Number(proData.avg_response_minutes)<=RESP_FAST_MINUTES)tiles.push([svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>'),'Resposta rápida'])
+  const yearsIn=new Date().getFullYear()-joinedYear
+  if(yearsIn>=1)tiles.push([svg('<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'),`${yearsIn} ano${yearsIn>1?'s':''} na Proliga`])
+  if(portfolioCount>=5)tiles.push([svg('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>'),'Portefólio completo'])
+  if(diaryCount>=3)tiles.push([svg('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'),'Diário ativo']) 
+  if(proData.certifications&&proData.certifications.length)tiles.push([svg('<circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/>'),'Certificado'])
+  if(!tiles.length)return
+  document.getElementById('badges-card').style.display='block'
+  document.getElementById('badges-list').innerHTML=tiles.map(([ic,label])=>`<div class="badge-tile">${ic}<span>${label}</span></div>`).join('')
+}
+
+function renderZoneMap(pro){
+  const places=matchAllPlaces(pro.location)
+  if(!places.length||typeof L==='undefined')return
+  document.getElementById('zone-card').style.display='block'
+  document.getElementById('zone-chips').innerHTML=places.map(n=>`<span class="zone-chip">${n}</span>`).join('')
+  const map=L.map('zone-map',{scrollWheelZoom:false,zoomControl:false,dragging:false,attributionControl:false}).setView(PT_PLACES[places[0]],places.length>1?9:11)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(map)
+  const bounds=[]
+  places.forEach(name=>{
+    const coord=PT_PLACES[name]
+    L.circleMarker(coord,{radius:9,color:'#E8720A',fillColor:'#E8720A',fillOpacity:.6,weight:2}).addTo(map)
+    bounds.push(coord)
+  })
+  if(bounds.length>1)map.fitBounds(bounds,{padding:[18,18]})
+}
+
+function renderAvailGrid(pro){
+  const sched=pro.weekly_schedule
+  if(!sched||typeof sched!=='object'||!Object.keys(sched).length)return
+  document.getElementById('avail-card').style.display='block'
+  const labels=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']
+  document.getElementById('avail-grid').innerHTML=labels.map((l,i)=>{
+    const on=!!sched[i]
+    return `<div class="avail-day${on?' on':''}"><div class="lbl">${l}</div><div class="bar"></div></div>`
+  }).join('')
+}
+
+function renderExtraInfo(pro){
+  const pills=[]
+  const svg=p=>`<svg class="ic" viewBox="0 0 24 24">${p}</svg>`
+  if(pro.languages&&pro.languages.length)pills.push(`${svg('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>')} ${pro.languages.join(' · ')}`)
+  if(pro.payment_methods&&pro.payment_methods.length)pills.push(`${svg('<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>')} ${pro.payment_methods.join(' · ')}`)
+  if(pro.has_insurance)pills.push(`${svg('<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/>')} Seguro de responsabilidade civil`)
+  if(!pills.length)return
+  document.getElementById('extra-info-card').style.display='block'
+  document.getElementById('extra-info-list').innerHTML=pills.map(p=>`<span class="info-pill">${p}</span>`).join('')
+}
+
+async function loadDiary(){
+  const{data}=await db.from('professional_updates').select('*').eq('professional_id',proId).order('created_at',{ascending:false}).limit(20)
+  const el=document.getElementById('diary-list')
+  if(!data||!data.length){el.innerHTML=`<p style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Ainda sem publicações no diário de trabalhos.</p>`;return}
+  el.innerHTML=`<div class="diary-track">${data.map(u=>{
+    const date=new Date(u.created_at).toLocaleDateString('pt-PT',{day:'numeric',month:'short'})
+    const photo=u.photo_url?`<img class="diary-photo" src="${u.photo_url}" alt=""/>`:`<div class="diary-photo-empty"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>`
+    return `<div class="diary-item"><div class="diary-dot"></div><div class="diary-card">${photo}<div><div class="diary-text">${u.content}</div><div class="diary-meta">${u.location_label?u.location_label+' · ':''}${date}</div></div></div></div>`
+  }).join('')}</div>`
+}
+
+async function loadFaqs(){
+  const{data}=await db.from('professional_faqs').select('*').eq('professional_id',proId).order('order_index')
+  const el=document.getElementById('faq-list')
+  if(!data||!data.length){el.innerHTML=`<p style="color:var(--muted);font-size:14px;text-align:center;padding:20px">Ainda sem perguntas frequentes.</p>`;return}
+  el.innerHTML=data.map((f,i)=>`<div class="faq-item" id="faq-${i}"><div class="faq-q" onclick="toggleFaq(${i})">${f.question}<svg class="ic chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div><div class="faq-a">${f.answer}</div></div>`).join('')
+}
+function toggleFaq(i){document.getElementById('faq-'+i).classList.toggle('open')}
+
 function showTab(name){
   document.querySelectorAll('.tab').forEach((t,i)=>{
-    const names=['servicos','portfolio','avaliacoes']
+    const names=['servicos','portfolio','avaliacoes','diario','faq']
     t.classList.toggle('active',names[i]===name)
   })
   document.getElementById('tab-servicos').style.display=name==='servicos'?'block':'none'
   document.getElementById('tab-portfolio').style.display=name==='portfolio'?'block':'none'
   document.getElementById('tab-avaliacoes').style.display=name==='avaliacoes'?'block':'none'
+  document.getElementById('tab-diario').style.display=name==='diario'?'block':'none'
+  document.getElementById('tab-faq').style.display=name==='faq'?'block':'none'
 }
 
 function setStar(v){

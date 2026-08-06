@@ -694,6 +694,8 @@ function toggleMobileMenu(open){
       <button class="ptab" data-ptab="profile" onclick="showPage('profile')">Dados</button>
       <button class="ptab" data-ptab="services" onclick="showPage('services')">Serviços</button>
       <button class="ptab" data-ptab="portfolio" onclick="showPage('portfolio')">Portfólio</button>
+      <button class="ptab" data-ptab="diario" onclick="showPage('diario')">Diário</button>
+      <button class="ptab" data-ptab="faq" onclick="showPage('faq')">FAQ</button>
     </div>
     <div class="alert success" id="profile-success"></div>
     <div class="alert error" id="profile-error"></div>
@@ -752,6 +754,31 @@ function toggleMobileMenu(open){
         <div class="form-group full"><label>Sobre mim (bio)</label><textarea id="p-bio" placeholder="Descreve a tua experiência, especialidades e o que te diferencia..."></textarea></div>
       </div>
       <button class="btn btn-primary" onclick="saveProfile()">Guardar perfil</button>
+    </div>
+
+    <div class="form-section">
+      <div class="form-title">Sobre mim (avançado)</div>
+      <p style="color:var(--muted);font-size:13px;margin:-8px 0 16px;max-width:520px">Estes dados aparecem no teu perfil público e ajudam os clientes a confiar em ti antes de te contactarem.</p>
+      <div class="form-grid">
+        <div class="form-group"><label>Anos de experiência</label><input id="p-exp" type="number" min="0" max="60" placeholder="Ex: 8"/></div>
+        <div class="form-group full"><label>Especialidades (separadas por vírgula)</label><input id="p-specialties" type="text" placeholder="Ex: Deteção de fugas, Aquecimento central, Emergências 24h"/></div>
+        <div class="form-group"><label>Idiomas (separados por vírgula)</label><input id="p-languages" type="text" placeholder="Ex: Português, Inglês"/></div>
+        <div class="form-group"><label>Formas de pagamento (separadas por vírgula)</label><input id="p-payments" type="text" placeholder="Ex: Numerário, MB Way, Transferência"/></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin:6px 0 18px;cursor:pointer">
+        <input type="checkbox" id="p-insurance" style="width:auto"/>
+        <span style="font-size:13px;font-weight:600">Tenho seguro de responsabilidade civil</span>
+      </label>
+      <div class="form-group full">
+        <label>Certificações</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+          <input id="cert-name" type="text" placeholder="Ex: Técnico certificado AVAC" style="flex:2;min-width:180px;margin-bottom:0"/>
+          <input id="cert-year" type="number" placeholder="Ano" style="flex:1;min-width:80px;margin-bottom:0"/>
+          <button type="button" class="btn btn-outline" onclick="addCertification()" style="white-space:nowrap">+ Adicionar</button>
+        </div>
+        <div id="cert-list" style="display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveProfile()">Guardar</button>
     </div>
 
     <div class="form-section" id="weekly-schedule-section">
@@ -832,6 +859,8 @@ function toggleMobileMenu(open){
       <button class="ptab" data-ptab="profile" onclick="showPage('profile')">Dados</button>
       <button class="ptab" data-ptab="services" onclick="showPage('services')">Serviços</button>
       <button class="ptab" data-ptab="portfolio" onclick="showPage('portfolio')">Portfólio</button>
+      <button class="ptab" data-ptab="diario" onclick="showPage('diario')">Diário</button>
+      <button class="ptab" data-ptab="faq" onclick="showPage('faq')">FAQ</button>
     </div>
 
     <div class="alert success" id="srv-success"></div>
@@ -863,6 +892,8 @@ function toggleMobileMenu(open){
       <button class="ptab" data-ptab="profile" onclick="showPage('profile')">Dados</button>
       <button class="ptab" data-ptab="services" onclick="showPage('services')">Serviços</button>
       <button class="ptab" data-ptab="portfolio" onclick="showPage('portfolio')">Portfólio</button>
+      <button class="ptab" data-ptab="diario" onclick="showPage('diario')">Diário</button>
+      <button class="ptab" data-ptab="faq" onclick="showPage('faq')">FAQ</button>
     </div>
 
     <div class="alert info" id="port-info" style="display:none">Para adicionar fotos ao portfólio, precisas do plano Pro ou Premium. <a href="pricing.html" style="color:var(--blue-dark);font-weight:700">Ver planos →</a></div>
@@ -882,12 +913,89 @@ function toggleMobileMenu(open){
 <div id="port-upload-preview" style="display:none;margin-top:8px"></div>
 </div>
         <div class="form-group"><label>Legenda (opcional)</label><input id="port-cap" type="text" placeholder="Ex: Instalação completa em Boavista"/></div>
+        <label style="display:flex;align-items:center;gap:8px;margin:10px 0;cursor:pointer">
+          <input type="checkbox" id="port-is-case" style="width:auto" onchange="toggleCaseFields()"/>
+          <span style="font-size:13px;font-weight:600">É um caso de sucesso completo (com título e descrição)</span>
+        </label>
+        <div id="case-fields" style="display:none">
+          <div class="form-group"><label>Título do caso</label><input id="port-title" type="text" placeholder="Ex: Renovação completa de casa de banho"/></div>
+          <div class="form-group"><label>Descrição</label><textarea id="port-desc" placeholder="O que foi feito, desafios, resultado..."></textarea></div>
+          <div class="form-group"><label>Duração</label><input id="port-duration" type="text" placeholder="Ex: 4 dias"/></div>
+          <div class="form-group">
+            <label>Foto de "antes" (opcional)</label>
+            <input id="port-before-url" type="url" placeholder="https://... (URL da imagem)" style="margin-bottom:8px"/>
+            <label for="port-before-file" style="background:var(--blue-light);color:var(--blue);border:1.5px dashed var(--blue);border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;display:block">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg> Carregar foto "antes"
+              <input type="file" id="port-before-file" accept="image/*" style="display:none" onchange="uploadPortfolioBeforePhoto(this)"/>
+            </label>
+            <div id="port-before-preview" style="display:none;margin-top:8px"></div>
+          </div>
+        </div>
         <button class="btn btn-primary" onclick="addPortfolioItem()">Adicionar foto</button>
       </div>
       <div class="form-section">
         <div class="form-title">Fotos no Portfólio</div>
         <div class="portfolio-grid" id="portfolio-grid"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- DIARIO -->
+  <div id="page-diario" class="page-section">
+    <div class="page-title">O meu perfil</div>
+    <div class="ptabs">
+      <button class="ptab" data-ptab="profile" onclick="showPage('profile')">Dados</button>
+      <button class="ptab" data-ptab="services" onclick="showPage('services')">Serviços</button>
+      <button class="ptab" data-ptab="portfolio" onclick="showPage('portfolio')">Portfólio</button>
+      <button class="ptab" data-ptab="diario" onclick="showPage('diario')">Diário</button>
+      <button class="ptab" data-ptab="faq" onclick="showPage('faq')">FAQ</button>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:520px">Partilha atualizações rápidas dos trabalhos que vais fazendo. Aparece no teu perfil público como prova de atividade real.</p>
+    <div class="alert success" id="diary-success"></div>
+    <div class="alert error" id="diary-error"></div>
+    <div class="form-section">
+      <div class="form-title">Nova Publicação</div>
+      <div class="form-group full"><label>O que fizeste?</label><textarea id="diary-content" placeholder="Ex: Substituição de esquentador em Guimarães"></textarea></div>
+      <div class="form-group"><label>Local (opcional)</label><input id="diary-location" type="text" placeholder="Ex: Guimarães"/></div>
+      <div class="form-group">
+        <label>Foto (opcional)</label>
+        <input id="diary-photo-url" type="url" placeholder="https://... (URL da imagem)" style="margin-bottom:8px"/>
+        <label for="diary-photo-file" style="background:var(--blue-light);color:var(--blue);border:1.5px dashed var(--blue);border-radius:8px;padding:10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;display:block">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg> Carregar foto
+          <input type="file" id="diary-photo-file" accept="image/*" style="display:none" onchange="uploadDiaryPhoto(this)"/>
+        </label>
+        <div id="diary-photo-preview" style="display:none;margin-top:8px"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addDiaryUpdate()">Publicar</button>
+    </div>
+    <div class="form-section">
+      <div class="form-title">Publicações</div>
+      <div id="diary-dash-list" class="item-list"></div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div id="page-faq" class="page-section">
+    <div class="page-title">O meu perfil</div>
+    <div class="ptabs">
+      <button class="ptab" data-ptab="profile" onclick="showPage('profile')">Dados</button>
+      <button class="ptab" data-ptab="services" onclick="showPage('services')">Serviços</button>
+      <button class="ptab" data-ptab="portfolio" onclick="showPage('portfolio')">Portfólio</button>
+      <button class="ptab" data-ptab="diario" onclick="showPage('diario')">Diário</button>
+      <button class="ptab" data-ptab="faq" onclick="showPage('faq')">FAQ</button>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin:-8px 0 20px;max-width:520px">Responde às perguntas que os clientes fazem mais vezes, antes de te contactarem.</p>
+    <div class="alert success" id="faq-success"></div>
+    <div class="alert error" id="faq-error"></div>
+    <div class="form-section">
+      <div class="form-title">Nova Pergunta</div>
+      <div class="form-group full"><label>Pergunta</label><input id="faq-question" type="text" placeholder="Ex: Trabalha aos fins de semana?"/></div>
+      <div class="form-group full"><label>Resposta</label><textarea id="faq-answer" placeholder="A tua resposta..."></textarea></div>
+      <button class="btn btn-primary" onclick="addFaqDash()">Adicionar</button>
+    </div>
+    <div class="form-section">
+      <div class="form-title">Perguntas Frequentes</div>
+      <div id="faq-dash-list" class="item-list"></div>
     </div>
   </div>
 
@@ -1465,9 +1573,36 @@ document.getElementById('p-district').value=_loc[0]||''
 document.getElementById('p-city').value=_loc[1]||''
   document.getElementById('p-photo').value=pro.photo_url||''
   document.getElementById('p-bio').value=pro.bio||''
+  document.getElementById('p-exp').value=pro.experience_years||''
+  document.getElementById('p-specialties').value=(pro.specialties||[]).join(', ')
+  document.getElementById('p-languages').value=(pro.languages||[]).join(', ')
+  document.getElementById('p-payments').value=(pro.payment_methods||[]).join(', ')
+  document.getElementById('p-insurance').checked=!!pro.has_insurance
+  certState=Array.isArray(pro.certifications)?JSON.parse(JSON.stringify(pro.certifications)):[]
+  renderCertList()
   // is_active field removed
   renderWeeklyScheduleGrid()
 }
+
+// ---------- SOBRE MIM AVANÇADO (certificações) ----------
+let certState=[]
+function renderCertList(){
+  const el=document.getElementById('cert-list')
+  if(!el)return
+  if(!certState.length){el.innerHTML='<div style="font-size:12.5px;color:var(--muted)">Nenhuma certificação adicionada.</div>';return}
+  el.innerHTML=certState.map((c,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:8px;padding:8px 12px"><span style="font-size:13px;font-weight:600">${c.name}${c.year?' · '+c.year:''}</span><button type="button" class="btn btn-danger btn-sm" onclick="removeCertification(${i})">✕</button></div>`).join('')
+}
+function addCertification(){
+  const name=document.getElementById('cert-name').value.trim()
+  const year=document.getElementById('cert-year').value.trim()
+  if(!name)return
+  certState.push({name,year:year||null})
+  document.getElementById('cert-name').value=''
+  document.getElementById('cert-year').value=''
+  renderCertList()
+}
+function removeCertification(i){certState.splice(i,1);renderCertList()}
+function splitCsv(v){return (v||'').split(',').map(s=>s.trim()).filter(Boolean)}
 
 async function saveProfile(){
   if(!profileId){showAlert('profile-error','Erro: perfil não carregado. Recarrega a página.','error');return}
@@ -1483,6 +1618,12 @@ const location=_district?(_city?_district+' – '+_city:_district):''
     website:document.getElementById('p-website').value.trim()||null,
     photo_url:document.getElementById('p-photo').value.trim()||null,
     bio:document.getElementById('p-bio').value.trim()||null,
+    experience_years:parseInt(document.getElementById('p-exp').value)||null,
+    specialties:splitCsv(document.getElementById('p-specialties').value),
+    languages:splitCsv(document.getElementById('p-languages').value),
+    payment_methods:splitCsv(document.getElementById('p-payments').value),
+    has_insurance:document.getElementById('p-insurance').checked,
+    certifications:certState,
     updated_at:new Date().toISOString()
   }
   const{error}=await db.from('profiles').update(updates).eq('id',profileId)
@@ -1979,6 +2120,8 @@ function checkUpgrade(){
   }
   // Portfolio disponivel para todos
   loadPortfolio()
+  loadDiaryDash()
+  loadFaqsDash()
 }
 
 // SERVICES
@@ -2033,24 +2176,156 @@ async function loadPortfolio(){
   if(!data||!data.length){grid.innerHTML='<div class="empty">Sem fotos ainda.</div>';return}
   grid.innerHTML=data.map(item=>`
     <div class="port-img">
-      <img src="${item.photo_url}" alt="${item.caption||''}"/>
+      <img src="${item.photo_url}" alt="${item.caption||item.title||''}"/>
+      ${item.title?`<span style="position:absolute;top:6px;left:6px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px">Caso de sucesso</span>`:''}
       <button class="del" onclick="deletePortItem('${item.id}')">✕</button>
     </div>`).join('')
+}
+
+function toggleCaseFields(){
+  const on=document.getElementById('port-is-case').checked
+  document.getElementById('case-fields').style.display=on?'block':'none'
+}
+
+async function uploadPortfolioBeforePhoto(input){
+  const file=input.files[0]
+  if(!file)return
+  if(file.size>10*1024*1024){showAlert('port-error','Foto demasiado grande. Máx 10MB.','error');return}
+  const preview=document.getElementById('port-before-preview')
+  preview.innerHTML='<div style="font-size:13px;color:var(--muted)">A carregar...</div>'
+  preview.style.display='block'
+  try{
+    const ext=file.name.split('.').pop()
+    const path=`portfolio/${profileId}/before-${Date.now()}.${ext}`
+    const{error}=await db.storage.from('proliga-media').upload(path,file,{contentType:file.type})
+    if(error)throw error
+    const{data:urlData}=db.storage.from('proliga-media').getPublicUrl(path)
+    document.getElementById('port-before-url').value=urlData.publicUrl
+    preview.innerHTML=`<img src="${urlData.publicUrl}" style="width:100px;height:100px;border-radius:10px;object-fit:cover"/>`
+  }catch(e){
+    const reader=new FileReader()
+    reader.onload=ev=>{
+      document.getElementById('port-before-url').value=ev.target.result
+      preview.innerHTML=`<img src="${ev.target.result}" style="width:100px;height:100px;border-radius:10px;object-fit:cover"/>`
+    }
+    reader.readAsDataURL(file)
+  }
 }
 
 async function addPortfolioItem(){
   const url=document.getElementById('port-url').value.trim()
   if(!url){showAlert('port-error','Insere o URL da imagem.');return}
+  const isCase=document.getElementById('port-is-case').checked
   const{error}=await db.from('portfolio_items').insert({
     professional_id:profileId,
     photo_url:url,
-    caption:document.getElementById('port-cap').value.trim()||null
+    caption:document.getElementById('port-cap').value.trim()||null,
+    title:isCase?(document.getElementById('port-title').value.trim()||null):null,
+    description:isCase?(document.getElementById('port-desc').value.trim()||null):null,
+    duration_label:isCase?(document.getElementById('port-duration').value.trim()||null):null,
+    before_photo_url:isCase?(document.getElementById('port-before-url').value.trim()||null):null
   })
   if(error){showAlert('port-error','Erro: '+error.message);return}
   showAlert('port-success','Foto adicionada!')
-  document.getElementById('port-url').value=''
-  document.getElementById('port-cap').value=''
+  ;['port-url','port-cap','port-title','port-desc','port-duration','port-before-url'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('port-is-case').checked=false
+  document.getElementById('case-fields').style.display='none'
+  document.getElementById('port-before-preview').style.display='none'
   loadPortfolio()
+}
+
+// DIARIO DE TRABALHOS
+async function loadDiaryDash(){
+  if(!profileId)return
+  const{data}=await db.from('professional_updates').select('*').eq('professional_id',profileId).order('created_at',{ascending:false})
+  const el=document.getElementById('diary-dash-list')
+  if(!el)return
+  if(!data||!data.length){el.innerHTML='<div class="empty">Sem publicações ainda.</div>';return}
+  el.innerHTML=data.map(u=>`
+    <div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${u.content}</div>
+        <div class="list-item-sub">${u.location_label?u.location_label+' · ':''}${new Date(u.created_at).toLocaleDateString('pt-PT')}</div>
+      </div>
+      <div><button class="btn btn-danger btn-sm" onclick="deleteDiaryUpdate('${u.id}')">✕</button></div>
+    </div>`).join('')
+}
+async function addDiaryUpdate(){
+  const content=document.getElementById('diary-content').value.trim()
+  if(!content){showAlert('diary-error','Escreve o que fizeste.','error');return}
+  const{error}=await db.from('professional_updates').insert({
+    professional_id:profileId,content,
+    location_label:document.getElementById('diary-location').value.trim()||null,
+    photo_url:document.getElementById('diary-photo-url').value.trim()||null
+  })
+  if(error){showAlert('diary-error','Erro: '+error.message,'error');return}
+  showAlert('diary-success','Publicado!')
+  ;['diary-content','diary-location','diary-photo-url'].forEach(id=>document.getElementById(id).value='')
+  document.getElementById('diary-photo-preview').style.display='none'
+  loadDiaryDash()
+}
+async function deleteDiaryUpdate(id){
+  if(!confirm('Remover esta publicação?'))return
+  await db.from('professional_updates').delete().eq('id',id)
+  loadDiaryDash()
+}
+async function uploadDiaryPhoto(input){
+  const file=input.files[0]
+  if(!file)return
+  if(file.size>10*1024*1024){showAlert('diary-error','Foto demasiado grande. Máx 10MB.','error');return}
+  const preview=document.getElementById('diary-photo-preview')
+  preview.innerHTML='<div style="font-size:13px;color:var(--muted)">A carregar...</div>'
+  preview.style.display='block'
+  try{
+    const ext=file.name.split('.').pop()
+    const path=`diary/${profileId}/${Date.now()}.${ext}`
+    const{error}=await db.storage.from('proliga-media').upload(path,file,{contentType:file.type})
+    if(error)throw error
+    const{data:urlData}=db.storage.from('proliga-media').getPublicUrl(path)
+    document.getElementById('diary-photo-url').value=urlData.publicUrl
+    preview.innerHTML=`<img src="${urlData.publicUrl}" style="width:100px;height:100px;border-radius:10px;object-fit:cover"/>`
+  }catch(e){
+    const reader=new FileReader()
+    reader.onload=ev=>{
+      document.getElementById('diary-photo-url').value=ev.target.result
+      preview.innerHTML=`<img src="${ev.target.result}" style="width:100px;height:100px;border-radius:10px;object-fit:cover"/>`
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+// FAQ
+async function loadFaqsDash(){
+  if(!profileId)return
+  const{data}=await db.from('professional_faqs').select('*').eq('professional_id',profileId).order('order_index')
+  const el=document.getElementById('faq-dash-list')
+  if(!el)return
+  if(!data||!data.length){el.innerHTML='<div class="empty">Sem perguntas ainda.</div>';return}
+  el.innerHTML=data.map(f=>`
+    <div class="list-item">
+      <div class="list-item-body">
+        <div class="list-item-title">${f.question}</div>
+        <div class="list-item-sub">${f.answer}</div>
+      </div>
+      <div><button class="btn btn-danger btn-sm" onclick="deleteFaqDash('${f.id}')">✕</button></div>
+    </div>`).join('')
+}
+async function addFaqDash(){
+  const question=document.getElementById('faq-question').value.trim()
+  const answer=document.getElementById('faq-answer').value.trim()
+  if(!question||!answer){showAlert('faq-error','Preenche a pergunta e a resposta.','error');return}
+  const{count}=await db.from('professional_faqs').select('*',{count:'exact',head:true}).eq('professional_id',profileId)
+  const{error}=await db.from('professional_faqs').insert({professional_id:profileId,question,answer,order_index:count||0})
+  if(error){showAlert('faq-error','Erro: '+error.message,'error');return}
+  showAlert('faq-success','Adicionado!')
+  document.getElementById('faq-question').value=''
+  document.getElementById('faq-answer').value=''
+  loadFaqsDash()
+}
+async function deleteFaqDash(id){
+  if(!confirm('Remover esta pergunta?'))return
+  await db.from('professional_faqs').delete().eq('id',id)
+  loadFaqsDash()
 }
 
 async function deletePortItem(id){
@@ -2105,7 +2380,7 @@ async function loadReviews(){
 function showPage(name){
   document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'))
   document.getElementById(`page-${name}`).classList.add('active')
-  const grupoPerfil=['profile','services','portfolio']
+  const grupoPerfil=['profile','services','portfolio','diario','faq']
   document.querySelectorAll('.nav-item[data-page]').forEach(n=>{
     const alvo=n.dataset.page
     n.classList.toggle('active', alvo===name || (alvo==='profile'&&grupoPerfil.includes(name)))
