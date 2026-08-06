@@ -761,7 +761,14 @@ function toggleMobileMenu(open){
 <div id="p-photo-preview" style="display:none;margin-top:6px"></div>
 </div>
 </div>
-        <div class="form-group full"><label>Sobre mim (bio)</label><textarea id="p-bio" placeholder="Descreve a tua experiência, especialidades e o que te diferencia..."></textarea></div>
+        <div class="form-group full">
+          <label style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <span>Sobre mim (bio)</span>
+            <button type="button" class="btn btn-outline" style="padding:5px 12px;font-size:11.5px;white-space:nowrap" onclick="generateBioWithAI()">✨ Escrever automaticamente</button>
+          </label>
+          <textarea id="p-bio" placeholder="Descreve a tua experiência, especialidades e o que te diferencia..."></textarea>
+          <div class="hint" style="margin-top:4px">Preenche categoria, zona e experiência acima e usa "Escrever automaticamente" — gera um texto a partir dos teus dados, que podes editar antes de guardar.</div>
+        </div>
       </div>
       <button class="btn btn-primary" onclick="saveProfile()">Guardar perfil</button>
     </div>
@@ -1671,6 +1678,74 @@ function addCertification(){
 }
 function removeCertification(i){certState.splice(i,1);renderCertList()}
 function splitCsv(v){return (v||'').split(',').map(s=>s.trim()).filter(Boolean)}
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+// Gera uma bio a partir dos campos já preenchidos no formulário — sem IA generativa,
+// apenas modelos de frase combinados de forma variada para não parecer sempre igual.
+function generateBioWithAI(){
+  const cat=document.getElementById('p-cat').value
+  const city=document.getElementById('p-city').value.trim()||document.getElementById('p-district').value
+  const exp=document.getElementById('p-exp').value.trim()
+  const specialties=splitCsv(document.getElementById('p-specialties').value)
+  const payments=splitCsv(document.getElementById('p-payments').value)
+  const insured=document.getElementById('p-insurance').checked
+  const certs=(certState||[]).map(c=>c.name).filter(Boolean)
+
+  if(!cat){showAlert('profile-error','Escolhe primeiro uma categoria — preciso disso para escrever a bio.','error');return}
+
+  const parts=[]
+
+  if(exp){
+    parts.push(pick([
+      `Profissional de ${cat} em ${city||'Portugal'}, com ${exp} anos de experiência.`,
+      `Com ${exp} anos de experiência, trabalho na área de ${cat} em ${city||'Portugal'}.`,
+      `Há ${exp} anos a trabalhar como ${cat} em ${city||'Portugal'}.`
+    ]))
+  } else {
+    parts.push(pick([
+      `Profissional de ${cat} em ${city||'Portugal'}.`,
+      `Trabalho na área de ${cat} em ${city||'Portugal'}.`
+    ]))
+  }
+
+  if(specialties.length){
+    const list=specialties.join(', ')
+    parts.push(pick([
+      `Sou especializado em ${list}.`,
+      `As minhas áreas fortes incluem ${list}.`,
+      `Dou especial atenção a ${list}.`
+    ]))
+  }
+
+  if(certs.length){
+    const list=certs.join(', ')
+    parts.push(pick([
+      `Tenho certificação em ${list}.`,
+      `Sou certificado em ${list}.`
+    ]))
+  }
+
+  if(insured){
+    parts.push(pick([
+      'Trabalho com seguro de responsabilidade civil, para tua total tranquilidade.',
+      'Tenho seguro de responsabilidade civil ativo.'
+    ]))
+  }
+
+  if(payments.length){
+    parts.push(`Aceito pagamento por ${payments.join(', ')}.`)
+  }
+
+  parts.push(pick([
+    'Contacta-me para um orçamento sem compromisso.',
+    'Fala comigo e vamos encontrar a melhor solução para o teu projeto.',
+    'Disponível para esclarecer qualquer dúvida antes de avançarmos.'
+  ]))
+
+  document.getElementById('p-bio').value=parts.join(' ')
+  showAlert('profile-success','Bio gerada — revê o texto e ajusta o que quiseres antes de guardar.')
+}
 
 async function saveProfile(){
   if(!profileId){showAlert('profile-error','Erro: perfil não carregado. Recarrega a página.','error');return}
