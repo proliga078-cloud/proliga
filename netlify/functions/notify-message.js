@@ -1,4 +1,5 @@
 const{createClient}=require('@supabase/supabase-js')
+const{sendPush}=require('./_push')
 
 const RESEND_API_KEY=process.env.RESEND_API_KEY
 const FROM=process.env.RESEND_FROM||'Proliga <onboarding@resend.dev>'
@@ -91,6 +92,8 @@ exports.handler=async(event)=>{
     if(!resp.ok){console.error('Resend error:',data);return{statusCode:resp.status,body:JSON.stringify(data)}}
 
     await admin.from('message_notices').insert({conversation_id:conversationId,recipient_id:destinatarioId})
+
+    sendPush(destinatarioId,{title:`Nova mensagem de ${nomeDe}`,body:trecho||'Enviou-te uma mensagem na Proliga.',url:'/messages.html',tag:'message-'+conversationId}).catch(()=>{})
 
     return{statusCode:200,body:JSON.stringify({sent:true})}
   }catch(err){

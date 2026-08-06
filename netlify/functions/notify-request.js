@@ -1,4 +1,5 @@
 const{createClient}=require('@supabase/supabase-js')
+const{sendPush}=require('./_push')
 
 const RESEND_API_KEY=process.env.RESEND_API_KEY
 const FROM=process.env.RESEND_FROM||'Proliga <onboarding@resend.dev>'
@@ -51,6 +52,14 @@ exports.handler=async(event)=>{
 
     const candidatos=(pros||[]).filter(p=>p.notify_email!==false)
     if(!candidatos.length)return{statusCode:200,body:JSON.stringify({sent:0,reason:'ninguem nesta categoria'})}
+
+    // Push nao depende de ter email: manda a todos os candidatos da categoria.
+    Promise.allSettled(candidatos.map(p=>sendPush(p.id,{
+      title:`Novo pedido em ${pedido.category}`,
+      body:pedido.title,
+      url:'/pedidos.html',
+      tag:'request-'+pedido.id
+    }))).catch(()=>{})
 
     // Os emails vem do auth, nao de profiles.
     const{data:enderecos}=await admin.rpc('emails_for',{ids:candidatos.map(p=>p.id)})
