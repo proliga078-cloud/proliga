@@ -3017,6 +3017,14 @@ function answerLocally(question){
   const q=normalizeText(question)
   const has=(...words)=>words.some(w=>q.includes(w))
 
+  // Cumprimentos / agradecimentos
+  if(has('ola','boa tarde','bom dia','boa noite','oi ','ei proliga')){
+    return 'Olá! Pergunta-me sobre faturação, orçamentos pendentes, agenda, ticket médio, avaliações, perfil, serviços, trabalhos, o teu plano, preços de mercado, o código de referência ou o modo férias.'
+  }
+  if(has('obrigado','obrigada','valeu','fixe respondeste','otimo obrigado')){
+    return 'De nada! Qualquer coisa é só perguntar.'
+  }
+
   // Resumo geral do mês / negócio (pergunta ampla — combina os principais números)
   if(has('como esta','como vai','resumo','o meu mes','este mes','meu negocio')){
     const monthStart=new Date();monthStart.setDate(1);monthStart.setHours(0,0,0,0)
@@ -3110,6 +3118,40 @@ function answerLocally(question){
     return `Tens ${active.length} trabalho${active.length>1?'s':''} ativo${active.length>1?'s':''}: ${parts}.`
   }
 
+  // Plano e limites da conta
+  if(has('meu plano','o plano','quantos servicos posso','limite do plano','plano atual','sou free','sou pro','sou premium')){
+    const planName=(profileData&&profileData.plan)||'free'
+    const label=planName==='pro'?'Pro':planName==='premium'?'Premium':'Gratuito'
+    const parts=[`O teu plano atual é o ${label}.`]
+    if(planLimits&&planLimits.portfolio_max)parts.push(`Podes ter até ${planLimits.portfolio_max} casos de sucesso no portefólio.`)
+    if(planLimits&&planLimits.quotes_per_month)parts.push(`Até ${planLimits.quotes_per_month} orçamentos automáticos por mês.`)
+    if(planLimits&&!planLimits.finances)parts.push('O painel de Finanças não está incluído neste plano.')
+    return parts.join(' ')
+  }
+
+  // Preços de mercado / concorrência (categoria)
+  if(has('quanto cobrar','quanto devo cobrar','mercado','concorrencia','outros profissionais cobram','quanto cobram')){
+    if(marketPriceCache&&profileData&&marketPriceCache.category===profileData.category)
+      return `Profissionais de ${profileData.category} cobram, em média, entre €${marketPriceCache.lo.toFixed(0)} e €${marketPriceCache.hi.toFixed(0)}. Usa isto como referência para os teus preços.`
+    return 'Ainda não tenho dados de mercado suficientes para a tua categoria. Isto aparece assim que houver serviços publicados suficientes de profissionais parecidos contigo.'
+  }
+
+  // Modo férias / indisponibilidade
+  if(has('ferias','indisponivel','modo ausencia','estou de ferias')){
+    if(profileData&&profileData.unavailable_until){
+      const until=new Date(profileData.unavailable_until+'T00:00:00')
+      if(until>=new Date())return `Estás marcado como indisponível até ${until.toLocaleDateString('pt-PT')}. Os clientes veem esse aviso no teu perfil público.`
+    }
+    return 'Não tens o modo de indisponibilidade ativo neste momento. Podes ativá-lo em Perfil, na secção "Modo férias".'
+  }
+
+  // Código de referência / indicações
+  if(has('codigo de referencia','convidar colega','indicar colega','programa de referencia','indicacoes')){
+    const code=profileData&&profileData.referral_code
+    if(code)return `O teu código de referência é ${code}. Partilha-o — quando alguém se regista com ele, podes ganhar créditos.`
+    return 'Ainda não tens um código de referência gerado. Consulta a secção de Indicações no menu para o criares.'
+  }
+
   // Sugestões / o que fazer a seguir
   if(has('sugest','dica','conselho','o que devo','o que fazer','ajuda')){
     const tipsEl=document.getElementById('ai-insights')
@@ -3118,7 +3160,7 @@ function answerLocally(question){
     return 'De momento não tenho nenhuma sugestão urgente — continua o bom trabalho! Podes ver mais detalhes no painel de Insights no Resumo.'
   }
 
-  return 'Não percebi bem a pergunta. Consigo responder sobre: faturação, orçamentos pendentes, agenda, ticket médio, avaliações, perfil, serviços e trabalhos. Tenta perguntar, por exemplo, "como está o meu mês?" ou "tenho trabalhos agendados esta semana?".'
+  return 'Não percebi bem a pergunta. Consigo responder sobre: faturação, orçamentos pendentes, agenda, ticket médio, avaliações, perfil, serviços, trabalhos, o teu plano, preços de mercado, o código de referência e o modo férias. Tenta perguntar, por exemplo, "como está o meu mês?" ou "quanto devo cobrar?".'
 }
 
 // Chamada opcional à Edge Function com IA real (Claude). Não é usada por defeito —
