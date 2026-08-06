@@ -554,6 +554,16 @@ function toggleMobileMenu(open){
       </div>
     </div>
 
+    <div class="form-section" id="quick-calc-card">
+      <div class="form-title"><svg class="ic" viewBox="0 0 24 24" style="width:15px;height:15px"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg> Calculadora rápida de orçamento</div>
+      <p style="color:var(--muted);font-size:13px;margin:-8px 0 14px;max-width:480px">Para quando alguém liga diretamente e queres dar já uma ideia de preço, sem andar a adivinhar.</p>
+      <button class="btn btn-primary" id="quick-calc-btn" onclick="runQuickCalc()">Ver faixa de preço da minha categoria</button>
+      <div id="quick-calc-result" style="display:none;margin-top:14px;padding:14px;background:var(--bg);border-radius:10px">
+        <div style="font-size:22px;font-weight:800;color:var(--blue)" id="qc-range">—</div>
+        <div style="font-size:12.5px;color:var(--muted)" id="qc-sub">&nbsp;</div>
+      </div>
+    </div>
+
     <div class="form-section" id="setup-card" style="display:none">
       <div class="setup-head">
         <div class="setup-title" id="setup-title">Faltam passos para apareceres nas pesquisas</div>
@@ -829,6 +839,18 @@ function toggleMobileMenu(open){
       </div>
     </div>
     <div class="form-section">
+      <div class="form-title">Modo férias / indisponibilidade</div>
+      <p style="color:var(--muted);font-size:13px;margin:-8px 0 16px;max-width:520px">Vais estar fora? Marca até quando, e o teu perfil deixa de aparecer nas pesquisas e mostra uma resposta automática a quem te tentar contactar.</p>
+      <div class="alert success" id="unavail-success"></div>
+      <div class="alert error" id="unavail-error"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Indisponível até</label><input id="p-unavail-until" type="date"/></div>
+        <div class="form-group full"><label>Mensagem automática (opcional)</label><input id="p-unavail-msg" type="text" placeholder="Ex: Estou de férias até dia 20, respondo assim que puder."/></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveUnavailability()">Guardar</button>
+      <button class="btn btn-outline" style="margin-left:8px" onclick="clearUnavailability()">Já estou disponível</button>
+    </div>
+    <div class="form-section">
       <div class="form-title">Visibilidade</div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
         <div><div style="font-size:14px;font-weight:600">Perfil público</div><div style="font-size:12px;color:var(--muted)">O teu perfil aparece nos resultados de pesquisa após criação</div></div>
@@ -846,6 +868,16 @@ function toggleMobileMenu(open){
         </div>
         <label class="switch" for="notif-toggle">
           <input type="checkbox" id="notif-toggle" onchange="saveNotifyPref()"/>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:14px;flex-wrap:wrap;border-top:1px solid var(--border)">
+        <div style="flex:1;min-width:220px">
+          <div style="font-size:14px;font-weight:600">Resumo diário por notificação</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5">Todas as manhãs, um resumo do que precisa da tua atenção (trabalhos, orçamentos pendentes, avaliações).</div>
+        </div>
+        <label class="switch" for="notif-digest-toggle">
+          <input type="checkbox" id="notif-digest-toggle" onchange="saveDigestPref()"/>
           <span class="slider"></span>
         </label>
       </div>
@@ -1550,6 +1582,8 @@ function updateSidebar(){
   else av.textContent=initials
   const nt=document.getElementById('notif-toggle')
   if(nt)nt.checked=profileData?.notify_email!==false
+  const ndt=document.getElementById('notif-digest-toggle')
+  if(ndt)ndt.checked=profileData?.notify_digest!==false
   const dt=document.getElementById('hd-date')
   if(dt)dt.textContent=new Date().toLocaleDateString('pt-PT',{weekday:'long',day:'numeric',month:'long'})
   renderSetup()
@@ -1580,8 +1614,37 @@ document.getElementById('p-city').value=_loc[1]||''
   document.getElementById('p-insurance').checked=!!pro.has_insurance
   certState=Array.isArray(pro.certifications)?JSON.parse(JSON.stringify(pro.certifications)):[]
   renderCertList()
+  document.getElementById('p-unavail-until').value=pro.unavailable_until||''
+  document.getElementById('p-unavail-msg').value=pro.unavailable_message||''
   // is_active field removed
   renderWeeklyScheduleGrid()
+}
+
+async function saveUnavailability(){
+  if(!profileId)return
+  const until=document.getElementById('p-unavail-until').value||null
+  const msg=document.getElementById('p-unavail-msg').value.trim()||null
+  const{error}=await db.from('profiles').update({unavailable_until:until,unavailable_message:msg}).eq('id',profileId)
+  if(error){showAlert('unavail-error','Erro ao guardar: '+error.message,'error');return}
+  profileData={...profileData,unavailable_until:until,unavailable_message:msg}
+  showAlert('unavail-success',until?'Perfil marcado como indisponível até '+new Date(until+'T00:00:00').toLocaleDateString('pt-PT')+'.':'Guardado.')
+}
+async function clearUnavailability(){
+  if(!profileId)return
+  document.getElementById('p-unavail-until').value=''
+  document.getElementById('p-unavail-msg').value=''
+  const{error}=await db.from('profiles').update({unavailable_until:null,unavailable_message:null}).eq('id',profileId)
+  if(error){showAlert('unavail-error','Erro: '+error.message,'error');return}
+  profileData={...profileData,unavailable_until:null,unavailable_message:null}
+  showAlert('unavail-success','Perfil marcado como disponível outra vez.')
+}
+async function saveDigestPref(){
+  if(!profileId)return
+  const on=document.getElementById('notif-digest-toggle').checked
+  const{error}=await db.from('profiles').update({notify_digest:on}).eq('id',profileId)
+  if(error){showAlert('notif-error','Não foi possível guardar: '+error.message,'error');return}
+  profileData={...profileData,notify_digest:on}
+  showAlert('notif-success', on?'Vais receber um resumo diário.':'Deixaste de receber o resumo diário.')
 }
 
 // ---------- SOBRE MIM AVANÇADO (certificações) ----------
@@ -2444,6 +2507,7 @@ function jobCardHtml(j){
       <input type="text" list="job-types" placeholder="Tipo" value="${escapeHtml(j.job_type||'')}" title="Ex: Reparação, Instalação completa" onchange="updateJobField('${j.id}','job_type',this.value.trim()||null)"/>
     </div>
     ${marginBadge(j)}
+    <textarea placeholder="Material a levar (opcional)" style="width:100%;margin-bottom:6px;min-height:40px;font-size:12px;padding:8px 10px" onchange="updateJobField('${j.id}','materials_checklist',this.value.trim()||null)">${escapeHtml(j.materials_checklist||'')}</textarea>
     <input type="datetime-local" value="${toLocalDT(j.scheduled_at)}" style="width:100%;margin-bottom:6px" onchange="updateJobField('${j.id}','scheduled_at',this.value?new Date(this.value).toISOString():null)"/>
     <select onchange="updateJobStatus('${j.id}',this.value)">${statusOpts}</select>
     <div class="jc-actions" style="margin-top:8px">
@@ -2747,7 +2811,22 @@ async function updateJobStatus(id,status){
     if(job&&!job.paid_amount)updates.paid_amount=job.quote_amount||null
   }
   await db.from('jobs').update(updates).eq('id',id)
+  if(status==='pago')await requestReviewForJob(id)
   loadJobs()
+}
+
+// Pede avaliacao automaticamente assim que um trabalho fica pago (e quando a taxa de resposta e mais alta)
+async function requestReviewForJob(jobId){
+  try{
+    const job=allJobs.find(j=>j.id===jobId)
+    if(!job||!job.conversation_id)return
+    const{data:already}=await db.from('messages').select('id').eq('conversation_id',job.conversation_id).ilike('content','%deixa a tua avaliação%').limit(1).maybeSingle()
+    if(already)return
+    const link=profileData?.slug?('https://proliga.pt/'+profileData.slug):('https://proliga.pt/profile.html?id='+profileId)
+    const content='Obrigado! O trabalho foi concluído e pago. Se puderes, deixa a tua avaliação aqui: '+link
+    await db.from('messages').insert({conversation_id:job.conversation_id,sender_id:profileId,content})
+    await db.from('conversations').update({last_message:content,last_message_at:new Date().toISOString()}).eq('id',job.conversation_id)
+  }catch(e){}
 }
 
 async function deleteJob(id){
@@ -3506,6 +3585,23 @@ async function loadMarketPricing(){
 }
 
 // ===== PAINEL DE MERCADO (plano Pro) =====
+async function runQuickCalc(){
+  if(!profileData?.category)return
+  const btn=document.getElementById('quick-calc-btn')
+  btn.disabled=true;btn.textContent='A calcular...'
+  const{data,error}=await db.rpc('get_market_insights',{p_category:profileData.category})
+  btn.disabled=false;btn.textContent='Ver faixa de preço da minha categoria'
+  const box=document.getElementById('quick-calc-result')
+  box.style.display='block'
+  if(error||!data||!data.price_low){
+    document.getElementById('qc-range').textContent='Ainda sem dados suficientes'
+    document.getElementById('qc-sub').textContent='para '+profileData.category+' na tua zona'
+    return
+  }
+  document.getElementById('qc-range').textContent=`€${Number(data.price_low).toFixed(0)} – €${Number(data.price_high).toFixed(0)}`
+  document.getElementById('qc-sub').textContent=`média €${Number(data.price_avg).toFixed(0)} · baseado em ${data.offers_sample} propostas recentes em ${profileData.category}`
+}
+
 async function loadMarketInsights(){
   if(!profileData?.category)return
   document.getElementById('mkt-cat-label').textContent=profileData.category+(profileData.location?' · '+profileData.location:'')
@@ -3670,8 +3766,26 @@ async function submitReferral(){
   const job=refJobId?allJobs.find(j=>j.id===refJobId):null
   const{error}=await db.from('referrals').insert({referrer_id:profileId,referred_id:refSelectedPro.id,job_id:refJobId,client_name:job?.client_name||null,note:note||null})
   if(error){showAlert('ref-error','Erro ao enviar recomendação: '+error.message,'error');return}
+  // Manda tambem uma mensagem com os detalhes do trabalho, para o colega poder agir de imediato
+  try{
+    const otherId=refSelectedPro.id
+    let conv=null
+    const{data:existing}=await db.from('conversations').select('id').or('and(professional_id.eq.'+otherId+',client_id.eq.'+profileId+'),and(professional_id.eq.'+profileId+',client_id.eq.'+otherId+')').limit(1).maybeSingle()
+    if(existing)conv=existing
+    else{
+      const{data:created}=await db.from('conversations').insert({professional_id:otherId,client_id:profileId}).select().single()
+      conv=created
+    }
+    if(conv){
+      let content=job?('Encaminhei-te um trabalho: '+job.title+'.'):'Encaminhei-te uma recomendação.'
+      if(job?.job_type)content+=' Tipo: '+job.job_type+'.'
+      if(note)content+=' Nota: '+note
+      await db.from('messages').insert({conversation_id:conv.id,sender_id:profileId,content})
+      await db.from('conversations').update({last_message:content,last_message_at:new Date().toISOString()}).eq('id',conv.id)
+    }
+  }catch(e){}
   closeReferModal()
-  showAlert('job-success','Recomendação enviada a '+refSelectedPro.name+'!')
+  showAlert('job-success','Recomendação enviada a '+refSelectedPro.name+' — também lhe mandámos os detalhes por mensagem!')
   loadReferrals()
 }
 

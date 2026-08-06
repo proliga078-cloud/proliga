@@ -510,6 +510,10 @@ function renderCertifications(pro){
   const svgCert='<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>'
   return `<div class="cert-strip">${pro.certifications.map(c=>`<div class="cert-item">${svgCert}<div><div class="cert-name">${c.name||''}</div>${c.year?`<div class="cert-year">${c.year}</div>`:''}</div></div>`).join('')}</div>`
 }
+function isUnavailable(pro){
+  if(!pro.unavailable_until)return false
+  return new Date(pro.unavailable_until+'T23:59:59')>=new Date()
+}
 function renderHeader(pro){
   const initials=pro.name.split(' ').map(n=>n[0]).slice(0,2).join('')
   const avatar=pro.photo_url?`<img src="${pro.photo_url}" alt="${pro.name}"/>`:`${initials}`
@@ -528,6 +532,7 @@ function renderHeader(pro){
         <span class="loc-text"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${pro.location||'Portugal'}</span>
         ${pro.experience_years?`<span class="exp-chip"><svg class="ic" viewBox="0 0 24 24" style="width:11px;height:11px;color:#fff"><path d="M12 20v-6M6 20V10M18 20V4"/></svg> ${pro.experience_years} anos de experiência</span>`:''}
       </div>
+      ${isUnavailable(pro)?`<div style="background:#FEF3E2;border:1px solid #FBCB9B;color:#96590C;font-size:12.5px;font-weight:600;padding:8px 12px;border-radius:8px;margin-bottom:10px;display:inline-flex;align-items:center;gap:6px"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Indisponível até ${new Date(pro.unavailable_until+'T00:00:00').toLocaleDateString('pt-PT')}${pro.unavailable_message?' — '+pro.unavailable_message:''}</div>`:''}
       <div class="rating-row" id="rating-row">
         <div class="spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div>
       </div>

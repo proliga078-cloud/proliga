@@ -319,6 +319,7 @@ async function loadPros(){
 
   // Build query
   let q=db.from('profiles').select('id,name,category,location,plan,photo_url,bio,verified,created_at',{count:'exact'}).eq('is_demo',false)
+  q=q.or(`unavailable_until.is.null,unavailable_until.lt.${new Date().toISOString().slice(0,10)}`)
   if(filters.cat)q=q.ilike('category',`%${filters.cat}%`)
   if(filters.loc)q=q.ilike('location',`%${filters.loc}%`)
   if(filters.zona)q=q.ilike('location',`%${filters.zona}%`)

@@ -878,7 +878,7 @@ async function loadTestemunho(){
 
 async function loadFeatured(){
 const wrap=document.getElementById('spotlight-wrap')
-const{data}=await db.from('profiles').select('id,name,category,location,plan,photo_url,verified,bio,slug').eq('is_demo',false).limit(20)
+const{data}=await db.from('profiles').select('id,name,category,location,plan,photo_url,verified,bio,slug').eq('is_demo',false).or(`unavailable_until.is.null,unavailable_until.lt.${new Date().toISOString().slice(0,10)}`).limit(20)
 if(!data||!data.length){
 wrap.innerHTML='<p style="color:var(--muted);text-align:center;padding:40px">Nenhum profissional ainda. <a href="auth.html?tab=register" style="color:var(--blue);font-weight:600">Sê o primeiro!</a></p>'
 return
