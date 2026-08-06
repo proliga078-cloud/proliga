@@ -52,6 +52,7 @@
   window.addEventListener('beforeinstallprompt', function(e){
     e.preventDefault();
     deferredPrompt = e;
+    document.dispatchEvent(new CustomEvent('proliga:can-install'));
     setTimeout(showInstallBanner, 1500);
   });
 
@@ -59,5 +60,20 @@
     var el = document.getElementById('pwa-install-banner');
     if(el) el.remove();
     deferredPrompt = null;
+    document.dispatchEvent(new CustomEvent('proliga:installed'));
   });
+
+  // ---- API para botões próprios (ex: secção da homepage) ----
+  window.proligaInstallApp = function(){
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(function(){ deferredPrompt = null; });
+    }
+  };
+  window.proligaCanInstall = function(){
+    return !!deferredPrompt;
+  };
+  window.proligaIsInstalled = function(){
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  };
 })();
